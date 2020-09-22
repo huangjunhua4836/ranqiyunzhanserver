@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="common::headr('添加修改科室')"></head>
+<body>
+    <div class="layui-container">
+        <div class="layui-row" style="margin-top: 10px;">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                <form class="layui-form" th:object="${crmMember}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{memberName}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属机构</label>
+                        <div class="layui-input-block">
+                            <select name="organizationId" required  lay-verify="required" lay-filter="selectOrgFilter">
+                                <option value="">请选择</option>
+                                <option th:each="org,memberStat:${orgList}" th:value="${org.id}" th:text="${org.orgName}" th:selected="${org.id == crmMember.organizationId}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">上级科室</label>
+                        <div class="layui-input-block">
+                            <select name="parentId" id="parentId">
+                                <option th:value="${crmMember.parentId}" th:text="${crmMember.parentId}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">电话</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{phone}" required  lay-verify="required" placeholder="请输入电话" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <input th:field="*{id}" type="hidden"/>
+                    <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        layui.use('core', function(){
+            var form = layui.form,
+            core = layui.core,
+            $ = layui.jquery;
+
+            form.on('submit(submitFrom)', function(data){
+                var resultData = core.ajax('/crmMember/saveOrUpdateMember',false,'POST',data.field);
+                if(resultData!=false){
+                    parent.layer.msg('操作成功',core.showtime);
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                }
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //下拉框监听事件
+            form.on('select(selectOrgFilter)', function(data){
+                var resultData = core.ajax('/crmMember/findMemberByOrg',false,'GET','orgId='+data.value+'&memberId='+$('input:hidden').val());
+                var optionHtml = "<option value=\"\">请选择</option>";
+                if(!core.isEmpty(resultData)){
+                    for(var i = 0;i<resultData.length;i++){
+                        optionHtml += "<option value=\""+resultData[i].id+"\">"+resultData[i].memberName+"</option>";
+                    }
+                }
+                $('#parentId').html(optionHtml);
+                form.render(); //更新全部
+            });
+        });
+    </script>
+</body>
+</html>

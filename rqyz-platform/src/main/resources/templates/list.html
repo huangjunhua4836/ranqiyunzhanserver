@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>list对象展示</h1>
+<table border="1">
+    <tr>
+        <th>NO</th>
+        <th>id</th>
+        <th>name</th>
+        <th>url</th>
+        <th>icon</th>
+        <th>type</th>
+        <th>sort</th>
+        <th>gmt_create</th>
+    </tr>
+    <tr th:each="menu,memberStat:${baseResponse.data.list}">
+        <td th:text="${memberStat.index + 1}"/>
+        <td th:text="${menu.id}"/>
+        <td th:text="${menu.name}"/>
+        <td th:text="${menu.url}"/>
+        <td th:text="${menu.icon}"/>
+        <td th:text="${menu.type}"/>
+        <td th:text="${menu.sort}"/>
+        <td th:text="${menu.gmt_create}"/>
+    </tr>
+</table>
+</body>
+</html>

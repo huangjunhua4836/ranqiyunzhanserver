@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+        <head th:replace="common::headr('权限复制')"></head>
+        <body>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>选择要复制权限的用户</legend>
+            </fieldset>
+
+            <div class="layui-container">
+                <div class="layui-row">
+                    <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" id="auzCopy"></div>
+                </div>
+            </div>
+
+            <button lay-button = "submitButton" style="display: none;" th:value="${userId}">提交</button>
+            <script type="text/javascript" th:src="@{/static/js/user/auzCopy.js}"></script>
+        </body>
+    </html>

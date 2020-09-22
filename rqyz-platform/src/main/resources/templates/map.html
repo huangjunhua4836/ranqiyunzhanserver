@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>map对象展示</h1>
+<p th:text="id：+${map['id']}"></p>
+<p th:text="name：+${map['name']}"></p>
+<p th:text="age：+${map['age']}"></p>
+<p th:text="bir：+${#dates.format(map['bir'],'yyyy-MM-dd')}"></p>
+<hr/>
+<h1>map集合展示</h1>
+<table border="1">
+    <tr>
+        <th>NO</th>
+        <th>id</th>
+        <th>name</th>
+        <th>age</th>
+        <th>bir</th>
+    </tr>
+    <tr th:each="map,memberStat:${list}">
+        <td th:text="${memberStat.index + 1}"/>
+        <td th:text="${map['id']}"/>
+        <td th:text="${map['name']}"/>
+        <td th:text="${map['age']}"/>
+        <td th:text="${#dates.format(map['bir'],'yyyy-MM-dd')}"/>
+    </tr>
+</table>
+
+<h1>循环map当中的key来得到value</h1>
+<input th:each="key,memberStat:${menuTypeMap.keySet()}" type="radio" name="type" th:value="${key}" th:title="${menuTypeMap.get(key)}" th:checked="${memberStat.index==0}?checked"  lay-filter="typeRadio">
+</body>
+</html>

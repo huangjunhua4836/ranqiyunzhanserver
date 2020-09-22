@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::headr('添加修改用户')"></head>
+<body>
+<div class="layui-container">
+    <div class="layui-row" style="margin-top: 10px;">
+        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+            <form class="layui-form" th:object="${crmUser}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{userCode}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" th:readonly="${crmUser.id}!=null?readonly">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">昵称</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{nickname}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">角色</label>
+                    <div class="layui-input-block">
+                        <select name="roleId" required  lay-verify="required" lay-filter="selectOrgFilter">
+                            <option value="">请选择</option>
+                            <option th:each="role,memberStat:${crmRoles}" th:value="${role.id}" th:text="${role.name}" th:if="${crmUser.id == null}"></option>
+                            <option th:each="role,memberStat:${crmRoles}" th:value="${role.id}" th:text="${role.name}" th:if="${crmUser.id != null}" th:selected="${role.id == crmRoleUser.roleId}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">电话</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{phone}" required  lay-verify="required" placeholder="请输入电话" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">个人描述</label>
+                    <div class="layui-input-block">
+                        <textarea th:field="*{describes}" placeholder="请输入个人描述内容" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <input th:field="*{id}" type="hidden"/>
+                <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('core', function(){
+        var form = layui.form,
+            core = layui.core,
+            $ = layui.jquery;
+
+        form.on('submit(submitFrom)', function(data){
+            var resultData = core.ajax('/crmUser/saveOrUpdateUser',false,'POST',data.field);
+            if(resultData!=false){
+                parent.layer.msg('操作成功',core.showtime);
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            }
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+</script>
+</body>
+</html>

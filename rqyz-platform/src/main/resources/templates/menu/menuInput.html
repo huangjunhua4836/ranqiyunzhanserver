@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="common::headr('添加或修改菜单')"></head>
+<body>
+    <div class="layui-container">
+        <div class="layui-row" style="margin-top: 10px;">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                <form class="layui-form" th:object="${crmMenu}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{name}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">url</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{url}" lay-verify="required" placeholder="请输入url" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">类型</label>
+                        <div class="layui-input-block" th:if="*{id == null}">
+                            <input th:each="key,memberStat:${menuTypeMap.keySet()}" type="radio" name="type" th:value="${key}" th:title="${menuTypeMap.get(key)}" th:checked="${memberStat.index==0}?checked"  lay-filter="typeRadio">
+                        </div>
+                        <div class="layui-input-block" th:if="*{id != null}">
+                            <input th:each="key,memberStat:${menuTypeMap.keySet()}" th:checked="*{type}==${key}?checked" type="radio" name="type" th:value="${key}" th:title="${menuTypeMap.get(key)}" lay-filter="typeRadio">
+                        </div>
+                    </div>
+<!--                    <div class="layui-form-item">-->
+<!--                        <label class="layui-form-label">是否必须</label>-->
+<!--                        <div class="layui-input-block" th:if="*{id == null}">-->
+<!--                            <input type="checkbox" name="ismust" lay-skin="switch" lay-text="是|否">-->
+<!--                        </div>-->
+<!--                        <div class="layui-input-block" th:if="*{id != null}">-->
+<!--                            <input th:checked="*{ismust=='on'}" type="checkbox" name="ismust" lay-skin="switch" lay-text="是|否">-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">权限值</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{permissionValue}" required  lay-verify="required" placeholder="请输入权限值" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <input th:field="*{id}" type="hidden"/>
+                    <input th:field="*{parentId}" type="hidden"/>
+                    <input th:field="*{level}" type="hidden"/>
+                    <button lay-submit lay-filter="menusubmit" style="display: none;">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        layui.use('core', function(){
+            var form = layui.form,
+            core = layui.core,
+            $ = layui.jquery;
+
+            form.on('submit(menusubmit)', function(data){
+                var resultData = core.ajax('/crmMenu/saveOrUpdateMenu',false,'POST',data.field);
+                if(resultData!=false){
+                    parent.layer.msg('操作成功',core.showtime);
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                }
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //编辑菜单时，按照类型进行url条目的隐藏
+            var type = $('input[type=radio]:checked').val();
+            if(type == 2){
+                $('#url').parent().parent().hide();//url条目隐藏
+                $('#url').removeAttr('lay-verify');//移除url校验关系
+                $('#url').val('');//清空url文本框的值
+            }else{
+                $('#url').attr('lay-verify','required');//设置url校验关系
+                $('#url').parent().parent().show();
+            }
+
+            //类型radio事件操作
+            form.on('radio(typeRadio)', function(data){
+                var radio = data.elem;//原始radio对象
+                var currFormItem = $(radio).parents('.layui-form-item');//包裹radio条目
+                if(data.value == 2){
+                    currFormItem.prev().hide();//url条目隐藏
+                    currFormItem.prev().find('input').removeAttr('lay-verify');//移除url校验关系
+                    currFormItem.prev().find('input').val('');//清空url文本框的值
+                }else{
+                    currFormItem.prev().find('input').attr('lay-verify','required');//设置url校验关系
+                    currFormItem.prev().show();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

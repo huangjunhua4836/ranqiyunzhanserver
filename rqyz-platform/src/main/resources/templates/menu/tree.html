@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+        <head th:replace="common::headr('菜单树')"></head>
+        <link rel="stylesheet" th:href="@{/static/tools/zTree_v3/css/zTreeStyle/zTreeStyle.css}" type="text/css">
+        <script type="text/javascript" th:src="@{/static/tools/zTree_v3/js/jquery-1.4.4.min.js}"></script>
+        <script type="text/javascript" th:src="@{/static/tools/zTree_v3/js/jquery.ztree.core.js}"></script>
+        <script type="text/javascript" th:src="@{/static/tools/zTree_v3/js/jquery.ztree.excheck.js}"></script>
+        <SCRIPT type="text/javascript">
+            var setting = {
+                view: {
+                    selectedMulti: false
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                check: {
+                    enable: false
+                },
+                callback: {
+                    onCheck: zTreeOnCheck,
+                    onClick: zTreeOnClick
+                }
+            };
+
+            /**
+             * 选择树节点点
+             **/
+            function zTreeOnCheck(event, treeId, treeNode) {
+                alert(treeNode.id + ", " + treeNode.name + "," + treeNode.checked);
+                if(treeNode.checked){
+                    // checkNames.push(treeNode.name);
+                }else{
+                    // for(var i=0;i<checkNames.length;i++){
+                    //     if(treeNode.name == checkNames[i]){
+                    //         checkNames.splice(i,1);
+                    //         break;
+                    //     }
+                    // }
+                }
+            }
+
+            /**
+             * 单击某个树节点
+             * @param event
+             * @param treeId
+             * @param treeNode
+             */
+            function zTreeOnClick(event, treeId, treeNode) {
+                $.ajax({
+                    url:'/crmMenu/findMenuById',
+                    async:true,
+                    type:'GET',
+                    data:{"id":treeNode.id},
+                    dataType:'json',
+                    timeout:'5000',
+                    beforeSend:function(xhr){
+                    },
+                    success:function(result,status,xhr){
+                        if(result.code != 200){
+                            alert('接口访问成功，但是返回错误！状态：'+ status + '<br>错误信息：' + JSON.stringify(result));
+                            return;
+                        }
+                        if(result.data != ''){
+                            $('form').show();//详情展示
+                            $('form').find('input').eq(0).val(result.data.name);
+                            $('form').find('input').eq(1).val(result.data.url);
+                            $('form').find('input').eq(2).val(result.data.type);
+                            $('form').find('input').eq(3).val(result.data.permissionValue);
+                            $('form').find('input').eq(4).val(result.data.sort);
+                            $('form').find('input').eq(5).val(result.data.state);
+                            $('form').find('input').eq(6).val(result.data.createUser);
+                            $('form').find('input').eq(7).val(result.data.createTime);
+                            $('form').find('input').eq(8).val(result.data.updateUser);
+                            $('form').find('input').eq(9).val(result.data.updateTime);
+                            $('input:hidden').val(result.data.id);//写入树节点ID
+                        }else{
+                            $("#menuTree").text("暂无数据！");
+                        }
+                    },
+                    error:function (xhr,status,error) {
+                        alert('接口访问失败！状态：'+ status + '<br>错误信息：' + JSON.stringify(error));
+                    },
+                    complete:function(xhr,status){
+                    }
+                });
+            }
+
+            /**
+             * 初始化树节点
+             */
+            function initMenuTree(){
+                $.ajax({
+                    url:'/crmMenu/initMenuTree',
+                    async:true,
+                    type:'GET',
+                    data:'',
+                    dataType:'json',
+                    timeout:'5000',
+                    beforeSend:function(xhr){
+                    },
+                    success:function(result,status,xhr){
+                        if(result.code != 200){
+                            alert('接口访问成功，但是返回错误！状态：'+ status + '<br>错误信息：' + JSON.stringify(result));
+                            return;
+                        }
+                        if(result.data != ''){
+                            $.fn.zTree.init($("#menuTree"), setting, result.data);
+                        }else{
+                            $("#menuTree").text("暂无数据！");
+                        }
+                        $('form').hide();//详情隐藏
+                    },
+                    error:function (xhr,status,error) {
+                        alert('接口访问失败！状态：'+ status + '<br>错误信息：' + JSON.stringify(error));
+                    },
+                    complete:function(xhr,status){
+                    }
+                });
+            }
+
+            layui.use('core', function(){
+                var tree = layui.tree
+                    ,layer = layui.layer
+                    ,$ = layui.jquery
+                    ,util = layui.util
+                    ,core = layui.core;
+
+                //页面完成菜单初始化
+                initMenuTree();
+
+                //按钮事件
+                util.event('lay-tree', {
+                    reloadTree: function(){
+                        //重载实例
+                        initMenuTree();
+                    },
+                    addTree: function(){
+                        var url = '/crmMenu/menuInput?id='+$('input:hidden').val()+'&type=add';//这里content是一个普通的String
+                        core.openIframeDialog('添加菜单',url,null,true,initMenuTree);
+                    },
+                    updateTree: function(){
+                        var url = '/crmMenu/menuInput?id='+$('input:hidden').val()+'&type=update';//这里content是一个普通的String
+                        core.openIframeDialog('修改菜单',url,null,true,initMenuTree);
+                    },
+                    deleteTree: function(){
+                        layer.confirm('真的删除行么？该菜单下的子菜单也会被删除，相关业务数据会失效！', function(index){
+                            layer.close(index);
+                            //向服务端发送删除指令
+                            var resultData = core.ajax('/crmMenu/deleteMenu',false,'POST','id='+$('input:hidden').val());
+                            if(resultData!=false){
+                                layer.msg('操作成功！',core.showtime);
+                                initMenuTree();
+                            }
+                        });
+                    }
+                });
+            });
+        </SCRIPT>
+        <BODY>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>菜单树</legend>
+            </fieldset>
+
+            <div class="layui-btn-container">
+                <button type="button" class="layui-btn layui-btn-sm" lay-tree="reloadTree">刷新树</button>
+                <button type="button" class="layui-btn layui-btn-sm" lay-tree="addTree">新增菜单</button>
+                <button type="button" class="layui-btn layui-btn-sm" lay-tree="updateTree">修改菜单</button>
+                <button type="button" class="layui-btn layui-btn-sm" lay-tree="deleteTree">删除菜单</button>
+            </div>
+            <div class="layui-container">
+                <div class="layui-row">
+                    <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                        <ul id="menuTree" class="ztree"></ul>
+                    </div>
+                    <div class="layui-col-xs8 layui-col-sm8 layui-col-md8">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                            <legend>菜单详情</legend>
+                            <input type="hidden"/>
+                        </fieldset>
+                        <form class="layui-form layui-form-pane" style="display: none;">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">url</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">类型</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">权限值</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">排序</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">状态</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">创建者</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">创建时间</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">修改者</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">修改时间</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" readonly>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </BODY>
+    </html>

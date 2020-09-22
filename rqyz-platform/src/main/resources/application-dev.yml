@@ -1,0 +1,107 @@
+#开发环境
+server:
+  # 服务器端口配置
+  port: 8100
+spring:
+  application:
+    name: rqyzplatform
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://mysql.yl-mall.cn:3780/yl_rqhz?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=false&tinyInt1isBit=true
+    username: root
+    password: Mysql!2$
+    druid:
+      filters: stat
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 10
+      min-idle: 10
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x' FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: 20
+  #设置开启热部署
+  devtools:
+    restart:
+      enabled: true
+  #页面不加载缓存，修改即时生效
+  freemarker:
+    cache: false
+  # redis配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    timeout: 300
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 10
+        min-idle: 5
+        max-wait: 10000
+
+  servlet:
+    # 文件上传大小配置
+    multipart:
+      max-file-size: 2000MB
+      max-request-size: 2000MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  mvc:
+    static-path-pattern: /static/** #springboot首先匹配这个路径必须存在才允许访问资源，
+    #如果不存在则直接404,不负责资源的位置。缺省是/**
+    resources:
+      static-locations: classpath:/static/  #前提是static-path-pattern必须匹配成功，
+      #具体的资源在这个路径下去找
+  #thymeleaf模本设置
+  thymeleaf:
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+mybatis-plus:
+  typeAliasesPackage: com.yl.soft.po
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    mapUnderscoreToCamelCase: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+  auto-runtime-dialect: true
+  default-count: true
+
+# 上传文件统一后缀名称配置
+custom:
+  upload:
+    ext:
+      img: jpg,png,gif,ico,doc,docx,jpeg,apk,xls,xlsx,mp4,flv,swf,avi,mp3,pdf,txt,rar,zip,7z,tar
+      audio: mp4,flv,swf,mkv,avi,rm,rmvb,mpeg,mpg,ogg,ogv,mov,wmv,webm,mp3,wav,mid
+
+  aes:
+    key: s%1ldespACsl@ada #内部 aes 加密密钥
+    parameter: 0aQ20$7V2(92&3*0 #";//内部 aes 加密偏移量
+    value: 123dkds # 内部通信key
+
+  image_src: /upload/image/
+  #文件上传目录（注意Linux和Windows上的目录结构不同）
+  file_folder: D://uploadFiles/yl_ylyst/
+  image_upload_ext: jpg,png,gif,ico,jpeg,webp

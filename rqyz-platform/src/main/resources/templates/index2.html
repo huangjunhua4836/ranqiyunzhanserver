@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::headr('综合管理系统')"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">后台管理</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    [[${loginUserInfo.crmUserDTO.nickname}]]
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="#" lay-onclick = "userInfo">基本资料</a></dd>
+                    <dd><a href="#" lay-onclick = "security">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/manager/logout"><i class="layui-icon layui-icon-logout" style="font-size: 20px;" title="退了"></i></a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="menu">
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">系统管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" menuid="11" menuurl='<iframe src="http://localhost:8400/manager/menuTree" width="100%" height="580px;" frameborder="0"></iframe>'>菜单管理</a></dd>
+                        <dd><a href="javascript:;" menuid="22" menuurl='<iframe src="http://localhost:8400/manager/orgList" width="100%" height="580px;" frameborder="0"></iframe>'>机构管理</a></dd>
+                        <dd><a href="javascript:;" menuid="22-1" menuurl='<iframe src="http://localhost:8400/manager/memberList" width="100%" height="580px;" frameborder="0"></iframe>'>科室管理</a></dd>
+                        <dd><a href="javascript:;" menuid="22-2" menuurl='<iframe src="http://localhost:8400/manager/orgTree" width="100%" height="580px;" frameborder="0"></iframe>'>机构树</a></dd>
+                        <dd><a href="javascript:;" menuid="33">操作日志</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">组织机构管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" menuid="44" menuurl='<iframe src="http://localhost:8400/manager/userList" width="100%" height="580px;" frameborder="0"></iframe>'>用户管理</a></dd>
+                        <dd><a href="javascript:;" menuid="55" menuurl='<iframe src="http://localhost:8400/manager/positionList" width="100%" height="580px;" frameborder="0"></iframe>'>岗位管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;" menuid="66" menuurl='<iframe src="http://localhost:8400/manager/positionList" width="100%" height="580px;" frameborder="0"></iframe>'>测试</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body" style="height: 665px;">
+        <!-- 内容主体区域 -->
+        <div class="layui-tab" lay-filter="tabpage" lay-allowclose="true">
+            <ul class="layui-tab-title">
+                <li lay-id="" class="">首页
+                    <i class="layui-icon layui-unselect layui-tab-close" style="display: none">ဆ</i><!--首页关闭标签隐藏-->
+                </li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <iframe src="http://localhost:8300/druid/index.html" width="100%" height="540px;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common::footer"></div>
+</div>
+
+<!--详情模板-->
+<div id="detail" style="display: none;">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">登录账号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">机构名称</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">科室名称</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权重</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">岗位</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    //JavaScript代码区域
+    layui.use('core', function(){
+        var $ = layui.jquery
+            ,element = layui.element //Tab的切换功能，切换事件监听等，需要依赖element模块
+            ,core = layui.core
+            ,util = layui.util;
+
+        //触发事件
+        var active = {
+            tabAdd: function(title,id,content){
+                //新增一个Tab项
+                element.tabAdd('tabpage', {
+                    title: title //用于演示
+                    ,content: content
+                    ,id: id //实际使用一般是规定好的id，这里以时间戳模拟下
+                })
+            }
+            ,tabDelete: function(othis){
+                //删除指定Tab项
+                element.tabDelete('tabpage', '44'); //删除：“商品管理”
+                othis.addClass('layui-btn-disabled');
+            }
+            ,tabChange: function(menuid){
+                //切换到指定Tab项
+                var d = element.tabChange('tabpage', menuid); //切换到：用户管理
+                console.info(d);
+            }
+        };
+
+        //tab页切换监听
+        element.on('tab(tabpage)', function(data){
+            console.log(data);
+        });
+
+        //监听导航点击
+        element.on('nav(menu)', function(elem){
+            //移除掉全部菜单展开样式
+            $('.layui-nav-itemed').each(function () {
+                $(this).removeClass("layui-nav-itemed");
+            });
+            //添加菜单展开样式
+            elem.parents("li").addClass("layui-nav-itemed");
+
+            var title = elem.text();
+            var menuid = elem.attr("menuid");
+            // alert(menuid);
+
+            if(!core.isEmpty(menuid)){//必须是叶子菜单才能打开选项卡
+                var flag = true;
+
+                $('li[lay-id]').each(function () {//如果tab已经打开则直接加载
+                    if($(this).attr("lay-id")==menuid){
+                        active.tabChange(menuid);
+                        flag = false;
+                        return flag;
+                    }
+                });
+
+                if(flag){
+                    var menuurl = elem.attr("menuurl");
+                    active.tabAdd(title,menuid,menuurl);//创建新的tab
+                    active.tabChange(menuid);//加载新tab
+                }
+            }
+        });
+
+        //按钮事件
+        util.event('lay-onclick', {
+            userInfo: function(){
+                core.openDialog('基本资料',$('#detail').html(),['500px','510px']);
+                $('.layui-layer-content').find('input').eq(0).val(loginUserInfo.crmUserDTO.nickname);
+                $('.layui-layer-content').find('input').eq(1).val(loginUserInfo.crmUserDTO.user_code);
+                $('.layui-layer-content').find('input').eq(2).val(loginUserInfo.crmUserDTO.org_name);
+                $('.layui-layer-content').find('input').eq(3).val(loginUserInfo.crmUserDTO.member_name);
+                $('.layui-layer-content').find('input').eq(4).val(loginUserInfo.crmUserDTO.weight);
+                $('.layui-layer-content').find('input').eq(5).val(loginUserInfo.crmUserDTO.phone);
+                $('.layui-layer-content').find('input').eq(6).val(loginUserInfo.crmUserDTO.position_name);
+            },
+            security:function(){
+                layer.msg("密码修改，敬请期待！");
+            }
+        });
+    });
+</script>
+
+<script th:inline="javascript">
+    loginUserInfo = [[${loginUserInfo}]];//登录者信息保存
+</script>
+</body>
+</html>

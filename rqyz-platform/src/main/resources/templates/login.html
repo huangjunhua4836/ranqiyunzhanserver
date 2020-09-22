@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="common::headr('登录')"></head>
+    <body style="background-image: url('/static/images/timg.jpg')">
+        <div class="layui-container">
+            <div class="layui-row" style="height: 300px;"></div>
+                <form class="layui-form">
+                    <div class="layui-row">
+                        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">&nbsp;</div>
+                        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label"><i class="layui-icon layui-icon-username" style="font-size: 30px;" title="用户名"></i></label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="username" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">&nbsp;</div>
+                    </div>
+                    <div class="layui-row">&nbsp;</div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">&nbsp;</div>
+                        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label"><i class="layui-icon layui-icon-password" style="font-size: 30px;" title="密钥"></i></label>
+                                <div class="layui-input-block">
+                                    <input type="password" name="password" required  lay-verify="required" placeholder="请输入密钥" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">&nbsp;</div>
+                    </div>
+                    <div class="layui-row">&nbsp;</div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">&nbsp;</div>
+                        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="searchFrom"><i class="layui-icon layui-icon-key" title="验证"></i>验证</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4" style="font: bold;"></div>
+                    </div>
+                </form>
+        </div>
+
+        <script type="text/javascript">
+            layui.use('core', function(){
+                var form = layui.form;
+                var core = layui.core;
+                var $ = layui.jquery;
+
+                //按条件检索机构数据
+                form.on('submit(searchFrom)', function(data){
+                    var resultData = core.ajax('/platform/login',false,'POST',data.field);
+                    if(resultData!=false){
+                        layer.msg('登录成功',{time: 3000},function(){
+                            location.href="/platform/index";
+                        });
+                    }
+                    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+                })
+            });
+        </script>
+    </body>
+</html>

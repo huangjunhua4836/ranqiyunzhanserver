@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headr(title)">
+    <meta charset="utf-8">
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" th:href="@{/static/tools/layui/css/layui.css}">
+    <script type="text/javascript" th:src="@{/static/tools/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/base.js}"></script>
+    <script th:inline="javascript">
+        basePath = [[${session.basePath}]];//项目基础路径
+        // alert("basePath:"+basePath);
+
+        loginUserInfo = [[${session.loginUserInfo}]];//登录者信息保存
+        // alert("loginUserInfo:"+JSON.stringify(loginUserInfo));
+    </script>
+</head>
+<body>
+    <div class="layui-footer" th:fragment="footer">
+        <!-- 底部固定区域 -->
+        © https://www.iteye.com/blog/user/747017186 - 通用系统独立研发
+    </div>
+</body>
+</html>
