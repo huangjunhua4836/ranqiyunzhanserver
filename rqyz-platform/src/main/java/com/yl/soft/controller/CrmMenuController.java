@@ -115,12 +115,12 @@ public class CrmMenuController extends BaseController {
     @ResponseBody
     public BaseResponse saveOrUpdateMenu(CrmMenu crmMenu) {
         if(StringUtils.isEmpty(crmMenu.getId())){
-            crmMenu.setCreateTime(LocalDateTime.now());
-            crmMenu.setCreateUser(1);
+            crmMenu.setCreatetime(LocalDateTime.now());
+            crmMenu.setCreateuser(1);
             crmMenu.setIsdel(false);
         }else{
-            crmMenu.setUpdateTime(LocalDateTime.now());
-            crmMenu.setUpdateUser(1);
+            crmMenu.setUpdatetime(LocalDateTime.now());
+            crmMenu.setUpdateuser(1);
         }
         if(crmMenuService.saveOrUpdate(crmMenu)){
             return setResultSuccess();

@@ -100,12 +100,12 @@ public class CrmPositionController extends BaseController {
     @ResponseBody
     public BaseResponse saveOrUpdatePosition(CrmPosition crmPosition) {
         if(StringUtils.isEmpty(crmPosition.getId())){
-            crmPosition.setCreateTime(LocalDateTime.now());
-            crmPosition.setCreateUser(1);
+            crmPosition.setCreatetime(LocalDateTime.now());
+            crmPosition.setCreateuser(1);
             crmPosition.setIsdel(false);
         }else{
-            crmPosition.setUpdateTime(LocalDateTime.now());
-            crmPosition.setUpdateUser(1);
+            crmPosition.setUpdatetime(LocalDateTime.now());
+            crmPosition.setUpdateuser(1);
         }
         if(crmPositionService.saveOrUpdate(crmPosition)){
             return setResultSuccess();

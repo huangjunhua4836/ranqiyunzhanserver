@@ -9,11 +9,11 @@
         <result column="parentId" property="parentId" />
         <result column="organizationId" property="organizationId" />
         <result column="phone" property="phone" />
-        <result column="updateTime" property="updateTime" />
-        <result column="createTime" property="createTime" />
+        <result column="updateTime" property="updatetime" />
+        <result column="createTime" property="createtime" />
         <result column="state" property="state" />
-        <result column="createUser" property="createUser" />
-        <result column="updateUser" property="updateUser" />
+        <result column="createUser" property="createuser" />
+        <result column="updateUser" property="updateuser" />
         <result column="version" property="version" />
         <result column="isdel" property="isdel" />
     </resultMap>

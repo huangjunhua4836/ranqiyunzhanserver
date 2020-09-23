@@ -20,20 +20,20 @@ public class BaseEntity implements Serializable{
 	private Integer id;
 
 	@ApiModelProperty(hidden = true)
-	@TableField("createUser")
-	private Integer createUser;
+	@TableField("createuser")
+	private Integer createuser;
 
 	@ApiModelProperty(hidden = true)
-	@TableField("createTime")
-    private LocalDateTime createTime;
+	@TableField("createtime")
+    private LocalDateTime createtime;
 
 	@ApiModelProperty(hidden = true)
-	@TableField("updateUser")
-	private Integer updateUser;
+	@TableField("updateuser")
+	private Integer updateuser;
 
 	@ApiModelProperty(hidden = true)
-	@TableField("updateTime")
-	private LocalDateTime updateTime;
+	@TableField("updatetime")
+	private LocalDateTime updatetime;
 
 	@ApiModelProperty(hidden = true)
 	@TableField("state")

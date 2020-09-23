@@ -100,12 +100,12 @@ public class CrmOrganizationController extends BaseController {
     @ResponseBody
     public BaseResponse saveOrUpdateOrg(CrmOrganization crmOrganization) {
         if(StringUtils.isEmpty(crmOrganization.getId())){
-            crmOrganization.setCreateTime(LocalDateTime.now());
-            crmOrganization.setCreateUser(1);
+            crmOrganization.setCreatetime(LocalDateTime.now());
+            crmOrganization.setCreateuser(1);
             crmOrganization.setIsdel(false);
         }else{
-            crmOrganization.setUpdateTime(LocalDateTime.now());
-            crmOrganization.setUpdateUser(1);
+            crmOrganization.setUpdatetime(LocalDateTime.now());
+            crmOrganization.setUpdateuser(1);
         }
         if(crmOrganizationService.saveOrUpdate(crmOrganization)){
             return setResultSuccess();

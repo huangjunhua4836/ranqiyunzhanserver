@@ -142,13 +142,13 @@ public class CrmUserController extends BaseResponseUtil {
     @ResponseBody
     public BaseResponse saveOrUpdateUser(CrmUser crmUser, Integer roleId) {
         if(StringUtils.isEmpty(crmUser.getId())){
-            crmUser.setCreateTime(LocalDateTime.now());
-            crmUser.setCreateUser(1);
+            crmUser.setCreatetime(LocalDateTime.now());
+            crmUser.setCreateuser(1);
             crmUser.setIsdel(false);
             crmUser.setPassword(MD5Util.MD5("123456"));
         }else{
-            crmUser.setUpdateTime(LocalDateTime.now());
-            crmUser.setUpdateUser(1);
+            crmUser.setUpdatetime(LocalDateTime.now());
+            crmUser.setUpdateuser(1);
         }
         if(crmUserService.saveOrUpdateUser(crmUser,roleId)){
             return setResultSuccess();

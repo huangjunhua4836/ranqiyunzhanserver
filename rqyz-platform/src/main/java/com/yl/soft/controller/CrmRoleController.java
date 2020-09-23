@@ -99,12 +99,12 @@ public class CrmRoleController extends BaseController {
     @ResponseBody
     public BaseResponse saveOrUpdate(CrmRole crmRole) {
         if(StringUtils.isEmpty(crmRole.getId())){
-            crmRole.setCreateTime(LocalDateTime.now());
-            crmRole.setCreateUser(1);
+            crmRole.setCreatetime(LocalDateTime.now());
+            crmRole.setCreateuser(1);
             crmRole.setIsdel(false);
         }else{
-            crmRole.setUpdateTime(LocalDateTime.now());
-            crmRole.setUpdateUser(1);
+            crmRole.setUpdatetime(LocalDateTime.now());
+            crmRole.setUpdateuser(1);
         }
         if(crmRoleService.saveOrUpdate(crmRole)){
             return setResultSuccess();

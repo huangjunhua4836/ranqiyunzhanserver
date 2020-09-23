@@ -157,12 +157,12 @@ public class CrmMemberController extends BaseController {
     @ResponseBody
     public BaseResponse saveOrUpdateMember(CrmMember crmMember) {
         if(StringUtils.isEmpty(crmMember.getId())){
-            crmMember.setCreateTime(LocalDateTime.now());
-            crmMember.setCreateUser(1);
+            crmMember.setCreatetime(LocalDateTime.now());
+            crmMember.setCreateuser(1);
             crmMember.setIsdel(false);
         }else{
-            crmMember.setUpdateTime(LocalDateTime.now());
-            crmMember.setUpdateUser(1);
+            crmMember.setUpdatetime(LocalDateTime.now());
+            crmMember.setUpdateuser(1);
         }
         if(crmMemberService.saveOrUpdate(crmMember)){
             return setResultSuccess();

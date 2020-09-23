@@ -1,11 +1,13 @@
 package com.yl.soft.common.base;
 
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.InjectionConfig;
-import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.GlobalConfig;
+import com.baomidou.mybatisplus.generator.config.PackageConfig;
+import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Scanner;
 
@@ -67,10 +69,14 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://mysql.yl-mall.cn:3780/yl_yikesai_v2?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://mysql.yl-mall.cn:3780/yl_rqhz?useUnicode=true&useSSL=false&characterEncoding=utf8");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("Mysql!2$");
+//        dsc.setUrl("jdbc:mysql://localhost:3306/yl_yikesai_v2?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=false&tinyInt1isBit=true");
+//        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
+//        dsc.setUsername("root");
+//        dsc.setPassword("123456");
         mpg.setDataSource(dsc);
 
         // 包配置
