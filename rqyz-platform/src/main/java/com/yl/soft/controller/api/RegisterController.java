@@ -9,9 +9,12 @@ import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.RegisterAudienceDto;
+import com.yl.soft.dto.RegisterExhibitorDto;
 import com.yl.soft.po.EhbAudience;
+import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbLabel;
 import com.yl.soft.service.EhbAudienceService;
+import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.service.EhbLabelService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +35,14 @@ public class RegisterController extends BaseController {
     private EhbAudienceService ehbAudienceService;
     @Autowired
     private EhbLabelService ehbLabelService;
+    @Autowired
+    private EhbExhibitorService ehbExhibitorService;
 
     /**
-     * 注册观战商接口
+     * 注册参展用户接口
      * @return
      */
-    @ApiOperation(value = "注册观战商接口")
+    @ApiOperation(value = "注册参展用户接口")
     @ApiImplicitParams({
     })
     @ApiResponses({
@@ -54,6 +59,34 @@ public class RegisterController extends BaseController {
         ehbAudience.setIsdel(false);
         ehbAudience.setCreatetime(LocalDateTime.now());
         if(ehbAudienceService.save(ehbAudience)){
+            return setResultSuccess();
+        }else{
+            return setResultError("保存失败！");
+        }
+    }
+
+    /**
+     * 注册展商接口
+     * @return
+     */
+    @ApiOperation(value = "注册展商接口")
+    @ApiImplicitParams({
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @PostMapping("/registerExhibitor")
+    public BaseResponse registerExhibitor(RegisterExhibitorDto registerExhibitorDto) {
+        EhbExhibitor ehbExhibitor = new EhbExhibitor();
+        BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
+        ehbExhibitor.setIsdel(false);
+        ehbExhibitor.setCreatetime(LocalDateTime.now());
+        ehbExhibitor.setState(1);//待审核
+        if(ehbExhibitorService.save(ehbExhibitor)){
             return setResultSuccess();
         }else{
             return setResultError("保存失败！");
@@ -78,6 +111,7 @@ public class RegisterController extends BaseController {
     public BaseResponse<List<EhbLabel>> listLabel(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         QueryWrapper<EhbLabel> traceChipQueryWrapper = new QueryWrapper<>();
         traceChipQueryWrapper.eq("ISDEL", CommonDict.CORRECT_STATE);
+        traceChipQueryWrapper.orderByDesc("createtime");
         List<EhbLabel> ehbLabels = ehbLabelService.list(traceChipQueryWrapper);
         return setResultSuccess(ehbLabels);
     }

@@ -2,6 +2,8 @@
 server:
   # 服务器端口配置
   port: 8100
+  servlet:
+    context-path:
 spring:
   application:
     name: rqyzplatform
@@ -96,12 +98,13 @@ custom:
       img: jpg,png,gif,ico,doc,docx,jpeg,apk,xls,xlsx,mp4,flv,swf,avi,mp3,pdf,txt,rar,zip,7z,tar
       audio: mp4,flv,swf,mkv,avi,rm,rmvb,mpeg,mpg,ogg,ogv,mov,wmv,webm,mp3,wav,mid
 
+  #文件上传目录（注意Linux和Windows上的目录结构不同）
+  uploadPath: D://uploadFiles/rqyz/
+  image_upload_ext: jpg,png,gif,ico,jpeg,webp,pdf
+  #外网可以访问上传图片ip地址
+  ip: 127.0.0.1
+
   aes:
     key: s%1ldespACsl@ada #内部 aes 加密密钥
     parameter: 0aQ20$7V2(92&3*0 #";//内部 aes 加密偏移量
     value: 123dkds # 内部通信key
-
-  image_src: /upload/image/
-  #文件上传目录（注意Linux和Windows上的目录结构不同）
-  file_folder: D://uploadFiles/yl_ylyst/
-  image_upload_ext: jpg,png,gif,ico,jpeg,webp

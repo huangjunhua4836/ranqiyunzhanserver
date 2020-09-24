@@ -23,6 +23,8 @@ import java.io.Serializable;
 @ApiModel(value="EhbExhibitor对象", description="参展商信息")
 public class EhbExhibitor extends BaseEntity implements Serializable {
 
+    //state： 1-待审核  2-审核通过
+
     private static final long serialVersionUID=1L;
 
     private String name;
@@ -63,4 +65,6 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
     private String boothno;
 
     private String address;
+
+    private String idcard;
 }
