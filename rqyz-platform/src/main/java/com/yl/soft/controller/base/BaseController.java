@@ -81,9 +81,17 @@ public class BaseController extends BaseResponseUtil {
         Integer[] pageParam = new Integer[2];
         int pageNum = 0;
         int pageSize = 0;
-        if(paramMap!=null && paramMap.get("pageNum")!=null && paramMap.get("pageSize") !=null){
+        if(paramMap!=null){
+            pageNum = 1;
+            pageSize = 20;
+        }
+        if(paramMap.get("pageNum")!=null && paramMap.get("pageSize") !=null){
             pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
             pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
+        }
+        if(paramMap.get("pageNum")!=null){
+            pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
+            pageSize = 20;
         }
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 20 : pageSize;

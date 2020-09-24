@@ -1,6 +1,6 @@
 package com.yl.soft.po;
 
-import com.yl.soft.po.base.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -21,50 +21,37 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="EhbExhibitor对象", description="参展商信息")
-public class EhbExhibitor extends BaseEntity implements Serializable {
-
-    //state： 1-待审核  2-审核通过
+public class EhbExhibitor implements Serializable {
 
     private static final long serialVersionUID=1L;
 
-    private String name;
+    @TableId(value = "id")
+    private Integer id;
 
-    private String describes;
+    @ApiModelProperty(value = "管理人员")
+    private String managerman;
 
-    @ApiModelProperty(value = "头像")
-    private String headPortrait;
+    @ApiModelProperty(value = "身份证")
+    private String idcard;
 
-    private String phone;
+    @ApiModelProperty(value = "企业名称")
+    private String enterprisename;
 
+    @ApiModelProperty(value = "座机")
     private String tel;
 
-    private String province;
-
-    private String city;
-
-    private String county;
-
-    @ApiModelProperty(value = "登录名")
-    private String loginname;
-
-    @ApiModelProperty(value = "密码")
-    private String password;
-
-    private String enterprise;
-
-    private String mailbox;
-
-    private String labelid;
-
+    @ApiModelProperty(value = "营业执照")
     private String businesslicense;
 
+    @ApiModelProperty(value = "企业授权书")
     private String credentials;
 
+    @ApiModelProperty(value = "曾经是否加入")
     private Integer isjoin;
 
+    @ApiModelProperty(value = "展位号")
     private String boothno;
 
+    @ApiModelProperty(value = "地址")
     private String address;
-
-    private String idcard;
 }

@@ -23,15 +23,19 @@ public class CrmFileServiceImpl extends ServiceImpl<CrmFileMapper, CrmFile> impl
     @Transactional
     @Override
     public CrmFile saveFile(CrmFile crmFile) {
-        baseMapper.insert(crmFile);
-        QueryWrapper<CrmFile> crmFileQueryWrapper = new QueryWrapper<>();
-        crmFileQueryWrapper.eq("ISDEL", CommonDict.CORRECT_STATE);
-        crmFileQueryWrapper.orderByDesc("createtime");
-        crmFileQueryWrapper.eq("name",crmFile.getName());
-        crmFileQueryWrapper.eq("type",crmFile.getType());
-        crmFileQueryWrapper.eq("path",crmFile.getPath());
-        crmFileQueryWrapper.last("limit 1");
-        crmFile = baseMapper.selectOne(crmFileQueryWrapper);
+        int i = baseMapper.insert(crmFile);
+        if(i > 0){
+            QueryWrapper<CrmFile> crmFileQueryWrapper = new QueryWrapper<>();
+            crmFileQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
+            crmFileQueryWrapper.orderByDesc("createtime");
+            crmFileQueryWrapper.eq("name",crmFile.getName());
+            crmFileQueryWrapper.eq("type",crmFile.getType());
+            crmFileQueryWrapper.eq("path",crmFile.getPath());
+            crmFileQueryWrapper.last("limit 1");
+            crmFile = baseMapper.selectOne(crmFileQueryWrapper);
+        }else{
+            crmFile = null;
+        }
         return crmFile;
     }
 }

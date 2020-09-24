@@ -5,36 +5,20 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.yl.soft.po.EhbExhibitor">
         <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="describes" property="describes" />
-        <result column="head_portrait" property="headPortrait" />
-        <result column="phone" property="phone" />
+        <result column="managerman" property="managerman" />
+        <result column="idcard" property="idcard" />
+        <result column="enterprisename" property="enterprisename" />
         <result column="tel" property="tel" />
-        <result column="province" property="province" />
-        <result column="city" property="city" />
-        <result column="county" property="county" />
-        <result column="loginname" property="loginname" />
-        <result column="password" property="password" />
-        <result column="enterprise" property="enterprise" />
-        <result column="mailbox" property="mailbox" />
-        <result column="labelid" property="labelid" />
         <result column="businesslicense" property="businesslicense" />
         <result column="credentials" property="credentials" />
         <result column="isjoin" property="isjoin" />
         <result column="boothno" property="boothno" />
-        <result column="isdel" property="isdel" />
-        <result column="version" property="version" />
-        <result column="state" property="state" />
-        <result column="updatetime" property="updatetime" />
-        <result column="updateuser" property="updateuser" />
-        <result column="createtime" property="createtime" />
-        <result column="createuser" property="createuser" />
         <result column="address" property="address" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, describes, head_portrait, phone, tel, province, city, county, loginname, password, enterprise, mailbox, labelid, businesslicense, credentials, isjoin, boothno, isdel, version, state, updatetime, updateuser, createtime, createuser, address
+        id, managerman, idcard, enterprisename, tel, businesslicense, credentials, isjoin, boothno, address
     </sql>
 
 </mapper>

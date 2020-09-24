@@ -100,6 +100,9 @@ public class UpLoadFileController extends BaseResponseUtil {
                     crmFile.setIsdel(false);
                     crmFile.setCreatetime(LocalDateTime.now());
                     crmFile = crmFileService.saveFile(crmFile);
+                    if(crmFile == null){
+						return setResultError("保存文件失败！");
+					}
                     //返回文件列表
                     AttachmentDTO attachmentDTO = new AttachmentDTO();
                     attachmentDTO.setId(crmFile.getId());

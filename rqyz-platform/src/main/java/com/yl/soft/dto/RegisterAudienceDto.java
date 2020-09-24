@@ -19,4 +19,8 @@ public class RegisterAudienceDto {
     private String enterprise;
     @ApiModelProperty(value = "邮箱",required = true)
     private String mailbox;
+    @ApiModelProperty(value = "行为标签ID",required = true)
+    private String labelid;
+    @ApiModelProperty(value = "密码")
+    private String password;
 }

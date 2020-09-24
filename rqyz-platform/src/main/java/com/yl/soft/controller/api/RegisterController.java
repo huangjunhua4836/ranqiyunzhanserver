@@ -2,10 +2,7 @@ package com.yl.soft.controller.api;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.unified.entity.BaseResponse;
-import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.RegisterAudienceDto;
@@ -27,7 +24,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = {"C端模块-燃气云展模块"})
+@Api(tags = {"C端模块-燃气云展注册"})
 @RestController
 @RequestMapping("/api")
 public class RegisterController extends BaseController {
@@ -81,12 +78,14 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/registerExhibitor")
     public BaseResponse registerExhibitor(RegisterExhibitorDto registerExhibitorDto) {
+        EhbAudience ehbAudience = new EhbAudience();
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
+        BeanUtil.copyProperties(registerExhibitorDto,ehbAudience);
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
-        ehbExhibitor.setIsdel(false);
-        ehbExhibitor.setCreatetime(LocalDateTime.now());
-        ehbExhibitor.setState(1);//待审核
-        if(ehbExhibitorService.save(ehbExhibitor)){
+        ehbAudience.setIsdel(false);
+        ehbAudience.setCreatetime(LocalDateTime.now());
+        ehbAudience.setState(1);//待审核
+        if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return setResultSuccess();
         }else{
             return setResultError("保存失败！");
