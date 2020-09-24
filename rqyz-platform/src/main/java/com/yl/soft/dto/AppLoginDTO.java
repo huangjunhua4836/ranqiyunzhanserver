@@ -1,33 +1,32 @@
-package com.yl.soft.po;
+package com.yl.soft.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-
-/**
- * <p>
- * 参展商信息
- * </p>
- *
- * @author ${author}
- * @since 2020-09-24
- */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="EhbExhibitor对象", description="参展商信息")
-public class EhbExhibitor implements Serializable {
-
-    private static final long serialVersionUID=1L;
-
-    @TableId(value = "id",type = IdType.INPUT)
+@ApiModel(value="App登录返回session信息")
+public class AppLoginDTO {
     private Integer id;
+    private String name;
+    private String phone;
+    private String province;
+    private String city;
+    private String county;
+    @ApiModelProperty(value = "登录名称")
+    private String loginname;
+    private String enterprise;
+    private String mailbox;
+    private String labelid;
+    @ApiModelProperty(value = "是否展商  0：不是  1：是",hidden = true)
+    @TableField("iszs")
+    private Boolean iszs;
+
 
     @ApiModelProperty(value = "管理人员")
     private String managerman;

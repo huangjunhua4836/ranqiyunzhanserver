@@ -35,7 +35,7 @@ public class EhbExhibitorServiceImpl extends ServiceImpl<EhbExhibitorMapper, Ehb
         }
         QueryWrapper<EhbAudience> ehbAudienceQueryWrapper = new QueryWrapper<>();
         ehbAudienceQueryWrapper.eq("phone",ehbAudience.getPhone());
-        ehbAudienceQueryWrapper.eq("ISDEL", CommonDict.CORRECT_STATE);
+        ehbAudienceQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
         ehbAudienceQueryWrapper.last("limit 1");
         ehbAudienceQueryWrapper.orderByDesc("createtime");
         ehbAudience = ehbAudienceMapper.selectOne(ehbAudienceQueryWrapper);

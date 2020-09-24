@@ -1,6 +1,7 @@
 package com.yl.soft.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yl.soft.dto.AppLoginDTO;
 import com.yl.soft.po.EhbAudience;
 
 /**
@@ -12,5 +13,4 @@ import com.yl.soft.po.EhbAudience;
  * @since 2020-09-23
  */
 public interface EhbAudienceService extends IService<EhbAudience> {
-
 }

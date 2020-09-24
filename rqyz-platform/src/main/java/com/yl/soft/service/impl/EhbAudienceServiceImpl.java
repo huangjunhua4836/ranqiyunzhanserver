@@ -16,5 +16,4 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EhbAudienceServiceImpl extends ServiceImpl<EhbAudienceMapper, EhbAudience> implements EhbAudienceService {
-
 }

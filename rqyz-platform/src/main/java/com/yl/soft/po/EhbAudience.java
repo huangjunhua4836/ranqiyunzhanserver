@@ -1,5 +1,6 @@
 package com.yl.soft.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.yl.soft.po.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,6 +31,7 @@ public class EhbAudience extends BaseEntity implements Serializable {
     private String describes;
 
     @ApiModelProperty(value = "头像")
+    @TableField("head_portrait")
     private String headPortrait;
 
     private String phone;
@@ -51,4 +53,8 @@ public class EhbAudience extends BaseEntity implements Serializable {
     private String mailbox;
 
     private String labelid;
+
+    @ApiModelProperty(value = "是否展商  0：不是  1：是",hidden = true)
+    @TableField("iszs")
+    private Boolean iszs;
 }

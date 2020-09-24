@@ -55,6 +55,7 @@ public class RegisterController extends BaseController {
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
         ehbAudience.setIsdel(false);
         ehbAudience.setCreatetime(LocalDateTime.now());
+        ehbAudience.setIszs(false);//不是展商
         if(ehbAudienceService.save(ehbAudience)){
             return setResultSuccess();
         }else{
@@ -85,6 +86,7 @@ public class RegisterController extends BaseController {
         ehbAudience.setIsdel(false);
         ehbAudience.setCreatetime(LocalDateTime.now());
         ehbAudience.setState(1);//待审核
+        ehbAudience.setIszs(true);//是展商
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return setResultSuccess();
         }else{
@@ -108,10 +110,10 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/listLabel")
     public BaseResponse<List<EhbLabel>> listLabel(@ApiParam(hidden = true) @RequestParam Map paramMap) {
-        QueryWrapper<EhbLabel> traceChipQueryWrapper = new QueryWrapper<>();
-        traceChipQueryWrapper.eq("ISDEL", CommonDict.CORRECT_STATE);
-        traceChipQueryWrapper.orderByDesc("createtime");
-        List<EhbLabel> ehbLabels = ehbLabelService.list(traceChipQueryWrapper);
+        QueryWrapper<EhbLabel> ehbLabelQueryWrapper = new QueryWrapper<>();
+        ehbLabelQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
+        ehbLabelQueryWrapper.orderByDesc("createtime");
+        List<EhbLabel> ehbLabels = ehbLabelService.list(ehbLabelQueryWrapper);
         return setResultSuccess(ehbLabels);
     }
 

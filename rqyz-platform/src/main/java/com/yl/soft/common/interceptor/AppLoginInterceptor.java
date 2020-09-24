@@ -52,7 +52,11 @@ public class AppLoginInterceptor implements HandlerInterceptor {
             out.close();
             return false;
         }
-        if(!redisService.hasKey("virtualUser_"+token)){
+        //生产环境请去掉testtoken
+        if("testtoken".equals(token)){
+            return true;
+        }
+        if(!redisService.hasKey(token)){
             PrintWriter out = response.getWriter();
             out.println(JSON.toJSON(new BaseResponseUtil().setResultError(402,"","token失效！")));
             out.flush();
