@@ -1,8 +1,11 @@
 package com.yl.soft.controller.base;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.unified.service.BaseResponseUtil;
 import com.yl.soft.common.util.StringUtils;
+import com.yl.soft.dto.AppLoginDTO;
 import com.yl.soft.po.CrmCity;
 import com.yl.soft.po.CrmCounty;
 import com.yl.soft.po.CrmProvince;
@@ -28,6 +31,8 @@ public class BaseController extends BaseResponseUtil {
     private CrmCityService crmCityService;
     @Autowired
     private CrmCountyService crmCountyService;
+    @Autowired
+    private RedisService redisService;
 
     protected Map<String, String> getParameterMap(Map<String, String[]> paramMap) {
         Map<String, String> map = new HashMap<String, String>();
@@ -98,5 +103,14 @@ public class BaseController extends BaseResponseUtil {
         pageParam[0] = pageNum;
         pageParam[1] = pageSize;
         return pageParam;
+    }
+
+    /**
+     * 取得APP登录的信息
+     * @param token
+     * @return
+     */
+    protected AppLoginDTO getCurrAppLogin(String token){
+        return JSONObject.parseObject(redisService.get(token),AppLoginDTO.class);
     }
 }
