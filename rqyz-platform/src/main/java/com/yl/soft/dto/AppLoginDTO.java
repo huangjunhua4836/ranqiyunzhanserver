@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @ApiModel(value="App登录返回session信息")
 public class AppLoginDTO {
+//----------------观展人信息-----------------------
     private Integer id;
     private String name;
     private String phone;
@@ -27,7 +28,7 @@ public class AppLoginDTO {
     @TableField("iszs")
     private Boolean iszs;
 
-
+//----------------展商信息-----------------------
     @ApiModelProperty(value = "管理人员")
     private String managerman;
 

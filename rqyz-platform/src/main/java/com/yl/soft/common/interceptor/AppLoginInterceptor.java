@@ -53,7 +53,7 @@ public class AppLoginInterceptor implements HandlerInterceptor {
             return false;
         }
         //生产环境请去掉testtoken
-        if("testtoken".equals(token)){
+        if("123456".equals(token)){
             return true;
         }
         if(!redisService.hasKey(token)){

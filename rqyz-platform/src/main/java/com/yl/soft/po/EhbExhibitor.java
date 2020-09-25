@@ -47,8 +47,8 @@ public class EhbExhibitor implements Serializable {
     @ApiModelProperty(value = "企业授权书")
     private String credentials;
 
-    @ApiModelProperty(value = "曾经是否加入")
-    private Integer isjoin;
+    @ApiModelProperty(value = "曾经是否加入 1-加入  0-未加入")
+    private Boolean isjoin;
 
     @ApiModelProperty(value = "展位号")
     private String boothno;
