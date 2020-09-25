@@ -41,7 +41,7 @@ public class IndexController extends BaseController {
 
 
     /**
-     * 推荐展商列表
+     * 推荐展商列表（包含行为）
      * @return
      */
     @ApiOperation(value = "推荐展商列表")
