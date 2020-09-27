@@ -9,9 +9,11 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.AppLoginDTO;
 import com.yl.soft.po.EhbArticle;
+import com.yl.soft.po.EhbBanner;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbOpportunity;
 import com.yl.soft.service.EhbArticleService;
+import com.yl.soft.service.EhbBannerService;
 import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.service.EhbOpportunityService;
 import io.swagger.annotations.*;
@@ -36,6 +38,8 @@ public class IndexController extends BaseController {
     private EhbExhibitorService ehbExhibitorService;
     @Autowired
     private EhbArticleService ehbArticleService;
+    @Autowired
+    private EhbBannerService ehbBannerService;
 
 
     /**
@@ -175,5 +179,35 @@ public class IndexController extends BaseController {
         List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
         Collections.shuffle(ehbExhibitors);
         return setResultSuccess(new PageInfo<>(ehbExhibitors));
+    }
+
+    /**
+     * 首页banner图列表
+     * @return
+     */
+    @ApiOperation(value = "首页banner图列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "type", value = "banner位置",paramType = "query",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @PostMapping("/ehbBannerList")
+    public BaseResponse<List<EhbBanner>> ehbBannerList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
+            return setResultError(403,"","当前页码不能为空！");
+        }
+        QueryWrapper<EhbBanner>  ehbBannerQueryWrapper= new QueryWrapper<>();
+        ehbBannerQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        ehbBannerQueryWrapper.eq("type",paramMap.get("type"));
+
+        List<EhbBanner> ehbBanners = ehbBannerService.list(ehbBannerQueryWrapper);
+        Collections.shuffle(ehbBanners);
+        return setResultSuccess(new PageInfo<>(ehbBanners));
     }
 }
