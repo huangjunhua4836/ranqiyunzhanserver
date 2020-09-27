@@ -59,6 +59,7 @@ public class OpportunityController extends BaseController {
         conditionMap.put("title",paramMap.get("title"));
         conditionMap.put("boothno",paramMap.get("boothno"));
         conditionMap.put("labelid",appLoginDTO.getLabelid());//行为推荐
+        conditionMap.put("type",1);//商机
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
@@ -96,6 +97,7 @@ public class OpportunityController extends BaseController {
         conditionMap.put("enterprisename",paramMap.get("enterprisename"));
         conditionMap.put("title",paramMap.get("title"));
         conditionMap.put("boothno",paramMap.get("boothno"));
+        conditionMap.put("type",1);//商机
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
@@ -135,6 +137,7 @@ public class OpportunityController extends BaseController {
         conditionMap.put("countthumbs",10);
         conditionMap.put("countbrowse",20);
         conditionMap.put("countcomment",5);
+        conditionMap.put("type",1);//商机
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);

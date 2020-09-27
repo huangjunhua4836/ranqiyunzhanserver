@@ -7,9 +7,9 @@ import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
-import com.yl.soft.dto.AppLoginDTO;
 import com.yl.soft.dto.OpportunityDto;
 import com.yl.soft.po.EhbArticle;
+import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbHottitle;
 import com.yl.soft.service.EhbArticleService;
 import com.yl.soft.service.EhbExhibitorService;
@@ -64,42 +64,106 @@ public class SearchController extends BaseController {
         return setResultSuccess(ehbHottitles);
     }
 
-//    /**
-//     * 商机列表-推荐
-//     * @return
-//     */
-//    @ApiOperation(value = "商机列表-推荐")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
-//            ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query")
-//            ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
-//            ,@ApiImplicitParam(name = "title", value = "商机名称", paramType = "query")
-//            ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
-//    })
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "成功")
-//            ,@ApiResponse(code = 401, message = "token为空！")
-//            ,@ApiResponse(code = 402, message = "token失效！")
-//            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
-//            ,@ApiResponse(code = -1, message = "系统异常")
-//    })
-//    @PostMapping("/opportunityRecommendList")
-//    public BaseResponse<PageInfo<OpportunityDto>> opportunityRecommendList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
-//        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
-//            return setResultError(403,"","当前页码不能为空！");
-//        }
-//        AppLoginDTO appLoginDTO = getCurrAppLogin(paramMap.get("token").toString());
-//        Map conditionMap = new HashMap();
-//        conditionMap.put("isdel",CommonDict.CORRECT_STATE);
-//        conditionMap.put("enterprisename",paramMap.get("enterprisename"));
-//        conditionMap.put("title",paramMap.get("title"));
-//        conditionMap.put("boothno",paramMap.get("boothno"));
-//        conditionMap.put("labelid",appLoginDTO.getLabelid());//行为推荐
-//
-//        Integer pageParam[] = pageValidParam(paramMap);
-//        PageHelper.startPage(pageParam[0], pageParam[1]);
-//        List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
-//        Collections.shuffle(ehbOpportunities);
-//        return setResultSuccess(new PageInfo<>(ehbOpportunities));
-//    }
+    /**
+     * 展商检索
+     * @return
+     */
+    @ApiOperation(value = "展商检索")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query")
+            ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
+            ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @PostMapping("/exhibitionSearch")
+    public BaseResponse<PageInfo<EhbExhibitor>> exhibitionSearch(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
+            return setResultError(403,"","当前页码不能为空！");
+        }
+        QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+        ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(paramMap.get("enterprisename")),"enterprisename",paramMap.get("enterprisename"));
+        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(paramMap.get("boothno")),"boothno",paramMap.get("boothno"));
+
+        Integer pageParam[] = pageValidParam(paramMap);
+        PageHelper.startPage(pageParam[0], pageParam[1]);
+        List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
+        Collections.shuffle(ehbExhibitors);
+        return setResultSuccess(new PageInfo<>(ehbExhibitors));
+    }
+
+    /**
+     * 商机检索
+     * @return
+     */
+    @ApiOperation(value = "商机检索")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query")
+            ,@ApiImplicitParam(name = "title", value = "商品名", paramType = "query")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @PostMapping("/opportunitySearch")
+    public BaseResponse<PageInfo<OpportunityDto>> opportunitySearch(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
+            return setResultError(403,"","当前页码不能为空！");
+        }
+        Map conditionMap = new HashMap();
+        conditionMap.put("isdel",CommonDict.CORRECT_STATE);
+        conditionMap.put("title",paramMap.get("title"));
+        conditionMap.put("type",1);//商机
+
+        Integer pageParam[] = pageValidParam(paramMap);
+        PageHelper.startPage(pageParam[0], pageParam[1]);
+        List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
+        Collections.shuffle(ehbOpportunities);
+        return setResultSuccess(new PageInfo<>(ehbOpportunities));
+    }
+
+    /**
+     * 资讯检索
+     * @return
+     */
+    @ApiOperation(value = "资讯检索")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
+            ,@ApiImplicitParam(name = "title", value = "资讯标题", paramType = "query")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @PostMapping("/articleSearch")
+    public BaseResponse<PageInfo<EhbArticle>> articleSearch(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
+            return setResultError(403,"","当前页码不能为空！");
+        }
+        QueryWrapper<EhbArticle> ehbArticleQueryWrapper = new QueryWrapper<>();
+        ehbArticleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        ehbArticleQueryWrapper.eq(!StringUtils.isEmpty(paramMap.get("title")),"title",paramMap.get("title"));
+        ehbArticleQueryWrapper.orderByDesc("releasetime");
+
+        Integer pageParam[] = pageValidParam(paramMap);
+        PageHelper.startPage(pageParam[0], pageParam[1]);
+        List<EhbArticle> ehbArticles = ehbArticleService.list(ehbArticleQueryWrapper);
+        Collections.shuffle(ehbArticles);
+        return setResultSuccess(new PageInfo<>(ehbArticles));
+    }
 }

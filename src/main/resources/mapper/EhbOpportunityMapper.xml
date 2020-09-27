@@ -41,7 +41,7 @@
         LEFT JOIN ehb_audience a ON a.id = e.id
         where
         opp.isdel = #{paramMap.isdel}
-        and opp.type = 1
+        and opp.type = #{paramMap.type}
         <if test="paramMap.labelid!= null and paramMap.labelid!= ''">
             and a.labelid in (${paramMap.labelid})
         </if>
