@@ -1,6 +1,7 @@
 package com.yl.soft.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yl.soft.dto.base.PlatformSessionUser;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.CrmUser;
 import org.apache.ibatis.annotations.Param;
@@ -22,5 +23,5 @@ public interface CrmUserMapper extends BaseMapper<CrmUser> {
      * @param paramMap
      * @return
      */
-    SessionUser loginByUserCode(@Param("paramMap") Map paramMap);
+    PlatformSessionUser loginByUserCode(@Param("paramMap") Map paramMap);
 }

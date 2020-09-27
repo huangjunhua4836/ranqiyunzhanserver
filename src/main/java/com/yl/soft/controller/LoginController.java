@@ -8,7 +8,7 @@ import com.yl.soft.common.util.LogUtils;
 import com.yl.soft.common.util.MD5Util;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
-import com.yl.soft.dto.base.SessionUser;
+import com.yl.soft.dto.base.PlatformSessionUser;
 import com.yl.soft.po.CrmMenu;
 import com.yl.soft.service.CrmRoleService;
 import com.yl.soft.service.CrmUserService;
@@ -87,7 +87,7 @@ public class LoginController extends BaseController {
         }
 
         //根据登录名查询单个用户
-        SessionUser sessionUser = crmUserService.loginByUserCode(username);
+        PlatformSessionUser sessionUser = crmUserService.loginByUserCode(username);
         if(sessionUser == null || StringUtils.isEmpty(sessionUser.getId())){
             return setResultError("用户不存在！");
         }

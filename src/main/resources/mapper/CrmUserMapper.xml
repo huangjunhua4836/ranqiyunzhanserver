@@ -23,7 +23,7 @@
         <result column="isdel" property="isdel" />
     </resultMap>
 
-    <select id="loginByUserCode" resultType= "com.yl.soft.dto.base.SessionUser">
+    <select id="loginByUserCode" resultType= "com.yl.soft.dto.base.PlatformSessionUser">
      	SELECT
             u.id AS id,
             u.nickname AS NAME,

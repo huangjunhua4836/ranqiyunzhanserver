@@ -1,8 +1,7 @@
 package com.yl.soft.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yl.soft.dto.base.SessionUser;
-import com.yl.soft.po.CrmRoleUser;
+import com.yl.soft.dto.base.PlatformSessionUser;
 import com.yl.soft.po.CrmUser;
 
 /**
@@ -19,7 +18,7 @@ public interface CrmUserService extends IService<CrmUser> {
      * @param userCode
      * @return
      */
-    SessionUser loginByUserCode(String userCode);
+    PlatformSessionUser loginByUserCode(String userCode);
 
     /**
      * 保存用户、用户角色关系

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dict.CrmUserDict;
+import com.yl.soft.dto.base.PlatformSessionUser;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.mapper.CrmRoleUserMapper;
 import com.yl.soft.mapper.CrmUserMapper;
@@ -33,7 +34,7 @@ public class CrmUserServiceImpl extends ServiceImpl<CrmUserMapper, CrmUser> impl
     private CrmRoleUserMapper crmRoleUserMapper;
 
     @Override
-    public SessionUser loginByUserCode(String userCode) {
+    public PlatformSessionUser loginByUserCode(String userCode) {
         Map paramMap = new HashMap();
         paramMap.put("userCode",userCode);
         paramMap.put("state",CrmUserDict.USERNORMAL);
