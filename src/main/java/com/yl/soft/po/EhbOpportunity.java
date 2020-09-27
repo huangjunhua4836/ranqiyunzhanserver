@@ -45,4 +45,16 @@ public class EhbOpportunity extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "1-商机  2-商品")
     private Integer type;
+
+    @ApiModelProperty(value = "总收藏量")
+    private Integer countcollection;
+
+    @ApiModelProperty(value = "总点赞量")
+    private Integer countthumbs;
+
+    @ApiModelProperty(value = "总关注量")
+    private Integer countfollow;
+
+    @ApiModelProperty(value = "总浏览量")
+    private Integer countbrowse;
 }

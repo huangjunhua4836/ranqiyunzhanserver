@@ -16,6 +16,10 @@
         <result column="content" property="content" />
         <result column="picture" property="picture" />
         <result column="releasetime" property="releasetime" />
+        <result column="countcollection" property="countcollection" />
+        <result column="countthumbs" property="countthumbs" />
+        <result column="countfollow" property="countfollow" />
+        <result column="countbrowse" property="countbrowse" />
     </resultMap>
 
     <!-- 通用查询结果列 -->

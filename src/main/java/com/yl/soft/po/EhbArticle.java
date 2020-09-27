@@ -37,4 +37,16 @@ public class EhbArticle extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "发布时间")
     private LocalDateTime releasetime;
+
+    @ApiModelProperty(value = "总收藏量")
+    private Integer countcollection;
+
+    @ApiModelProperty(value = "总点赞量")
+    private Integer countthumbs;
+
+    @ApiModelProperty(value = "总关注量")
+    private Integer countfollow;
+
+    @ApiModelProperty(value = "总浏览量")
+    private Integer countbrowse;
 }
