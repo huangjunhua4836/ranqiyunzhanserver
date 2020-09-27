@@ -163,6 +163,7 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
+<excludes><exclude>>doc/*</exclude></excludes>
                 </configuration>
             </plugin>
         </plugins>
@@ -176,6 +177,7 @@
                  <exclude>*.properties</exclude>
                   <exclude>*.conf</exclude>
                   <exclude>*.yml</exclude>
+                  <exclude>*.xml</exclude>
                    <exclude>generator/*.*</exclude>
             </excludes>
           </resource>
