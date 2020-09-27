@@ -20,6 +20,7 @@
         <result column="countthumbs" property="countthumbs" />
         <result column="countfollow" property="countfollow" />
         <result column="countbrowse" property="countbrowse" />
+        <result column="countcomment" property="countcomment" />
     </resultMap>
 
     <!-- 通用查询结果列 -->

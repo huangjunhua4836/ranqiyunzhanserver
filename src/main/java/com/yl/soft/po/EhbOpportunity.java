@@ -57,4 +57,7 @@ public class EhbOpportunity extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "总浏览量")
     private Integer countbrowse;
+
+    @ApiModelProperty(value = "总评论量")
+    private Integer countcomment;
 }

@@ -110,7 +110,6 @@ public class OpportunityController extends BaseController {
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
-        Collections.shuffle(ehbOpportunities);
         return setResultSuccess(new PageInfo<>(ehbOpportunities));
     }
 
@@ -143,6 +142,9 @@ public class OpportunityController extends BaseController {
         conditionMap.put("enterprisename",paramMap.get("enterprisename"));
         conditionMap.put("title",paramMap.get("title"));
         conditionMap.put("boothno",paramMap.get("boothno"));
+        conditionMap.put("countthumbs",1000);
+        conditionMap.put("countbrowse",1000);
+        conditionMap.put("countcomment",1000);
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);

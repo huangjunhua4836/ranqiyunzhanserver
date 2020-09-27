@@ -23,6 +23,7 @@
         <result column="countthumbs" property="countthumbs" />
         <result column="countfollow" property="countfollow" />
         <result column="countbrowse" property="countbrowse" />
+        <result column="countcomment" property="countcomment" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -52,6 +53,15 @@
         </if>
         <if test="paramMap.boothno!= null and paramMap.boothno!= ''">
             and e.boothno = #{paramMap.boothno}
+        </if>
+        <if test="paramMap.countthumbs!= null and paramMap.countthumbs!= ''">
+            and opp.countthumbs = #{paramMap.countthumbs}
+        </if>
+        <if test="paramMap.countbrowse!= null and paramMap.countbrowse!= ''">
+            and opp.countbrowse = #{paramMap.countbrowse}
+        </if>
+        <if test="paramMap.countcomment!= null and paramMap.countcomment!= ''">
+            and opp.countcomment = #{paramMap.countcomment}
         </if>
         order by opp.releasetime desc
     </select>
