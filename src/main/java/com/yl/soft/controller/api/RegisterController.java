@@ -85,7 +85,7 @@ public class RegisterController extends BaseController {
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
         ehbAudience.setIsdel(false);
         ehbAudience.setCreatetime(LocalDateTime.now());
-        ehbAudience.setState(1);//待审核
+        ehbAudience.setState(0);//待审核
         ehbAudience.setIszs(true);//是展商
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return setResultSuccess();

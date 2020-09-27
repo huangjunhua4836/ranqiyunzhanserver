@@ -26,4 +26,29 @@
         createuser, createtime, updateuser, updatetime, state, version, isdel, id, title, content, picture, releasetime, label, exhibitorid, type
     </sql>
 
+    <select id="opportunityList" resultType= "com.yl.soft.dto.OpportunityDto">
+        SELECT
+        opp.*,
+        e.enterprisename
+        FROM
+        ehb_opportunity opp
+        LEFT JOIN ehb_exhibitor e ON e.id = opp.exhibitorid
+        LEFT JOIN ehb_audience a ON a.id = e.id
+        where
+        opp.isdel = #{paramMap.isdel}
+        and opp.type = 1
+        <if test="paramMap.labelid!= null and paramMap.labelid!= ''">
+            and a.labelid in (${paramMap.labelid})
+        </if>
+        <if test="paramMap.enterprisename!= null and paramMap.enterprisename!= ''">
+            and e.enterprisename = #{paramMap.enterprisename}
+        </if>
+        <if test="paramMap.title!= null and paramMap.title!= ''">
+            and opp.title = #{paramMap.title}
+        </if>
+        <if test="paramMap.boothno!= null and paramMap.boothno!= ''">
+            and e.boothno = #{paramMap.boothno}
+        </if>
+        order by opp.releasetime desc
+    </select>
 </mapper>

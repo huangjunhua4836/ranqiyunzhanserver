@@ -123,8 +123,8 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
             ,@ApiResponse(code = -1, message = "系统异常")
     })
-    @PostMapping("/opportunityList")
-    public BaseResponse<PageInfo<EhbOpportunity>> opportunityList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    @PostMapping("/goodsList")
+    public BaseResponse<PageInfo<EhbOpportunity>> goodsList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
