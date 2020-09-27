@@ -159,12 +159,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-<excludes><exclude>>doc/*</exclude></excludes>
-                </configuration>
             </plugin>
         </plugins>
         <!--本地调试时注释，提交代码时，去掉注释-->
@@ -173,6 +167,7 @@
             <directory>src/main/resources</directory>
               <excludes>
                    <exclude>**/*.properties</exclude>
+                  <exclude>doc/*.*</exclude>
                    <exclude>**/*.yml</exclude>
                  <exclude>*.properties</exclude>
                   <exclude>*.conf</exclude>
