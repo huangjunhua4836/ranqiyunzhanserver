@@ -1,6 +1,5 @@
 package com.yl.soft.controller.api;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.unified.entity.BaseResponse;
@@ -9,11 +8,6 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.AppLoginDTO;
 import com.yl.soft.dto.OpportunityDto;
-import com.yl.soft.po.EhbArticle;
-import com.yl.soft.po.EhbExhibitor;
-import com.yl.soft.po.EhbOpportunity;
-import com.yl.soft.service.EhbArticleService;
-import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.service.EhbOpportunityService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +27,6 @@ import java.util.Map;
 public class OpportunityController extends BaseController {
     @Autowired
     private EhbOpportunityService ehbOpportunityService;
-    @Autowired
-    private EhbExhibitorService ehbExhibitorService;
-    @Autowired
-    private EhbArticleService ehbArticleService;
 
     /**
      * 商机列表-推荐
@@ -142,9 +132,9 @@ public class OpportunityController extends BaseController {
         conditionMap.put("enterprisename",paramMap.get("enterprisename"));
         conditionMap.put("title",paramMap.get("title"));
         conditionMap.put("boothno",paramMap.get("boothno"));
-        conditionMap.put("countthumbs",1000);
-        conditionMap.put("countbrowse",1000);
-        conditionMap.put("countcomment",1000);
+        conditionMap.put("countthumbs",10);
+        conditionMap.put("countbrowse",20);
+        conditionMap.put("countcomment",5);
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
