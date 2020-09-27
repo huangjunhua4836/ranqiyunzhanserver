@@ -55,4 +55,7 @@ public class EhbExhibitor implements Serializable {
 
     @ApiModelProperty(value = "地址")
     private String address;
+
+    @ApiModelProperty(value = "公司网址")
+    private String website;
 }

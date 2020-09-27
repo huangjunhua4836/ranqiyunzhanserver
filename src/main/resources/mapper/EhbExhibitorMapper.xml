@@ -14,6 +14,7 @@
         <result column="isjoin" property="isjoin" />
         <result column="boothno" property="boothno" />
         <result column="address" property="address" />
+        <result column="website" property="website" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
