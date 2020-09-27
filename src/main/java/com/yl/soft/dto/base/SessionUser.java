@@ -1,44 +1,48 @@
 package com.yl.soft.dto.base;
 
-import com.yl.soft.po.CrmMenu;
-import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.util.List;
-
-/**
- * 类说明：缓存用户信息类
- * @author jiangxl
- * @date 2020-06-25
- */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@ApiModel(value="后台登录返回session信息")
-public class SessionUser implements Serializable {
-    /** 用户ID */
-    private int id;
-    /** 姓名 */
-    private String name;
-    /** 登录名 */
-    private String loginname;
-    private String password;
-    /** 角色ID */
-    private Integer roleId;
-    /** 角色名称 */
-    private String roleName;
-    /** 菜单 */
-    private List<CrmMenu> crmMenus;
-    /** 手机号 */
+public class SessionUser {
+
+	@ApiModelProperty(value = "主键ID")
+	private Integer id;
+
+	@ApiModelProperty(value = "积分余额")
+    private Integer points;
+
+    @ApiModelProperty(value = "QQopenID")
+    private String qqOpenid;
+
+    @ApiModelProperty(value = "微信openID")
+    private String wxOpenid;
+
+    @ApiModelProperty(value = "手机号")
     private String phone;
 
-    private Integer organization_id;
-    private String org_name;
-    private Integer member_id;
-    private String member_name;
-    private String position_id;
-    private String position_name;
+    @ApiModelProperty(value = "头像URL")
+    private String avatarUrl;
+
+    @ApiModelProperty(value = "昵称")
+    private String nickName;
+
+    @ApiModelProperty(value = "员工标识：1=内部员工，0=非员工")
+    private Integer employee;
+
+    @ApiModelProperty(value = "资质标识：1=已认证，0=未认证")
+    private Integer qualification;
+
+    @ApiModelProperty(value = "手机验证标识：1=已验证，0=未验证")
+    private Integer verifyPhone;
+    
+    private String password;
+    
+    private String roleId;
+
+	/**
+	 * 状态码
+	 */
+	private int code;
+
 }

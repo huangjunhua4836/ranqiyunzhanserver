@@ -6,6 +6,7 @@ import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.unified.service.BaseResponseUtil;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.dto.AppLoginDTO;
+import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.po.CrmCity;
 import com.yl.soft.po.CrmCounty;
 import com.yl.soft.po.CrmProvince;
@@ -51,6 +52,18 @@ public class BaseController extends BaseResponseUtil {
         return crmProvinceService.list(crmProvinceQueryWrapper);
     }
 
+	protected <T> ResultItem<T> error(Integer code, String msg) {
+		ResultItem<T> r = new ResultItem<>();
+		r.setDesc(msg);
+		r.setCode(code);
+		return r;
+	}
+
+	protected <T> ResultItem<T> error() {
+		return error(500, "服务器错误，请稍后再试");
+	}
+
+    
     /**
      * 市集合
      * @param code

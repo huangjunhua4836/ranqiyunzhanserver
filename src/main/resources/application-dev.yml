@@ -38,7 +38,7 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    password: 123456
+    password:
     timeout: 300
     jedis:
       pool:
@@ -93,6 +93,17 @@ pagehelper:
 
 # 上传文件统一后缀名称配置
 custom:
+  internal:
+    key: Ji3452%8%#3lQ@kj%a*f91#69!A.o # 内部通讯Key
+  session:
+    time_out: 3600 # 超时秒
+    cookie_name: _api_token
+  authentication:
+    pwd_salt: L0l*S0jn3SD*^OFY # 密码SALT
+    enable_check_reqcode: true # 第三方登陆时是否用授权码获取openID，不开启则reqcode必须要传openID，保证唯一性
+  wechat:
+    app_id: 10001000
+    app_security: 10001000
   upload:
     ext:
       img: jpg,png,gif,ico,doc,docx,jpeg,apk,xls,xlsx,mp4,flv,swf,avi,mp3,pdf,txt,rar,zip,7z,tar
