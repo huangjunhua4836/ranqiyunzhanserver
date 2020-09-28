@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="common::headr('添加或修改角色')"></head>
+    <head th:replace="common::headr('添加或修改')"></head>
 <body>
     <div class="layui-container">
         <div class="layui-row" style="margin-top: 10px;">
             <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
-                <form class="layui-form" th:object="${crmRole}">
+                <form class="layui-form" th:object="${ehbGuest}">
                     <div class="layui-form-item">
                         <label class="layui-form-label">名称</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{name}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">岗位</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{job}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
@@ -26,7 +32,7 @@
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
-                var resultData = core.ajax('/crmRole/saveOrUpdate',false,'POST',data.field);
+                var resultData = core.ajax('/platform/guest/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){
                     parent.layer.msg('操作成功',core.showtime);
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
