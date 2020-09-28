@@ -56,10 +56,6 @@ public class EhbAudience extends BaseEntity implements Serializable {
     
     private Integer enabled;
 
-    @ApiModelProperty(value = "是否展商  0：不是  1：是",hidden = true)
-    @TableField("iszs")
-    private Boolean iszs;
-    
     private String wxOpenid;
     
     private String qqOpenid;

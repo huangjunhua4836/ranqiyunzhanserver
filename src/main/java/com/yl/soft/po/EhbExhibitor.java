@@ -59,4 +59,10 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "企业图片")
     private String img;
+
+    @ApiModelProperty(value = "绑定邮箱")
+    private String mailbox;
+
+    @ApiModelProperty(value = "标签")
+    private String labelid;
 }
