@@ -8,12 +8,21 @@ import com.alibaba.fastjson.JSON;
 import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.unified.service.BaseResponseUtil;
 import com.yl.soft.common.util.StringUtils;
+import com.yl.soft.dto.EhbAudienceDto;
+import com.yl.soft.dto.UserConv;
+import com.yl.soft.dto.base.ResultItem;
+import com.yl.soft.dto.base.SessionUser;
+import com.yl.soft.enums.UserEnum;
+import com.yl.soft.po.EhbAudience;
+import com.yl.soft.service.EhbAudienceService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.UUID;
 
 /**
  * The Class is for Interceptor Login Platform This
@@ -24,9 +33,11 @@ import java.io.PrintWriter;
 public class AppLoginInterceptor implements HandlerInterceptor {
 
     RedisService redisService;
+    EhbAudienceService ehbAudienceService;
 
-    public AppLoginInterceptor(RedisService redisService){
+    public AppLoginInterceptor(RedisService redisService,EhbAudienceService ehbAudienceService){
         this.redisService = redisService;
+        this.ehbAudienceService = ehbAudienceService;
     }
 
     @Override
@@ -54,6 +65,17 @@ public class AppLoginInterceptor implements HandlerInterceptor {
         }
         //生产环境请去掉testtoken
         if("123456".equals(token)){
+            EhbAudience ehbAudience = ehbAudienceService.getById(1);
+            String token2 = UUID.randomUUID().toString();
+            SessionUser sessionUser = new SessionUser();
+            sessionUser.setCode(0);
+            sessionUser.setId(ehbAudience.getId());
+            BeanUtils.copyProperties(ehbAudience, sessionUser);
+            redisService.set(token, sessionUser);
+            EhbAudienceDto userDto = UserConv.do2dto(ehbAudience);
+            ResultItem<EhbAudienceDto> result = new ResultItem<>();
+            result.setToken(token);
+            result.setData(userDto);
             return true;
         }
         if(!redisService.hasKey(token)){

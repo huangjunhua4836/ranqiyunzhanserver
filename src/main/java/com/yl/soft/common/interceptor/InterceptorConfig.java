@@ -1,6 +1,8 @@
 package com.yl.soft.common.interceptor;
 
 import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.po.EhbAudience;
+import com.yl.soft.service.EhbAudienceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Autowired
     RedisService redisService;
+    @Autowired
+    EhbAudienceService ehbAudienceService;
 
     @Bean
     public InterceptorConfig getMyWebMvcConfig() {
@@ -24,11 +28,11 @@ public class InterceptorConfig implements WebMvcConfigurer {
 //                registry.addInterceptor(new ApiInterceptor()).addPathPatterns("/**");
 
                 //配置后台登录拦截器
-                registry.addInterceptor(new PlatformInterceptor(redisService)).addPathPatterns("/platform/**")
-                        .excludePathPatterns("/platform/logout","/platform/login");
+//                registry.addInterceptor(new PlatformInterceptor(redisService)).addPathPatterns("/platform/**")
+//                        .excludePathPatterns("/platform/logout","/platform/login");
 
                 //配置APP登录拦截器
-                registry.addInterceptor(new AppLoginInterceptor(redisService)).addPathPatterns("/api/**")
+                registry.addInterceptor(new AppLoginInterceptor(redisService,ehbAudienceService)).addPathPatterns("/api/**")
                     .excludePathPatterns("/api/login","/api/registerAudience","/api/registerExhibitor")
                     .excludePathPatterns("/api/listLabel","/api/upLoadByHttp","/api/showFile");
             }
