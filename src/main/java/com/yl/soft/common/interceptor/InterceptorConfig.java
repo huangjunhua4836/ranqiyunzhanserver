@@ -1,8 +1,8 @@
 package com.yl.soft.common.interceptor;
 
 import com.yl.soft.common.unified.redis.RedisService;
-import com.yl.soft.po.EhbAudience;
 import com.yl.soft.service.EhbAudienceService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +15,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Autowired
     RedisService redisService;
+    
     @Autowired
     EhbAudienceService ehbAudienceService;
 
@@ -27,7 +28,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 //                registry.addInterceptor(new SameUrlDataInterceptor()).addPathPatterns("/**");
 //                registry.addInterceptor(new ApiInterceptor()).addPathPatterns("/**");
 
-                //配置后台登录拦截器
+//                //配置后台登录拦截器
 //                registry.addInterceptor(new PlatformInterceptor(redisService)).addPathPatterns("/platform/**")
 //                        .excludePathPatterns("/platform/logout","/platform/login");
 

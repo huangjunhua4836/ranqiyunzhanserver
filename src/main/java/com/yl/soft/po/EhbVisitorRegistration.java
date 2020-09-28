@@ -45,6 +45,9 @@ public class EhbVisitorRegistration implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remarks;
+    
+    @ApiModelProperty(value="参展人id")
+    private Integer userid;
 
 
 }

@@ -62,6 +62,32 @@ public class BaseController extends BaseResponseUtil {
 	protected <T> ResultItem<T> error() {
 		return error(500, "服务器错误，请稍后再试");
 	}
+	
+	protected <T> ResultItem<T> ok(String msg, T data, Integer pageIndex, Long total, Integer pageTotal, Integer pageLimit) {
+		ResultItem<T> r = new ResultItem<T>();
+		r.setDesc(msg);
+		r.setData(data);
+		r.setPageIndex(pageIndex);
+		r.setTotal(total);
+		r.setPageTotal(pageTotal);
+		r.setPageLimit(pageLimit);
+		return r;
+	}
+
+	protected <T> ResultItem<T> ok(T data, Integer pageIndex, Long maxRow, Integer page, Integer pageSize) {
+		return ok("成功", data, pageIndex, maxRow, page, pageSize);
+	}
+
+	protected <T> ResultItem<T> ok(T data) {
+		ResultItem<T> r = new ResultItem<T>();
+		r.setData(data);
+		r.setDesc("成功");
+		return r;
+	}
+
+	protected <T> ResultItem<T> ok() {
+		return ok(null);
+	}
 
     
     /**

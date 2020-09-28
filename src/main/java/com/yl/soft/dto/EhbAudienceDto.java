@@ -3,6 +3,7 @@ package com.yl.soft.dto;
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.yl.soft.po.EhbExhibitor;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,26 +24,23 @@ public class EhbAudienceDto implements Serializable  {
 		@ApiModelProperty(value = "用户id")
 		private Integer id;
 	
-		@ApiModelProperty(value = "昵称")
+		@ApiModelProperty(value = "姓名")
 	 	private String name;
 
 	    @ApiModelProperty(value = "头像")
 	    @TableField("head_portrait")
 	    private String headPortrait;
 
-	    @ApiModelProperty(value = "手机号")
+	    @ApiModelProperty(value = "联系方式")
 	    private String phone;
 
-	    @ApiModelProperty(value = "登录名称")
-	    private String loginname;
-
-	    @ApiModelProperty(value = "密码")
-	    private String password;
-
+	    @ApiModelProperty(value="企业名称")
+	    private String enterprise;
+	    
 	    @ApiModelProperty(value="标签：字符串数组1,2,3")
 	    private String labelid;
 
-	    @ApiModelProperty(value = "是否展商  0：不是  1：是")
-	    @TableField("iszs")
-	    private Boolean iszs;
+	    @ApiModelProperty("展商ID")
+	    private Integer bopie;
+	    
 }
