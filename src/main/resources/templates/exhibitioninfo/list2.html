@@ -30,6 +30,26 @@
                                         </div>
                                         <div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
                                             <div class="layui-form-item">
+                                                <label class="layui-form-label">企业名称</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="enterprisename" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">审核状态</label>
+                                                <div class="layui-input-block">
+                                                    <select name="organizationId" lay-filter="selectOrgFilter">
+                                                        <option value="">请选择</option>
+                                                        <option value="0">未审核</option>
+                                                        <option value="1">已审核</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
+                                            <div class="layui-form-item">
                                                 <label class="layui-form-label">创建时间段</label>
                                                 <div class="layui-input-block">
                                                     <input type="text" name = "startTime" placeholder="开始时间" autocomplete="off" class="layui-input" id="startTime">
@@ -97,6 +117,12 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <label class="layui-form-label">展位号</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" readonly>
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">创建时间</label>
                     <div class="layui-input-block">
                         <input type="text" class="layui-input" readonly>
@@ -113,9 +139,9 @@
 
         <script type="text/html" id="rowToolBar">
             <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-form" title="查看"></i></a>
-<!--            <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit" title="编辑"></i></a>-->
+            <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit" title="审核"></i></a>
 <!--            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete" title="删除"></i></a>-->
         </script>
-        <script type="text/javascript" th:src="@{/static/js/exhibitioninfo/exhibitioninfo.js}"></script>
+        <script type="text/javascript" th:src="@{/static/js/exhibitioninfo/exhibition2info.js}"></script>
     </body>
 </html>

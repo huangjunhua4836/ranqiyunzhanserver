@@ -5,7 +5,6 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.yl.soft.po.EhbExhibitor">
         <id column="id" property="id" />
-        <result column="managerman" property="managerman" />
         <result column="idcard" property="idcard" />
         <result column="enterprisename" property="enterprisename" />
         <result column="tel" property="tel" />

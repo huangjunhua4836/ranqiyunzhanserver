@@ -20,15 +20,15 @@ import java.util.List;
 
 /**
  * <p>
- * 参展信息
+ * 专业人信息
  * </p>
  *
  * @author ${author}
  * @since 2020-09-09
  */
 @Controller
-@RequestMapping("/platform/exhibitionInfo")
-public class ExhibitionInfoController extends BaseController {
+@RequestMapping("/platform/czrInfo")
+public class CZRInfoController extends BaseController {
     @Autowired
     public EhbAudienceService ehbAudienceService;
 
@@ -66,66 +66,4 @@ public class ExhibitionInfoController extends BaseController {
         tableVo.setData(pageInfo.getList());
         return tableVo;
     }
-
-    @GetMapping("/list2")
-    public String list2() {
-        return "exhibitioninfo/list2";
-    }
-
-//    /**
-//     * 添加或者修改页面
-//     * @param id
-//     * @return
-//     */
-//    @GetMapping("/input")
-//    public String input(String id, String type, ModelMap modelMap) {
-//        CrmRole crmRole = new CrmRole();
-//        if("add".equals(type)){
-//
-//        }else if("update".equals(type)){
-//            crmRole = crmRoleService.getById(id);
-//        }
-//        modelMap.put("crmRole",crmRole);
-//
-//        return "role/input";
-//    }
-//
-//    /**
-//     * 添加或者修改
-//     * @param crmRole
-//     * @return
-//     */
-//    @PostMapping("/saveOrUpdate")
-//    @ResponseBody
-//    public BaseResponse saveOrUpdate(CrmRole crmRole) {
-//        if(StringUtils.isEmpty(crmRole.getId())){
-//            crmRole.setCreatetime(LocalDateTime.now());
-//            crmRole.setCreateuser(1);
-//            crmRole.setIsdel(false);
-//        }else{
-//            crmRole.setUpdatetime(LocalDateTime.now());
-//            crmRole.setUpdateuser(1);
-//        }
-//        if(crmRoleService.saveOrUpdate(crmRole)){
-//            return setResultSuccess();
-//        }else{
-//            return setResultError("操作失败！");
-//        }
-//    }
-//
-//    /**
-//     * 删除
-//     * @return
-//     */
-//    @PostMapping("/delete")
-//    @ResponseBody
-//    public BaseResponse delete(String id) {
-//        System.out.println("ok");
-//        if(StringUtils.isEmpty(id)){
-//            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
-//                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
-//        }
-//        crmRoleService.deleteRole(id);
-//        return setResultSuccess();
-//    }
 }

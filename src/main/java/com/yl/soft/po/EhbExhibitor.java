@@ -37,14 +37,11 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "手机")
     private String phone;
 
-    @ApiModelProperty(value = "姓名")
+    @ApiModelProperty(value = "管理人员")
     private String name;
 
     @ApiModelProperty(value = "企业描述")
     private String describes;
-
-    @ApiModelProperty(value = "管理人员")
-    private String managerman;
 
     @ApiModelProperty(value = "身份证")
     private String idcard;
