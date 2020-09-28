@@ -38,12 +38,11 @@
         FROM
         ehb_opportunity opp
         LEFT JOIN ehb_exhibitor e ON e.id = opp.exhibitorid
-        LEFT JOIN ehb_audience a ON a.id = e.id
         where
         opp.isdel = #{paramMap.isdel}
         and opp.type = #{paramMap.type}
         <if test="paramMap.labelid!= null and paramMap.labelid!= ''">
-            and a.labelid in (${paramMap.labelid})
+            and e.labelid in (${paramMap.labelid})
         </if>
         <if test="paramMap.enterprisename!= null and paramMap.enterprisename!= ''">
             and e.enterprisename = #{paramMap.enterprisename}

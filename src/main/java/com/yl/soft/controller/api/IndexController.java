@@ -62,7 +62,7 @@ public class IndexController extends BaseController {
         AppLoginDTO appLoginDTO = getCurrAppLogin(paramMap.get("token").toString());
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
-        conditionMap.put("state",2);
+        conditionMap.put("state",1);
         conditionMap.put("labelid",appLoginDTO.getLabelid());
         conditionMap.put("id",appLoginDTO.getId());
 

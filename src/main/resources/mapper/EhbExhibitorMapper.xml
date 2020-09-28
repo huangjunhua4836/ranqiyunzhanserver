@@ -24,18 +24,15 @@
 
     <select id="exibitionList" resultType= "com.yl.soft.dto.AppLoginDTO">
      	SELECT
-            e.*,
-            a.*
+            e.*
         FROM
             ehb_exhibitor e
-            LEFT JOIN ehb_audience a ON e.id = a.id
         where
-            a.isdel = #{paramMap.isdel}
-            and e.id != #{paramMap.id}
-            and a.state = #{paramMap.state}
+            e.isdel = #{paramMap.isdel}
+            and e.state = #{paramMap.state}
             <if test="paramMap.labelid!= null and paramMap.labelid!= ''">
-                and a.labelid in (${paramMap.labelid})
+                and e.labelid in (${paramMap.labelid})
             </if>
-            order by a.createtime desc
+            order by e.createtime desc
      </select>
 </mapper>

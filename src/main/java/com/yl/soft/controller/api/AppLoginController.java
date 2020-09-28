@@ -81,31 +81,51 @@ public class AppLoginController extends BaseController {
         if(StringUtils.isEmpty(password)){
             return setResultError("密码为空！");
         }
-
-        //根据登录名查询单个用户
+        //根据登录名查询单个参观用户
         QueryWrapper<EhbAudience> ehbAudienceQueryWrapper = new QueryWrapper<>();
         ehbAudienceQueryWrapper.eq("phone",phone);
         ehbAudienceQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
         EhbAudience ehbAudience = ehbAudienceService.getOne(ehbAudienceQueryWrapper);
-        if(ehbAudience == null){
-            return setResultError("用户不存在！");
-        }
+        //根据登录名查询单个展商
+        QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+        ehbExhibitorQueryWrapper.eq("phone",phone);
+        ehbExhibitorQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
+        EhbExhibitor ehbExhibitor = ehbExhibitorService.getOne(ehbExhibitorQueryWrapper);
+        //进行校验
         password = MD5Util.MD5(password);
-        if(!password.equals(ehbAudience.getPassword())){
-            return setResultError("密码错误！");
-        }
-        AppLoginDTO appLoginDTO = new AppLoginDTO();
-        BeanUtil.copyProperties(ehbAudience,appLoginDTO);
-        if(ehbAudience.getIszs()){
-            EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(ehbAudience.getId());
+        if(ehbAudience != null){//参展人
+            if(!password.equals(ehbAudience.getPassword())){
+                return setResultError("密码错误！");
+            }
+            AppLoginDTO appLoginDTO = new AppLoginDTO();
+            BeanUtil.copyProperties(ehbAudience,appLoginDTO);
+            appLoginDTO.setIszs(false);
+
+            boolean isSaveRedisAccessToken = redisService.set(UUID.randomUUID().toString(), JSON.toJSONString(appLoginDTO), BaseApiConstants.SESSIONEXPIRE);
+            if(!isSaveRedisAccessToken){
+                LogUtils.writeWarnLog(this.getClass(), "登录成功，但是保存redis失败！");
+                return setResultError("登录失败！");
+            }else{
+                return setResultSuccess(appLoginDTO);
+            }
+
+        }else if(ehbExhibitor != null){//展商
+            if(!password.equals(ehbExhibitor.getPassword())){
+                return setResultError("密码错误！");
+            }
+            AppLoginDTO appLoginDTO = new AppLoginDTO();
             BeanUtil.copyProperties(ehbExhibitor,appLoginDTO);
-        }
-        boolean isSaveRedisAccessToken = redisService.set(UUID.randomUUID().toString(), JSON.toJSONString(appLoginDTO), BaseApiConstants.SESSIONEXPIRE);
-        if(!isSaveRedisAccessToken){
-            LogUtils.writeWarnLog(this.getClass(), "登录成功，但是保存redis失败！");
-            return setResultError("登录失败！");
+            appLoginDTO.setIszs(true);
+
+            boolean isSaveRedisAccessToken = redisService.set(UUID.randomUUID().toString(), JSON.toJSONString(appLoginDTO), BaseApiConstants.SESSIONEXPIRE);
+            if(!isSaveRedisAccessToken){
+                LogUtils.writeWarnLog(this.getClass(), "登录成功，但是保存redis失败！");
+                return setResultError("登录失败！");
+            }else{
+                return setResultSuccess(appLoginDTO);
+            }
         }else{
-            return setResultSuccess(appLoginDTO);
+            return setResultError("用户不存在！");
         }
     }
 }

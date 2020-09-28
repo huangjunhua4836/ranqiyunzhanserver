@@ -27,30 +27,6 @@ import java.util.Map;
  */
 @Service
 public class EhbExhibitorServiceImpl extends ServiceImpl<EhbExhibitorMapper, EhbExhibitor> implements EhbExhibitorService {
-    @Autowired
-    private EhbAudienceMapper ehbAudienceMapper;
-
-    @Transactional
-    @Override
-    public boolean saveExhibitor(EhbAudience ehbAudience, EhbExhibitor ehbExhibitor) {
-        int i = ehbAudienceMapper.insert(ehbAudience);
-        if(i<=0){
-            return false;
-        }
-        QueryWrapper<EhbAudience> ehbAudienceQueryWrapper = new QueryWrapper<>();
-        ehbAudienceQueryWrapper.eq("phone",ehbAudience.getPhone());
-        ehbAudienceQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
-        ehbAudienceQueryWrapper.last("limit 1");
-        ehbAudienceQueryWrapper.orderByDesc("createtime");
-        ehbAudience = ehbAudienceMapper.selectOne(ehbAudienceQueryWrapper);
-        ehbExhibitor.setId(ehbAudience.getId());
-        i = baseMapper.insert(ehbExhibitor);
-        if(i>0){
-            return true;
-        }else{
-            return false;
-        }
-    }
 
     @Override
     public List<AppLoginDTO> randExibitionList(Map paramMap) {

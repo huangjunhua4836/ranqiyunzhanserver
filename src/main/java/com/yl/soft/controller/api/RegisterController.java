@@ -55,7 +55,6 @@ public class RegisterController extends BaseController {
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
         ehbAudience.setIsdel(false);
         ehbAudience.setCreatetime(LocalDateTime.now());
-        ehbAudience.setIszs(false);//不是展商
         if(ehbAudienceService.save(ehbAudience)){
             return setResultSuccess();
         }else{
@@ -79,15 +78,12 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/registerExhibitor")
     public BaseResponse registerExhibitor(RegisterExhibitorDto registerExhibitorDto) {
-        EhbAudience ehbAudience = new EhbAudience();
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
-        BeanUtil.copyProperties(registerExhibitorDto,ehbAudience);
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
-        ehbAudience.setIsdel(false);
-        ehbAudience.setCreatetime(LocalDateTime.now());
-        ehbAudience.setState(0);//待审核
-        ehbAudience.setIszs(true);//是展商
-        if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
+        ehbExhibitor.setIsdel(false);
+        ehbExhibitor.setCreatetime(LocalDateTime.now());
+        ehbExhibitor.setState(0);//待审核
+        if(ehbExhibitorService.save(ehbExhibitor)){
             return setResultSuccess();
         }else{
             return setResultError("保存失败！");

@@ -18,14 +18,6 @@ import java.util.Map;
  */
 public interface EhbExhibitorService extends IService<EhbExhibitor> {
     /**
-     * 注册展商用户
-     * @param ehbAudience
-     * @param ehbExhibitor
-     * @return
-     */
-    boolean saveExhibitor(EhbAudience ehbAudience,EhbExhibitor ehbExhibitor);
-
-    /**
      * 随机参展商列表
      * @param paramMap
      * @return

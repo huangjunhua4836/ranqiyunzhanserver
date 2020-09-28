@@ -25,7 +25,23 @@ import java.io.Serializable;
 @ApiModel(value="EhbExhibitor对象", description="参展商信息")
 public class EhbExhibitor extends BaseEntity implements Serializable {
 
+    //state 0：未审核  1：审核通过
     private static final long serialVersionUID=1L;
+
+    @ApiModelProperty(value = "登录名称")
+    private String loginname;
+
+    @ApiModelProperty(value = "密码")
+    private String password;
+
+    @ApiModelProperty(value = "手机")
+    private String phone;
+
+    @ApiModelProperty(value = "姓名")
+    private String name;
+
+    @ApiModelProperty(value = "企业描述")
+    private String describes;
 
     @ApiModelProperty(value = "管理人员")
     private String managerman;
