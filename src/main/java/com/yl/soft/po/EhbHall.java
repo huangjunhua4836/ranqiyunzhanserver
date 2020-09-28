@@ -1,5 +1,6 @@
 package com.yl.soft.po;
 
+import com.yl.soft.po.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,7 +21,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="EhbHall对象", description="虚拟展厅信息表")
-public class EhbHall implements Serializable {
+public class EhbHall extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
 
