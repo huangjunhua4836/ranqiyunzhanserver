@@ -1,6 +1,7 @@
 package com.yl.soft.po;
 
-import java.sql.Blob;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,21 +20,19 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="EhbAboutus对象", description="")
-public class EhbAboutus implements Serializable {
+@ApiModel(value="EhbDataUpload对象", description="")
+public class EhbDataUpload implements Serializable {
 
     private static final long serialVersionUID=1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty(value = "用户协议")
-    private String useragr;
+    @ApiModelProperty(value = "资料标题")
+    private String title;
 
-    @ApiModelProperty(value = "用户协议")
-    private String communitynorms;
-
-    @ApiModelProperty(value = "隐私")
-    private String privacyclause;
+    @ApiModelProperty(value = "资料上传地址")
+    private String upadd;
 
 
 }

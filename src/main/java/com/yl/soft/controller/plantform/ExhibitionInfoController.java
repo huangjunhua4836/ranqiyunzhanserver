@@ -10,6 +10,7 @@ import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.po.CrmRole;
+import com.yl.soft.po.EhbAudience;
 import com.yl.soft.service.CrmRoleService;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class ExhibitionInfoController extends BaseController {
 
     @GetMapping("/list")
     public String list() {
-        return "role/list";
+        return "exhibitioninfo/list";
     }
 
     /**
@@ -51,29 +52,29 @@ public class ExhibitionInfoController extends BaseController {
      * @param endTime
      * @return
      */
-    @GetMapping("/initTable")
-    @ResponseBody
-    public TableVo initTable(String page, String limit, CrmRole crmRole, String startTime, String endTime) {
-        QueryWrapper<CrmRole> crmRoleQueryWrapper = new QueryWrapper<>();
-        crmRoleQueryWrapper.eq(!StringUtils.isEmpty(crmRole.getId()),"ID",crmRole.getId());
-        crmRoleQueryWrapper.like(!StringUtils.isEmpty(crmRole.getName()),"NAME",crmRole.getName());
-        crmRoleQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"CREATE_TIME",startTime,endTime);
-        crmRoleQueryWrapper.eq("ISDEL", CommonDict.CORRECT_STATE);
-        crmRoleQueryWrapper.orderByDesc("CREATE_TIME");
-        PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
-        List<CrmRole> crmRoles = crmRoleService.list(crmRoleQueryWrapper);
-        PageInfo pageInfo = new PageInfo<>(crmRoles);
-
-        TableVo tableVo = new TableVo();
-        tableVo.setCode(0);
-        tableVo.setMsg("");
-        tableVo.setCount((int)pageInfo.getTotal());
-        tableVo.setData(pageInfo.getList());
-        return tableVo;
-    }
+//    @GetMapping("/initTable")
+//    @ResponseBody
+//    public TableVo initTable(String page, String limit, EhbAudience ehbAudience, String startTime, String endTime) {
+//        QueryWrapper<EhbAudience> ehbAudienceQueryWrapper = new QueryWrapper<>();
+//        ehbAudienceQueryWrapper.eq(!StringUtils.isEmpty(ehbAudience.getPhone()),"phone",ehbAudience.getPhone());
+//        crmRoleQueryWrapper.like(!StringUtils.isEmpty(crmRole.getName()),"NAME",crmRole.getName());
+//        crmRoleQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"CREATE_TIME",startTime,endTime);
+//        crmRoleQueryWrapper.eq("ISDEL", CommonDict.CORRECT_STATE);
+//        crmRoleQueryWrapper.orderByDesc("CREATE_TIME");
+//        PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
+//        List<CrmRole> crmRoles = crmRoleService.list(crmRoleQueryWrapper);
+//        PageInfo pageInfo = new PageInfo<>(crmRoles);
+//
+//        TableVo tableVo = new TableVo();
+//        tableVo.setCode(0);
+//        tableVo.setMsg("");
+//        tableVo.setCount((int)pageInfo.getTotal());
+//        tableVo.setData(pageInfo.getList());
+//        return tableVo;
+//    }
 
     /**
-     * 跳转到单个角色添加或者修改页面
+     * 添加或者修改页面
      * @param id
      * @return
      */
@@ -91,7 +92,7 @@ public class ExhibitionInfoController extends BaseController {
     }
 
     /**
-     * 添加或者修改角色
+     * 添加或者修改
      * @param crmRole
      * @return
      */
@@ -114,7 +115,7 @@ public class ExhibitionInfoController extends BaseController {
     }
 
     /**
-     * 删除角色
+     * 删除
      * @return
      */
     @PostMapping("/delete")
