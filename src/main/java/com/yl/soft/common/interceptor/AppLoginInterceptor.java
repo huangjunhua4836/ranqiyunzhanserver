@@ -66,7 +66,6 @@ public class AppLoginInterceptor implements HandlerInterceptor {
         //生产环境请去掉testtoken
         if("123456".equals(token)){
             EhbAudience ehbAudience = ehbAudienceService.getById(1);
-            String token2 = UUID.randomUUID().toString();
             SessionUser sessionUser = new SessionUser();
             sessionUser.setCode(0);
             sessionUser.setId(ehbAudience.getId());
