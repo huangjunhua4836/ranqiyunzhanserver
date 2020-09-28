@@ -38,7 +38,7 @@ import java.util.Set;
  * @since 2020-09-03
  */
 @Controller
-@RequestMapping("/crmMember")
+@RequestMapping("/platform/crmMember")
 public class CrmMemberController extends BaseController {
     @Autowired
     public CrmMemberService crmMemberService;

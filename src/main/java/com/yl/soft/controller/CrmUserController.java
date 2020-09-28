@@ -32,7 +32,7 @@ import java.util.List;
  * @since 2020-09-09
  */
 @Controller
-@RequestMapping("/crmUser")
+@RequestMapping("/platform/crmUser")
 public class CrmUserController extends BaseResponseUtil {
     @Autowired
     public CrmUserService crmUserService;

@@ -34,7 +34,7 @@ import java.util.List;
  * @since 2020-09-03
  */
 @Controller
-@RequestMapping("/crmMenu")
+@RequestMapping("/platform/crmMenu")
 public class CrmMenuController extends BaseController {
     @Autowired
     public CrmMenuService crmMenuService;

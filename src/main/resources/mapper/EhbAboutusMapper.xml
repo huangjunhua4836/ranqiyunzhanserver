@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yl.soft.mapper.EhbAboutusMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yl.soft.po.EhbAboutus">
+        <id column="id" property="id" />
+        <result column="useragr" property="useragr" />
+        <result column="communitynorms" property="communitynorms" />
+        <result column="privacyclause" property="privacyclause" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, useragr, communitynorms, privacyclause
+    </sql>
+
+</mapper>

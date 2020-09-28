@@ -33,7 +33,7 @@ import java.util.List;
  * @since 2020-09-03
  */
 @Controller
-@RequestMapping("/crmOrganization")
+@RequestMapping("/platform/crmOrganization")
 public class CrmOrganizationController extends BaseController {
     @Autowired
     CrmOrganizationService crmOrganizationService;

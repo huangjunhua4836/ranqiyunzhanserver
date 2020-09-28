@@ -1,4 +1,4 @@
-package com.yl.soft.controller;
+package com.yl.soft.controller.plantform;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -25,15 +25,15 @@ import java.util.List;
 
 /**
  * <p>
- * 角色表 前端控制器
+ * 参展信息
  * </p>
  *
  * @author ${author}
  * @since 2020-09-09
  */
 @Controller
-@RequestMapping("/platform/crmRole")
-public class CrmRoleController extends BaseController {
+@RequestMapping("/platform/exhibitionInfo")
+public class ExhibitionInfoController extends BaseController {
     @Autowired
     public CrmRoleService crmRoleService;
 
@@ -43,7 +43,7 @@ public class CrmRoleController extends BaseController {
     }
 
     /**
-     * 查询角色列表
+     * 列表
      * @param page
      * @param limit
      * @param crmRole

@@ -23,8 +23,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/platform")
 public class LoginController extends BaseController {
-    @Autowired
-    private RedisService redisService;
 
     @Autowired
     private CrmUserService crmUserService;
@@ -57,7 +55,6 @@ public class LoginController extends BaseController {
     @ResponseBody
     public BaseResponse logout(HttpServletRequest request) {
         //注销
-        redisService.del(request.getSession(false).getId());
         request.getSession(false).invalidate();
         return setResultSuccess("成功注销！");
     }
