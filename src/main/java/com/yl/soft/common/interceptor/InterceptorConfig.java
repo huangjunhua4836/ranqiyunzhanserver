@@ -24,8 +24,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
 //                registry.addInterceptor(new ApiInterceptor()).addPathPatterns("/**");
 
                 //配置设备登录拦截器
-//                registry.addInterceptor(new TracebacktoLoginInterceptor(redisService)).addPathPatterns("/tracebackto/api/**")
-//                        .excludePathPatterns("/tracebackto/api/login","/tracebackto/api/logout");
+                registry.addInterceptor(new PlatformInterceptor(redisService)).addPathPatterns("/platform/**")
+                        .excludePathPatterns("/platform/logout","/platform/login");
 
                 //配置APP登录拦截器
                 registry.addInterceptor(new AppLoginInterceptor(redisService)).addPathPatterns("/api/**")

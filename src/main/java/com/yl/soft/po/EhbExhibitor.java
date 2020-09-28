@@ -2,6 +2,7 @@ package com.yl.soft.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.yl.soft.po.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,12 +23,9 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="EhbExhibitor对象", description="参展商信息")
-public class EhbExhibitor implements Serializable {
+public class EhbExhibitor extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
-
-    @TableId(value = "id",type = IdType.INPUT)
-    private Integer id;
 
     @ApiModelProperty(value = "管理人员")
     private String managerman;
@@ -58,4 +56,7 @@ public class EhbExhibitor implements Serializable {
 
     @ApiModelProperty(value = "公司网址")
     private String website;
+
+    @ApiModelProperty(value = "企业图片")
+    private String img;
 }
