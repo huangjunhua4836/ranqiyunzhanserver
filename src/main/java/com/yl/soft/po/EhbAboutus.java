@@ -29,10 +29,10 @@ public class EhbAboutus implements Serializable {
     @ApiModelProperty(value = "用户协议")
     private String useragr;
 
-    @ApiModelProperty(value = "用户协议")
+    @ApiModelProperty(value = "社区规范")
     private String communitynorms;
 
-    @ApiModelProperty(value = "隐私")
+    @ApiModelProperty(value = "隐私条款")
     private String privacyclause;
 
 
