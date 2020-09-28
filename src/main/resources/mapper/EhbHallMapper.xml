@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yl.soft.mapper.EhbHallMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yl.soft.po.EhbHall">
+        <id column="id" property="id" />
+        <result column="isdel" property="isdel" />
+        <result column="version" property="version" />
+        <result column="state" property="state" />
+        <result column="updatetime" property="updatetime" />
+        <result column="updateuser" property="updateuser" />
+        <result column="createtime" property="createtime" />
+        <result column="createuser" property="createuser" />
+        <result column="exhibitorid" property="exhibitorid" />
+        <result column="exhibitorname" property="exhibitorname" />
+        <result column="boothno" property="boothno" />
+        <result column="hallurl" property="hallurl" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        isdel, version, state, updatetime, updateuser, createtime, createuser, id, exhibitorid, exhibitorname, boothno, hallurl
+    </sql>
+
+</mapper>
