@@ -4,9 +4,7 @@
  */
 package com.yl.soft.common.interceptor;
 
-import com.alibaba.fastjson.JSON;
 import com.yl.soft.common.unified.redis.RedisService;
-import com.yl.soft.common.unified.service.BaseResponseUtil;
 import com.yl.soft.common.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,14 +41,9 @@ public class PlatformInterceptor implements HandlerInterceptor {
         //后台登录拦截器
         System.out.println("***********拦截器执行*******************");
         response.setCharacterEncoding("utf-8");
-        String token = request.getParameter("token");
+        String token = request.getSession().getAttribute("loginUserInfo")+"";
+        System.out.println(token);
         if(StringUtils.isEmpty(token)){
-//            PrintWriter out = response.getWriter();
-//            out.println(JSON.toJSON(new BaseResponseUtil().setResultError(401,"","token为空！")));
-//            out.flush();
-//            out.close();
-//            return false;
-
             //转发到登陆页面
             PrintWriter out = response.getWriter();
             out.println("<html>");
@@ -60,26 +53,6 @@ public class PlatformInterceptor implements HandlerInterceptor {
             out.println("</html>");
             return false;
 
-        }
-        //生产环境请去掉testtoken
-        if("123456".equals(token)){
-            return true;
-        }
-        if(!redisService.hasKey(token)){
-//            PrintWriter out = response.getWriter();
-//            out.println(JSON.toJSON(new BaseResponseUtil().setResultError(402,"","token失效！")));
-//            out.flush();
-//            out.close();
-//            return false;
-
-            //转发到登陆页面
-            PrintWriter out = response.getWriter();
-            out.println("<html>");
-            out.println("<script>");
-            out.println("window.open ('/platform/login','_top')");
-            out.println("</script>");
-            out.println("</html>");
-            return false;
         }
         return true;
     }

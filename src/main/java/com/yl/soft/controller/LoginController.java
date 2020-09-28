@@ -1,10 +1,7 @@
 package com.yl.soft.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.yl.soft.common.constants.BaseApiConstants;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.redis.RedisService;
-import com.yl.soft.common.util.LogUtils;
 import com.yl.soft.common.util.MD5Util;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
@@ -14,7 +11,10 @@ import com.yl.soft.service.CrmRoleService;
 import com.yl.soft.service.CrmUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,7 +37,7 @@ public class LoginController extends BaseController {
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
         System.out.println(basePath);
         request.getSession().setAttribute("basePath",basePath);
-        return "index";
+        return "index2";
     }
 
     /**
@@ -102,11 +102,7 @@ public class LoginController extends BaseController {
             sessionUser.setCrmMenus(crmMenus);//登录用户权限
         }
         HttpSession session = request.getSession();
-        session.setAttribute("loginUserInfo",sessionUser);//利用shiro的session保存登陆者信息
-        boolean isSaveRedisAccessToken = redisService.set(session.getId(), JSON.toJSONString(sessionUser), BaseApiConstants.SESSIONEXPIRE);
-        if(!isSaveRedisAccessToken){
-            LogUtils.writeWarnLog(this.getClass(), "登录成功，但是保存redis失败！");
-        }
+        session.setAttribute("loginUserInfo",sessionUser);//利用session保存登陆者信息
         return setResultSuccess();
     }
 }

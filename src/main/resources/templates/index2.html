@@ -10,14 +10,14 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    [[${loginUserInfo.crmUserDTO.nickname}]]
+                    <span id="nickname"></span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="#" lay-onclick = "userInfo">基本资料</a></dd>
                     <dd><a href="#" lay-onclick = "security">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="/manager/logout"><i class="layui-icon layui-icon-logout" style="font-size: 20px;" title="退了"></i></a></li>
+            <li class="layui-nav-item" lay-onclick="logout"><a href="#"><i class="layui-icon layui-icon-logout" style="font-size: 20px;" title="退了"></i></a></li>
         </ul>
     </div>
 
@@ -28,21 +28,35 @@
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;">系统管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" menuid="11" menuurl='<iframe src="http://localhost:8400/manager/menuTree" width="100%" height="580px;" frameborder="0"></iframe>'>菜单管理</a></dd>
-                        <dd><a href="javascript:;" menuid="22" menuurl='<iframe src="http://localhost:8400/manager/orgList" width="100%" height="580px;" frameborder="0"></iframe>'>机构管理</a></dd>
-                        <dd><a href="javascript:;" menuid="22-1" menuurl='<iframe src="http://localhost:8400/manager/memberList" width="100%" height="580px;" frameborder="0"></iframe>'>科室管理</a></dd>
-                        <dd><a href="javascript:;" menuid="22-2" menuurl='<iframe src="http://localhost:8400/manager/orgTree" width="100%" height="580px;" frameborder="0"></iframe>'>机构树</a></dd>
-                        <dd><a href="javascript:;" menuid="33">操作日志</a></dd>
+                        <dd><a href="javascript:;" menuid="11" menuurl='<iframe src="/crmUser/userList" width="100%" height="440px;" frameborder="0"></iframe>'>用户管理</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">组织机构管理</a>
+                    <a href="javascript:;">基础信息</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" menuid="44" menuurl='<iframe src="http://localhost:8400/manager/userList" width="100%" height="580px;" frameborder="0"></iframe>'>用户管理</a></dd>
-                        <dd><a href="javascript:;" menuid="55" menuurl='<iframe src="http://localhost:8400/manager/positionList" width="100%" height="580px;" frameborder="0"></iframe>'>岗位管理</a></dd>
+                        <dd><a href="javascript:;" menuid="22" menuurl='<iframe src="/herdsmen/list" width="100%" height="440px;" frameborder="0"></iframe>'>牧户查询</a></dd>
+                        <dd><a href="javascript:;" menuid="33" menuurl='<iframe src="/chip/list" width="100%" height="440px;" frameborder="0"></iframe>'>芯片查询</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="javascript:;" menuid="66" menuurl='<iframe src="http://localhost:8400/manager/positionList" width="100%" height="580px;" frameborder="0"></iframe>'>测试</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">免疫查询</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" menuid="44" menuurl='<iframe src="/immunity/list" width="100%" height="440px;" frameborder="0"></iframe>'>免疫追溯</a></dd>
+                        <dd><a href="javascript:;" menuid="55" menuurl='<iframe src="/diagnosis/list" width="100%" height="440px;" frameborder="0"></iframe>'>诊疗信息</a></dd>
+                        <dd><a href="javascript:;" menuid="66" menuurl='<iframe src="/disinfect/list" width="100%" height="440px;" frameborder="0"></iframe>'>消毒信息</a></dd>
+                        <dd><a href="javascript:;" menuid="77" menuurl='<iframe src="/breed/list" width="100%" height="440px;" frameborder="0"></iframe>'>繁育信息</a></dd>
+                        <dd><a href="javascript:;" menuid="88" menuurl='<iframe src="/deworming/list" width="100%" height="440px;" frameborder="0"></iframe>'>驱虫信息</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">统计报表</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" menuid="99" menuurl='<iframe src="http://localhost:8400/manager/userList" width="100%" height="440px;" frameborder="0"></iframe>'>地域统计</a></dd>
+                        <dd><a href="javascript:;" menuid="1010" menuurl='<iframe src="http://localhost:8400/manager/positionList" width="100%" height="440px;" frameborder="0"></iframe>'>时间统计</a></dd>
+                        <dd><a href="javascript:;" menuid="1111" menuurl='<iframe src="http://localhost:8400/manager/positionList" width="100%" height="440px;" frameborder="0"></iframe>'>牧户统计</a></dd>
+                        <dd><a href="javascript:;" menuid="1212" menuurl='<iframe src="http://localhost:8400/manager/positionList" width="100%" height="440px;" frameborder="0"></iframe>'>药品统计</a></dd>
+                    </dl>
+                </li>
             </ul>
         </div>
     </div>
@@ -57,7 +71,7 @@
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
-                    <iframe src="http://localhost:8300/druid/index.html" width="100%" height="540px;"></iframe>
+                    <iframe src="/crmUser/userList" width="100%" height="540px;" frameborder="0"></iframe>
                 </div>
             </div>
         </div>
@@ -71,43 +85,19 @@
         <div class="layui-form-item">
             <label class="layui-form-label">昵称</label>
             <div class="layui-input-block">
-                <input type="text" class="layui-input" readonly>
+                <input type="text" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">登录账号</label>
             <div class="layui-input-block">
-                <input type="text" class="layui-input" readonly>
+                <input type="text" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">机构名称</label>
+            <label class="layui-form-label">角色</label>
             <div class="layui-input-block">
-                <input type="text" class="layui-input" readonly>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">科室名称</label>
-            <div class="layui-input-block">
-                <input type="text" class="layui-input" readonly>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">权重</label>
-            <div class="layui-input-block">
-                <input type="text" class="layui-input" readonly>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">电话</label>
-            <div class="layui-input-block">
-                <input type="text" class="layui-input" readonly>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">岗位</label>
-            <div class="layui-input-block">
-                <input type="text" class="layui-input" readonly>
+                <input type="text" class="layui-input">
             </div>
         </div>
     </form>
@@ -116,11 +106,41 @@
 <script>
     //JavaScript代码区域
     layui.use('core', function(){
+        // alert("loginUserInfo:"+JSON.stringify(loginUserInfo));
         var $ = layui.jquery
             ,element = layui.element //Tab的切换功能，切换事件监听等，需要依赖element模块
             ,core = layui.core
             ,util = layui.util;
 
+        $('#nickname').text(loginUserInfo.name);
+        $('#detail').find("input").eq(0).attr("value",loginUserInfo.name);
+        $('#detail').find("input").eq(1).attr("value",loginUserInfo.loginname);
+        $('#detail').find("input").eq(2).attr("value",loginUserInfo.roleName);
+
+        // var crmAuzDTOs = loginUserInfo.crmAuzDTOs;
+        // var level1= "";//一级菜单HTML
+        // for(var i=0;i<crmAuzDTOs.length;i++){
+        //     if(crmAuzDTOs[i].level == 2){//取出所有一级菜单
+        //         if(crmAuzDTOs[i].url!=null){//一级菜单有跳转的
+        //             level1 +='<li class="layui-nav-item">' +
+        //                 '<a href="javascript:;" menuid="'+crmAuzDTOs[i].menu_id+'" menuurl=\'<iframe src="http://localhost:8400'+crmAuzDTOs[i].url+'" width="100%" height="580px;" frameborder="0"></iframe>\'>'+crmAuzDTOs[i].name+'</a></li>';
+        //         }else{//一级菜单没有跳转的
+        //             level1 +='<li class="layui-nav-item"><a href="javascript:;">'+crmAuzDTOs[i].name+'</a><dl class="layui-nav-child">';
+        //             var level2 ='';//二级菜单HTML
+        //             for(var j=0;j<crmAuzDTOs.length;j++){
+        //                 //取出每一个一级菜单的子二级菜单
+        //                 if(crmAuzDTOs[j].level == 3 && crmAuzDTOs[j].parent_id == crmAuzDTOs[i].menu_id){
+        //                     level2 += '<dd><a href="javascript:;" menuid="'+crmAuzDTOs[j].menu_id+'" menuurl=\'<iframe src="http://localhost:8400'+crmAuzDTOs[j].url+'" width="100%" height="580px;" frameborder="0"></iframe>\'>'+crmAuzDTOs[j].name+'</a></dd>';
+        //                 }
+        //             }
+        //             level1 += level2;
+        //             level1 +='</dl></li>';
+        //         }
+        //     }
+        // }
+        // $('.layui-nav-tree').html(level1);//写入页面元素
+        //
+        // element.render();//重新对动态生成的菜单进行渲染
         //触发事件
         var active = {
             tabAdd: function(title,id,content){
@@ -159,7 +179,6 @@
 
             var title = elem.text();
             var menuid = elem.attr("menuid");
-            // alert(menuid);
 
             if(!core.isEmpty(menuid)){//必须是叶子菜单才能打开选项卡
                 var flag = true;
@@ -183,24 +202,25 @@
         //按钮事件
         util.event('lay-onclick', {
             userInfo: function(){
-                core.openDialog('基本资料',$('#detail').html(),['500px','510px']);
-                $('.layui-layer-content').find('input').eq(0).val(loginUserInfo.crmUserDTO.nickname);
-                $('.layui-layer-content').find('input').eq(1).val(loginUserInfo.crmUserDTO.user_code);
-                $('.layui-layer-content').find('input').eq(2).val(loginUserInfo.crmUserDTO.org_name);
-                $('.layui-layer-content').find('input').eq(3).val(loginUserInfo.crmUserDTO.member_name);
-                $('.layui-layer-content').find('input').eq(4).val(loginUserInfo.crmUserDTO.weight);
-                $('.layui-layer-content').find('input').eq(5).val(loginUserInfo.crmUserDTO.phone);
-                $('.layui-layer-content').find('input').eq(6).val(loginUserInfo.crmUserDTO.position_name);
+                core.openDialog('基本资料',$('#detail').html(),['500px','300px']);
             },
             security:function(){
                 layer.msg("密码修改，敬请期待！");
+            },
+            logout:function(){
+                layer.confirm('确定退出么？', function(index){
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    var resultData = core.ajax('/platform/logout',false,'GET',null);
+                    if(resultData!=false){
+                        layer.msg('退出成功！',{time: 3000}, function(){
+                            location.href="/platform/login";
+                        });
+                    }
+                });
             }
         });
     });
-</script>
-
-<script th:inline="javascript">
-    loginUserInfo = [[${loginUserInfo}]];//登录者信息保存
 </script>
 </body>
 </html>
