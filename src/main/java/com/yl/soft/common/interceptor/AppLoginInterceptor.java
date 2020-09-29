@@ -71,10 +71,6 @@ public class AppLoginInterceptor implements HandlerInterceptor {
             sessionUser.setId(ehbAudience.getId());
             BeanUtils.copyProperties(ehbAudience, sessionUser);
             redisService.set(token, sessionUser);
-            EhbAudienceDto userDto = UserConv.do2dto(ehbAudience);
-            ResultItem<EhbAudienceDto> result = new ResultItem<>();
-            result.setToken(token);
-            result.setData(userDto);
             return true;
         }
         if(!redisService.hasKey(token)){

@@ -36,4 +36,10 @@ public class EhbAdvertising extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
+
+    @ApiModelProperty(value = "类型：1-站内   2-站外")
+    private Integer type;
+
+    @ApiModelProperty(value = "站内跳转位置：1-企业详情页面")
+    private Integer position;
 }

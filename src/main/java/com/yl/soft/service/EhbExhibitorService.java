@@ -1,8 +1,7 @@
 package com.yl.soft.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yl.soft.dto.AppLoginDTO;
-import com.yl.soft.po.EhbAudience;
+import com.yl.soft.dto.app.ExhibitorDto;
 import com.yl.soft.po.EhbExhibitor;
 
 import java.util.List;
@@ -22,5 +21,5 @@ public interface EhbExhibitorService extends IService<EhbExhibitor> {
      * @param paramMap
      * @return
      */
-    List<AppLoginDTO> randExibitionList(Map paramMap);
+    List<ExhibitorDto> randExibitionList(Map paramMap);
 }

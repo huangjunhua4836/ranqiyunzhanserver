@@ -1,7 +1,7 @@
 package com.yl.soft.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yl.soft.dto.AppLoginDTO;
+import com.yl.soft.dto.app.ExhibitorDto;
 import com.yl.soft.po.EhbExhibitor;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,5 +22,5 @@ public interface EhbExhibitorMapper extends BaseMapper<EhbExhibitor> {
      * @param paramMap
      * @return
      */
-     List<AppLoginDTO> exibitionList(@Param("paramMap") Map paramMap);
+     List<ExhibitorDto> exibitionList(@Param("paramMap") Map paramMap);
 }

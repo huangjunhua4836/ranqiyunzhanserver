@@ -7,8 +7,9 @@ import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
-import com.yl.soft.dto.AppLoginDTO;
 import com.yl.soft.dto.OpportunityDto;
+import com.yl.soft.dto.base.SessionState;
+import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbAdvertising;
 import com.yl.soft.service.EhbAdvertisingService;
 import com.yl.soft.service.EhbOpportunityService;
@@ -32,6 +33,8 @@ public class OpportunityController extends BaseController {
     private EhbOpportunityService ehbOpportunityService;
     @Autowired
     private EhbAdvertisingService ehbAdvertisingService;
+    @Autowired
+    private SessionState sessionState;
 
     /**
      * 商机列表-推荐
@@ -58,7 +61,7 @@ public class OpportunityController extends BaseController {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
-        AppLoginDTO appLoginDTO = getCurrAppLogin(paramMap.get("token").toString());
+        SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
         conditionMap.put("enterprisename",paramMap.get("enterprisename"));

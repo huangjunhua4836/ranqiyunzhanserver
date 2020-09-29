@@ -1,11 +1,9 @@
 package com.yl.soft.controller.base;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.unified.service.BaseResponseUtil;
 import com.yl.soft.common.util.StringUtils;
-import com.yl.soft.dto.AppLoginDTO;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.po.CrmCity;
 import com.yl.soft.po.CrmCounty;
@@ -125,17 +123,17 @@ public class BaseController extends BaseResponseUtil {
         Integer[] pageParam = new Integer[2];
         int pageNum = 0;
         int pageSize = 0;
-        if(paramMap!=null){
+        if(paramMap == null){
             pageNum = 1;
+            pageSize = 20;
+        }
+        if(paramMap.get("pageNum")!=null){
+            pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
             pageSize = 20;
         }
         if(paramMap.get("pageNum")!=null && paramMap.get("pageSize") !=null){
             pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
             pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
-        }
-        if(paramMap.get("pageNum")!=null){
-            pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
-            pageSize = 20;
         }
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 20 : pageSize;
@@ -149,13 +147,13 @@ public class BaseController extends BaseResponseUtil {
      * @param token
      * @return
      */
-    protected AppLoginDTO getCurrAppLogin(String token){
-        if("123456".equals(token)){
-            AppLoginDTO appLoginDTO = new AppLoginDTO();
-            appLoginDTO.setId(1);
-            appLoginDTO.setLabelid("1,2,3,4");
-            return appLoginDTO;
-        }
-        return JSONObject.parseObject(redisService.get(token),AppLoginDTO.class);
-    }
+//    protected AppLoginDTO getCurrAppLogin(String token){
+//        if("123456".equals(token)){
+//            AppLoginDTO appLoginDTO = new AppLoginDTO();
+//            appLoginDTO.setId(1);
+//            appLoginDTO.setLabelid("1,2,3,4");
+//            return appLoginDTO;
+//        }
+//        return JSONObject.parseObject(redisService.get(token),AppLoginDTO.class);
+//    }
 }

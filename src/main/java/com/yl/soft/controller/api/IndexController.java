@@ -7,7 +7,10 @@ import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
-import com.yl.soft.dto.AppLoginDTO;
+import com.yl.soft.dto.EhbExhibitorDto;
+import com.yl.soft.dto.app.ExhibitorDto;
+import com.yl.soft.dto.base.SessionState;
+import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.*;
 import com.yl.soft.service.*;
 import io.swagger.annotations.*;
@@ -36,6 +39,8 @@ public class IndexController extends BaseController {
     private EhbBannerService ehbBannerService;
     @Autowired
     private EhbGuestService ehbGuestService;
+    @Autowired
+    private SessionState sessionState;
 
 
     /**
@@ -46,6 +51,7 @@ public class IndexController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
+            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -55,11 +61,11 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/randExibitionList")
-    public BaseResponse<PageInfo<AppLoginDTO>> randExibitionList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<PageInfo<EhbExhibitorDto>> randExibitionList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
-        AppLoginDTO appLoginDTO = getCurrAppLogin(paramMap.get("token").toString());
+        SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
         conditionMap.put("state",1);
@@ -68,7 +74,7 @@ public class IndexController extends BaseController {
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
-        List<AppLoginDTO> appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
+        List<ExhibitorDto> appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
         Collections.shuffle(appLoginDTOS);
         return setResultSuccess(new PageInfo<>(appLoginDTOS));
     }
@@ -81,6 +87,7 @@ public class IndexController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
+            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
             ,@ApiImplicitParam(name = "title", value = "资讯标题", paramType = "query")
     })
     @ApiResponses({
@@ -115,6 +122,7 @@ public class IndexController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
+            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -128,7 +136,7 @@ public class IndexController extends BaseController {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
-        AppLoginDTO appLoginDTO = getCurrAppLogin(paramMap.get("token").toString());
+        SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
         QueryWrapper<EhbOpportunity> ehbOpportunityQueryWrapper = new QueryWrapper<>();
         ehbOpportunityQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbOpportunityQueryWrapper.eq("createuser",appLoginDTO.getId());//必须是本企业
@@ -150,6 +158,7 @@ public class IndexController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
+            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
             ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
             ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
     })

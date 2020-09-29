@@ -21,7 +21,7 @@
         id, managerman, idcard, enterprisename, tel, businesslicense, credentials, isjoin, boothno, address
     </sql>
 
-    <select id="exibitionList" resultType= "com.yl.soft.dto.AppLoginDTO">
+    <select id="exibitionList" resultType= "com.yl.soft.dto.app.ExhibitorDto">
      	SELECT
             e.*
         FROM
