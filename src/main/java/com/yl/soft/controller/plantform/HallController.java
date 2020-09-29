@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>
- * 虚拟展厅表 前端控制器
+ * 虚拟展厅表 前端控制器（未完成待续）
  * </p>
  *
  * @author ${author}

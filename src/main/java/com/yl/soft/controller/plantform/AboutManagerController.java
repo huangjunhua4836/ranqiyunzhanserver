@@ -1,45 +1,36 @@
-package com.yl.soft.controller;
+package com.yl.soft.controller.plantform;
 
 
 import cn.hutool.json.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.yl.soft.common.constants.BaseApiConstants;
-import com.yl.soft.common.unified.entity.BaseResponse;
-import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
-import com.yl.soft.dict.CommonDict;
-import com.yl.soft.po.CrmRole;
 import com.yl.soft.service.CrmRoleService;
-import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * <p>
- * 角色表 前端控制器
+ * 关于表 前端控制器
  * </p>
  *
  * @author ${author}
  * @since 2020-09-09
  */
 @Controller
-@RequestMapping("/platform/demo")
-public class DemoController extends BaseController {
+@RequestMapping("/platform/about")
+public class AboutManagerController extends BaseController {
     @Autowired
     public CrmRoleService crmRoleService;
 
     @GetMapping("/list")
     public String list() {
-        return "jsp/demo2";
+        return "about/list";
     }
 
     @ResponseBody

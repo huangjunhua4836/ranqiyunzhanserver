@@ -40,12 +40,22 @@
 			allowImageUpload: true,
 			// 设置上传文件类型
 			dir : "image",
-			afterCreate: function () {
+			afterCreate: function () {//创建完成之后回显
 				this.sync();
 			},
-			afterChange: function () {
+			afterChange: function () {//内容改动之后回显
 				this.sync();
-			}
+			},
+			items:[
+				'|', 'undo', 'redo', '|', 'preview', 'print', 'cut', 'copy', 'paste',
+				'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+				'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+				'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+				'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+				'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+				'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+				'anchor', 'link', 'unlink', '|', 'about'
+			]
 		});
 	});
 </script>
@@ -54,5 +64,12 @@
 	$("#submit").click(function () {
 		document.forms['example'].submit();
 	})
+
+	$(document).ready(function () {
+		// data-name="multiimage"
+		// $("span[data-name='multiimage']").hide();
+		// $("span[data-name='flash']").hide();
+		// $("span[data-name='media']").hide();
+	});
 </script>
 </html>

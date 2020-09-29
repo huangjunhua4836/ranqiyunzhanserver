@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * <p>
- * 专业人信息
+ * 观展人信息
  * </p>
  *
  * @author ${author}
