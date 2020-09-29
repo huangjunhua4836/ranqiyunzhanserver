@@ -7,7 +7,7 @@ import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
-import com.yl.soft.dto.EhbExhibitorDto;
+import com.yl.soft.dto.app.ArticleDto;
 import com.yl.soft.dto.app.ExhibitorDto;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Api(tags = {"C端模块-首页"})
 @RestController
@@ -61,7 +58,7 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/randExibitionList")
-    public BaseResponse<PageInfo<EhbExhibitorDto>> randExibitionList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<PageInfo<ExhibitorDto>> randExibitionList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -75,6 +72,9 @@ public class IndexController extends BaseController {
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<ExhibitorDto> appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
+        for(ExhibitorDto exhibitorDto : appLoginDTOS){
+            ExhibitorDto.of(exhibitorDto);
+        }
         Collections.shuffle(appLoginDTOS);
         return setResultSuccess(new PageInfo<>(appLoginDTOS));
     }
@@ -98,7 +98,7 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/articleList")
-    public BaseResponse<PageInfo<EhbArticle>> articleList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<PageInfo<ArticleDto>> articleList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -110,6 +110,11 @@ public class IndexController extends BaseController {
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<EhbArticle> ehbArticles = ehbArticleService.list(ehbArticleQueryWrapper);
+
+//        List<ArticleDto> articleDtos = new ArrayList<>();
+//        for(EhbArticle ehbArticle : ehbArticles){
+//            articleDtos.add(ArticleDto.of(ehbArticle));
+//        }
         Collections.shuffle(ehbArticles);
         return setResultSuccess(new PageInfo<>(ehbArticles));
     }

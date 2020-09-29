@@ -1,6 +1,8 @@
-package com.yl.soft.po;
+package com.yl.soft.dto.app;
 
-import com.yl.soft.po.base.BaseEntity;
+import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson.JSONArray;
+import com.yl.soft.po.EhbArticle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -9,6 +11,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -22,9 +25,12 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="EhbArticle对象", description="资讯表")
-public class EhbArticle extends BaseEntity implements Serializable {
+public class ArticleDto implements Serializable {
 
     private static final long serialVersionUID=1L;
+
+    @ApiModelProperty(value = "资讯ID")
+    private Integer id;
 
     @ApiModelProperty(value = "标题")
     private String title;
@@ -55,4 +61,15 @@ public class EhbArticle extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "总评论量")
     private Integer countcomment;
+
+    @ApiModelProperty(value = "图片list")
+    private List<String> picture_list;
+
+    public static ArticleDto of(EhbArticle ehbArticle) {
+        ArticleDto articleDto = new ArticleDto();
+        BeanUtil.copyProperties(ehbArticle,articleDto);
+        List<String> list = JSONArray.parseArray(ehbArticle.getPicture(), String.class);
+        articleDto.setPicture_list(list);
+        return articleDto;
+    }
 }

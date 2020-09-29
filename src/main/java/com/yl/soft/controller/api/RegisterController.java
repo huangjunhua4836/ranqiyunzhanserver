@@ -7,6 +7,7 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.RegisterAudienceDto;
 import com.yl.soft.dto.RegisterExhibitorDto;
+import com.yl.soft.dto.app.LabelDto;
 import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbLabel;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -105,11 +107,17 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/listLabel")
-    public BaseResponse<List<EhbLabel>> listLabel(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<List<LabelDto>> listLabel(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         QueryWrapper<EhbLabel> ehbLabelQueryWrapper = new QueryWrapper<>();
         ehbLabelQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
         ehbLabelQueryWrapper.orderByDesc("createtime");
         List<EhbLabel> ehbLabels = ehbLabelService.list(ehbLabelQueryWrapper);
-        return setResultSuccess(ehbLabels);
+        List<LabelDto> labelDtos = new ArrayList<>();
+        for(EhbLabel ehbLabel : ehbLabels){
+            LabelDto labelDto = new LabelDto();
+            BeanUtil.copyProperties(ehbLabel,labelDto);
+            labelDtos.add(labelDto);
+        }
+        return setResultSuccess(labelDtos);
     }
 }

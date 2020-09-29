@@ -1,9 +1,11 @@
 package com.yl.soft.dto.app;
 
+import com.alibaba.fastjson.JSONArray;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 展商列表、展商详情DTO
@@ -52,4 +54,24 @@ public class ExhibitorDto implements Serializable{/**
     
 	@ApiModelProperty("是否已认证  0-未认证，1-已认证")
 	private Integer state;
+
+	@ApiModelProperty("认证状态翻译")
+	private String state_show;
+
+	@ApiModelProperty("展商图片list")
+	private List<String> img_list;
+
+
+    public static ExhibitorDto of(ExhibitorDto exhibitorDto) {
+        if(exhibitorDto.getState() == 0){
+            exhibitorDto.setState_show("未认证");
+        }else if(exhibitorDto.getState() == 1){
+            exhibitorDto.setState_show("已认证");
+        }else{
+            exhibitorDto.setState_show("未知状态");
+        }
+        List<String> list = JSONArray.parseArray(exhibitorDto.getImg(), String.class);
+        exhibitorDto.setImg_list(list);
+        return exhibitorDto;
+    }
 }
