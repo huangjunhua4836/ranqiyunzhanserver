@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(tags = { "C端模块-关于/首页在线招展" })
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/gy")
 public class AboutController extends BaseController {
 
 	@Autowired
@@ -31,7 +31,6 @@ public class AboutController extends BaseController {
 	public EnbOnlineService enbOnlineService;
 
 	@ApiOperation(value = "获取关于", notes = "获取关于")
-	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
 	@PostMapping("/getAbout")
 	public ResultItem<EhbAbout> getAbout(String token) {
 		List<EhbAbout> ehbAbouts = ehbAboutService.lambdaQuery().eq(EhbAbout::getType, 1).list();
@@ -39,7 +38,6 @@ public class AboutController extends BaseController {
 	}
 	
 	@ApiOperation(value = "在线招展", notes = "在线招展")
-	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
 	@PostMapping("/getOnline")
 	public ResultItem<EnbOnline> getOnline(String token) {
 		List<EnbOnline> ehbAbouts = enbOnlineService.lambdaQuery().eq(EnbOnline::getType, 1).list();
