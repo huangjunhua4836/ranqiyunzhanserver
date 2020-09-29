@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::headr('关于展会')"></head>
+<body>
+<div class="layui-container">
+    <div class="layui-row" style="margin-top: 10px;">
+        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>展会信息设置</legend>
+            </fieldset>
+            <form class="layui-form" th:object="${ehbAbout}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{title}" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">内容</label>
+                    <div class="layui-input-block">
+                        <textarea id="editor_id" name="content" style="width:700px;height:300px;" class="layui-textarea">
+                            <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2114569028,998077550&fm=26&gp=0.jpg" alt="" />内容
+                        </textarea>
+                    </div>
+                </div>
+                <input th:field="*{id}" type="hidden"/>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" class="layui-btn" lay-submit lay-filter="submitFrom">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" th:href="@{/static/tools/kindeditor/themes/default/default.css}" />
+<link rel="stylesheet" th:href="@{/static/tools/kindeditor/plugins/code/prettify.css}" />
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/kindeditor-all-min.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/lang/zh-CN.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/plugins/code/prettify.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/jquery-3.4.1.min.js}"></script>
+
+<script>
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#editor_id',{
+            // 上传图片的名字
+            filePostName  : "uploadFile",
+            // 配置上传路径
+            uploadJson : '/platform/demo/uploadImg?token=123456',
+            allowFileManager : true,
+            allowPreviewEmoticons: true,
+            allowImageUpload: true,
+            // 设置上传文件类型
+            dir : "image",
+            afterCreate: function () {//创建完成之后回显
+                this.sync();
+            },
+            afterChange: function () {//内容改动之后回显
+                this.sync();
+            },
+            items:[
+                '|', 'undo', 'redo', '|', 'preview', 'print', 'cut', 'copy', 'paste',
+                'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+                'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+                'anchor', 'link', 'unlink', '|', 'about'
+            ]
+        });
+    });
+
+    layui.use('core', function(){
+        var form = layui.form,
+            core = layui.core,
+            $ = layui.jquery;
+
+        form.on('submit(submitFrom)', function(data){
+            alert(JSON.stringify(data));
+
+            var resultData = core.ajax('/platform/about/saveOrUpdate',false,'POST',data.field);
+            if(resultData!=false){
+                layer.msg('操作成功',core.showtime);
+            }
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+</script>
+</body>
+</html>

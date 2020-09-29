@@ -2,6 +2,9 @@ package com.yl.soft.po;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,6 +27,7 @@ public class EhbAbout implements Serializable {
 
     private static final long serialVersionUID=1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty(value = "富文本内容")
@@ -35,7 +39,7 @@ public class EhbAbout implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createtime;
 
-    @ApiModelProperty(value = "是否发布")
+    @ApiModelProperty(value = "是否发布  0-未发布  1-发布")
     private Integer type;
 
 
