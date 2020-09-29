@@ -102,8 +102,8 @@ custom:
     pwd_salt: L0l*S0jn3SD*^OFY # 密码SALT
     enable_check_reqcode: true # 第三方登陆时是否用授权码获取openID，不开启则reqcode必须要传openID，保证唯一性
   wechat:
-    app_id: 10001000
-    app_security: 10001000
+    app_id: wx9e91b1399c208e1e
+    app_security: 200339db2289d67561d00db4d2777d75
   upload:
     ext:
       img: jpg,png,gif,ico,doc,docx,jpeg,apk,xls,xlsx,mp4,flv,swf,avi,mp3,pdf,txt,rar,zip,7z,tar

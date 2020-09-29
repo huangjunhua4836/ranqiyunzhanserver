@@ -49,7 +49,7 @@ import io.swagger.annotations.ApiResponses;
  */
 @Api(tags = {"C端模块-用户登录"})
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 @Validated
 public class UserLoginController extends BaseController{
 
