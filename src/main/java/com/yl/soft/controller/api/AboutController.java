@@ -32,14 +32,14 @@ public class AboutController extends BaseController {
 
 	@ApiOperation(value = "获取关于", notes = "获取关于")
 	@PostMapping("/getAbout")
-	public ResultItem<EhbAbout> getAbout(String token) {
+	public ResultItem<EhbAbout> getAbout() {
 		List<EhbAbout> ehbAbouts = ehbAboutService.lambdaQuery().eq(EhbAbout::getType, 1).list();
 		return ok(ehbAbouts.size() > 0 ? ehbAbouts.get(0) : null);
 	}
 	
 	@ApiOperation(value = "在线招展", notes = "在线招展")
 	@PostMapping("/getOnline")
-	public ResultItem<EnbOnline> getOnline(String token) {
+	public ResultItem<EnbOnline> getOnline() {
 		List<EnbOnline> ehbAbouts = enbOnlineService.lambdaQuery().eq(EnbOnline::getType, 1).list();
 		return ok(ehbAbouts.size() > 0 ? ehbAbouts.get(0) : null);
 	}

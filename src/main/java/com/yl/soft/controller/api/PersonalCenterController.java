@@ -52,7 +52,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(tags = { "C端模块-个人中心" })
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 public class PersonalCenterController extends BaseController {
 
 	@Autowired
@@ -84,7 +84,7 @@ public class PersonalCenterController extends BaseController {
 
 	@ApiOperation(value = "获取我的个人信息", notes = "通过用户ID查询用户信息")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
-	@PostMapping("/getMe")
+	@PostMapping("/api/getMe")
 	public ResultItem<EhbAudienceDto> getMe(String token) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
@@ -94,7 +94,7 @@ public class PersonalCenterController extends BaseController {
 
 	@ApiOperation(value = "我的企业", notes = "我的企业")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
-	@PostMapping("/getComp")
+	@PostMapping("/api/getComp")
 	public ResultItem<EhbExhibitorDto> getComp(@NotBlank(message = "token不能为空") String token) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(sessionUser.getBopie());
@@ -110,6 +110,7 @@ public class PersonalCenterController extends BaseController {
 			@ApiImplicitParam(name = "address", value = "地址", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "describes", value = "企业简介", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "zwimg", value = "展位效果图", required = true, paramType = "query"), })
+	@PostMapping("/api/updateComp")
 	public ResultItem updateComp(String token, String img, @NotBlank(message = "请输入一个正确的手机号") String phone,
 			@NotBlank(message = "请输入一个正确邮箱地址") String mailbox, @NotBlank(message = "请输入一个正确官网地址") String website,
 			String address, String describes, String zwimg) {
@@ -146,7 +147,7 @@ public class PersonalCenterController extends BaseController {
 			@ApiImplicitParam(name = "type", value = "类型（1-商机  2-商品）", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "page", value = "分页当前页", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "size", value = "一页显示条数", required = true, paramType = "query"), })
-	@PostMapping("/meShowWindow")
+	@PostMapping("/api/meShowWindow")
 	public ResultItem<List<EhbOpportunityDto>> meShowWindow(String token, String titleorconnent, Integer page,
 			Integer size, Integer type) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
@@ -169,7 +170,7 @@ public class PersonalCenterController extends BaseController {
 			@ApiImplicitParam(name = "type", value = "类型（1-商机  2-商品）", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "label", value = "请选择标签  标签id[1,2]", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "picture", value = "商品多图片上传['src1','src2']", required = true, paramType = "query"), })
-	@PostMapping("/pushGoods")
+	@PostMapping("/api/pushGoods")
 	public ResultItem pushGoods(String token, @NotBlank(message = "请添加一个正确的标签") String title,
 			@NotBlank(message = "请添加一个正确的内容") String content, @NotBlank(message = "请选择一个正确的标签") String label,
 			String picture, Integer type) {
@@ -190,7 +191,7 @@ public class PersonalCenterController extends BaseController {
 	@ApiOperation(value = "我的橱窗商品/商机详情", notes = "我的橱窗商品详情")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "id", value = "商品/商机id", required = true, paramType = "query"), })
-	@PostMapping("/goodsDes")
+	@PostMapping("/api/goodsDes")
 	public ResultItem<EhbOpportunityDto> goodsDes(String token, String id) {
 		EhbOpportunity ehbOpportunity = ehbOpportunityService.getById(id);
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(ehbOpportunity.getExhibitorid());
@@ -203,7 +204,7 @@ public class PersonalCenterController extends BaseController {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "page", value = "分页当前页", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "size", value = "一页显示条数", required = true, paramType = "query"), })
-	@PostMapping("/meCollentionEnt")
+	@PostMapping("/api/meCollentionEnt")
 	public ResultItem<List<MeCollectionDto>> meCollentionEnt(String token, Integer page, Integer size) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 
@@ -229,7 +230,7 @@ public class PersonalCenterController extends BaseController {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "page", value = "分页当前页", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "size", value = "一页显示条数", required = true, paramType = "query"), })
-	@PostMapping("/meCollentionBol")
+	@PostMapping("/api/meCollentionBol")
 	public ResultItem<List<EhbOpportunityDto>> meCollentionBol(String token, Integer page, Integer size) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		int type = 2; // 商机
@@ -254,7 +255,7 @@ public class PersonalCenterController extends BaseController {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "page", value = "分页当前页", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "size", value = "一页显示条数", required = true, paramType = "query"), })
-	@PostMapping("/meCollentionBo")
+	@PostMapping("/api/meCollentionBo")
 	public ResultItem<List<EhbOpportunityDto>> meCollentionCom(String token, Integer page, Integer size) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		int type = 4; // 商品
@@ -279,7 +280,7 @@ public class PersonalCenterController extends BaseController {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "relateid", value = "收藏（如果是关注展商就是展示id）内容的id", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "type", value = "1：展商   2：商机  3：资讯  4:商品", required = true, paramType = "query"), })
-	@PostMapping("/addOrDelCollention")
+	@PostMapping("/api/addOrDelCollention")
 	public ResultItem addOrDelCollention(String token, Integer relateid, Integer type) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
 
@@ -300,7 +301,7 @@ public class PersonalCenterController extends BaseController {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "relateid", value = "点赞内容的id", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "type", value = "1：企业   2：商机  3：资讯", required = true, paramType = "query"), })
-	@PostMapping("/addOrDelPraise")
+	@PostMapping("/api/addOrDelPraise")
 	public ResultItem addOrDelPraise(String token, Integer relateid, Integer type) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
 		Integer i = 2;// （1：收藏 2：点赞 3：关注 4：浏览）
@@ -329,24 +330,22 @@ public class PersonalCenterController extends BaseController {
 	}
 
 	@ApiOperation(value = "关于", notes = "关于")
-	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
 	@PostMapping("/aboutus")
-	public ResultItem<EhbAboutus> aboutus(String token) {
+	public ResultItem<EhbAboutus> aboutus() {
 		List<EhbAboutus> list = ehbAboutusService.list();
 		return ok(list.size() > 0 ? list.get(0) : null);
 	}
 
 	@ApiOperation(value = "资料下载", notes = "资料下载")
-	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
 	@PostMapping("/dataUpLoad")
-	public ResultItem<List<EhbDataUpload>> dataUpLoad(String token) {
+	public ResultItem<List<EhbDataUpload>> dataUpLoad() {
 		List<EhbDataUpload> ehbDataUploads = ehbDataUploadService.list();
 		return ok(ehbDataUploads);
 	}
 
 	@ApiOperation(value = "参展登记", notes = "参展登记")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
-	@PostMapping("/registration")
+	@PostMapping("/api/registration")
 	public ResultItem<List<EhbVisitorRegistration>> registration(String token) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
 		List<EhbVisitorRegistration> eh = ehbVisitorRegistrationService.lambdaQuery()
@@ -356,7 +355,7 @@ public class PersonalCenterController extends BaseController {
 
 	@ApiOperation(value = "参展登记详情", notes = "参展登记详情")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
-	@PostMapping("/registrationDes")
+	@PostMapping("/api/registrationDes")
 	public ResultItem<EhbVisitorRegistration> registrationDes(Integer id, String token) {
 		EhbVisitorRegistration eh = ehbVisitorRegistrationService.getById(id);
 		return ok(eh);
