@@ -1,5 +1,6 @@
 package com.yl.soft.controller.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.unified.entity.BaseResponse;
@@ -8,6 +9,8 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.AppLoginDTO;
 import com.yl.soft.dto.OpportunityDto;
+import com.yl.soft.po.EhbAdvertising;
+import com.yl.soft.service.EhbAdvertisingService;
 import com.yl.soft.service.EhbOpportunityService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,8 @@ import java.util.Map;
 public class OpportunityController extends BaseController {
     @Autowired
     private EhbOpportunityService ehbOpportunityService;
+    @Autowired
+    private EhbAdvertisingService ehbAdvertisingService;
 
     /**
      * 商机列表-推荐
@@ -35,7 +40,8 @@ public class OpportunityController extends BaseController {
     @ApiOperation(value = "商机列表-推荐")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query")
+            ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
             ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
             ,@ApiImplicitParam(name = "title", value = "商机名称", paramType = "query")
             ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
@@ -75,7 +81,8 @@ public class OpportunityController extends BaseController {
     @ApiOperation(value = "商机列表-最新")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query")
+            ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
             ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
             ,@ApiImplicitParam(name = "title", value = "商机名称", paramType = "query")
             ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
@@ -112,7 +119,8 @@ public class OpportunityController extends BaseController {
     @ApiOperation(value = "商机列表-热门")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query")
+            ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
             ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
             ,@ApiImplicitParam(name = "title", value = "商机名称", paramType = "query")
             ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
@@ -144,5 +152,28 @@ public class OpportunityController extends BaseController {
         List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
         Collections.shuffle(ehbOpportunities);
         return setResultSuccess(new PageInfo<>(ehbOpportunities));
+    }
+
+    /**
+     * 广告位
+     * @return
+     */
+    @ApiOperation(value = "广告位列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @PostMapping("/advertisingList")
+    public BaseResponse<List<EhbAdvertising>> advertisingList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
+        ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
+        return setResultSuccess(ehbAdvertisings);
     }
 }
