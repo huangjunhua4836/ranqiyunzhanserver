@@ -130,7 +130,6 @@ public class PersonalCenterController extends BaseController {
 	}
 
 	@ApiOperation(value = "获取所有标签", notes = "获取所有标签")
-	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
 	@GetMapping("/getLable")
 	public ResultItem<List<EhbLabelDto>> getLable() {
 		List<EhbLabelDto> ehbLabel = ehbLabelService.list().stream().map(i -> {
