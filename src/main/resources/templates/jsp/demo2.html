@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::headr('xxxx')">
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+<h2>Hello,kindeditor</h2>
+<hr>
+
+
+<form name="example" th:action="@{/platform/demo/aa}">
+	<textarea id="editor_id" name="content" style="width:700px;height:300px;">
+	<img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2114569028,998077550&fm=26&gp=0.jpg" alt="" />内容
+	</textarea>
+</form>
+<button id="submit">点击提交</button>
+<br>
+<br>
+<br>
+
+
+</body>
+<link rel="stylesheet" th:href="@{/static/tools/kindeditor/themes/default/default.css}" />
+<link rel="stylesheet" th:href="@{/static/tools/kindeditor/plugins/code/prettify.css}" />
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/kindeditor-all-min.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/lang/zh-CN.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/plugins/code/prettify.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/jquery-3.4.1.min.js}"></script>
+<script>
+
+	KindEditor.ready(function(K) {
+		window.editor = K.create('#editor_id',{
+			// 上传图片的名字
+			filePostName  : "uploadFile",
+			// 配置上传路径
+			uploadJson : '/platform/demo/uploadImg?token=123456',
+			allowFileManager : true,
+			allowPreviewEmoticons: true,
+			allowImageUpload: true,
+			// 设置上传文件类型
+			dir : "image",
+			afterCreate: function () {
+				this.sync();
+			},
+			afterChange: function () {
+				this.sync();
+			}
+		});
+	});
+</script>
+
+<script>
+	$("#submit").click(function () {
+		document.forms['example'].submit();
+	})
+</script>
+</html>

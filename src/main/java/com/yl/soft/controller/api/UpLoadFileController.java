@@ -21,9 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Api(tags = {"C端模块-上传文件"})
 @RestController
@@ -64,7 +62,8 @@ public class UpLoadFileController extends BaseResponseUtil {
 			,@ApiResponse(code = -1, message = "系统异常")
 	})
 	@PostMapping("/upLoadByHttp")
-	public BaseResponse<List<AttachmentDTO>> upLoadByHttp(@ApiParam(value = "文件",required = true) @RequestParam("file") MultipartFile[] multipartFiles,@ApiParam(value = "文件标记",required = true) @RequestParam("remarks") String remarks){
+	public BaseResponse<List<AttachmentDTO>> upLoadByHttp(@ApiParam(value = "文件",required = true) @RequestParam("file") MultipartFile[] multipartFiles
+			,@ApiParam(value = "文件标记",required = true) @RequestParam("remarks") String remarks){
 		if(StringUtils.isEmpty(uploadPath)){
 			return setResultError("服务器上传基础路径为空！");
 		}
