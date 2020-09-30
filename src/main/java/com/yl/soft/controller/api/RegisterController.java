@@ -2,6 +2,7 @@ package com.yl.soft.controller.api;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yl.soft.common.unified.entity.BasePage;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
@@ -107,7 +108,7 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/listLabel")
-    public BaseResponse<List<LabelDto>> listLabel(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<BasePage<LabelDto>> listLabel(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         QueryWrapper<EhbLabel> ehbLabelQueryWrapper = new QueryWrapper<>();
         ehbLabelQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
         ehbLabelQueryWrapper.orderByDesc("createtime");
@@ -118,6 +119,6 @@ public class RegisterController extends BaseController {
             BeanUtil.copyProperties(ehbLabel,labelDto);
             labelDtos.add(labelDto);
         }
-        return setResultSuccess(labelDtos);
+        return setResultSuccess(getBasePage(ehbLabels,labelDtos));
     }
 }

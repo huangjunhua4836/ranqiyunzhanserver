@@ -1,6 +1,8 @@
 package com.yl.soft.controller.base;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.Page;
+import com.yl.soft.common.unified.entity.BasePage;
 import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.unified.service.BaseResponseUtil;
 import com.yl.soft.common.util.StringUtils;
@@ -32,12 +34,6 @@ public class BaseController extends BaseResponseUtil {
     private CrmCountyService crmCountyService;
     @Autowired
     private RedisService redisService;
-
-    protected Map<String, String> getParameterMap(Map<String, String[]> paramMap) {
-        Map<String, String> map = new HashMap<String, String>();
-        paramMap.forEach((k, v) -> map.put(k, v.length > 0 ? v[0] : null));
-        return map;
-    }
 
     /**
      * 省集合
@@ -156,4 +152,15 @@ public class BaseController extends BaseResponseUtil {
 //        }
 //        return JSONObject.parseObject(redisService.get(token),AppLoginDTO.class);
 //    }
+
+    /**
+     * 接口分页封装
+     * @param listPo
+     * @param listDto
+     * @return
+     */
+    protected BasePage getBasePage(List listPo, List listDto){
+        Page page = (Page) listPo;
+        return new BasePage(page.getPageNum(),page.getPageSize(),page.getPages(),page.getTotal(),listDto);
+    }
 }
