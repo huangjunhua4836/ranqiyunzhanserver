@@ -12,24 +12,29 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">标题</label>
                     <div class="layui-input-block">
-                        <input type="text" th:field="*{title}" autocomplete="off" class="layui-input">
+                        <input type="text" th:field="*{title}" autocomplete="off" class="layui-input" required  lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-block" th:if="${ehbAbout.id == null}">
+                        <input type="radio" name="type" value="1" title="发布" checked="">
+                        <input type="radio" name="type" value="0" title="不发布">
+                    </div>
+                    <div class="layui-input-block" th:if="${ehbAbout.id != null}">
+                        <input type="radio" name="type" value="1" title="发布" th:checked="${ehbAbout.type == 1}">
+                        <input type="radio" name="type" value="0" title="不发布" th:checked="${ehbAbout.type == 0}">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">内容</label>
                     <div class="layui-input-block">
-                        <textarea id="editor_id" name="content" style="width:700px;height:300px;" class="layui-textarea">
-                            <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2114569028,998077550&fm=26&gp=0.jpg" alt="" />内容
+                        <textarea id="editor_id" required  lay-verify="required" th:field="*{content}" style="width:700px;height:300px;" class="layui-textarea" >
                         </textarea>
                     </div>
                 </div>
                 <input th:field="*{id}" type="hidden"/>
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button type="submit" class="layui-btn" lay-submit lay-filter="submitFrom">立即提交</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                    </div>
-                </div>
+                <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
             </form>
         </div>
     </div>
@@ -48,7 +53,7 @@
             // 上传图片的名字
             filePostName  : "uploadFile",
             // 配置上传路径
-            uploadJson : '/platform/demo/uploadImg?token=123456',
+            uploadJson : '/platform/about/uploadImg?remarks=3',
             allowFileManager : true,
             allowPreviewEmoticons: true,
             allowImageUpload: true,
@@ -79,11 +84,11 @@
             $ = layui.jquery;
 
         form.on('submit(submitFrom)', function(data){
-            alert(JSON.stringify(data));
-
             var resultData = core.ajax('/platform/about/saveOrUpdate',false,'POST',data.field);
             if(resultData!=false){
-                layer.msg('操作成功',core.showtime);
+                parent.layer.msg('操作成功',core.showtime);
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
             }
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });

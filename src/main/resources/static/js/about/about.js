@@ -27,9 +27,9 @@ layui.use('core', function(){
             ,cols: [[ //表头
                 {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field: 'title', title: '关于标题'}
-                ,{field: 'type', title: '是否启用',
+                ,{field: 'type', title: '是否发布',
                     templet: function(d){
-                        return d.type == '1'?'启用':'不启用'
+                        return d.type == '1'?'发布':'不发布'
                     }
                 }
                 ,{field: 'createTime', title: '创建时间',sort: true,
@@ -47,7 +47,8 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加','/platform/about/input?type=add',['500px', '440px'],false,initTable);
+                // window.open("/platform/about/input?type=add");
+                core.openIframeDialog('添加','/platform/about/input?type=add',['100%', '440px'],false,initTable);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
@@ -60,17 +61,18 @@ layui.use('core', function(){
     table.on('tool(tableFilter)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
-            layer.confirm('真的删除关于么？绑定该关于的用户丢失关于！', function(index){
+            layer.confirm('真的删除么？', function(index){
                 layer.close(index);
                 //向服务端发送删除指令
-                var resultData = core.ajax('/crmRole/delete',false,'POST','id='+data.id);
+                var resultData = core.ajax('/platform/about/delete',false,'POST','id='+data.id);
                 if(resultData!=false){
                     layer.msg('操作成功！',core.showtime);
                     initTable({});
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改关于','/crmRole/input?type=update&id='+data.id,['500px', '200px'],false,initTable);
+            // window.open("/platform/about/input?type=update&id="+data.id);
+            core.openIframeDialog('修改关于','/platform/about/input?type=update&id='+data.id,['100%', '440px'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('关于详情',$('#detail').html(),['500px','480px']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);

@@ -36,7 +36,7 @@ public class ZSInfoController extends BaseController {
     @Autowired
     public EhbExhibitorService ehbExhibitorService;
 
-    @GetMapping("/list2")
+    @GetMapping("/list")
     public String list() {
         return "exhibitioninfo/list2";
     }
