@@ -1,11 +1,11 @@
 package com.yl.soft.dto.app;
 
-import com.alibaba.fastjson.JSONArray;
+import cn.hutool.core.bean.BeanUtil;
+import com.yl.soft.po.EhbExhibitor;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 展商列表、展商详情DTO
@@ -58,10 +58,12 @@ public class ExhibitorDto implements Serializable{/**
 	@ApiModelProperty("认证状态翻译")
 	private String state_show;
 
-    public static ExhibitorDto of(ExhibitorDto exhibitorDto) {
-        if(exhibitorDto.getState() == 0){
+    public static ExhibitorDto of(EhbExhibitor ehbExhibitor) {
+        ExhibitorDto exhibitorDto = new ExhibitorDto();
+        BeanUtil.copyProperties(ehbExhibitor,exhibitorDto);
+        if(ehbExhibitor.getState() == 0){
             exhibitorDto.setState_show("未认证");
-        }else if(exhibitorDto.getState() == 1){
+        }else if(ehbExhibitor.getState() == 1){
             exhibitorDto.setState_show("已认证");
         }else{
             exhibitorDto.setState_show("未知状态");

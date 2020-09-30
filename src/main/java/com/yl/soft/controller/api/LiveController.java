@@ -2,7 +2,6 @@ package com.yl.soft.controller.api;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
-import com.yl.soft.common.unified.entity.BasePage;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
@@ -33,11 +32,9 @@ public class LiveController extends BaseController {
      * 推荐直播列表
      * @return
      */
-    @ApiOperation(value = "推荐直播列表")
+    @ApiOperation(value = "直播列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
-            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -46,8 +43,8 @@ public class LiveController extends BaseController {
             ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
             ,@ApiResponse(code = -1, message = "系统异常")
     })
-    @PostMapping("/recommendLiveList")
-    public BaseResponse<BasePage<LiveDto>> recommendLiveList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    @PostMapping("/liveList")
+    public BaseResponse<List<LiveDto>> recommendLiveList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -63,6 +60,6 @@ public class LiveController extends BaseController {
             liveDtos.add(LiveDto.of(ehbLive));
         }
         Collections.shuffle(liveDtos);
-        return setResultSuccess(getBasePage(ehbLives,liveDtos));
+        return setResultSuccess(liveDtos);
     }
 }

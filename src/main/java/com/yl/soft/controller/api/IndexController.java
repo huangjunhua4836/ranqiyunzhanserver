@@ -39,13 +39,15 @@ public class IndexController extends BaseController {
     private EhbGuestService ehbGuestService;
     @Autowired
     private SessionState sessionState;
+    @Autowired
+    private EhbAdvertisingService ehbAdvertisingService;
 
 
     /**
      * 推荐展商列表（包含行为）
      * @return
      */
-    @ApiOperation(value = "推荐展商列表")
+    @ApiOperation(value = "推荐展商列表、感兴趣的展商列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
@@ -74,10 +76,46 @@ public class IndexController extends BaseController {
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<ExhibitorDto> appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
         for(ExhibitorDto exhibitorDto : appLoginDTOS){
-            ExhibitorDto.of(exhibitorDto);
+            if(exhibitorDto.getState() == 0){
+                exhibitorDto.setState_show("未认证");
+            }else if(exhibitorDto.getState() == 1){
+                exhibitorDto.setState_show("已认证");
+            }else{
+                exhibitorDto.setState_show("未知状态");
+            }
         }
         Collections.shuffle(appLoginDTOS);
         return setResultSuccess(getBasePage(appLoginDTOS,appLoginDTOS));
+    }
+
+    /**
+     * 热门资讯集合
+     * @return
+     */
+    @ApiOperation(value = "热门资讯集合")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @PostMapping("/hotArticleList")
+    public BaseResponse<List<ArticleDto>> hotArticleList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        QueryWrapper<EhbArticle> ehbArticleQueryWrapper = new QueryWrapper<>();
+        ehbArticleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        ehbArticleQueryWrapper.eq("isrecommend",1);
+        ehbArticleQueryWrapper.orderByDesc("releasetime");
+        List<EhbArticle> ehbArticles = ehbArticleService.list(ehbArticleQueryWrapper);
+        List<ArticleDto> articleDtos = new ArrayList<>();
+        for(EhbArticle ehbArticle : ehbArticles){
+            articleDtos.add(ArticleDto.of(ehbArticle));
+        }
+        Collections.shuffle(articleDtos);
+        return setResultSuccess(articleDtos);
     }
 
     /**
@@ -160,14 +198,13 @@ public class IndexController extends BaseController {
     }
 
     /**
-     * 云端橱窗列表???
+     * 云端橱窗全部展商列表???
      * @return
      */
-    @ApiOperation(value = "云端橱窗列表")
+    @ApiOperation(value = "云端橱窗全部展商列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
-            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
             ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
             ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
     })
@@ -179,7 +216,7 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/cloudWindowList")
-    public BaseResponse<PageInfo<EhbExhibitor>> cloudWindowList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<BasePage<ExhibitorDto>> cloudWindowList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -189,10 +226,19 @@ public class IndexController extends BaseController {
         ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(paramMap.get("boothno")),"boothno",paramMap.get("boothno"));
 
         Integer pageParam[] = pageValidParam(paramMap);
-        PageHelper.startPage(pageParam[0], pageParam[1]);
+        PageHelper.startPage(pageParam[0], 8);
         List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
-        Collections.shuffle(ehbExhibitors);
-        return setResultSuccess(new PageInfo<>(ehbExhibitors));
+        List<ExhibitorDto> exhibitorDtos = new ArrayList<>();
+        for(EhbExhibitor ehbExhibitor : ehbExhibitors){
+            exhibitorDtos.add(ExhibitorDto.of(ehbExhibitor));
+        }
+        Collections.shuffle(exhibitorDtos);
+        QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
+        ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
+        Collections.shuffle(ehbAdvertisings);
+
+        return setResultSuccess(getBasePage(ehbExhibitors,exhibitorDtos));
     }
 
     /**
