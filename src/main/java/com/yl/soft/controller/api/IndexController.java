@@ -9,10 +9,7 @@ import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
-import com.yl.soft.dto.app.ArticleDto;
-import com.yl.soft.dto.app.ExhibitorDto;
-import com.yl.soft.dto.app.GuestDto;
-import com.yl.soft.dto.app.OpportunityDto;
+import com.yl.soft.dto.app.*;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.*;
@@ -199,7 +196,7 @@ public class IndexController extends BaseController {
     }
 
     /**
-     * 首页banner图列表???
+     * 首页banner图列表
      * @return
      */
     @ApiOperation(value = "首页banner图列表")
@@ -215,13 +212,17 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/ehbBannerList")
-    public BaseResponse<List<EhbBanner>> ehbBannerList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<List<BannerDto>> ehbBannerList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         QueryWrapper<EhbBanner>  ehbBannerQueryWrapper= new QueryWrapper<>();
         ehbBannerQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbBannerQueryWrapper.eq("type",paramMap.get("type"));
 
         List<EhbBanner> ehbBanners = ehbBannerService.list(ehbBannerQueryWrapper);
-        return setResultSuccess(ehbBanners);
+        List<BannerDto> bannerDtos = new ArrayList<>();
+        for(EhbBanner ehbBanner : ehbBanners){
+            bannerDtos.add(BannerDto.of(ehbBanner));
+        }
+        return setResultSuccess(bannerDtos);
     }
 
     /**
