@@ -1,5 +1,7 @@
 package com.yl.soft.dto.app;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.yl.soft.po.EhbOpportunity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -61,4 +63,20 @@ public class OpportunityDto implements Serializable {
 
     @ApiModelProperty(value = "总评论量")
     private Integer countcomment;
+
+    @ApiModelProperty(value = "类型字典翻译")
+    private String type_value;
+
+    public static OpportunityDto of(EhbOpportunity po) {
+        OpportunityDto dto = new OpportunityDto();
+        BeanUtil.copyProperties(po,dto);
+        if(po.getType() == 1){
+            dto.setType_value("商机");
+        }else if(po.getType() == 2){
+            dto.setType_value("商品");
+        }else{
+            dto.setType_value("未知");
+        }
+        return dto;
+    }
 }

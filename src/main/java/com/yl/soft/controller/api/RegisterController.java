@@ -2,8 +2,8 @@ package com.yl.soft.controller.api;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.yl.soft.common.unified.entity.BasePage;
 import com.yl.soft.common.unified.entity.BaseResponse;
+import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.RegisterAudienceDto;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -99,6 +100,7 @@ public class RegisterController extends BaseController {
      */
     @ApiOperation(value = "标签列表接口")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", value = "多个标签id,逗号隔开",paramType = "query")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -108,17 +110,16 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/listLabel")
-    public BaseResponse<BasePage<LabelDto>> listLabel(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<List<LabelDto>> listLabel(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         QueryWrapper<EhbLabel> ehbLabelQueryWrapper = new QueryWrapper<>();
         ehbLabelQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
         ehbLabelQueryWrapper.orderByDesc("createtime");
+        ehbLabelQueryWrapper.in(!StringUtils.isEmpty(paramMap.get("ids")),"id",Arrays.asList(paramMap.get("ids").toString().split(",")));
         List<EhbLabel> ehbLabels = ehbLabelService.list(ehbLabelQueryWrapper);
         List<LabelDto> labelDtos = new ArrayList<>();
         for(EhbLabel ehbLabel : ehbLabels){
-            LabelDto labelDto = new LabelDto();
-            BeanUtil.copyProperties(ehbLabel,labelDto);
-            labelDtos.add(labelDto);
+            labelDtos.add(LabelDto.of(ehbLabel));
         }
-        return setResultSuccess(getBasePage(ehbLabels,labelDtos));
+        return setResultSuccess(labelDtos);
     }
 }

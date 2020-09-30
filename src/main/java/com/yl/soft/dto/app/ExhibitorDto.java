@@ -58,10 +58,6 @@ public class ExhibitorDto implements Serializable{/**
 	@ApiModelProperty("认证状态翻译")
 	private String state_show;
 
-	@ApiModelProperty("展商图片list")
-	private List<String> img_list;
-
-
     public static ExhibitorDto of(ExhibitorDto exhibitorDto) {
         if(exhibitorDto.getState() == 0){
             exhibitorDto.setState_show("未认证");
@@ -70,8 +66,6 @@ public class ExhibitorDto implements Serializable{/**
         }else{
             exhibitorDto.setState_show("未知状态");
         }
-        List<String> list = JSONArray.parseArray(exhibitorDto.getImg(), String.class);
-        exhibitorDto.setImg_list(list);
         return exhibitorDto;
     }
 }

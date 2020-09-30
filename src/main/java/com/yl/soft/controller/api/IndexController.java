@@ -1,5 +1,6 @@
 package com.yl.soft.controller.api;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -10,6 +11,8 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.app.ArticleDto;
 import com.yl.soft.dto.app.ExhibitorDto;
+import com.yl.soft.dto.app.GuestDto;
+import com.yl.soft.dto.app.OpportunityDto;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.*;
@@ -115,7 +118,7 @@ public class IndexController extends BaseController {
         for(EhbArticle ehbArticle : ehbArticles){
             articleDtos.add(ArticleDto.of(ehbArticle));
         }
-        Collections.shuffle(ehbArticles);
+        Collections.shuffle(articleDtos);
         return setResultSuccess(getBasePage(ehbArticles,articleDtos));
     }
 
@@ -136,8 +139,8 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
             ,@ApiResponse(code = -1, message = "系统异常")
     })
-    @PostMapping("/goodsList")//???
-    public BaseResponse<PageInfo<EhbOpportunity>> goodsList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    @PostMapping("/goodsList")
+    public BaseResponse<BasePage<OpportunityDto>> goodsList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -151,12 +154,16 @@ public class IndexController extends BaseController {
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<EhbOpportunity> ehbOpportunities = ehbOpportunityService.list(ehbOpportunityQueryWrapper);
-        Collections.shuffle(ehbOpportunities);
-        return setResultSuccess(new PageInfo<>(ehbOpportunities));
+        List<OpportunityDto> opportunityDtos = new ArrayList<>();
+        for(EhbOpportunity ehbOpportunity : ehbOpportunities){
+            opportunityDtos.add(OpportunityDto.of(ehbOpportunity));
+        }
+        Collections.shuffle(opportunityDtos);
+        return setResultSuccess(getBasePage(ehbOpportunities,opportunityDtos));
     }
 
     /**
-     * 云端橱窗列表
+     * 云端橱窗列表???
      * @return
      */
     @ApiOperation(value = "云端橱窗列表")
@@ -192,7 +199,7 @@ public class IndexController extends BaseController {
     }
 
     /**
-     * 首页banner图列表
+     * 首页banner图列表???
      * @return
      */
     @ApiOperation(value = "首页banner图列表")
@@ -233,11 +240,15 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/guestList")
-    public BaseResponse<List<EhbGuest>> guestList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<List<GuestDto>> guestList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         QueryWrapper<EhbGuest>  ehbGuestQueryWrapper= new QueryWrapper<>();
         ehbGuestQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
 
-        List<EhbGuest> ehbBanners = ehbGuestService.list(ehbGuestQueryWrapper);
-        return setResultSuccess(ehbBanners);
+        List<EhbGuest> ehbGuests = ehbGuestService.list(ehbGuestQueryWrapper);
+        List<GuestDto> guestDtos = new ArrayList<>();
+        for(EhbGuest ehbGuest : ehbGuests){
+            guestDtos.add(GuestDto.of(ehbGuest));
+        }
+        return setResultSuccess(guestDtos);
     }
 }

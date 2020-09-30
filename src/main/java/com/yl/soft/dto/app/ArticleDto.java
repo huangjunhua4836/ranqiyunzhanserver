@@ -62,14 +62,9 @@ public class ArticleDto implements Serializable {
     @ApiModelProperty(value = "总评论量")
     private Integer countcomment;
 
-    @ApiModelProperty(value = "图片list")
-    private List<String> picture_list;
-
     public static ArticleDto of(EhbArticle ehbArticle) {
         ArticleDto articleDto = new ArticleDto();
         BeanUtil.copyProperties(ehbArticle,articleDto);
-        List<String> list = JSONArray.parseArray(ehbArticle.getPicture(), String.class);
-        articleDto.setPicture_list(list);
         return articleDto;
     }
 }
