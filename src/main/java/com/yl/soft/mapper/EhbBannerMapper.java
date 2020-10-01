@@ -5,7 +5,7 @@ import com.yl.soft.po.EhbBanner;
 
 /**
  * <p>
- * 广告表 Mapper 接口
+ * banner表 Mapper 接口
  * </p>
  *
  * @author ${author}

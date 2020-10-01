@@ -29,6 +29,9 @@ public class LiveDto implements Serializable {
 
     private static final long serialVersionUID=1L;
 
+    @ApiModelProperty(value = "编号")
+    private Integer id;
+
     @ApiModelProperty(value = "标题")
     private String title;
 

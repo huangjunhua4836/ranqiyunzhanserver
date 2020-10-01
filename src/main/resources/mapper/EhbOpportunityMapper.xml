@@ -31,7 +31,7 @@
         createuser, createtime, updateuser, updatetime, state, version, isdel, id, title, content, picture, releasetime, label, exhibitorid, type
     </sql>
 
-    <select id="opportunityList" resultType= "com.yl.soft.dto.OpportunityDto">
+    <select id="opportunityList" resultType= "com.yl.soft.dto.app.OpportunityDto">
         SELECT
         opp.*,
         e.enterprisename

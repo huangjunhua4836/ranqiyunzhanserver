@@ -1,7 +1,7 @@
 package com.yl.soft.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yl.soft.dto.OpportunityDto;
+import com.yl.soft.dto.app.OpportunityDto;
 import com.yl.soft.po.EhbOpportunity;
 
 import java.util.List;

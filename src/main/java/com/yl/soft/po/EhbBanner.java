@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 广告表
+ * banner表
  * </p>
  *
  * @author ${author}

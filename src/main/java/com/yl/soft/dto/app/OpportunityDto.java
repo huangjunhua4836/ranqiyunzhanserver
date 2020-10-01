@@ -27,6 +27,7 @@ public class OpportunityDto implements Serializable {
 
     private static final long serialVersionUID=1L;
 
+    @ApiModelProperty(value = "编号")
     private Integer id;
 
     @ApiModelProperty(value = "标题")
@@ -66,6 +67,9 @@ public class OpportunityDto implements Serializable {
 
     @ApiModelProperty(value = "类型字典翻译")
     private String type_value;
+
+    @ApiModelProperty(value = "企业名称")
+    private String enterprisename;
 
     public static OpportunityDto of(EhbOpportunity po) {
         OpportunityDto dto = new OpportunityDto();

@@ -3,11 +3,13 @@ package com.yl.soft.controller.api;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yl.soft.common.unified.entity.BasePage;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
-import com.yl.soft.dto.OpportunityDto;
+import com.yl.soft.dto.app.AdvertisingDto;
+import com.yl.soft.dto.app.OpportunityDto;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbAdvertising;
@@ -20,10 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Api(tags = {"C端模块-商机"})
 @RestController
@@ -57,7 +56,7 @@ public class OpportunityController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/opportunityRecommendList")
-    public BaseResponse<PageInfo<OpportunityDto>> opportunityRecommendList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<BasePage<OpportunityDto>> opportunityRecommendList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -74,7 +73,7 @@ public class OpportunityController extends BaseController {
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
         Collections.shuffle(ehbOpportunities);
-        return setResultSuccess(new PageInfo<>(ehbOpportunities));
+        return setResultSuccess(getBasePage(ehbOpportunities,ehbOpportunities));
     }
 
     /**
@@ -98,7 +97,7 @@ public class OpportunityController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/opportunityNewList")
-    public BaseResponse<PageInfo<OpportunityDto>> opportunityNewList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<BasePage<OpportunityDto>> opportunityNewList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -112,7 +111,7 @@ public class OpportunityController extends BaseController {
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
-        return setResultSuccess(new PageInfo<>(ehbOpportunities));
+        return setResultSuccess(getBasePage(ehbOpportunities,ehbOpportunities));
     }
 
     /**
@@ -136,7 +135,7 @@ public class OpportunityController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/opportunityHotList")
-    public BaseResponse<PageInfo<OpportunityDto>> opportunityHotList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<BasePage<OpportunityDto>> opportunityHotList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -154,7 +153,7 @@ public class OpportunityController extends BaseController {
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
         Collections.shuffle(ehbOpportunities);
-        return setResultSuccess(new PageInfo<>(ehbOpportunities));
+        return setResultSuccess(getBasePage(ehbOpportunities,ehbOpportunities));
     }
 
     /**
@@ -173,10 +172,14 @@ public class OpportunityController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/advertisingList")
-    public BaseResponse<List<EhbAdvertising>> advertisingList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<List<AdvertisingDto>> advertisingList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
         ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
-        return setResultSuccess(ehbAdvertisings);
+        List<AdvertisingDto> advertisingDtos = new ArrayList<>();
+        for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
+            advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
+        }
+        return setResultSuccess(advertisingDtos);
     }
 }

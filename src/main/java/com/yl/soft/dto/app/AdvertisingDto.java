@@ -6,6 +6,7 @@ import com.yl.soft.po.EhbBanner;
 import com.yl.soft.po.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -27,6 +28,9 @@ import java.io.Serializable;
 public class AdvertisingDto implements Serializable {
 
     private static final long serialVersionUID=1L;
+
+    @ApiModelProperty(value = "编号")
+    private Integer id;
 
     @ApiModelProperty(value = "标题")
     private String title;

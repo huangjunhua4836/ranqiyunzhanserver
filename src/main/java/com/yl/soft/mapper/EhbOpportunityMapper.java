@@ -1,7 +1,7 @@
 package com.yl.soft.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yl.soft.dto.OpportunityDto;
+import com.yl.soft.dto.app.OpportunityDto;
 import com.yl.soft.po.EhbOpportunity;
 import org.apache.ibatis.annotations.Param;
 

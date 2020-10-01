@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 广告表 服务实现类
+ * banner表 服务实现类
  * </p>
  *
  * @author ${author}

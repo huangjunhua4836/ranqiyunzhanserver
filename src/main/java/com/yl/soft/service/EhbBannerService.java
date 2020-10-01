@@ -5,7 +5,7 @@ import com.yl.soft.po.EhbBanner;
 
 /**
  * <p>
- * 广告表 服务类
+ * banner表 服务类
  * </p>
  *
  * @author ${author}

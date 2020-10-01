@@ -3,11 +3,15 @@ package com.yl.soft.controller.api;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yl.soft.common.unified.entity.BasePage;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
-import com.yl.soft.dto.OpportunityDto;
+import com.yl.soft.dto.app.ArticleDto;
+import com.yl.soft.dto.app.ExhibitorDto;
+import com.yl.soft.dto.app.HottitleDto;
+import com.yl.soft.dto.app.OpportunityDto;
 import com.yl.soft.po.EhbArticle;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbHottitle;
@@ -22,10 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Api(tags = {"C端模块-首页-检索"})
 @RestController
@@ -56,12 +58,16 @@ public class SearchController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/hottitleList")
-    public BaseResponse<List<EhbHottitle>> hottitleList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<List<HottitleDto>> hottitleList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         QueryWrapper<EhbHottitle> ehbHottitleQueryWrapper = new QueryWrapper<>();
         ehbHottitleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbHottitleQueryWrapper.orderByDesc("releasetime");
         List<EhbHottitle> ehbHottitles = ehbHottitleService.list(ehbHottitleQueryWrapper);
-        return setResultSuccess(ehbHottitles);
+        List<HottitleDto> hottitleDtos = new ArrayList<>();
+        for(EhbHottitle ehbHottitle : ehbHottitles){
+            hottitleDtos.add(HottitleDto.of(ehbHottitle));
+        }
+        return setResultSuccess(hottitleDtos);
     }
 
     /**
@@ -83,7 +89,7 @@ public class SearchController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/exhibitionSearch")
-    public BaseResponse<PageInfo<EhbExhibitor>> exhibitionSearch(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<BasePage<ExhibitorDto>> exhibitionSearch(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -95,8 +101,9 @@ public class SearchController extends BaseController {
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
-        Collections.shuffle(ehbExhibitors);
-        return setResultSuccess(new PageInfo<>(ehbExhibitors));
+        List<ExhibitorDto> exhibitorDtos = ehbExhibitors.stream().map(e->ExhibitorDto.of(e)).collect(Collectors.toList());
+        Collections.shuffle(exhibitorDtos);
+        return setResultSuccess(getBasePage(ehbExhibitors,exhibitorDtos));
     }
 
     /**
@@ -117,7 +124,7 @@ public class SearchController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/opportunitySearch")
-    public BaseResponse<PageInfo<OpportunityDto>> opportunitySearch(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<BasePage<OpportunityDto>> opportunitySearch(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -128,9 +135,9 @@ public class SearchController extends BaseController {
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
-        List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
-        Collections.shuffle(ehbOpportunities);
-        return setResultSuccess(new PageInfo<>(ehbOpportunities));
+        List<OpportunityDto> opportunityDtos = ehbOpportunityService.opportunityList(conditionMap);
+        Collections.shuffle(opportunityDtos);
+        return setResultSuccess(getBasePage(opportunityDtos,opportunityDtos));
     }
 
     /**
@@ -151,7 +158,7 @@ public class SearchController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/articleSearch")
-    public BaseResponse<PageInfo<EhbArticle>> articleSearch(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<BasePage<ArticleDto>> articleSearch(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
@@ -163,7 +170,8 @@ public class SearchController extends BaseController {
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<EhbArticle> ehbArticles = ehbArticleService.list(ehbArticleQueryWrapper);
-        Collections.shuffle(ehbArticles);
-        return setResultSuccess(new PageInfo<>(ehbArticles));
+        List<ArticleDto> articleDtos = ehbArticles.stream().map(e->ArticleDto.of(e)).collect(Collectors.toList());
+        Collections.shuffle(articleDtos);
+        return setResultSuccess(getBasePage(ehbArticles,articleDtos));
     }
 }

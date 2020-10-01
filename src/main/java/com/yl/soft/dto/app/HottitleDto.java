@@ -1,9 +1,12 @@
 package com.yl.soft.dto.app;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.yl.soft.po.EhbGuest;
+import com.yl.soft.po.EhbBanner;
+import com.yl.soft.po.EhbHottitle;
+import com.yl.soft.po.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -12,7 +15,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 推荐配置表
+ * 热搜词配置表
  * </p>
  *
  * @author ${author}
@@ -21,22 +24,18 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="EhbGuest对象", description="推荐配置表")
-public class GuestDto implements Serializable {
+@ApiModel(value="EhbHottitle对象", description="热搜词配置表")
+public class HottitleDto implements Serializable {
 
     private static final long serialVersionUID=1L;
 
-    @ApiModelProperty(value = "编号")
+    @ApiModelProperty(value = "编码")
     private Integer id;
+    @ApiModelProperty(value = "热词")
+    private String hottitle;
 
-    @ApiModelProperty(value = "嘉宾姓名")
-    private String name;
-
-    @ApiModelProperty(value = "嘉宾职位")
-    private String job;
-
-    public static GuestDto of(EhbGuest po) {
-        GuestDto dto = new GuestDto();
+    public static HottitleDto of(EhbHottitle po) {
+        HottitleDto dto = new HottitleDto();
         BeanUtil.copyProperties(po,dto);
         return dto;
     }

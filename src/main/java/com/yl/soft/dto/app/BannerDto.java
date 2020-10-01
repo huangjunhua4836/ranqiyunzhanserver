@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 广告表
+ * banner表
  * </p>
  *
  * @author ${author}
@@ -27,6 +27,9 @@ import java.time.LocalDateTime;
 public class BannerDto implements Serializable {
 
     private static final long serialVersionUID=1L;
+
+    @ApiModelProperty(value = "编号")
+    private Integer id;
 
     @ApiModelProperty(value = "类型（1：首页顶部，2：首页大会预告）")
     private Integer type;
