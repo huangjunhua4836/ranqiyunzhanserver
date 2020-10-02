@@ -76,7 +76,7 @@ public class SendMsgCodeController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return ok(r);
+		return r;
 	}
 
 }
