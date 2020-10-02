@@ -1,6 +1,5 @@
 package com.yl.soft.controller.api;
 
-import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbExhibitorDto;
 import com.yl.soft.dto.base.ResultItem;
-import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.service.EhbExhibitorService;
 

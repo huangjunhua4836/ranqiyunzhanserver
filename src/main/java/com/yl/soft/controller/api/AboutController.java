@@ -15,8 +15,6 @@ import com.yl.soft.service.EhbAboutService;
 import com.yl.soft.service.EnbOnlineService;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @Api(tags = { "C端模块-关于/首页在线招展" })

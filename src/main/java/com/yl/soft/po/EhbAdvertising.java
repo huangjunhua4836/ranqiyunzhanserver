@@ -34,7 +34,7 @@ public class EhbAdvertising extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "url")
     private String url;
 
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty(value = "排序", hidden = true)
     private Integer sort;
 
     @ApiModelProperty(value = "类型：1-站内   2-站外")

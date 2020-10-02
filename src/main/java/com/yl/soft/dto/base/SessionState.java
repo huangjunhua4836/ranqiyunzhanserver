@@ -13,10 +13,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSON;
 import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.StringUtilsEX;
 
 @Component
 public class SessionState {
 
+    private int time = 1 * 15 * 60;
     @Autowired
     private RedisService redisService;
     
@@ -29,6 +31,22 @@ public class SessionState {
     @Bean
     public SessionState getSessionState() {
         return new SessionState();
+    }
+    
+    
+    /**
+     * 延迟Token过期时间
+     *
+     * @param token
+     */
+    public Boolean DelayTokenTimeOut(String token) {
+        String val = redisService.get(token);
+        if (!StringUtilsEX.IsNullOrWhiteSpace(val)) {
+            //5分钟
+            redisService.set(token, val, time);
+            return true;
+        }
+        return false;
     }
 
     /**

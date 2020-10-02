@@ -93,6 +93,24 @@ pagehelper:
 
 # 上传文件统一后缀名称配置
 custom:
+  hwyzb:
+    live: rqyz.live.duoka361.com
+    tlive: rqyz.tlive.duoka361.com
+    appname: rqyz
+    lkey: 3deYM0x8o8Fuq2ke
+    tkey: mR9DFCwaOI0syBoz
+  sms:
+    time_out: 300
+  yzm:
+    url: https://139.9.32.119:18312/common/sms/sendTemplateMessage
+    TemplateId0: SMS_20092900003 #注册
+    TemplateId1: SMS_20092900003 #登录
+    TemplateId2: SMS_20092900003 #绑定手机号
+    TemplateId3: SMS_20092900003 #忘记密码
+    TemplateId4: SMS_20092900003 #验证原手机号码
+    TemplateId5: SMS_20092900003 #更换手机号码
+    accout: ITA1039
+    passward: DS6*%23du!a
   internal:
     key: Ji3452%8%#3lQ@kj%a*f91#69!A.o # 内部通讯Key
   session:
