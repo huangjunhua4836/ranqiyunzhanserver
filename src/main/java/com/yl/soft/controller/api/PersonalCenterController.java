@@ -112,13 +112,13 @@ public class PersonalCenterController extends BaseController {
 
 	@ApiOperation(value = "我的企业编辑", notes = "我的企业编辑")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "img", value = "banner", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "img", value = "企业封面图", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "phone", value = "联系电话", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "mailbox", value = "联系邮箱", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "website", value = "公司主页", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "address", value = "地址", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "describes", value = "企业简介", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "zwimg", value = "展位效果图", required = true, paramType = "query"), })
+			@ApiImplicitParam(name = "zwimg", value = "展位效果图", required = false, paramType = "query"), })
 	@PostMapping("/api/updateComp")
 	public ResultItem updateComp(String token, String img, @NotBlank(message = "请输入一个正确的手机号") String phone,
 			@NotBlank(message = "请输入一个正确邮箱地址") String mailbox, @NotBlank(message = "请输入一个正确官网地址") String website,
@@ -227,7 +227,9 @@ public class PersonalCenterController extends BaseController {
 		List<MeCollectionDto> dataList = pageInfo.getList().stream().map(i -> {
 			MeCollectionDto md = new MeCollectionDto();
 			EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(i.getRelateid());
-			BeanUtils.copyProperties(ehbExhibitor, md);
+			if(null!=ehbExhibitor) {
+				BeanUtils.copyProperties(ehbExhibitor, md);
+			}
 			return md;
 		}).collect(Collectors.toList());
 

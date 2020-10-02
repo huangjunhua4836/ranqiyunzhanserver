@@ -64,6 +64,7 @@ public class BaseController extends BaseResponseUtil {
 		r.setData(data);
 		r.setPageIndex(pageIndex);
 		r.setTotal(total);
+		r.setCode(200);
 		r.setPageTotal(pageTotal);
 		r.setPageLimit(pageLimit);
 		return r;
@@ -76,6 +77,7 @@ public class BaseController extends BaseResponseUtil {
 	protected <T> ResultItem<T> ok(T data) {
 		ResultItem<T> r = new ResultItem<T>();
 		r.setData(data);
+		r.setCode(200);
 		r.setDesc("成功");
 		return r;
 	}
