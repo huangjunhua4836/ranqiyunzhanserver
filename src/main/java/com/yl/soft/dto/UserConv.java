@@ -14,8 +14,8 @@ import com.yl.soft.po.EhbAudience;
  */
 public interface UserConv {
 
-	public static EhbAudienceDto do2dto(EhbAudience user) {
-		EhbAudienceDto userDto = new EhbAudienceDto();
+	public static EhbAudiencedlDto do2dto(EhbAudience user) {
+		EhbAudiencedlDto userDto = new EhbAudiencedlDto();
 		BeanUtils.copyProperties(user, userDto, "passwword");
 		return userDto;
 	}

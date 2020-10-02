@@ -22,7 +22,9 @@ import com.yl.soft.common.config.Constants;
 import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbAudienceDto;
+import com.yl.soft.dto.EhbAudiencedlDto;
 import com.yl.soft.dto.UserConv;
+import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
@@ -60,7 +62,7 @@ public class UserLoginController extends BaseController {
 	@Autowired
 	private SessionState sessionState;
 
-	private ResultItem<EhbAudienceDto> setSessionUser(EhbAudience user) {
+	private BaseResult<EhbAudiencedlDto> setSessionUser(EhbAudience user) {
 		if (UserEnum.State.of(user.getEnabled()) == UserEnum.State.禁用) {
 			return error(-203, "账号已被冻结");
 		}
@@ -70,10 +72,11 @@ public class UserLoginController extends BaseController {
 		sessionUser.setId(user.getId());
 		BeanUtils.copyProperties(user, sessionUser);
 		sessionState.setSessionUser(token, sessionUser);
-		EhbAudienceDto userDto = UserConv.do2dto(user);
-		ResultItem<EhbAudienceDto> result = new ResultItem<>();
-		result.setToken(token);
+		EhbAudiencedlDto userDto = UserConv.do2dto(user);
+		BaseResult<EhbAudiencedlDto> result = new BaseResult<>();
+		userDto.setPassword(token);
 		result.setData(userDto);
+		result.setDesc("登录成功");
 		return result;
 	}
 
@@ -96,7 +99,7 @@ public class UserLoginController extends BaseController {
 			@ApiResponse(code = -301, message = "未注册，请先注册"), @ApiResponse(code = 0, message = "登录成功"),
 			@ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
 	@PostMapping("/signin_password")
-	public ResultItem<EhbAudienceDto> signinWithPassword(
+	public BaseResult<EhbAudiencedlDto> signinWithPassword(
 			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
 			@NotBlank(message = "-102-请输入密码") @Pattern(regexp = Constants.PASSWD_REG, message = "-102-密码必须为字母开头，由6-20位字符组成") String password) {
 		EhbAudience user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getPhone, phone)
@@ -114,7 +117,7 @@ public class UserLoginController extends BaseController {
 			@ApiResponse(code = -202, message = "验证码错误"), @ApiResponse(code = -203, message = "账号已被冻结"),
 			@ApiResponse(code = 0, message = "登录成功"), @ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
 	@PostMapping("/signin_sms")
-	public ResultItem<EhbAudienceDto> signinWithSms(
+	public BaseResult<EhbAudiencedlDto> signinWithSms(
 			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
 			@NotBlank(message = "-101-验证码错误") String code) {
 		EhbAudience user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getPhone, phone).one();
@@ -141,7 +144,7 @@ public class UserLoginController extends BaseController {
 			@ApiResponse(code = -301, message = "未注册，请先注册"), @ApiResponse(code = 0, message = "登录成功"),
 			@ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
 	@PostMapping("/signin_openid")
-	public ResultItem<EhbAudienceDto> signinWithOpenid(
+	public BaseResult<EhbAudiencedlDto> signinWithOpenid(
 			@NotNull(message = "-101-无效的第三方类型") @Positive(message = "-101-无效的第三方类型") Integer type,
 			@NotBlank(message = "-102-请求码无效") String reqcode) {
 		LoginType loginType = LoginType.of(type);
@@ -179,7 +182,7 @@ public class UserLoginController extends BaseController {
 			@ApiResponse(code = -301, message = "已注册，请登陆"), @ApiResponse(code = 0, message = "登录成功"),
 			@ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
 	@PostMapping("/signup_openid")
-	public ResultItem<EhbAudienceDto> signupWithOpenid(
+	public BaseResult<EhbAudiencedlDto> signupWithOpenid(
 			@NotNull(message = "-101-无效的第三方类型") @Positive(message = "-101-无效的第三方类型") Integer type,
 			@NotBlank(message = "-102-请输入请求码") String reqcode,
 			@NotBlank(message = "-103-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-103-请输入正确的手机号") String phone,
@@ -255,7 +258,7 @@ public class UserLoginController extends BaseController {
 			@ApiResponse(code = -102, message = "密码必须为字母开头，由6-20位字符组成"), @ApiResponse(code = -202, message = "验证码错误"),
 			@ApiResponse(code = 0, message = "修改成功"), @ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
 	@PutMapping("/change_password")
-	public ResultItem<Void> changePassword(
+	public BaseResult<Void> changePassword(
 			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
 			@NotBlank(message = "-103-请输入验证码") String code,
 			@NotBlank(message = "-102-请输入密码") @Pattern(regexp = Constants.PASSWD_REG, message = "-102-密码必须为字母开头，由6-20位字符组成") String password,
@@ -283,7 +286,7 @@ public class UserLoginController extends BaseController {
 			@ApiResponse(code = -202, message = "原手机验证码错误"), @ApiResponse(code = -203, message = "新手机验证码错误"),
 			@ApiResponse(code = 0, message = "更换手机号成功"), @ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
 	@PutMapping("/change_phone")
-	public ResultItem<Void> changePhone(@NotBlank(message = "-102-请输入原手机验证码") String oldCode,
+	public BaseResult<Void> changePhone(@NotBlank(message = "-102-请输入原手机验证码") String oldCode,
 			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
 			@NotBlank(message = "-103-请输入新手机验证码") String code, String token) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
@@ -314,7 +317,7 @@ public class UserLoginController extends BaseController {
 		@ApiResponse(code = 200, message = "注销成功")
 	})
     @PostMapping(value = "/log_out")
-    public ResultItem log_out(@NotBlank(message = "-501-TOKEN为空！") String token) {
+    public BaseResult log_out(@NotBlank(message = "-501-TOKEN为空！") String token) {
         sessionState.delSessionUser(token);
         return ok();
     }
@@ -329,7 +332,7 @@ public class UserLoginController extends BaseController {
 		@ApiResponse(code = -601, message = "续命失败！"),
 		@ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
     @PostMapping(value = "/heartbeat")
-    public ResultItem heartbeat(String token) {
+    public BaseResult heartbeat(String token) {
         ResultItem r = new ResultItem();
         if (StringUtil.isEmpty(token)) {
             r.setDesc("token为空！");

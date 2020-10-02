@@ -87,7 +87,6 @@ public class PersonalCenterController extends BaseController {
 	public ResultItem<EhbAudienceDto> getMe(String token) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
-
 		return ok(MeUserConv.do2dto(ehbAudience));
 	}
 

@@ -18,6 +18,7 @@ import com.yl.soft.common.util.DateUtils;
 import com.yl.soft.common.util.ProductNumUtil;
 import com.yl.soft.common.util.SendSms;
 import com.yl.soft.controller.base.BaseController;
+import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.po.Smsrecord;
 import com.yl.soft.service.SmsrecordService;
@@ -53,8 +54,8 @@ public class SendMsgCodeController extends BaseController {
 			@ApiImplicitParam(name = "phone", value = "验证码手机号", required = true, paramType = "query"),
 	})
 	@PostMapping("/send/phoneCode")
-	public ResultItem phoneCode(@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone, Integer smstype) {
-		ResultItem r = new ResultItem();
+	public BaseResult phoneCode(@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone, Integer smstype) {
+		BaseResult r = new BaseResult();
 		if (smstype == null) {
 			return error();
 		}
