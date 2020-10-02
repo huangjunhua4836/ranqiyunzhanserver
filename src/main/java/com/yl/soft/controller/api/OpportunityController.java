@@ -93,9 +93,7 @@ public class OpportunityController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
-            ,@ApiImplicitParam(name = "title", value = "商机名称", paramType = "query")
-            ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
+            ,@ApiImplicitParam(name = "key", value = "企业名称,商机名称,展位号",  paramType = "query")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -143,9 +141,7 @@ public class OpportunityController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
-            ,@ApiImplicitParam(name = "title", value = "商机名称", paramType = "query")
-            ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
+            ,@ApiImplicitParam(name = "key", value = "企业名称,商机名称,展位号",  paramType = "query")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
