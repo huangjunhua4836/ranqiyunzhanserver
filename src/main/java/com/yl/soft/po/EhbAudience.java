@@ -60,6 +60,12 @@ public class EhbAudience extends BaseEntity implements Serializable {
     
     private String qqOpenid;
     
+	@ApiModelProperty(value="二维码")
+	private String qrcode;
+	
+	@ApiModelProperty(value="企业名称")
+	private String qyname;
+    
     @ApiModelProperty("展商ID")
     private Integer bopie;
 }

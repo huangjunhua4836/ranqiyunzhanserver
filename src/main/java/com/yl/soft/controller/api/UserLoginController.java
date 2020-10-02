@@ -1,6 +1,7 @@
 package com.yl.soft.controller.api;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.util.StringUtil;
 import com.yl.soft.common.config.Constants;
 import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.DateUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbAudienceDto;
 import com.yl.soft.dto.EhbAudiencedlDto;
@@ -272,6 +274,10 @@ public class UserLoginController extends BaseController {
 				.eq(EhbAudience::getPhone, phone).update()) {
 			return error();
 		}
+		BaseResult r = new BaseResult();
+		r.setCode(200);
+		r.setDesc("更换成功");
+		r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
 		return ok();
 	}
 
@@ -289,6 +295,7 @@ public class UserLoginController extends BaseController {
 	public BaseResult<Void> changePhone(@NotBlank(message = "-102-请输入原手机验证码") String oldCode,
 			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
 			@NotBlank(message = "-103-请输入新手机验证码") String code, String token) {
+		BaseResult r = new BaseResult();
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		String sms = redisUtil.get("I" + phone.trim());
 		if (!code.equals(sms)) {
@@ -306,7 +313,10 @@ public class UserLoginController extends BaseController {
 				.eq(EhbAudience::getId, sessionUser.getId()).update()) {
 			return error();
 		}
-		return ok();
+		r.setCode(200);
+		r.setDesc("更换成功");
+		r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
+		return r;
 	}
 	
 	@ApiOperation(value = "注销登录", notes = "注销登录", httpMethod = "POST")
@@ -318,8 +328,12 @@ public class UserLoginController extends BaseController {
 	})
     @PostMapping(value = "/log_out")
     public BaseResult log_out(@NotBlank(message = "-501-TOKEN为空！") String token) {
+		BaseResult r = new BaseResult();
         sessionState.delSessionUser(token);
-        return ok();
+        r.setCode(200);
+        r.setDesc("注销登录");
+        r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
+        return r;
     }
 	
     @ApiOperation(value = "TOKEN续命", notes = "续命为延迟5分钟", httpMethod = "POST")
@@ -333,7 +347,7 @@ public class UserLoginController extends BaseController {
 		@ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
     @PostMapping(value = "/heartbeat")
     public BaseResult heartbeat(String token) {
-        ResultItem r = new ResultItem();
+    	BaseResult r = new BaseResult();
         if (StringUtil.isEmpty(token)) {
             r.setDesc("token为空！");
             r.setCode(-501);
@@ -341,7 +355,7 @@ public class UserLoginController extends BaseController {
         }
         boolean timeout = sessionState.DelayTokenTimeOut(token);
         if (timeout) {
-            r.setCode(0);
+            r.setCode(200);
             r.setDesc("续命成功！");
         } else {
             r.setCode(-601);
