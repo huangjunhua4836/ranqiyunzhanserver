@@ -81,6 +81,21 @@ public class BaseController extends BaseResponseUtil {
 		r.setDesc("成功");
 		return r;
 	}
+	
+	protected <T> BaseResult<T> ok2(T data) {
+		BaseResult<T> r = new BaseResult<T>();
+		r.setData(data);
+		r.setCode(200);
+		r.setDesc("成功");
+		return r;
+	}
+	
+	protected <T> BaseResult<T> ok2() {
+		BaseResult<T> r = new BaseResult<T>();
+		r.setCode(200);
+		r.setDesc("成功");
+		return r;
+	}
 
 	protected <T> ResultItem<T> ok() {
 		return ok(null);

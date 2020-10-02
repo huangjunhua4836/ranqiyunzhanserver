@@ -125,7 +125,7 @@ public class PersonalCenterController extends BaseController {
 			@ApiImplicitParam(name = "describes", value = "企业简介", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "zwimg", value = "展位效果图", required = false, paramType = "query"), })
 	@PostMapping("/api/updateComp")
-	public ResultItem updateComp(String token, String img, @NotBlank(message = "请输入一个正确的手机号") String phone,
+	public BaseResult updateComp(String token, String img, @NotBlank(message = "请输入一个正确的手机号") String phone,
 			@NotBlank(message = "请输入一个正确邮箱地址") String mailbox, @NotBlank(message = "请输入一个正确官网地址") String website,
 			String address, String describes, String zwimg) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
@@ -140,7 +140,7 @@ public class PersonalCenterController extends BaseController {
 		ehbExhibitor.setZwimg(zwimg);
 
 		ehbExhibitorService.updateById(ehbExhibitor);
-		return ok();
+		return ok2();
 	}
 
 	@ApiOperation(value = "获取所有标签", notes = "获取所有标签")
@@ -184,7 +184,7 @@ public class PersonalCenterController extends BaseController {
 			@ApiImplicitParam(name = "label", value = "请选择标签  标签id[1,2]", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "picture", value = "商品多图片上传['src1','src2']", required = true, paramType = "query"), })
 	@PostMapping("/api/pushGoods")
-	public ResultItem pushGoods(String token, @NotBlank(message = "请添加一个正确的标签") String title,
+	public BaseResult pushGoods(String token, @NotBlank(message = "请添加一个正确的标签") String title,
 			@NotBlank(message = "请添加一个正确的内容") String content, @NotBlank(message = "请选择一个正确的标签") String label,
 			String picture, Integer type) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
@@ -198,7 +198,7 @@ public class PersonalCenterController extends BaseController {
 		ehbOpportunity.setIsdel(false);
 		ehbOpportunity.setExhibitorid(sessionUser.getBopie());
 		ehbOpportunityService.save(ehbOpportunity);
-		return ok();
+		return ok2();
 	}
 
 	@ApiOperation(value = "我的橱窗商品/商机详情", notes = "我的橱窗商品详情")
@@ -336,7 +336,7 @@ public class PersonalCenterController extends BaseController {
 		} else {
 			ehbUseractionService.save(EhbUseractionDto.of(sessioner, type, relateid, i));
 		}
-		return ok();
+		return ok2();
 	}
 
 	@ApiOperation(value = "添加/取消点赞", notes = "用户点赞行为")
@@ -381,7 +381,7 @@ public class PersonalCenterController extends BaseController {
 		} else {
 			ehbUseractionService.save(EhbUseractionDto.of(sessioner, type, relateid, i));
 		}
-		return ok();
+		return ok2();
 	}
 
 	@ApiOperation(value = "浏览", notes = "用户浏览行为")
@@ -389,11 +389,11 @@ public class PersonalCenterController extends BaseController {
 			@ApiImplicitParam(name = "relateid", value = "浏览内容的id", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "type", value = "1：企业   2：商机  3：资讯 4：商品", required = true, paramType = "query"), })
 	@PostMapping("/addBrowse")
-	public ResultItem addBrowse(String token, Integer relateid, Integer type) {
+	public BaseResult addBrowse(String token, Integer relateid, Integer type) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
 		Integer i = 4;// （1：收藏 2：点赞 3：关注 4：浏览）
 		ehbUseractionService.save(EhbUseractionDto.of(sessioner, type, relateid, i));
-		return ok();
+		return ok2();
 	}
 
 	@ApiOperation(value = "关于", notes = "关于")
