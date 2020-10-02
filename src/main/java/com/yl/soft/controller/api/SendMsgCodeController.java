@@ -1,6 +1,7 @@
 package com.yl.soft.controller.api;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tencentcloudapi.mvj.v20190926.models.Data;
 import com.yl.soft.common.config.Constants;
 import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.DateUtils;
 import com.yl.soft.common.util.ProductNumUtil;
 import com.yl.soft.common.util.SendSms;
 import com.yl.soft.controller.base.BaseController;
@@ -67,6 +70,7 @@ public class SendMsgCodeController extends BaseController {
 			if (result) {
 				r.setDesc("获取验证码成功");
 				r.setCode(200);
+				r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
 				r.setData(val);
 				sendSms.sendMsgCode(phone, val, smstype);
 				redisUtil.set("I" + phone, val, sms_code_time_out);
