@@ -180,6 +180,7 @@ public class OpportunityController extends BaseController {
         for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
             advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
         }
+        Collections.shuffle(advertisingDtos);
         return setResultSuccess(advertisingDtos);
     }
 }
