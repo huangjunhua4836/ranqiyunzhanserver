@@ -76,6 +76,8 @@ public class UserLoginController extends BaseController {
 		sessionState.setSessionUser(token, sessionUser);
 		EhbAudiencedlDto userDto = UserConv.do2dto(user);
 		BaseResult<EhbAudiencedlDto> result = new BaseResult<>();
+		user.setTempass(token);
+		ehbAudienceService.updateById(user);
 		userDto.setPassword(token);
 		result.setData(userDto);
 		result.setDesc("登录成功");
@@ -123,6 +125,7 @@ public class UserLoginController extends BaseController {
 			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
 			@NotBlank(message = "-101-验证码错误") String code) {
 		EhbAudience user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getPhone, phone).one();
+		
 		String sms = redisUtil.get("I" + phone.trim());
 		if (!code.equals(sms)) {
 			return error(-202, "验证码错误");
@@ -250,6 +253,8 @@ public class UserLoginController extends BaseController {
 		}
 		return setSessionUser(user);
 	}
+	
+	
 
 	@ApiOperation(value = "修改密码", notes = "修改密码")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
@@ -335,6 +340,23 @@ public class UserLoginController extends BaseController {
         r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
         return r;
     }
+	
+	 @ApiOperation(value = "临时密码授权登录", notes = "临时密码生成token", httpMethod = "POST")
+	    @ApiImplicitParams({
+	            @ApiImplicitParam(name = "temppass", value = "临时密码", required = true, paramType = "query")
+	    })
+		@ApiResponses({ 
+			@ApiResponse(code = 200, message = "授权成功"),
+			@ApiResponse(code = -501, message = "授权失败临时密码为空"),
+			@ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
+	    @PostMapping(value = "/tempPass")
+	    public BaseResult tempPass(String temppass) {
+	        if (StringUtil.isEmpty(temppass)) {
+	            return error(501,"临时密码为空");
+	        }
+	       EhbAudience user=  ehbAudienceService.lambdaQuery().eq(EhbAudience::getTempass, temppass).one();
+	       return setSessionUser(user);
+	    }
 	
     @ApiOperation(value = "TOKEN续命", notes = "续命为延迟5分钟", httpMethod = "POST")
     @ApiImplicitParams({

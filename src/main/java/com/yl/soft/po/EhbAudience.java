@@ -68,4 +68,7 @@ public class EhbAudience extends BaseEntity implements Serializable {
     
     @ApiModelProperty("展商ID")
     private Integer bopie;
+    
+    @ApiModelProperty("临时密码")
+    private String tempass;
 }
