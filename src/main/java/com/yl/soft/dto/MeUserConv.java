@@ -25,6 +25,7 @@ public interface MeUserConv {
 			return ehbAudienceDto;
 		}
 		BeanUtils.copyProperties(ehbAudience, ehbAudienceDto);
+		ehbAudienceDto.setState(ehbAudience.getState()+"");
 		return ehbAudienceDto;
 	}
 
