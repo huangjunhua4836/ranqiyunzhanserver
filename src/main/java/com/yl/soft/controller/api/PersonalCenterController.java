@@ -26,6 +26,7 @@ import com.yl.soft.dto.EhbOpportunityDto;
 import com.yl.soft.dto.EhbUseractionDto;
 import com.yl.soft.dto.MeCollectionDto;
 import com.yl.soft.dto.MeUserConv;
+import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
@@ -38,6 +39,7 @@ import com.yl.soft.po.EhbOpportunity;
 import com.yl.soft.po.EhbUseraction;
 import com.yl.soft.po.EhbVisitorRegistration;
 import com.yl.soft.service.EhbAboutusService;
+import com.yl.soft.service.EhbArticleService;
 import com.yl.soft.service.EhbAudienceService;
 import com.yl.soft.service.EhbDataUploadService;
 import com.yl.soft.service.EhbExhibitorService;
@@ -79,6 +81,9 @@ public class PersonalCenterController extends BaseController {
 
 	@Autowired
 	private EhbVisitorRegistrationService ehbVisitorRegistrationService;
+	
+	@Autowired
+	private EhbArticleService ehbArticleService;
 
 	@Autowired
 	private SessionState sessionState;
@@ -175,7 +180,7 @@ public class PersonalCenterController extends BaseController {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "title", value = "请输入商品名称标题", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "content", value = "请详细描述商品介绍", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "type", value = "类型（1-商机  2-商品）", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "type", value = "类型[1,2...]（1-商机  2-商品）", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "label", value = "请选择标签  标签id[1,2]", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "picture", value = "商品多图片上传['src1','src2']", required = true, paramType = "query"), })
 	@PostMapping("/api/pushGoods")
@@ -291,10 +296,37 @@ public class PersonalCenterController extends BaseController {
 			@ApiImplicitParam(name = "relateid", value = "收藏（如果是关注展商就是展示id）内容的id", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "type", value = "1：展商   2：商机  3：资讯  4:商品", required = true, paramType = "query"), })
 	@PostMapping("/api/addOrDelCollention")
-	public ResultItem addOrDelCollention(String token, Integer relateid, Integer type) {
+	public BaseResult addOrDelCollention(String token, Integer relateid, Integer type) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
 
 		Integer i = 1;// （1：收藏 2：点赞 3：关注 4：浏览）
+		
+		switch (type) {
+		case 1: //展商
+			if(ehbExhibitorService.getById(relateid)==null){
+				return error(-509,"展商不存在");
+			}
+			break;
+		case 2: //商机(1-商机  2-商品)
+			EhbOpportunity et=ehbOpportunityService.lambdaQuery().eq(EhbOpportunity::getId, relateid).eq(EhbOpportunity::getType, 1).one();
+			if(et==null) {
+				return error(-508,"商机不存在");
+			}
+			break;
+		case 3:
+			if(ehbArticleService.getById(relateid)==null){
+				return error(-507,"资讯不存在");
+			}
+			break;
+		case 4: //商品(1-商机  2-商品)
+			EhbOpportunity et1=ehbOpportunityService.lambdaQuery().eq(EhbOpportunity::getId, relateid).eq(EhbOpportunity::getType, 2).one();
+			if(et1==null) {
+				return error(-506,"商品不存在");
+			}
+			break;
+		default:
+			return error(-505,"关注类型错误");
+		}
 
 		EhbUseraction ehbUseraction = ehbUseractionService.lambdaQuery().eq(EhbUseraction::getUserid, sessioner.getId())
 				.eq(EhbUseraction::getRelateid, relateid).eq(EhbUseraction::getType, type)
