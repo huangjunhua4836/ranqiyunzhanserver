@@ -18,6 +18,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbAudienceDto;
+import com.yl.soft.dto.EhbAudiencegrDto;
+import com.yl.soft.dto.EhbAudienceyeDto;
 import com.yl.soft.dto.EhbExhibitorDto;
 import com.yl.soft.dto.EhbLabelDto;
 import com.yl.soft.dto.EhbOpportunityDto;
@@ -87,7 +89,16 @@ public class PersonalCenterController extends BaseController {
 	public ResultItem<EhbAudienceDto> getMe(String token) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
-		return ok(MeUserConv.do2dto(ehbAudience));
+		EhbAudienceDto ehbDto=new EhbAudienceDto();
+		if(null==ehbAudience.getBopie()) {
+			EhbAudiencegrDto ge=MeUserConv.do2dto1(ehbAudience);
+			ehbDto.setAudienceyegrDto(ge);
+		}else {
+			EhbExhibitor ee=ehbExhibitorService.getById(ehbAudience.getBopie());
+			EhbAudienceyeDto qy=MeUserConv.do2dto(ehbAudience,ee);
+			ehbDto.setEhbAudienceyeDto(qy);
+		}
+		return ok(ehbDto);
 	}
 
 	@ApiOperation(value = "我的企业", notes = "我的企业")
