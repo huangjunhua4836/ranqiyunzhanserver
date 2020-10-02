@@ -66,7 +66,7 @@ public class UserLoginController extends BaseController {
 		}
 		String token = UUID.randomUUID().toString();
 		SessionUser sessionUser = new SessionUser();
-		sessionUser.setCode(0);
+		sessionUser.setCode(200);
 		sessionUser.setId(user.getId());
 		BeanUtils.copyProperties(user, sessionUser);
 		sessionState.setSessionUser(token, sessionUser);
