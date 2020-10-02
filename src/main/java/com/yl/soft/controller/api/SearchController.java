@@ -98,7 +98,7 @@ public class SearchController extends BaseController {
         //商机列表
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
-        conditionMap.put("title",paramMap.get("key"));
+        conditionMap.put("title","%"+paramMap.get("key")+"%");
         conditionMap.put("type",1);//商机
         PageHelper.startPage(1, 5);
         List<OpportunityDto> opportunityDtos = ehbOpportunityService.opportunityList(conditionMap);
@@ -106,7 +106,7 @@ public class SearchController extends BaseController {
         //资讯列表
         QueryWrapper<EhbArticle> ehbArticleQueryWrapper = new QueryWrapper<>();
         ehbArticleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        ehbArticleQueryWrapper.eq(!StringUtils.isEmpty(paramMap.get("key")),"title",paramMap.get("key"));
+        ehbArticleQueryWrapper.like(!StringUtils.isEmpty(paramMap.get("key")),"title",paramMap.get("key"));
         ehbArticleQueryWrapper.orderByDesc("releasetime");
         PageHelper.startPage(1, 5);
         List<EhbArticle> ehbArticles = ehbArticleService.list(ehbArticleQueryWrapper);
@@ -145,8 +145,8 @@ public class SearchController extends BaseController {
         QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
         ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         if(!StringUtils.isEmpty(paramMap.get("key"))){
-            ehbExhibitorQueryWrapper.and(i->i.eq("enterprisename",paramMap.get("key"))
-                    .or().eq("boothno",paramMap.get("key")));
+            ehbExhibitorQueryWrapper.and(i->i.like("enterprisename",paramMap.get("key"))
+                    .or().like("boothno",paramMap.get("key")));
         }
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
@@ -180,7 +180,7 @@ public class SearchController extends BaseController {
         }
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
-        conditionMap.put("title",paramMap.get("key"));
+        conditionMap.put("title","%"+paramMap.get("key")+"%");
         conditionMap.put("type",1);//商机
 
         Integer pageParam[] = pageValidParam(paramMap);
@@ -214,7 +214,7 @@ public class SearchController extends BaseController {
         }
         QueryWrapper<EhbArticle> ehbArticleQueryWrapper = new QueryWrapper<>();
         ehbArticleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        ehbArticleQueryWrapper.eq(!StringUtils.isEmpty(paramMap.get("key")),"title",paramMap.get("key"));
+        ehbArticleQueryWrapper.like(!StringUtils.isEmpty(paramMap.get("key")),"title",paramMap.get("key"));
         ehbArticleQueryWrapper.orderByDesc("releasetime");
 
         Integer pageParam[] = pageValidParam(paramMap);

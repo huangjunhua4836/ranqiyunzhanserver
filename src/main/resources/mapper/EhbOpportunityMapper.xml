@@ -44,15 +44,17 @@
         <if test="paramMap.labelid!= null and paramMap.labelid!= ''">
             and e.labelid in (${paramMap.labelid})
         </if>
+        and (1=1
         <if test="paramMap.enterprisename!= null and paramMap.enterprisename!= ''">
-            and e.enterprisename = #{paramMap.enterprisename}
+            and e.enterprisename like #{paramMap.enterprisename}
         </if>
         <if test="paramMap.title!= null and paramMap.title!= ''">
-            and opp.title = #{paramMap.title}
+            or opp.title like #{paramMap.title}
         </if>
         <if test="paramMap.boothno!= null and paramMap.boothno!= ''">
-            and e.boothno = #{paramMap.boothno}
+            or e.boothno like #{paramMap.boothno}
         </if>
+        )
         <if test="paramMap.countthumbs!= null and paramMap.countthumbs!= ''">
             and opp.countthumbs = #{paramMap.countthumbs}
         </if>

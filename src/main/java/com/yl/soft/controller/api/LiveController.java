@@ -1,32 +1,32 @@
-package com.yl.soft.controller.api;
+//package com.yl.soft.controller.api;
+//
+//import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+//import com.github.pagehelper.PageHelper;
+//import com.yl.soft.common.unified.entity.BaseResponse;
+//import com.yl.soft.common.util.StringUtils;
+//import com.yl.soft.controller.base.BaseController;
+//import com.yl.soft.dict.CommonDict;
+//import com.yl.soft.dto.app.LiveDto;
+//import com.yl.soft.po.EhbLive;
+//import com.yl.soft.service.EhbLiveService;
+//import io.swagger.annotations.*;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import java.util.ArrayList;
+//import java.util.Collections;
+//import java.util.List;
+//import java.util.Map;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.github.pagehelper.PageHelper;
-import com.yl.soft.common.unified.entity.BaseResponse;
-import com.yl.soft.common.util.StringUtils;
-import com.yl.soft.controller.base.BaseController;
-import com.yl.soft.dict.CommonDict;
-import com.yl.soft.dto.app.LiveDto;
-import com.yl.soft.po.EhbLive;
-import com.yl.soft.service.EhbLiveService;
-import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-@Api(tags = {"C端模块-带你逛展"})
-@RestController
-@RequestMapping("/api")
-public class LiveController extends BaseController {
-    @Autowired
-    private EhbLiveService ehbLiveService;
+//@Api(tags = {"C端模块-带你逛展"})
+//@RestController
+//@RequestMapping("/api")
+//public class LiveController extends BaseController {
+//    @Autowired
+//    private EhbLiveService ehbLiveService;
 
 //    /**
 //     * 推荐直播列表
@@ -62,4 +62,4 @@ public class LiveController extends BaseController {
 //        Collections.shuffle(liveDtos);
 //        return setResultSuccess(liveDtos);
 //    }
-}
+//}

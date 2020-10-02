@@ -2,13 +2,12 @@ package com.yl.soft.controller.api;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.yl.soft.common.unified.entity.BasePage;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.app.AdvertisingDto;
+import com.yl.soft.dto.app.OpportunityAndAdvertisingDto;
 import com.yl.soft.dto.app.OpportunityDto;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
@@ -43,10 +42,7 @@ public class OpportunityController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
-            ,@ApiImplicitParam(name = "title", value = "商机名称", paramType = "query")
-            ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
+            ,@ApiImplicitParam(name = "key", value = "企业名称,商机名称,展位号",  paramType = "query")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -56,24 +52,37 @@ public class OpportunityController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/opportunityRecommendList")
-    public BaseResponse<BasePage<OpportunityDto>> opportunityRecommendList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<OpportunityAndAdvertisingDto> opportunityRecommendList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
         SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
-        conditionMap.put("enterprisename",paramMap.get("enterprisename"));
-        conditionMap.put("title",paramMap.get("title"));
-        conditionMap.put("boothno",paramMap.get("boothno"));
+        conditionMap.put("enterprisename","%"+paramMap.get("key")+"%");
+        conditionMap.put("title","%"+paramMap.get("key")+"%");
+        conditionMap.put("boothno","%"+paramMap.get("key")+"%");
         conditionMap.put("labelid",appLoginDTO.getLabelid());//行为推荐
         conditionMap.put("type",1);//商机
 
         Integer pageParam[] = pageValidParam(paramMap);
-        PageHelper.startPage(pageParam[0], pageParam[1]);
+        PageHelper.startPage(pageParam[0], 8);
         List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
         Collections.shuffle(ehbOpportunities);
-        return setResultSuccess(getBasePage(ehbOpportunities,ehbOpportunities));
+        //广告
+        QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
+        ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
+        List<AdvertisingDto> advertisingDtos = new ArrayList<>();
+        for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
+            advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
+        }
+        Collections.shuffle(advertisingDtos);
+
+        OpportunityAndAdvertisingDto opportunityAndAdvertisingDto = new OpportunityAndAdvertisingDto();
+        opportunityAndAdvertisingDto.setOpportunityDtoBasePage(getBasePage(ehbOpportunities,ehbOpportunities));
+        opportunityAndAdvertisingDto.setAdvertisingDto(advertisingDtos.get(0));
+        return setResultSuccess(opportunityAndAdvertisingDto);
     }
 
     /**
@@ -84,7 +93,6 @@ public class OpportunityController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
             ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
             ,@ApiImplicitParam(name = "title", value = "商机名称", paramType = "query")
             ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
@@ -97,21 +105,34 @@ public class OpportunityController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/opportunityNewList")
-    public BaseResponse<BasePage<OpportunityDto>> opportunityNewList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<OpportunityAndAdvertisingDto> opportunityNewList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
-        conditionMap.put("enterprisename",paramMap.get("enterprisename"));
-        conditionMap.put("title",paramMap.get("title"));
-        conditionMap.put("boothno",paramMap.get("boothno"));
+        conditionMap.put("enterprisename","%"+paramMap.get("key")+"%");
+        conditionMap.put("title","%"+paramMap.get("key")+"%");
+        conditionMap.put("boothno","%"+paramMap.get("key")+"%");
         conditionMap.put("type",1);//商机
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
-        return setResultSuccess(getBasePage(ehbOpportunities,ehbOpportunities));
+        //广告
+        QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
+        ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
+        List<AdvertisingDto> advertisingDtos = new ArrayList<>();
+        for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
+            advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
+        }
+        Collections.shuffle(advertisingDtos);
+
+        OpportunityAndAdvertisingDto opportunityAndAdvertisingDto = new OpportunityAndAdvertisingDto();
+        opportunityAndAdvertisingDto.setOpportunityDtoBasePage(getBasePage(ehbOpportunities,ehbOpportunities));
+        opportunityAndAdvertisingDto.setAdvertisingDto(advertisingDtos.get(0));
+        return setResultSuccess(opportunityAndAdvertisingDto);
     }
 
     /**
@@ -122,7 +143,6 @@ public class OpportunityController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
             ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
             ,@ApiImplicitParam(name = "title", value = "商机名称", paramType = "query")
             ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
@@ -135,15 +155,15 @@ public class OpportunityController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/opportunityHotList")
-    public BaseResponse<BasePage<OpportunityDto>> opportunityHotList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<OpportunityAndAdvertisingDto> opportunityHotList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
-        conditionMap.put("enterprisename",paramMap.get("enterprisename"));
-        conditionMap.put("title",paramMap.get("title"));
-        conditionMap.put("boothno",paramMap.get("boothno"));
+        conditionMap.put("enterprisename","%"+paramMap.get("key")+"%");
+        conditionMap.put("title","%"+paramMap.get("key")+"%");
+        conditionMap.put("boothno","%"+paramMap.get("key")+"%");
         conditionMap.put("countthumbs",10);
         conditionMap.put("countbrowse",20);
         conditionMap.put("countcomment",5);
@@ -153,7 +173,20 @@ public class OpportunityController extends BaseController {
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<OpportunityDto> ehbOpportunities = ehbOpportunityService.opportunityList(conditionMap);
         Collections.shuffle(ehbOpportunities);
-        return setResultSuccess(getBasePage(ehbOpportunities,ehbOpportunities));
+        //广告
+        QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
+        ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
+        List<AdvertisingDto> advertisingDtos = new ArrayList<>();
+        for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
+            advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
+        }
+        Collections.shuffle(advertisingDtos);
+
+        OpportunityAndAdvertisingDto opportunityAndAdvertisingDto = new OpportunityAndAdvertisingDto();
+        opportunityAndAdvertisingDto.setOpportunityDtoBasePage(getBasePage(ehbOpportunities,ehbOpportunities));
+        opportunityAndAdvertisingDto.setAdvertisingDto(advertisingDtos.get(0));
+        return setResultSuccess(opportunityAndAdvertisingDto);
     }
 
     /**
