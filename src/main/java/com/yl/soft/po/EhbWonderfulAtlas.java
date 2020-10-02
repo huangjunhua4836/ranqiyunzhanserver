@@ -50,6 +50,9 @@ public class EhbWonderfulAtlas implements Serializable {
     
     @ApiModelProperty(value="图片尺寸（高）")
     private Integer high;
+    
+    @ApiModelProperty(value="排序")
+    private Integer sort;
 
 
 }
