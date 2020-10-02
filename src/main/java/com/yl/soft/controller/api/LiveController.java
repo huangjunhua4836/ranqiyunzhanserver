@@ -28,38 +28,38 @@ public class LiveController extends BaseController {
     @Autowired
     private EhbLiveService ehbLiveService;
 
-    /**
-     * 推荐直播列表
-     * @return
-     */
-    @ApiOperation(value = "直播列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
-    })
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "成功")
-            ,@ApiResponse(code = 401, message = "token为空！")
-            ,@ApiResponse(code = 402, message = "token失效！")
-            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
-            ,@ApiResponse(code = -1, message = "系统异常")
-    })
-    @PostMapping("/liveList")
-    public BaseResponse<List<LiveDto>> recommendLiveList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
-        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
-            return setResultError(403,"","当前页码不能为空！");
-        }
-        QueryWrapper<EhbLive> ehbLiveQueryWrapper = new QueryWrapper<>();
-        ehbLiveQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        ehbLiveQueryWrapper.orderByDesc("leveltime");
-
-        Integer pageParam[] = pageValidParam(paramMap);
-        PageHelper.startPage(pageParam[0], pageParam[1]);
-        List<EhbLive> ehbLives = ehbLiveService.list(ehbLiveQueryWrapper);
-        List<LiveDto> liveDtos = new ArrayList<>();
-        for(EhbLive ehbLive : ehbLives){
-            liveDtos.add(LiveDto.of(ehbLive));
-        }
-        Collections.shuffle(liveDtos);
-        return setResultSuccess(liveDtos);
-    }
+//    /**
+//     * 推荐直播列表
+//     * @return
+//     */
+//    @ApiOperation(value = "直播列表")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+//    })
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "成功")
+//            ,@ApiResponse(code = 401, message = "token为空！")
+//            ,@ApiResponse(code = 402, message = "token失效！")
+//            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+//            ,@ApiResponse(code = -1, message = "系统异常")
+//    })
+//    @PostMapping("/liveList")
+//    public BaseResponse<List<LiveDto>> recommendLiveList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+//        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
+//            return setResultError(403,"","当前页码不能为空！");
+//        }
+//        QueryWrapper<EhbLive> ehbLiveQueryWrapper = new QueryWrapper<>();
+//        ehbLiveQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+//        ehbLiveQueryWrapper.orderByDesc("leveltime");
+//
+//        Integer pageParam[] = pageValidParam(paramMap);
+//        PageHelper.startPage(pageParam[0], pageParam[1]);
+//        List<EhbLive> ehbLives = ehbLiveService.list(ehbLiveQueryWrapper);
+//        List<LiveDto> liveDtos = new ArrayList<>();
+//        for(EhbLive ehbLive : ehbLives){
+//            liveDtos.add(LiveDto.of(ehbLive));
+//        }
+//        Collections.shuffle(liveDtos);
+//        return setResultSuccess(liveDtos);
+//    }
 }
