@@ -325,7 +325,7 @@ public class PersonalCenterController extends BaseController {
 			}
 			break;
 		default:
-			return error(-505,"关注类型错误");
+			return error(-505,"收藏/关注类型错误");
 		}
 
 		EhbUseraction ehbUseraction = ehbUseractionService.lambdaQuery().eq(EhbUseraction::getUserid, sessioner.getId())
@@ -344,10 +344,35 @@ public class PersonalCenterController extends BaseController {
 			@ApiImplicitParam(name = "relateid", value = "点赞内容的id", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "type", value = "1：企业   2：商机  3：资讯", required = true, paramType = "query"), })
 	@PostMapping("/api/addOrDelPraise")
-	public ResultItem addOrDelPraise(String token, Integer relateid, Integer type) {
+	public BaseResult addOrDelPraise(String token, Integer relateid, Integer type) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
 		Integer i = 2;// （1：收藏 2：点赞 3：关注 4：浏览）
-
+		switch (type) {
+		case 1: //展商
+			if(ehbExhibitorService.getById(relateid)==null){
+				return error(-509,"展商不存在");
+			}
+			break;
+		case 2: //商机(1-商机  2-商品)
+			EhbOpportunity et=ehbOpportunityService.lambdaQuery().eq(EhbOpportunity::getId, relateid).eq(EhbOpportunity::getType, 1).one();
+			if(et==null) {
+				return error(-508,"商机不存在");
+			}
+			break;
+		case 3:
+			if(ehbArticleService.getById(relateid)==null){
+				return error(-507,"资讯不存在");
+			}
+			break;
+		case 4: //商品(1-商机  2-商品)
+			EhbOpportunity et1=ehbOpportunityService.lambdaQuery().eq(EhbOpportunity::getId, relateid).eq(EhbOpportunity::getType, 2).one();
+			if(et1==null) {
+				return error(-506,"商品不存在");
+			}
+			break;
+		default:
+			return error(-505,"点赞类型错误");
+		}
 		EhbUseraction ehbUseraction = ehbUseractionService.lambdaQuery().eq(EhbUseraction::getUserid, sessioner.getId())
 				.eq(EhbUseraction::getRelateid, relateid).eq(EhbUseraction::getType, type)
 				.eq(EhbUseraction::getActivetype, i).one();
