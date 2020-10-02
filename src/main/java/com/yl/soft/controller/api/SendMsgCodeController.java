@@ -1,6 +1,7 @@
 package com.yl.soft.controller.api;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yl.soft.common.config.Constants;
 import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.DateUtils;
 import com.yl.soft.common.util.ProductNumUtil;
 import com.yl.soft.common.util.SendSms;
 import com.yl.soft.controller.base.BaseController;
@@ -66,7 +68,8 @@ public class SendMsgCodeController extends BaseController {
 			boolean result = smsrecordService.save(smsrecord);
 			if (result) {
 				r.setDesc("获取验证码成功");
-				r.setCode(0);
+				r.setCode(200);
+				r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
 				r.setData(val);
 				sendSms.sendMsgCode(phone, val, smstype);
 				redisUtil.set("I" + phone, val, sms_code_time_out);
@@ -76,7 +79,7 @@ public class SendMsgCodeController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return ok();
+		return r;
 	}
 
 }
