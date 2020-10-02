@@ -66,7 +66,7 @@ public class SendMsgCodeController extends BaseController {
 			boolean result = smsrecordService.save(smsrecord);
 			if (result) {
 				r.setDesc("获取验证码成功");
-				r.setCode(0);
+				r.setCode(200);
 				r.setData(val);
 				sendSms.sendMsgCode(phone, val, smstype);
 				redisUtil.set("I" + phone, val, sms_code_time_out);
