@@ -23,6 +23,12 @@ public class EhbWonderfulAtlasDto implements Serializable{/**
 
     @ApiModelProperty(value = "直播ID")
     private Integer liveId;
+    
+    @ApiModelProperty(value="图片宽度")
+    private Integer wide;
+    
+    @ApiModelProperty(value="图片高度")
+    private Integer high;
 
 
 	

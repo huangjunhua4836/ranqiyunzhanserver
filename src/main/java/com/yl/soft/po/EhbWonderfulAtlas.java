@@ -44,6 +44,12 @@ public class EhbWonderfulAtlas implements Serializable {
 
     @ApiModelProperty(value = "删除（1:否，2：是）")
     private Integer isdel;
+    
+    @ApiModelProperty(value="图片尺寸（宽）")
+    private Integer wide;
+    
+    @ApiModelProperty(value="图片尺寸（高）")
+    private Integer high;
 
 
 }

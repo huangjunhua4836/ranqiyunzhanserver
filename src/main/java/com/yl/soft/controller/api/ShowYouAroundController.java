@@ -77,7 +77,7 @@ public class ShowYouAroundController extends BaseController {
 		EhbLiveBroadcast ehbLiveBroadcast=ehbLiveBroadcastService.getById(id);
 		EhbLiveBroadcastDto ehbLiveBroadcastDto = new EhbLiveBroadcastDto();
 		BeanUtils.copyProperties(ehbLiveBroadcast, ehbLiveBroadcastDto);
-		ehbLiveBroadcastDto.setPullFlowUrl(hWPlayFlowAuthUtil.liveUrl(ehbLiveBroadcast.getFlowName()));
+//		ehbLiveBroadcastDto.setPullFlowUrl(hWPlayFlowAuthUtil.liveUrl(ehbLiveBroadcast.getFlowName()));
 		return ok(ehbLiveBroadcastDto);
 	}
 	
