@@ -33,7 +33,9 @@ import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.enums.LoginType;
 import com.yl.soft.enums.UserEnum;
 import com.yl.soft.po.EhbAudience;
+import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.service.EhbAudienceService;
+import com.yl.soft.service.EhbExhibitorService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -60,6 +62,9 @@ public class UserLoginController extends BaseController {
 
 	@Autowired
 	private RedisService redisUtil;
+	
+	@Autowired
+	private EhbExhibitorService ehbExhibitorService;
 
 	@Autowired
 	private SessionState sessionState;
@@ -80,6 +85,11 @@ public class UserLoginController extends BaseController {
 		userDto.setToken(token);
 		userDto.setType(user.getType());
 		userDto.setIsnew(user.getIsnew());
+		userDto.setIszs(user.getBopie()==null?0:1);
+		if(user.getBopie()!=null) {
+			EhbExhibitor e=ehbExhibitorService.getById(user.getBopie());
+			userDto.setIsrz(e==null?-1:e.getState());
+		}
 		BaseResult<EhbAudiencedlDto> result = new BaseResult<>();
 		user.setTempass(pass);
 		user.setIsnew(1);
@@ -141,6 +151,40 @@ public class UserLoginController extends BaseController {
 			return error(-202, "请您先注册在登录");
 		}
 		return setSessionUser(user);
+	}
+	
+	@ApiOperation(value = "手机验证码注册", notes = "使用手机验证码注册")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "type", value = "用户类型（0：观展用户，1参展用户）", required = true, paramType = "query"),
+			})
+	@ApiResponses({ @ApiResponse(code = -101, message = "请输入手机号"), @ApiResponse(code = -102, message = "请输入验证码"),
+			@ApiResponse(code = -202, message = "验证码错误"), @ApiResponse(code = -203, message = "账号已被冻结"),
+			@ApiResponse(code = 200, message = "登录成功"), @ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
+	@PostMapping("/signinWithSmsr")
+	public BaseResult<EhbAudiencedlDto> signinWithSmsr(
+			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
+			@NotBlank(message = "-101-验证码错误") String code,Integer type) {
+		EhbAudience user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getPhone, phone).one();
+		
+		if(user!=null) {
+			return error(-302, "当前手机号已被注册");
+		}
+		String sms = redisUtil.get("I" + phone.trim());
+		if (!code.equals(sms)) {
+			return error(-202, "验证码错误");
+		}
+		EhbAudience ehbAudience=new EhbAudience();
+		ehbAudience.setPhone(phone);
+		ehbAudience.setLoginname(phone);
+		if(type==1) { //普通用户
+			EhbExhibitor entity=new EhbExhibitor();
+			ehbExhibitorService.save(entity);
+			ehbAudience.setBopie(entity.getId());
+		}
+		ehbAudienceService.save(ehbAudience);
+		
+		return setSessionUser(ehbAudience);
 	}
 
 	@ApiOperation(value = "第三方登录", notes = "第三方登录返回-301弹出绑定手机号进行注册")

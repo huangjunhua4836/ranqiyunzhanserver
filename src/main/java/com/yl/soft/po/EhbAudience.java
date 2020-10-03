@@ -34,7 +34,6 @@ public class EhbAudience extends BaseEntity implements Serializable {
     @TableField("head_portrait")
     private String headPortrait;
 
-    @ApiModelProperty(value = "登录手机号")
     private String phone;
 
     private String province;

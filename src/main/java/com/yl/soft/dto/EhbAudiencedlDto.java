@@ -34,6 +34,12 @@ public class EhbAudiencedlDto implements Serializable {
     
     @ApiModelProperty(value="首次登录:0:是，1：否")
     private Integer isnew;
+
+    @ApiModelProperty(value="是否认证:0:否，1：是,-1: 未找到企业")
+    private Integer isrz;
+
+    @ApiModelProperty(value="是否是展商:0:否，1：是")
+    private Integer iszs;
 	
 	
 }
