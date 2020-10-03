@@ -2,6 +2,7 @@ package com.yl.soft.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yl.soft.dto.app.ExhibitorDto;
+import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
 
 import java.util.List;
@@ -16,6 +17,14 @@ import java.util.Map;
  * @since 2020-09-24
  */
 public interface EhbExhibitorService extends IService<EhbExhibitor> {
+    /**
+     * 展商完善信息
+     * @param ehbAudience
+     * @param ehbExhibitor
+     * @return
+     */
+    boolean saveExhibitor(EhbAudience ehbAudience,EhbExhibitor ehbExhibitor);
+
     /**
      * 随机参展商列表
      * @param paramMap

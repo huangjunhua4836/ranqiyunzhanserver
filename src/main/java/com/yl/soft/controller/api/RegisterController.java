@@ -10,6 +10,8 @@ import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.RegisterAudienceDto;
 import com.yl.soft.dto.RegisterExhibitorDto;
 import com.yl.soft.dto.app.LabelDto;
+import com.yl.soft.dto.base.SessionState;
+import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbLabel;
@@ -39,8 +41,8 @@ public class RegisterController extends BaseController {
     private EhbLabelService ehbLabelService;
     @Autowired
     private EhbExhibitorService ehbExhibitorService;
-
-
+    @Autowired
+    private SessionState sessionState;
 	@Autowired
 	private RedisService redisUtil;
 
@@ -60,17 +62,20 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/perfectAudience")
-    public BaseResponse perfectAudience(RegisterAudienceDto registerAudienceDto) {
-
+    public BaseResponse perfectAudience(RegisterAudienceDto registerAudienceDto,String token) {
     	String sms = redisUtil.get("I" + registerAudienceDto.getPhone().trim());
 		if (!registerAudienceDto.getEmailverificationcode().equals(sms)) {
 			return setResultError("验证码错误");
 		}
-        EhbAudience ehbAudience = new EhbAudience();
+        SessionUser sessionUser = sessionState.getCurrentUser(token);
+		EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
+		if(ehbAudience == null){
+            return setResultError("参展人没有注册！");
+        }
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
         ehbAudience.setIsdel(false);
-        ehbAudience.setCreatetime(LocalDateTime.now());
-        if(ehbAudienceService.save(ehbAudience)){
+        ehbAudience.setUpdatetime(LocalDateTime.now());
+        if(ehbAudienceService.updateById(ehbAudience)){
             return setResultSuccess();
         }else{
             return setResultError("保存失败！");
@@ -93,17 +98,22 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/perfectExhibitor")
-    public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto) {
+    public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
         String sms = redisUtil.get("I" + registerExhibitorDto.getPhone().trim());
         if (!registerExhibitorDto.getEmailverificationcode().equals(sms)) {
             return setResultError("验证码错误");
         }
+        SessionUser sessionUser = sessionState.getCurrentUser(token);
+        EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
+        if(ehbAudience == null){
+            return setResultError("参展商没有注册！");
+        }
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
         ehbExhibitor.setIsdel(false);
-        ehbExhibitor.setCreatetime(LocalDateTime.now());
+        ehbExhibitor.setUpdatetime(LocalDateTime.now());
         ehbExhibitor.setState(0);//待审核
-        if(ehbExhibitorService.save(ehbExhibitor)){
+        if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return setResultSuccess();
         }else{
             return setResultError("保存失败！");
