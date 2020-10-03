@@ -10,7 +10,6 @@ import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.RegisterAudienceDto;
 import com.yl.soft.dto.RegisterExhibitorDto;
 import com.yl.soft.dto.app.LabelDto;
-import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbLabel;
@@ -30,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = {"C端模块-燃气云展注册"})
+@Api(tags = {"C端模块-燃气云展信息完善"})
 @RestController
 @RequestMapping("/api")
 public class RegisterController extends BaseController {
@@ -40,7 +39,7 @@ public class RegisterController extends BaseController {
     private EhbLabelService ehbLabelService;
     @Autowired
     private EhbExhibitorService ehbExhibitorService;
-    
+
 
 	@Autowired
 	private RedisService redisUtil;
@@ -49,8 +48,9 @@ public class RegisterController extends BaseController {
      * 注册参展用户接口
      * @return
      */
-    @ApiOperation(value = "注册参展用户接口")
+    @ApiOperation(value = "参展用户补充信息提交接口")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -59,20 +59,20 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
             ,@ApiResponse(code = -1, message = "系统异常")
     })
-    @PostMapping("/registerAudience")
-    public BaseResult registerAudience(RegisterAudienceDto registerAudienceDto) {
+    @PostMapping("/perfectAudience")
+    public BaseResponse perfectAudience(RegisterAudienceDto registerAudienceDto) {
     	String sms = redisUtil.get("I" + registerAudienceDto.getPhone().trim());
-		if (!registerAudienceDto.getCode().equals(sms)) {
-			return error(-202, "验证码错误");
+		if (!registerAudienceDto.getEmailverificationcode().equals(sms)) {
+			return setResultError("验证码错误");
 		}
         EhbAudience ehbAudience = new EhbAudience();
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
         ehbAudience.setIsdel(false);
         ehbAudience.setCreatetime(LocalDateTime.now());
         if(ehbAudienceService.save(ehbAudience)){
-            return ok2();
+            return setResultSuccess();
         }else{
-            return error(-502,"保存失败！");
+            return setResultError("保存失败！");
         }
     }
 
@@ -80,8 +80,9 @@ public class RegisterController extends BaseController {
      * 注册展商接口
      * @return
      */
-    @ApiOperation(value = "注册展商接口")
+    @ApiOperation(value = "展商认证信息提交接口")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -90,8 +91,12 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
             ,@ApiResponse(code = -1, message = "系统异常")
     })
-    @PostMapping("/registerExhibitor")
-    public BaseResponse registerExhibitor(RegisterExhibitorDto registerExhibitorDto) {
+    @PostMapping("/perfectExhibitor")
+    public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto) {
+        String sms = redisUtil.get("I" + registerExhibitorDto.getPhone().trim());
+        if (!registerExhibitorDto.getEmailverificationcode().equals(sms)) {
+            return setResultError("验证码错误");
+        }
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
         ehbExhibitor.setIsdel(false);

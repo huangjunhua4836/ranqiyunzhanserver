@@ -28,7 +28,7 @@ layui.use('core', function(){
                 {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field: 'name', title: '姓名'}
                 ,{field: 'phone', title: '手机号'}
-                ,{field: 'enterprise', title: '企业'}
+                ,{field: 'enterprisename', title: '企业'}
                 ,{field: 'mailbox', title: '邮箱'}
                 ,{field: 'boothno', title: '展位号'}
                 ,{field: 'state', title: '审核状态',
@@ -80,10 +80,10 @@ layui.use('core', function(){
                 }
             });
         } else if(obj.event === 'edit'){
-            if(data.state == '1'){
-                layer.msg('已经审核过了！',core.showtime);
-                return;
-            }
+            // if(data.state == '1'){
+            //     layer.msg('已经审核过了！',core.showtime);
+            //     return;
+            // }
             core.openIframeDialog('审核','/platform/zsInfo/input?type=update&id='+data.id,['500px', '440px'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('详情',$('#detail').html(),['500px','480px']);

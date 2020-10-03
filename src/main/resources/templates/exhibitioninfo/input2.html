@@ -42,6 +42,16 @@
                             <input type="text" th:field="*{boothno}" required  readonly autocomplete="off" class="layui-input">
                         </div>
                     </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">是否审核</label>
+                        <div class="layui-input-block">
+                            <select name="state" required  lay-verify="required">
+                                <option value="">请选择</option>
+                                <option value="0" th:selected="${ehbExhibitor.state == 0}">待审核</option>
+                                <option value="1" th:selected="${ehbExhibitor.state == 1}">已审核</option>
+                            </select>
+                        </div>
+                    </div>
                     <input th:field="*{id}" type="hidden"/>
                     <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
                 </form>

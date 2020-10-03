@@ -19,7 +19,7 @@ layui.use('core', function(){
         //第一个实例
         table.render({
             elem: '#table'
-            ,url: '/platform/exhibitionInfo/initTable' //数据接口
+            ,url: '/platform/czrInfo/initTable' //数据接口
             ,where: where
             ,toolbar: '#titleToolbar' //开启头部工具栏，并为其绑定左侧模板
             ,defaultToolbar: ['filter']

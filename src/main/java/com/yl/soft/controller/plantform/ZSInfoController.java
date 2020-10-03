@@ -1,13 +1,17 @@
 package com.yl.soft.controller.plantform;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.unified.entity.BaseResponse;
+import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.PinyinUtil;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
+import com.yl.soft.dto.app.ExhibitorDto;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.vo.TableVo;
@@ -35,6 +39,8 @@ import java.util.List;
 public class ZSInfoController extends BaseController {
     @Autowired
     public EhbExhibitorService ehbExhibitorService;
+    @Autowired
+    public RedisService redisService;
 
     @GetMapping("/list")
     public String list() {
@@ -105,7 +111,17 @@ public class ZSInfoController extends BaseController {
         }else{
             ehbExhibitor.setUpdatetime(LocalDateTime.now());
             ehbExhibitor.setUpdateuser(1);
-            ehbExhibitor.setState(1);//审核通过
+            String firstWord = PinyinUtil.getPinYinHeadChar(ehbExhibitor.getEnterprisename()).toUpperCase().charAt(0)+"";
+            ExhibitorDto exhibitorDto = new ExhibitorDto();
+            exhibitorDto.setId(ehbExhibitor.getId());
+            exhibitorDto.setName(ehbExhibitor.getEnterprisename());
+            exhibitorDto.setLogo(ehbExhibitor.getLogo());
+            exhibitorDto.setBoothno(ehbExhibitor.getBoothno());
+            if(ehbExhibitor.getState() == 0){//待审核
+                redisService.setRemove(firstWord,JSONObject.toJSONString(exhibitorDto));
+            }else if(ehbExhibitor.getState() == 1){//已审核
+                redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
+            }
         }
         if(ehbExhibitorService.saveOrUpdate(ehbExhibitor)){
             return setResultSuccess();

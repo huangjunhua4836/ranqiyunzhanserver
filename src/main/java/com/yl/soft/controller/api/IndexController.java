@@ -198,15 +198,12 @@ public class IndexController extends BaseController {
     }
 
     /**
-     * 云端橱窗全部展商列表???
+     * 云端橱窗全部展商列表
      * @return
      */
     @ApiOperation(value = "云端橱窗全部展商列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
-            ,@ApiImplicitParam(name = "enterprisename", value = "企业名称",  paramType = "query")
-            ,@ApiImplicitParam(name = "boothno", value = "展位号", paramType = "query")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -217,9 +214,7 @@ public class IndexController extends BaseController {
     })
     @PostMapping("/cloudWindowList")
     public BaseResponse<BasePage<ExhibitorDto>> cloudWindowList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
-        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
-            return setResultError(403,"","当前页码不能为空！");
-        }
+        
         QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
         ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(paramMap.get("enterprisename")),"enterprisename",paramMap.get("enterprisename"));
@@ -248,7 +243,7 @@ public class IndexController extends BaseController {
     @ApiOperation(value = "首页banner图列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "type", value = "banner位置",paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "type", value = "banner位置类型（1：首页顶部，2：首页大会预告）",paramType = "query",required = true)
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
@@ -20,9 +22,9 @@ public class BasePage<T> {
     @ApiModelProperty(value = "总条数")
     private Long total;
     @ApiModelProperty(value = "数据")
-    private T data;
+    private List<T> data;
 
-    public BasePage(Integer pageNum, Integer pageSize, Integer pages, Long total,T data) {
+    public BasePage(Integer pageNum, Integer pageSize, Integer pages, Long total,List<T> data) {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
         this.pages = pages;

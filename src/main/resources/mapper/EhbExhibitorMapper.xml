@@ -18,7 +18,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, managerman, idcard, enterprisename, tel, businesslicense, credentials, isjoin, boothno, address
+        id, idcard, enterprisename, tel, businesslicense, credentials, isjoin, boothno, address
     </sql>
 
     <select id="exibitionList" resultType= "com.yl.soft.dto.app.ExhibitorDto">

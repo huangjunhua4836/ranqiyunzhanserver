@@ -26,12 +26,6 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
     //state 0：未审核  1：审核通过
     private static final long serialVersionUID=1L;
 
-    @ApiModelProperty(value = "登录名称")
-    private String loginname;
-
-    @ApiModelProperty(value = "密码")
-    private String password;
-
     @ApiModelProperty(value = "手机")
     private String phone;
 
@@ -94,5 +88,8 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
     
     @ApiModelProperty(value="展位效果图，图片url地址")
     private String floorplan;
+
+    @ApiModelProperty(value="展商拼音名字首字母大写")
+    private String firstletter;
 
 }

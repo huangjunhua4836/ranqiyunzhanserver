@@ -14,7 +14,7 @@ public class RegisterExhibitorDto {
     @ApiModelProperty(value = "所属企业",required = true)
     private String enterprisename;
     @ApiModelProperty(value = "管理员姓名",required = true)
-    private String managerman;
+    private String name;
     @ApiModelProperty(value = "管理员身份证",required = true)
     private String idcard;
     @ApiModelProperty(value = "联系方式",required = true)
@@ -27,6 +27,6 @@ public class RegisterExhibitorDto {
     private Integer isjoin;
     @ApiModelProperty(value = "行为标签ID",required = true)
     private String labelid;
-    @ApiModelProperty(value = "密码")
-    private String password;
+    @ApiModelProperty(value = "邮箱验证码")
+    private String emailverificationcode;
 }
