@@ -3,12 +3,14 @@ package com.yl.soft.controller.api;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
+import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.RegisterAudienceDto;
 import com.yl.soft.dto.RegisterExhibitorDto;
 import com.yl.soft.dto.app.LabelDto;
+import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbLabel;
@@ -38,6 +40,10 @@ public class RegisterController extends BaseController {
     private EhbLabelService ehbLabelService;
     @Autowired
     private EhbExhibitorService ehbExhibitorService;
+    
+
+	@Autowired
+	private RedisService redisUtil;
 
     /**
      * 注册参展用户接口
@@ -54,15 +60,19 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/registerAudience")
-    public BaseResponse registerAudience(RegisterAudienceDto registerAudienceDto) {
+    public BaseResult registerAudience(RegisterAudienceDto registerAudienceDto) {
+    	String sms = redisUtil.get("I" + registerAudienceDto.getPhone().trim());
+		if (!registerAudienceDto.getCode().equals(sms)) {
+			return error(-202, "验证码错误");
+		}
         EhbAudience ehbAudience = new EhbAudience();
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
         ehbAudience.setIsdel(false);
         ehbAudience.setCreatetime(LocalDateTime.now());
         if(ehbAudienceService.save(ehbAudience)){
-            return setResultSuccess();
+            return ok2();
         }else{
-            return setResultError("保存失败！");
+            return error(-502,"保存失败！");
         }
     }
 
