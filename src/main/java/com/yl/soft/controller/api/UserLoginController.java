@@ -80,6 +80,7 @@ public class UserLoginController extends BaseController {
 		ehbAudienceService.updateById(user);
 		userDto.setPassword(token);
 		result.setData(userDto);
+		result.setCode(200);
 		result.setDesc("登录成功");
 		return result;
 	}
@@ -119,7 +120,7 @@ public class UserLoginController extends BaseController {
 			@ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query"), })
 	@ApiResponses({ @ApiResponse(code = -101, message = "请输入手机号"), @ApiResponse(code = -102, message = "请输入验证码"),
 			@ApiResponse(code = -202, message = "验证码错误"), @ApiResponse(code = -203, message = "账号已被冻结"),
-			@ApiResponse(code = 0, message = "登录成功"), @ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
+			@ApiResponse(code = 200, message = "登录成功"), @ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
 	@PostMapping("/signin_sms")
 	public BaseResult<EhbAudiencedlDto> signinWithSms(
 			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
@@ -283,7 +284,7 @@ public class UserLoginController extends BaseController {
 		r.setCode(200);
 		r.setDesc("更换成功");
 		r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
-		return ok();
+		return r;
 	}
 
 	@ApiOperation(value = "更换手机号", notes = "更换手机号码")
