@@ -32,12 +32,21 @@ public class EhbAudienceyeDto implements Serializable{
 	@ApiModelProperty(value = "标签：字符串数组1,2,3")
 	private String labelid;
 	
+	@ApiModelProperty(value="联系人")
+	private String exname;
+	
 	@ApiModelProperty(value="认证状态（0：未认证，1：已认证）")
 	private String state;
+	
+	@ApiModelProperty(value="邮箱")
+    private String mailbox;
 	
 	@ApiModelProperty(value="二维码")
 	private String qrcode;
 
 	@ApiModelProperty("展商ID")
 	private Integer bopie;
+	
+	@ApiModelProperty("企业电话")
+	private String telphone;
 }

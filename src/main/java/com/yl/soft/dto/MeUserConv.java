@@ -16,6 +16,9 @@ public interface MeUserConv {
 		BeanUtils.copyProperties(ehbAudience, ehbAudienceDto);
 		ehbAudienceDto.setName(ehbExhibitor.getState()==1?ehbExhibitor.getName():ehbAudience.getName());
 		ehbAudienceDto.setState(ehbExhibitor.getState()+"");
+		ehbAudienceDto.setTelphone(ehbExhibitor.getTelphone());
+		ehbAudienceDto.setPhone(ehbAudience.getPhone());
+		ehbAudienceDto.setMailbox(ehbExhibitor.getMailbox());
 		return ehbAudienceDto;
 	}
 	

@@ -89,5 +89,7 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
     
     @ApiModelProperty(value="虚拟展厅html地址")
     private String halurl;
+    
+    private String telphone;
 
 }
