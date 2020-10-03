@@ -65,7 +65,7 @@ public class RegisterController extends BaseController {
     public BaseResponse perfectAudience(RegisterAudienceDto registerAudienceDto,String token) {
     	String sms = redisUtil.get("I" + registerAudienceDto.getPhone().trim());
 		if (!registerAudienceDto.getEmailverificationcode().equals(sms)) {
-			return setResultError("验证码错误");
+//			return setResultError("验证码错误");
 		}
         SessionUser sessionUser = sessionState.getCurrentUser(token);
 		EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
@@ -101,7 +101,7 @@ public class RegisterController extends BaseController {
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
         String sms = redisUtil.get("I" + registerExhibitorDto.getPhone().trim());
         if (!registerExhibitorDto.getEmailverificationcode().equals(sms)) {
-            return setResultError("验证码错误");
+//            return setResultError("验证码错误");
         }
         SessionUser sessionUser = sessionState.getCurrentUser(token);
         EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
