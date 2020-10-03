@@ -69,6 +69,7 @@ public class UserLoginController extends BaseController {
 			return error(-203, "账号已被冻结");
 		}
 		String token = UUID.randomUUID().toString();
+		String pass=UUID.randomUUID().toString();
 		SessionUser sessionUser = new SessionUser();
 		sessionUser.setCode(200);
 		sessionUser.setId(user.getId());
@@ -76,9 +77,10 @@ public class UserLoginController extends BaseController {
 		sessionState.setSessionUser(token, sessionUser);
 		EhbAudiencedlDto userDto = UserConv.do2dto(user);
 		BaseResult<EhbAudiencedlDto> result = new BaseResult<>();
-		user.setTempass(token);
+		user.setTempass(pass);
 		ehbAudienceService.updateById(user);
-		userDto.setPassword(token);
+		userDto.setPassword(pass);
+		userDto.setToken(token);
 		result.setData(userDto);
 		result.setCode(200);
 		result.setDesc("登录成功");
