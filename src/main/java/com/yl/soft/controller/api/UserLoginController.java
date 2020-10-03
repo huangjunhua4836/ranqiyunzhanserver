@@ -148,7 +148,7 @@ public class UserLoginController extends BaseController {
 			return error(-202, "验证码错误");
 		}
 		if (user == null) {
-			return error(-202, "请您先注册在登录");
+			return error(-202, "请您先注册再登录");
 		}
 		return setSessionUser(user);
 	}
