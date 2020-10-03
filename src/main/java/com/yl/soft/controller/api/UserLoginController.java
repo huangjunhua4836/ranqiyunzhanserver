@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import com.github.pagehelper.util.StringUtil;
 import com.yl.soft.common.config.Constants;
 import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.DateUtils;
+import com.yl.soft.common.util.SendEmail;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbAudienceDto;
 import com.yl.soft.dto.EhbAudiencedlDto;
@@ -68,7 +70,12 @@ public class UserLoginController extends BaseController {
 
 	@Autowired
 	private SessionState sessionState;
+	
+	@Autowired
+	private SendEmail sendEmail;
 
+	
+	
 	private BaseResult<EhbAudiencedlDto> setSessionUser(EhbAudience user) {
 		if (UserEnum.State.of(user.getEnabled()) == UserEnum.State.禁用) {
 			return error(-203, "账号已被冻结");
@@ -130,6 +137,13 @@ public class UserLoginController extends BaseController {
 		}
 		return setSessionUser(user);
 	}
+	
+//	@ApiOperation(value = "ceshi", notes = "ces")
+//	@GetMapping("/cc")
+//	public BaseResult<EhbAudiencedlDto> ccc(){
+//		sendEmail.sendMail("11185888@163.com", "122222");
+//		return ok2();
+//	}
 
 	@ApiOperation(value = "手机验证码登录", notes = "使用手机验证码登录")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
