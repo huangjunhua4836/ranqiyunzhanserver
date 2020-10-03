@@ -36,7 +36,6 @@ public class EhbExhibitorDto  implements Serializable{/**
     @ApiModelProperty("企业邮箱")
     private String mailbox;
     
-
     @ApiModelProperty(value = "公司主页")
     private String website;
     

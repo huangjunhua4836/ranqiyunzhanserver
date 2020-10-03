@@ -76,11 +76,15 @@ public class UserLoginController extends BaseController {
 		BeanUtils.copyProperties(user, sessionUser);
 		sessionState.setSessionUser(token, sessionUser);
 		EhbAudiencedlDto userDto = UserConv.do2dto(user);
-		BaseResult<EhbAudiencedlDto> result = new BaseResult<>();
-		user.setTempass(pass);
-		ehbAudienceService.updateById(user);
 		userDto.setPassword(pass);
 		userDto.setToken(token);
+		userDto.setType(user.getType());
+		userDto.setIsnew(user.getIsnew());
+		BaseResult<EhbAudiencedlDto> result = new BaseResult<>();
+		user.setTempass(pass);
+		user.setIsnew(1);
+		ehbAudienceService.updateById(user);
+		
 		result.setData(userDto);
 		result.setCode(200);
 		result.setDesc("登录成功");
@@ -117,7 +121,7 @@ public class UserLoginController extends BaseController {
 		return setSessionUser(user);
 	}
 
-	@ApiOperation(value = "手机验证码登录（如果没有账号默认注册进入）", notes = "使用手机验证码登录， 未注册手机会自动注册并登陆")
+	@ApiOperation(value = "手机验证码登录", notes = "使用手机验证码登录")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query"), })
 	@ApiResponses({ @ApiResponse(code = -101, message = "请输入手机号"), @ApiResponse(code = -102, message = "请输入验证码"),
@@ -134,16 +138,12 @@ public class UserLoginController extends BaseController {
 			return error(-202, "验证码错误");
 		}
 		if (user == null) {
-			// NOTICE: 手机号登陆， 未注册直接注册即可。 第三方注册时会与该账号合并。
-			user = generateNewUserWithPhone(phone);
-			if (!ehbAudienceService.save(user)) {
-				return error();
-			}
+			return error(-202, "请您先注册在登录");
 		}
 		return setSessionUser(user);
 	}
 
-	@ApiOperation(value = "第三方登录", notes = "第三方登录")
+	@ApiOperation(value = "第三方登录", notes = "第三方登录返回-301弹出绑定手机号进行注册")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "type", value = "第三方类型：1=微信，2=QQ", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "reqcode", value = "请求码", required = true, paramType = "query") })
@@ -178,7 +178,7 @@ public class UserLoginController extends BaseController {
 		return setSessionUser(user);
 	}
 
-	@ApiOperation(value = "第三方注册", notes = "第三方注册")
+	@ApiOperation(value = "第三方注册绑定手机号", notes = "第三方注册绑定手机号")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "type", value = "第三方类型：1=微信，2=QQ", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "reqcode", value = "请求码", required = true, paramType = "query"),

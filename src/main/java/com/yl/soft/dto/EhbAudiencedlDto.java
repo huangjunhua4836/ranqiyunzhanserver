@@ -29,5 +29,11 @@ public class EhbAudiencedlDto implements Serializable {
 	@ApiModelProperty(value="token")
 	private String token;
 	
+    @ApiModelProperty(value="注册方式：0：用户注册，1：后台创建")
+    private Integer type;
+    
+    @ApiModelProperty(value="首次登录:0:是，1：否")
+    private Integer isnew;
+	
 	
 }

@@ -71,4 +71,10 @@ public class EhbAudience extends BaseEntity implements Serializable {
     
     @ApiModelProperty("临时密码")
     private String tempass;
+    
+    @ApiModelProperty("注册方式：0：用户注册，1：后台创建")
+    private Integer type;
+    
+    @ApiModelProperty("首次登录:0:是，1：否")
+    private Integer isnew;
 }
