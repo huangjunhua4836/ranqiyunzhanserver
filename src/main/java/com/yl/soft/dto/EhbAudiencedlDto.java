@@ -26,5 +26,8 @@ public class EhbAudiencedlDto implements Serializable {
 	@ApiModelProperty(value="临时密码")
 	private String password;
 	
+	@ApiModelProperty(value="token")
+	private String token;
+	
 	
 }
