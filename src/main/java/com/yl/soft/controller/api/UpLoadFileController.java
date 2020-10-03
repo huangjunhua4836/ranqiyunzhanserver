@@ -62,7 +62,7 @@ public class UpLoadFileController extends BaseResponseUtil {
 			,@ApiResponse(code = -1, message = "系统异常")
 	})
 	@PostMapping("/upLoadByHttp")
-	public BaseResponse<List<AttachmentDTO>> upLoadByHttp(@ApiParam(value = "文件",required = true) @RequestParam("file") MultipartFile[] multipartFiles
+	public BaseResponse<List<AttachmentDTO>> upLoadByHttp(@ApiParam(value = "文件,多文件上传保证key相同",required = true) @RequestParam("file") MultipartFile[] multipartFiles
 			,@ApiParam(value = "文件标记（1营业执照，2企业授权书，3其他）",required = true) @RequestParam("remarks") String remarks){
 		if(StringUtils.isEmpty(uploadPath)){
 			return setResultError("服务器上传基础路径为空！");

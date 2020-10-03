@@ -1,11 +1,10 @@
 package com.yl.soft.controller.api;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.unified.entity.BasePage;
 import com.yl.soft.common.unified.entity.BaseResponse;
+import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
@@ -41,6 +40,8 @@ public class IndexController extends BaseController {
     private SessionState sessionState;
     @Autowired
     private EhbAdvertisingService ehbAdvertisingService;
+    @Autowired
+    private RedisService redisService;
 
 
     /**
@@ -50,8 +51,7 @@ public class IndexController extends BaseController {
     @ApiOperation(value = "推荐展商列表、感兴趣的展商列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
-            ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
-            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "number", value = "显示数量",paramType = "query",required = true)
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -61,9 +61,10 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/randExibitionList")
-    public BaseResponse<BasePage<ExhibitorDto>> randExibitionList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
-        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
-            return setResultError(403,"","当前页码不能为空！");
+    public BaseResponse<List<ExhibitorDto>> randExibitionList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        if(StringUtils.isEmpty(paramMap.get("number"))){
+            return setResultError("number不能为空！");
+
         }
         SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
         Map conditionMap = new HashMap();
@@ -72,20 +73,28 @@ public class IndexController extends BaseController {
         conditionMap.put("labelid",appLoginDTO.getLabelid());
         conditionMap.put("id",appLoginDTO.getId());
 
-        Integer pageParam[] = pageValidParam(paramMap);
-        PageHelper.startPage(pageParam[0], pageParam[1]);
         List<ExhibitorDto> appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
-        for(ExhibitorDto exhibitorDto : appLoginDTOS){
-            if(exhibitorDto.getState() == 0){
-                exhibitorDto.setState_show("未认证");
-            }else if(exhibitorDto.getState() == 1){
-                exhibitorDto.setState_show("已认证");
-            }else{
-                exhibitorDto.setState_show("未知状态");
+        appLoginDTOS.stream().forEach(i->{
+            switch (i.getState()){
+                case 0:i.setState_show("未认证");break;
+                case 1:i.setState_show("已认证");break;
+                default:i.setState_show("未知状态");break;
             }
-        }
+        });
+
+//        for(ExhibitorDto exhibitorDto : appLoginDTOS){
+//            if(exhibitorDto.getState() == 0){
+//                exhibitorDto.setState_show("未认证");
+//            }else if(exhibitorDto.getState() == 1){
+//                exhibitorDto.setState_show("已认证");
+//            }else{
+//                exhibitorDto.setState_show("未知状态");
+//            }
+//        }
         Collections.shuffle(appLoginDTOS);
-        return setResultSuccess(getBasePage(appLoginDTOS,appLoginDTOS));
+        int number = Integer.parseInt(paramMap.get("number")+"");
+        appLoginDTOS = appLoginDTOS.subList(0,appLoginDTOS.size()>number?number:appLoginDTOS.size());
+        return setResultSuccess(appLoginDTOS);
     }
 
     /**
@@ -213,27 +222,8 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/cloudWindowList")
-    public BaseResponse<BasePage<ExhibitorDto>> cloudWindowList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
-        
-        QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
-        ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(paramMap.get("enterprisename")),"enterprisename",paramMap.get("enterprisename"));
-        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(paramMap.get("boothno")),"boothno",paramMap.get("boothno"));
-
-        Integer pageParam[] = pageValidParam(paramMap);
-        PageHelper.startPage(pageParam[0], 8);
-        List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
-        List<ExhibitorDto> exhibitorDtos = new ArrayList<>();
-        for(EhbExhibitor ehbExhibitor : ehbExhibitors){
-            exhibitorDtos.add(ExhibitorDto.of(ehbExhibitor));
-        }
-        Collections.shuffle(exhibitorDtos);
-        QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
-        ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
-        Collections.shuffle(ehbAdvertisings);
-
-        return setResultSuccess(getBasePage(ehbExhibitors,exhibitorDtos));
+    public BaseResponse<List<CloudWindowDto>> cloudWindowList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        return null;
     }
 
     /**

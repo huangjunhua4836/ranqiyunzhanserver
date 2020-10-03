@@ -35,6 +35,9 @@ public class GuestDto implements Serializable {
     @ApiModelProperty(value = "嘉宾职位")
     private String job;
 
+    @ApiModelProperty(value = "嘉宾图片")
+    private String picture;
+
     public static GuestDto of(EhbGuest po) {
         GuestDto dto = new GuestDto();
         BeanUtil.copyProperties(po,dto);

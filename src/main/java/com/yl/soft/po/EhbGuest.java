@@ -30,4 +30,7 @@ public class EhbGuest extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "嘉宾职位")
     private String job;
+
+    @ApiModelProperty(value = "嘉宾图片")
+    private String picture;
 }

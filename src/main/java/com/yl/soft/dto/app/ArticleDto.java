@@ -2,12 +2,14 @@ package com.yl.soft.dto.app;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSONArray;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yl.soft.po.EhbArticle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -45,6 +47,8 @@ public class ArticleDto implements Serializable {
     private String picture;
 
     @ApiModelProperty(value = "发布时间")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")//出参格式化
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//入参格式化
     private LocalDateTime releasetime;
 
     @ApiModelProperty(value = "总收藏量")
