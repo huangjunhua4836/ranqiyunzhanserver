@@ -109,8 +109,11 @@ public class PersonalCenterController extends BaseController {
 	@ApiOperation(value = "我的企业", notes = "我的企业")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
 	@PostMapping("/api/getComp")
-	public ResultItem<EhbExhibitorDto> getComp(@NotBlank(message = "token不能为空") String token) {
+	public BaseResult<EhbExhibitorDto> getComp(@NotBlank(message = "token不能为空") String token) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
+		if(sessionUser==null||sessionUser.getBopie()==null) {
+			return error(-502,"服务器繁忙请稍后再试！");
+		}
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(sessionUser.getBopie());
 		return ok(EhbExhibitorDto.of(ehbExhibitor));
 	}

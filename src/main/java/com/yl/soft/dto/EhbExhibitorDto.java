@@ -33,6 +33,9 @@ public class EhbExhibitorDto  implements Serializable{/**
     @ApiModelProperty(value = "公司地址")
     private String address;
     
+    @ApiModelProperty("企业邮箱")
+    private String mailbox;
+    
 
     @ApiModelProperty(value = "公司主页")
     private String website;
@@ -40,17 +43,24 @@ public class EhbExhibitorDto  implements Serializable{/**
     @ApiModelProperty("企业描述")
     private String describes;
     
-    @ApiModelProperty(value="展商图片")
+    @ApiModelProperty(value="展商图片['src1','src2'....]")
     private String img;
     
     @ApiModelProperty(value="logo")
     private String logo;
     
-	@ApiModelProperty("是否已认证0未认证，1已认证")
+    @ApiModelProperty(value="虚拟展厅（Vr html地址）")
+    private String halurl;
+    
+    @ApiModelProperty(value="展位效果图，图片url地址")
+    private String floorplan;
+    
+    
+	@ApiModelProperty("是否已认证0:未认证，1:已认证")
 	private Integer state;
 	
 	
-	@ApiModelProperty("banners")
+	@ApiModelProperty("企业图片集合['src1','src2'....]")
 	private List<String> bannerList;
 	
 	public static EhbExhibitorDto of(EhbExhibitor ehbExhibitor) {

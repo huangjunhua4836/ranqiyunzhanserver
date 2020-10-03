@@ -23,4 +23,6 @@ public class RegisterAudienceDto {
     private String labelid;
     @ApiModelProperty(value = "密码")
     private String password;
+    @ApiModelProperty(value="验证码")
+    private String code;
 }
