@@ -57,7 +57,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加','/crmRole/input?type=add',['500px', '200px'],false,initTable);
+                core.openIframeDialog('添加','/platform/zsInfo/input?type=add',['500px', '440px'],false,initTable);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':

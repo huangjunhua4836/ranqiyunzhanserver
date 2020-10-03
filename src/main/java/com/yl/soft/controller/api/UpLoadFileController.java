@@ -34,7 +34,7 @@ public class UpLoadFileController extends BaseResponseUtil {
 	@Value("${custom.ip}")
 	private String ip;
 
-	@Value("${server.port}")
+	@Value("${custom.port}")
 	private String port;
 
 	@Value("${server.servlet.context-path}")
@@ -63,7 +63,7 @@ public class UpLoadFileController extends BaseResponseUtil {
 	})
 	@PostMapping("/upLoadByHttp")
 	public BaseResponse<List<AttachmentDTO>> upLoadByHttp(@ApiParam(value = "文件",required = true) @RequestParam("file") MultipartFile[] multipartFiles
-			,@ApiParam(value = "文件标记",required = true) @RequestParam("remarks") String remarks){
+			,@ApiParam(value = "文件标记（1营业执照，2企业授权书，3其他）",required = true) @RequestParam("remarks") String remarks){
 		if(StringUtils.isEmpty(uploadPath)){
 			return setResultError("服务器上传基础路径为空！");
 		}

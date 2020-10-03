@@ -122,17 +122,18 @@ custom:
   wechat:
     app_id: wx9e91b1399c208e1e
     app_security: 200339db2289d67561d00db4d2777d75
+
+
   upload:
     ext:
       img: jpg,png,gif,ico,doc,docx,jpeg,apk,xls,xlsx,mp4,flv,swf,avi,mp3,pdf,txt,rar,zip,7z,tar
       audio: mp4,flv,swf,mkv,avi,rm,rmvb,mpeg,mpg,ogg,ogv,mov,wmv,webm,mp3,wav,mid
-
   #文件上传目录（注意Linux和Windows上的目录结构不同）
   uploadPath: D://uploadFiles/rqyz/
   image_upload_ext: jpg,png,gif,ico,jpeg,webp,pdf
   #外网可以访问上传图片ip地址
   ip: 127.0.0.1
-
+  port: 80
   aes:
     key: s%1ldespACsl@ada #内部 aes 加密密钥
     parameter: 0aQ20$7V2(92&3*0 #";//内部 aes 加密偏移量
