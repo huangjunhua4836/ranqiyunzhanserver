@@ -43,8 +43,8 @@ public class EhbOpportunityDto implements Serializable {
 
 	@ApiModelProperty(value = "企业id")
 	private String exhibitorid;
-
-	@ApiModelProperty(value = "企业认证（1：以认证，2：未认证）")
+	
+	@ApiModelProperty(value = "企业认证（0:未认证，1:已认证）")
 	private String attestation;
 
 	@ApiModelProperty(value = "总收藏量")
