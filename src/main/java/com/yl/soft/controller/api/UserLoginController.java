@@ -177,8 +177,11 @@ public class UserLoginController extends BaseController {
 		EhbAudience ehbAudience=new EhbAudience();
 		ehbAudience.setPhone(phone);
 		ehbAudience.setLoginname(phone);
+		ehbAudience.setType(0);
+		ehbAudience.setIsnew(0);
 		if(type==1) { //普通用户
 			EhbExhibitor entity=new EhbExhibitor();
+			entity.setIsdel(false);
 			ehbExhibitorService.save(entity);
 			ehbAudience.setBopie(entity.getId());
 		}
