@@ -156,6 +156,7 @@ public class UserLoginController extends BaseController {
 	@ApiOperation(value = "手机验证码注册", notes = "使用手机验证码注册")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "password", value = "密码", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "type", value = "用户类型（0：观展用户，1参展用户）", required = true, paramType = "query"),
 			})
 	@ApiResponses({ @ApiResponse(code = -101, message = "请输入手机号"), @ApiResponse(code = -102, message = "请输入验证码"),
@@ -164,7 +165,7 @@ public class UserLoginController extends BaseController {
 	@PostMapping("/signinWithSmsr")
 	public BaseResult<EhbAudiencedlDto> signinWithSmsr(
 			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
-			@NotBlank(message = "-101-验证码错误") String code,Integer type) {
+			@NotBlank(message = "-101-验证码错误") String code,Integer type,String password) {
 		EhbAudience user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getPhone, phone).one();
 		
 		if(user!=null) {
@@ -177,6 +178,7 @@ public class UserLoginController extends BaseController {
 		EhbAudience ehbAudience=new EhbAudience();
 		ehbAudience.setPhone(phone);
 		ehbAudience.setLoginname(phone);
+		ehbAudience.setPassword(ehbAudienceService.encryptPassword(password));
 		ehbAudience.setType(0);
 		ehbAudience.setIsnew(0);
 		if(type==1) { //普通用户
