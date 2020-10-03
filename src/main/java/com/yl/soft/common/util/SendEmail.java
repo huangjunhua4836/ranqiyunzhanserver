@@ -51,10 +51,10 @@ public class SendEmail {
 			// 设置发件人的地址
 			message.setFrom(new InternetAddress(from));
 			// 设置主题
-			message.setSubject("【燃气云展】验证码："+emailMsg+" 用于绑定邮箱5分钟内失效");
+			message.setSubject("【燃气云展】邮箱验证");
 			// 设置邮件的文本内容
 			// message.setText("Welcome to JavaMail World!");
-			message.setContent(emailMsg, "text/html;charset=utf-8");
+			message.setContent("【燃气云展】验证码："+emailMsg+" 用于绑定邮箱5分钟内失效，该邮件系统自动发送请勿回复", "text/html;charset=utf-8");
 			// 从session的环境中获取发送邮件的对象
 			Transport transport = session.getTransport();
 			// 连接邮件服务器
