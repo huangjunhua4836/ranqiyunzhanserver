@@ -61,6 +61,7 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectAudience")
     public BaseResponse perfectAudience(RegisterAudienceDto registerAudienceDto) {
+
     	String sms = redisUtil.get("I" + registerAudienceDto.getPhone().trim());
 		if (!registerAudienceDto.getEmailverificationcode().equals(sms)) {
 			return setResultError("验证码错误");
