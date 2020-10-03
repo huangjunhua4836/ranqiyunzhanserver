@@ -3,7 +3,8 @@ package com.yl.soft.controller.api;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
-import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.ProductNumUtil;
+import com.yl.soft.common.util.SendEmail;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
@@ -43,8 +44,8 @@ public class RegisterController extends BaseController {
     private EhbExhibitorService ehbExhibitorService;
     @Autowired
     private SessionState sessionState;
-	@Autowired
-	private RedisService redisUtil;
+    @Autowired
+    private SendEmail sendEmail;
 
     /**
      * 注册参展用户接口
@@ -63,10 +64,12 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectAudience")
     public BaseResponse perfectAudience(RegisterAudienceDto registerAudienceDto,String token) {
-    	String sms = redisUtil.get("I" + registerAudienceDto.getPhone().trim());
-		if (!registerAudienceDto.getEmailverificationcode().equals(sms)) {
-//			return setResultError("验证码错误");
-		}
+//        sendEmail.sendMail("11185888@163.com", ProductNumUtil.getRandNum());
+        String randNum = ProductNumUtil.getRandNum();
+        sendEmail.sendMail(registerAudienceDto.getMailbox(),randNum);
+        if(!randNum.equals(registerAudienceDto.getEmailverificationcode())){
+            return setResultError("验证码错误");
+        }
         SessionUser sessionUser = sessionState.getCurrentUser(token);
 		EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
 		if(ehbAudience == null){
@@ -99,9 +102,10 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectExhibitor")
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
-        String sms = redisUtil.get("I" + registerExhibitorDto.getPhone().trim());
-        if (!registerExhibitorDto.getEmailverificationcode().equals(sms)) {
-//            return setResultError("验证码错误");
+        String randNum = ProductNumUtil.getRandNum();
+        sendEmail.sendMail(registerExhibitorDto.getMailbox(),randNum);
+        if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
+            return setResultError("验证码错误");
         }
         SessionUser sessionUser = sessionState.getCurrentUser(token);
         EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
