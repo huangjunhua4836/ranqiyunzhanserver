@@ -16,6 +16,7 @@ import com.yl.soft.common.config.Constants;
 import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.DateUtils;
 import com.yl.soft.common.util.ProductNumUtil;
+import com.yl.soft.common.util.SendEmail;
 import com.yl.soft.common.util.SendSms;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.base.BaseResult;
@@ -38,9 +39,12 @@ public class SendMsgCodeController extends BaseController {
 
 	@Autowired
 	private SmsrecordService smsrecordService;
-	
+
 	@Autowired
 	private SendSms sendSms;
+
+	@Autowired
+	private SendEmail sendEmail;
 
 	/**
 	 * 短信验证码过期时间
@@ -50,11 +54,12 @@ public class SendMsgCodeController extends BaseController {
 
 	@ApiOperation(value = "发送验证码", notes = "发送验证码")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "smstype", value = "短信类型（0：注册，1：登录，2：绑定手机号，3：忘记密码，4：验证原手机号码，5：更换手机号码）", required = true, paramType = "query"), 
-			@ApiImplicitParam(name = "phone", value = "验证码手机号", required = true, paramType = "query"),
-	})
+			@ApiImplicitParam(name = "smstype", value = "短信类型（0：注册，1：登录，2：绑定手机号，3：忘记密码，4：验证原手机号码，5：更换手机号码）", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "phone", value = "验证码手机号", required = true, paramType = "query"), })
 	@PostMapping("/send/phoneCode")
-	public BaseResult phoneCode(@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone, Integer smstype) {
+	public BaseResult phoneCode(
+			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
+			Integer smstype) {
 		BaseResult r = new BaseResult();
 		if (smstype == null) {
 			return error();
@@ -77,6 +82,28 @@ public class SendMsgCodeController extends BaseController {
 			} else {
 				r = error(-301, "保存发送验证码记录失败");
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return r;
+	}
+
+	@ApiOperation(value = "发邮箱证码", notes = "发邮箱证码")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "mail", value = "发送人邮件地址", required = true, paramType = "query"), })
+	@PostMapping("/send/mailCode")
+	public BaseResult mailCode(@NotBlank(message = "-101-请输入正确的邮箱地址") String mail) {
+		BaseResult r = new BaseResult();
+		if (mail == null) {
+			return error();
+		}
+		String val = ProductNumUtil.getRandNum();
+		try {
+			r.setDesc("已发送至邮箱注意查收");
+			r.setCode(200);
+			r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
+			r.setData(val);
+			sendEmail.sendMail(mail, val);
+			redisUtil.set("I" + mail, val, sms_code_time_out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
