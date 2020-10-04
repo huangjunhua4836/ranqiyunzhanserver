@@ -63,7 +63,8 @@ public class UpLoadFileController extends BaseResponseUtil {
 	})
 	@PostMapping("/upLoadByHttp")
 	public BaseResponse<List<AttachmentDTO>> upLoadByHttp(@ApiParam(value = "文件,多文件上传保证key相同",required = true) @RequestParam("file") MultipartFile[] multipartFiles
-			,@ApiParam(value = "文件标记（1营业执照，2企业授权书，3其他）",required = true) @RequestParam("remarks") String remarks){
+			,@ApiParam(value = "文件标记（1营业执照，2企业授权书，3其他）",required = true) @RequestParam("remarks") String remarks
+			,@ApiParam(hidden = true) String title){
 		if(StringUtils.isEmpty(uploadPath)){
 			return setResultError("服务器上传基础路径为空！");
 		}
@@ -93,6 +94,7 @@ public class UpLoadFileController extends BaseResponseUtil {
                     Files.write(path,multipartFiles[i].getBytes());
                     //保存文件
                     CrmFile crmFile = new CrmFile();
+                    crmFile.setTitle(title);
                     crmFile.setName(multipartFiles[i].getOriginalFilename());
                     crmFile.setType(Integer.parseInt(remarks));
                     crmFile.setPath(relativePath);

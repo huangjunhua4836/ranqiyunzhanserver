@@ -29,6 +29,9 @@ public class CrmFile extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID=1L;
 
+    @ApiModelProperty(value = "业务标题")
+    private String title;
+
     @ApiModelProperty(value = "文件名称")
     private String name;
 

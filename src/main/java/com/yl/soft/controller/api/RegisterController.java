@@ -3,6 +3,7 @@ package com.yl.soft.controller.api;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
+import com.yl.soft.common.util.IOUtil;
 import com.yl.soft.common.util.ProductNumUtil;
 import com.yl.soft.common.util.SendEmail;
 import com.yl.soft.common.util.StringUtils;
@@ -13,19 +14,14 @@ import com.yl.soft.dto.RegisterExhibitorDto;
 import com.yl.soft.dto.app.LabelDto;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
-import com.yl.soft.po.EhbAudience;
-import com.yl.soft.po.EhbExhibitor;
-import com.yl.soft.po.EhbLabel;
-import com.yl.soft.service.EhbAudienceService;
-import com.yl.soft.service.EhbExhibitorService;
-import com.yl.soft.service.EhbLabelService;
+import com.yl.soft.po.*;
+import com.yl.soft.service.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +42,10 @@ public class RegisterController extends BaseController {
     private SessionState sessionState;
     @Autowired
     private SendEmail sendEmail;
+    @Autowired
+    private CrmFileService crmFileService;
+    @Value("${custom.uploadPath}")
+    private String uploadPath;
 
     /**
      * 注册参展用户接口
@@ -151,5 +151,29 @@ public class RegisterController extends BaseController {
             labelDtos.add(LabelDto.of(ehbLabel));
         }
         return setResultSuccess(labelDtos);
+    }
+
+    @ApiOperation(value = "企业授权书模板下载", notes = "企业授权书模板下载")
+    @ApiImplicitParams({
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @GetMapping("/credentialsDown")
+    public BaseResponse<EhbDataUpload> credentialsDown(HttpServletResponse response) {
+        try {
+            QueryWrapper<CrmFile> crmFileQueryWrapper = new QueryWrapper<>();
+            crmFileQueryWrapper.eq("title","企业授权书模板");
+            CrmFile crmFile = crmFileService.getOne(crmFileQueryWrapper);
+            IOUtil.download(response,uploadPath+crmFile.getPath());
+        }catch (Exception e){
+            e.printStackTrace();
+            return setResultError("下载失败！");
+        }
+        return setResultSuccess();
     }
 }

@@ -38,7 +38,7 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    password:
+    password: 123456
     timeout: 300
     jedis:
       pool:
@@ -93,6 +93,14 @@ pagehelper:
 
 # 上传文件统一后缀名称配置
 custom:
+  yj:
+    from: 1536466648@qq.com #发邮件人邮箱
+    username: 1536466648 #发邮件人邮箱账号
+    password: alhaihrpwsnubahb #授权密码
+    host: smtp.qq.com #指定的smtp服务器
+    protocol: smtp #设置发送邮件使用的协议
+    ssl: 1 #是否开始ssl
+    dk: 465 #端口
   hwyzb:
     live: rqyz.live.duoka361.com
     tlive: rqyz.tlive.duoka361.com
