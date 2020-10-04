@@ -188,7 +188,7 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
             ,@ApiResponse(code = -1, message = "系统异常")
     })
-    @GetMapping("/emailverificationcode")
+    @PostMapping("/emailverificationcode")
     public BaseResponse<EhbDataUpload> emailverificationcode(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("mailbox"))){
             return setResultError("邮箱为空！");
