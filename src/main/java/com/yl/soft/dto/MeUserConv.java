@@ -19,6 +19,8 @@ public interface MeUserConv {
 		ehbAudienceDto.setTelphone(ehbExhibitor.getTelphone());
 		ehbAudienceDto.setPhone(ehbAudience.getPhone());
 		ehbAudienceDto.setMailbox(ehbExhibitor.getMailbox());
+		ehbAudienceDto.setAddress(ehbExhibitor.getAddress());
+		ehbAudienceDto.setWebsite(ehbExhibitor.getWebsite());
 		return ehbAudienceDto;
 	}
 	

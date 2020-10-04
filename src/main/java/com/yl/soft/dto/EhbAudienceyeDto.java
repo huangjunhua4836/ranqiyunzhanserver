@@ -49,4 +49,11 @@ public class EhbAudienceyeDto implements Serializable{
 	
 	@ApiModelProperty("企业电话")
 	private String telphone;
+	
+	
+    @ApiModelProperty(value = "公司地址")
+    private String address;
+    
+    @ApiModelProperty(value = "公司主页")
+    private String website;
 }
