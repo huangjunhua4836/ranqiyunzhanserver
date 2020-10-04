@@ -2,6 +2,7 @@ package com.yl.soft.controller.api;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.yl.soft.common.unified.entity.BasePage;
@@ -74,7 +75,7 @@ public class IndexController extends BaseController {
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
         conditionMap.put("state",1);
-        conditionMap.put("labelid",appLoginDTO.getLabelid());
+        conditionMap.put("labelid", JSONArray.parseArray(appLoginDTO.getLabelid(),Integer.class));
         conditionMap.put("id",appLoginDTO.getId());
 
         List<ExhibitorDto> appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);

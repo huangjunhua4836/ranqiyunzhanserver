@@ -56,6 +56,6 @@ public class EhbArticle extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "总评论量")
     private Integer countcomment;
 
-    @ApiModelProperty(value = "是否推荐  1-推荐  0-不推荐")
+    @ApiModelProperty(value = "是否推荐  true-推荐  false-不推荐")
     private Boolean isrecommend;
 }

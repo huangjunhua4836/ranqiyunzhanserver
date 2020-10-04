@@ -3,6 +3,7 @@ package com.yl.soft.controller.api;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
+import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.IOUtil;
 import com.yl.soft.common.util.ProductNumUtil;
 import com.yl.soft.common.util.SendEmail;
@@ -44,6 +45,8 @@ public class RegisterController extends BaseController {
     private SendEmail sendEmail;
     @Autowired
     private CrmFileService crmFileService;
+    @Autowired
+    private RedisService redisService;
     @Value("${custom.uploadPath}")
     private String uploadPath;
 
@@ -64,9 +67,7 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectAudience")
     public BaseResponse perfectAudience(RegisterAudienceDto registerAudienceDto,String token) {
-//        sendEmail.sendMail("11185888@163.com", ProductNumUtil.getRandNum());
-        String randNum = ProductNumUtil.getRandNum();
-        sendEmail.sendMail(registerAudienceDto.getMailbox(),randNum);
+        String randNum = redisService.get(registerAudienceDto.getEmailverificationcode());
         if(!randNum.equals(registerAudienceDto.getEmailverificationcode())){
             return setResultError("验证码错误");
         }
@@ -102,8 +103,7 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectExhibitor")
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
-        String randNum = ProductNumUtil.getRandNum();
-        sendEmail.sendMail(registerExhibitorDto.getMailbox(),randNum);
+        String randNum = redisService.get(registerExhibitorDto.getEmailverificationcode());
         if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
             return setResultError("验证码错误");
         }
@@ -175,5 +175,34 @@ public class RegisterController extends BaseController {
             return setResultError("下载失败！");
         }
         return setResultSuccess();
+    }
+
+    @ApiOperation(value = "获取邮箱验证码", notes = "获取邮箱验证码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mailbox", value = "邮箱",paramType = "query",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @GetMapping("/emailverificationcode")
+    public BaseResponse<EhbDataUpload> emailverificationcode(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        if(StringUtils.isEmpty(paramMap.get("mailbox"))){
+            return setResultError("邮箱为空！");
+        }
+        String randNum = ProductNumUtil.getRandNum();
+        boolean b = sendEmail.sendMail(paramMap.get("mailbox").toString(),randNum);
+        if(!b){
+            return setResultError("邮件发送失败！");
+        }
+        boolean flag = redisService.set(randNum,randNum,60*30);
+        if(flag){
+            return setResultSuccess("验证码已发送到邮箱："+paramMap.get("mailbox"));
+        }else{
+            return setResultError("邮件缓存失败！");
+        }
     }
 }

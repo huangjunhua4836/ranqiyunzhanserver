@@ -34,8 +34,11 @@
         where
             e.isdel = #{paramMap.isdel}
             and e.state = #{paramMap.state}
-            <if test="paramMap.labelid!= null and paramMap.labelid!= ''">
-                and e.labelid in (${paramMap.labelid})
+            <if test="paramMap.labelid!= null and paramMap.labelid.size() > 0">
+                and e.labelid in
+                <foreach item="item" collection="paramMap.labelid" separator="," open="(" close=")" index="">
+                    #{item,jdbcType=INTEGER}
+                </foreach>
             </if>
             order by e.createtime desc
      </select>
