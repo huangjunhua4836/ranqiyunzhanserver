@@ -19,7 +19,7 @@ layui.use('core', function(){
         //第一个实例
         table.render({
             elem: '#table'
-            ,url: '/crmUser/findUserBy' //数据接口
+            ,url: '/platform/crmUser/findUserBy' //数据接口
             ,where: where
             ,toolbar: '#titleToolbar' //开启头部工具栏，并为其绑定左侧模板
             ,defaultToolbar: ['filter']
@@ -50,7 +50,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加用户','/crmUser/userInput?type=add',['500px', '440px'],false,getUserTable);
+                core.openIframeDialog('添加用户','/platform/crmUser/userInput?type=add',['500px', '440px'],false,getUserTable);
                 break;
             case 'restPassword':
                 var checkStatus = table.checkStatus('table'); //table 即为基础参数 id 对应的值
@@ -59,9 +59,8 @@ layui.use('core', function(){
                 }else{
                     layer.confirm('真的要重置密码？重置密码为：123456', function(index){
                         layer.close(index);
-                        alert(222222222);
                         //向服务端发送删除指令
-                        var resultData = core.ajax('/crmUser/restPassword',false,'POST','userId='+checkStatus.data[0].id);
+                        var resultData = core.ajax('/platform/crmUser/restPassword',false,'POST','userId='+checkStatus.data[0].id);
                         if(resultData!=false){
                             layer.msg('操作成功！',core.showtime);
                             getUserTable({});
@@ -91,14 +90,14 @@ layui.use('core', function(){
             layer.confirm('真的删除用户么？相关业务数据会失效！', function(index){
                 layer.close(index);
                 //向服务端发送删除指令
-                var resultData = core.ajax('/crmUser/deleteUser',false,'POST','userId='+data.id);
+                var resultData = core.ajax('/platform/crmUser/deleteUser',false,'POST','userId='+data.id);
                 if(resultData!=false){
                     layer.msg('操作成功！',core.showtime);
                     getUserTable({});
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改用户','/crmUser/userInput?type=update&id='+data.id,['500px', '440px'],false,getUserTable);
+            core.openIframeDialog('修改用户','/platform/crmUser/userInput?type=update&id='+data.id,['500px', '440px'],false,getUserTable);
         } else if(obj.event === 'detail'){
             core.openDialog('用户详情',$('#detail').html(),['500px','440px']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);

@@ -54,7 +54,7 @@
             $ = layui.jquery;
 
         form.on('submit(submitFrom)', function(data){
-            var resultData = core.ajax('/crmUser/saveOrUpdateUser',false,'POST',data.field);
+            var resultData = core.ajax('/platform/crmUser/saveOrUpdateUser',false,'POST',data.field);
             if(resultData!=false){
                 parent.layer.msg('操作成功',core.showtime);
                 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
