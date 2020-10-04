@@ -203,7 +203,8 @@ public class UserLoginController extends BaseController {
 	@ApiOperation(value = "第三方登录", notes = "第三方登录返回-301弹出绑定手机号进行注册")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "type", value = "第三方类型：1=微信，2=QQ", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "reqcode", value = "请求码", required = true, paramType = "query") })
+			@ApiImplicitParam(name = "reqcode", value = "三方openId", required = true, paramType = "query")
+			})
 	@ApiResponses({ @ApiResponse(code = -101, message = "请输入正确的第三方类型"), @ApiResponse(code = -102, message = "请输入请求码"),
 			@ApiResponse(code = -202, message = "请求码无效"), @ApiResponse(code = -203, message = "账号已被冻结"),
 			@ApiResponse(code = -301, message = "未注册，请先注册"), @ApiResponse(code = 0, message = "登录成功"),
@@ -211,12 +212,12 @@ public class UserLoginController extends BaseController {
 	@PostMapping("/signin_openid")
 	public BaseResult<EhbAudiencedlDto> signinWithOpenid(
 			@NotNull(message = "-101-无效的第三方类型") @Positive(message = "-101-无效的第三方类型") Integer type,
-			@NotBlank(message = "-102-请求码无效") String reqcode) {
+			@NotBlank(message = "-102-三方oppenId错误") String reqcode) {
 		LoginType loginType = LoginType.of(type);
 		if (loginType == null) {
 			return error(-101, "请输入正确的第三方类型");
 		}
-		String openId = ehbAudienceService.getOpenId(loginType, reqcode);
+		String openId = reqcode;
 		if (StringUtils.isBlank(openId)) {
 			return error(-102, "请求码无效");
 		}
@@ -238,7 +239,7 @@ public class UserLoginController extends BaseController {
 	@ApiOperation(value = "第三方注册绑定手机号", notes = "第三方注册绑定手机号")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "type", value = "第三方类型：1=微信，2=QQ", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "reqcode", value = "请求码", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "reqcode", value = "三方openId", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query"), })
 	@ApiResponses({ @ApiResponse(code = -101, message = "请输入正确的第三方类型"), @ApiResponse(code = -102, message = "请输入请求码"),
@@ -249,7 +250,7 @@ public class UserLoginController extends BaseController {
 	@PostMapping("/signup_openid")
 	public BaseResult<EhbAudiencedlDto> signupWithOpenid(
 			@NotNull(message = "-101-无效的第三方类型") @Positive(message = "-101-无效的第三方类型") Integer type,
-			@NotBlank(message = "-102-请输入请求码") String reqcode,
+			@NotBlank(message = "-102-请输入三方openId") String reqcode,
 			@NotBlank(message = "-103-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-103-请输入正确的手机号") String phone,
 			@NotBlank(message = "-104-验证码错误") String code) {
 		LoginType loginType = LoginType.of(type);
@@ -260,7 +261,7 @@ public class UserLoginController extends BaseController {
 		if (loginType == null) {
 			return error(-101, "请输入正确的第三方类型");
 		}
-		String openId = ehbAudienceService.getOpenId(loginType, reqcode);
+		String openId = reqcode;
 		if (StringUtils.isBlank(openId)) {
 			return error(-102, "请求码无效");
 		}
@@ -388,7 +389,7 @@ public class UserLoginController extends BaseController {
 	
 	@ApiOperation(value = "注销登录", notes = "注销登录", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "登录手机号", required = true, paramType = "query")
+            @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query")
     })
 	@ApiResponses({ 
 		@ApiResponse(code = 200, message = "注销成功")
