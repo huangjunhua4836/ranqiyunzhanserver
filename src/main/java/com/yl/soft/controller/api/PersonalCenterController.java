@@ -103,6 +103,9 @@ public class PersonalCenterController extends BaseController {
 			EhbAudienceyeDto qy=MeUserConv.do2dto(ehbAudience,ee);
 			ehbDto.setEhbAudienceyeDto(qy);
 		}
+		ehbDto.setPhoneState(ehbAudience.getPhone()==null?"0":"1");
+		ehbDto.setWxState(ehbAudience.getWxOpenid()==null?"0":"1");
+		ehbDto.setQqState(ehbAudience.getQqOpenid()==null?"0":"1");
 		return ok(ehbDto);
 	}
 

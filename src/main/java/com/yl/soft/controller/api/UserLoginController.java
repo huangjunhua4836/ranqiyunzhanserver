@@ -137,13 +137,7 @@ public class UserLoginController extends BaseController {
 		}
 		return setSessionUser(user);
 	}
-	
-//	@ApiOperation(value = "ceshi", notes = "ces")
-//	@GetMapping("/cc")
-//	public BaseResult<EhbAudiencedlDto> ccc(){
-//		sendEmail.sendMail("11185888@163.com", "122222");
-//		return ok2();
-//	}
+
 
 	@ApiOperation(value = "手机验证码登录", notes = "使用手机验证码登录")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
@@ -343,7 +337,7 @@ public class UserLoginController extends BaseController {
 		if (!ehbAudienceService.lambdaUpdate()
 				.set(EhbAudience::getPassword, ehbAudienceService.encryptPassword(password))
 				.eq(EhbAudience::getPhone, phone).update()) {
-			return error();
+			return error(199,"手机号错误");
 		}
 		BaseResult r = new BaseResult();
 		r.setCode(200);
@@ -351,6 +345,8 @@ public class UserLoginController extends BaseController {
 		r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
 		return r;
 	}
+	
+	
 
 	@ApiOperation(value = "更换手机号", notes = "更换手机号码")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "oldCode", value = "原手机验证码", required = true, paramType = "query"),
