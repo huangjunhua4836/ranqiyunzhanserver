@@ -1,5 +1,7 @@
 package com.yl.soft.controller.api;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.yl.soft.common.unified.entity.BasePage;
@@ -11,7 +13,10 @@ import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.app.*;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
-import com.yl.soft.po.*;
+import com.yl.soft.po.EhbArticle;
+import com.yl.soft.po.EhbBanner;
+import com.yl.soft.po.EhbGuest;
+import com.yl.soft.po.EhbOpportunity;
 import com.yl.soft.service.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Api(tags = {"C端模块-首页"})
 @RestController
@@ -223,7 +229,15 @@ public class IndexController extends BaseController {
     })
     @PostMapping("/cloudWindowList")
     public BaseResponse<List<CloudWindowDto>> cloudWindowList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
-        return null;
+        List<CloudWindowDto> cloudwindowdtos= new ArrayList<>();
+        for(int i=65;i<91;i++) {
+            String az = StrUtil.toString((char)i);
+            CloudWindowDto cdto = new CloudWindowDto();
+            Set<String> jsondtos = redisService.sGet(az);
+            List<ExhibitorDto> dtos = jsondtos.stream().map(e -> JSONUtil.toBean(e, ExhibitorDto.class)).collect(Collectors.toList());
+            cloudwindowdtos.add(cdto.setWord(az).setExhibitorDtos(dtos));
+        }
+        return setResultSuccess(cloudwindowdtos);
     }
 
     /**
