@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbAudienceDto;
+import com.yl.soft.dto.EhbAudienceInfoDto;
 import com.yl.soft.dto.EhbAudiencegrDto;
 import com.yl.soft.dto.EhbAudienceyeDto;
 import com.yl.soft.dto.EhbExhibitorDto;
@@ -107,6 +109,54 @@ public class PersonalCenterController extends BaseController {
 		ehbDto.setWxState(ehbAudience.getWxOpenid()==null?"0":"1");
 		ehbDto.setQqState(ehbAudience.getQqOpenid()==null?"0":"1");
 		return ok(ehbDto);
+	}
+	
+	@ApiOperation(value = "改个人信息修", notes = "参数名称前缀为ehbAudienceInfogrDto是修改个人账号信息，参数名称前缀为ehbAudienceInfoyeDto是修改企业账号信息，两个类型不能同时传")
+	@PostMapping("/api/upMe")
+	public BaseResult<EhbAudienceDto> upMe(EhbAudienceInfoDto ehbAudienceInfoDto) {
+		SessionUser sessionUser = sessionState.getCurrentUser(ehbAudienceInfoDto.getToken());
+		if(null==sessionUser.getBopie()) {
+			
+			EhbAudience ehbAudience=ehbAudienceService.getById(sessionUser.getId());
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getName())) {
+				ehbAudience.setName(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getName());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getQyname())) {
+				ehbAudience.setQyname(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getQyname());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getHeadPortrait())) {
+				ehbAudience.setHeadPortrait(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getHeadPortrait());
+			}
+			ehbAudienceService.updateById(ehbAudience);
+		}else if(null!=sessionUser.getBopie()) {
+			EhbAudience ehbAudience=ehbAudienceService.getById(sessionUser.getId());
+			EhbExhibitor ehbExhibitor=ehbExhibitorService.getById(sessionUser.getBopie());
+			
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getEnterprisename())) {
+				ehbExhibitor.setEnterprisename(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getEnterprisename());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait())) {
+				ehbAudience.setHeadPortrait(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait());
+				ehbExhibitorService.updateById(ehbExhibitor);
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone())) {
+				ehbExhibitor.setPhone(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getMailbox())) {
+				ehbExhibitor.setMailbox(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getMailbox());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getTelphone())) {
+				ehbExhibitor.setTelphone(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getTelphone());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getExname())) {
+				ehbExhibitor.setName(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getExname());
+			}
+			
+			ehbAudienceService.updateById(ehbAudience);
+		}else {
+			return error(-900,"服务器繁忙请稍后再试");
+		}
+		return ok();
 	}
 
 	@ApiOperation(value = "我的企业", notes = "我的企业")
