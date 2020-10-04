@@ -55,6 +55,9 @@ public class ExhibitorDto implements Serializable{/**
 	@ApiModelProperty("是否已认证  0-未认证，1-已认证")
 	private Integer state;
 
+	@ApiModelProperty("关注展商ID(等于空-展商没有关注，非空-此展商已关注)")
+	private Integer relateid;
+
 	@ApiModelProperty("认证状态翻译")
 	private String state_show;
 

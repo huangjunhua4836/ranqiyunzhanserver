@@ -23,9 +23,14 @@
 
     <select id="exibitionList" resultType= "com.yl.soft.dto.app.ExhibitorDto">
      	SELECT
-            e.*
+            e.*,useaction.relateid
         FROM
             ehb_exhibitor e
+        left join
+            ehb_useraction useaction
+        on
+            e.id = useaction.relateid
+            and useaction.type = '1' and useaction.activetype = '3' and useaction.isdel = #{paramMap.isdel}
         where
             e.isdel = #{paramMap.isdel}
             and e.state = #{paramMap.state}

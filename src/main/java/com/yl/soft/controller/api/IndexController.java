@@ -45,8 +45,6 @@ public class IndexController extends BaseController {
     @Autowired
     private SessionState sessionState;
     @Autowired
-    private EhbAdvertisingService ehbAdvertisingService;
-    @Autowired
     private RedisService redisService;
 
 
