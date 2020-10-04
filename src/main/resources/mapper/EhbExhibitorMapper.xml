@@ -35,9 +35,9 @@
             e.isdel = #{paramMap.isdel}
             and e.state = #{paramMap.state}
             <if test="paramMap.labelid!= null and paramMap.labelid.size() > 0">
-                and e.labelid in
-                <foreach item="item" collection="paramMap.labelid" separator="," open="(" close=")" index="">
-                    #{item,jdbcType=INTEGER}
+                and
+                <foreach item="item" collection="paramMap.labelid" separator="or" open="(" close=")" index="">
+                    e.labelid like concat('%',#{item,jdbcType=INTEGER},'%')
                 </foreach>
             </if>
             order by e.createtime desc

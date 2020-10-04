@@ -1,5 +1,6 @@
 package com.yl.soft.controller.api;
 
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.yl.soft.common.unified.entity.BaseResponse;
@@ -62,7 +63,7 @@ public class OpportunityController extends BaseController {
         conditionMap.put("enterprisename","%"+paramMap.get("key")+"%");
         conditionMap.put("title","%"+paramMap.get("key")+"%");
         conditionMap.put("boothno","%"+paramMap.get("key")+"%");
-        conditionMap.put("labelid",appLoginDTO.getLabelid());//行为推荐
+        conditionMap.put("labelid", JSONArray.parseArray(appLoginDTO.getLabelid(),Integer.class));//行为推荐
         conditionMap.put("type",1);//商机
 
         Integer pageParam[] = pageValidParam(paramMap);

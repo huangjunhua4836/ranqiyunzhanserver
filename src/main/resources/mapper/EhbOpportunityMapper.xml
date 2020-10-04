@@ -41,8 +41,11 @@
         where
         opp.isdel = #{paramMap.isdel}
         and opp.type = #{paramMap.type}
-        <if test="paramMap.labelid!= null and paramMap.labelid!= ''">
-            and e.labelid in (${paramMap.labelid})
+        <if test="paramMap.labelid!= null and paramMap.labelid.size() > 0">
+            and
+            <foreach item="item" collection="paramMap.labelid" separator="or" open="(" close=")" index="">
+                e.labelid like concat('%',#{item,jdbcType=INTEGER},'%')
+            </foreach>
         </if>
         and (1=1
         <if test="paramMap.enterprisename!= null and paramMap.enterprisename!= ''">
