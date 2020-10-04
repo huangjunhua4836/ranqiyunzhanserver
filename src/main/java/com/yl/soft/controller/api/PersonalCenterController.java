@@ -170,8 +170,11 @@ public class PersonalCenterController extends BaseController {
 		PageHelper.startPage(page, size, "createtime DESC");
 		PageInfo<EhbOpportunityDto> pageInfo = new PageInfo<>(ehbOpportunityService.lambdaQuery()
 				.eq(EhbOpportunity::getExhibitorid, sessioner.getBopie() == null ? "-1" : sessioner.getBopie())
-				.eq(EhbOpportunity::getType, type).like(EhbOpportunity::getTitle, titleorconnent)
-				.like(EhbOpportunity::getContent, titleorconnent).list().stream().map(i -> {
+				.eq(EhbOpportunity::getType, type).and(j->
+					j.like(EhbOpportunity::getTitle, titleorconnent)
+					.or()
+					.like(EhbOpportunity::getContent, titleorconnent)
+				).list().stream().map(i -> {
 					EhbOpportunityDto ehbOpportunityDto = new EhbOpportunityDto();
 					BeanUtils.copyProperties(i, ehbOpportunityDto);
 					return ehbOpportunityDto;
