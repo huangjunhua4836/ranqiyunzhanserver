@@ -43,6 +43,18 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">蜂鸟云地图Fid</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{fid}" required  autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">虚拟展厅html地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{halurl}" required  autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">是否审核</label>
                         <div class="layui-input-block">
                             <select name="state" required  lay-verify="required">

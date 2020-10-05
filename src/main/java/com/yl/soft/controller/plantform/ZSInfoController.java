@@ -14,6 +14,7 @@ import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.app.ExhibitorDto;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.service.EhbExhibitorService;
+import com.yl.soft.service.EhbHallService;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,8 @@ public class ZSInfoController extends BaseController {
     @Autowired
     public EhbExhibitorService ehbExhibitorService;
     @Autowired
+    public EhbHallService ehbHallService;
+    @Autowired
     public RedisService redisService;
 
     @GetMapping("/list")
@@ -63,6 +66,8 @@ public class ZSInfoController extends BaseController {
         ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(ehbExhibitor.getPhone()),"phone",ehbExhibitor.getPhone());
         ehbExhibitorQueryWrapper.like(!StringUtils.isEmpty(ehbExhibitor.getName()),"name",ehbExhibitor.getName());
         ehbExhibitorQueryWrapper.like(!StringUtils.isEmpty(ehbExhibitor.getEnterprisename()),"enterprisename",ehbExhibitor.getEnterprisename());
+        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(ehbExhibitor.getState()),"state",ehbExhibitor.getState());
+        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(ehbExhibitor.getFid()),"fid",ehbExhibitor.getFid());
         ehbExhibitorQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"createtime",startTime,endTime);
         ehbExhibitorQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
         ehbExhibitorQueryWrapper.orderByDesc("createtime");
@@ -104,6 +109,7 @@ public class ZSInfoController extends BaseController {
     @PostMapping("/saveOrUpdate")
     @ResponseBody
     public BaseResponse saveOrUpdate(EhbExhibitor ehbExhibitor) {
+        String firstWord = PinyinUtil.getPinYinHeadChar(ehbExhibitor.getEnterprisename()).toUpperCase().charAt(0)+"";
         if(StringUtils.isEmpty(ehbExhibitor.getId())){
             ehbExhibitor.setCreatetime(LocalDateTime.now());
             ehbExhibitor.setCreateuser(1);
@@ -111,7 +117,6 @@ public class ZSInfoController extends BaseController {
         }else{
             ehbExhibitor.setUpdatetime(LocalDateTime.now());
             ehbExhibitor.setUpdateuser(1);
-            String firstWord = PinyinUtil.getPinYinHeadChar(ehbExhibitor.getEnterprisename()).toUpperCase().charAt(0)+"";
             ExhibitorDto exhibitorDto = new ExhibitorDto();
             exhibitorDto.setId(ehbExhibitor.getId());
             exhibitorDto.setName(ehbExhibitor.getEnterprisename());
@@ -123,6 +128,7 @@ public class ZSInfoController extends BaseController {
                 redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
             }
         }
+        ehbExhibitor.setFirstletter(firstWord);//名称首字母设置
         if(ehbExhibitorService.saveOrUpdate(ehbExhibitor)){
             return setResultSuccess();
         }else{

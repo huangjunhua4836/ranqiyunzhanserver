@@ -110,7 +110,7 @@ public class HallController extends BaseController {
         EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(ehbHall.getExhibitorid());
         ehbHall.setExhibitorname(ehbExhibitor.getEnterprisename());
         ehbHall.setBoothno(ehbExhibitor.getBoothno());
-        ehbHall.setHallurl(ehbExhibitor.getHalurl());
+//        ehbHall.setHallurl(ehbExhibitor.getHalurl());
         if(StringUtils.isEmpty(ehbHall.getId())){
             ehbHall.setCreatetime(LocalDateTime.now());
             ehbHall.setCreateuser(1);
