@@ -34,5 +34,15 @@ public class EhbHall extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "展位号")
     private String boothno;
 
+    @ApiModelProperty(value="vrHTML地址")
     private String hallurl;
+
+    @ApiModelProperty(value="浏览量")
+    private Integer views;
+    @ApiModelProperty(value="是否推荐顶部位置0：否，1：是")
+    private Integer recommend;
+    @ApiModelProperty(value="排序，值越大越靠前")
+    private Integer sort;
+    
+    
 }
