@@ -108,6 +108,9 @@ public class HallController extends BaseController {
     @ResponseBody
     public BaseResponse saveOrUpdate(EhbHall ehbHall) {
         EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(ehbHall.getExhibitorid());
+        ehbExhibitor.setHalurl(ehbHall.getHallurl());
+        ehbExhibitorService.updateById(ehbExhibitor);
+
         ehbHall.setExhibitorname(ehbExhibitor.getEnterprisename());
         ehbHall.setBoothno(ehbExhibitor.getBoothno());
 //        ehbHall.setHallurl(ehbExhibitor.getHalurl());
