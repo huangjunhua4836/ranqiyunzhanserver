@@ -58,7 +58,7 @@ public class RegisterController extends BaseController {
     private String uploadPath;
 
     /**
-     * 注册参展用户接口
+     * 参展用户补充信息提交接口
      * @return
      */
     @ApiOperation(value = "参展用户补充信息提交接口")
@@ -94,7 +94,7 @@ public class RegisterController extends BaseController {
     }
 
     /**
-     * 注册展商接口
+     * 展商认证信息提交接口
      * @return
      */
     @ApiOperation(value = "展商认证信息提交接口")
