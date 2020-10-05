@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yl.soft.common.util.BaseConv;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbAudienceDto;
 import com.yl.soft.dto.EhbAudienceInfoDto;
@@ -236,29 +235,43 @@ public class PersonalCenterController extends BaseController {
 		return ok(pageInfo.getList(), pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
 	}
 
-	@ApiOperation(value = "发布商品/商机", notes = "发布商品/商机")
+	@ApiOperation(value = "(发布/修改)商品/商机", notes = "发布商品/商机（传id就是修改，不传就是添加）")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "title", value = "请输入商品名称标题", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "content", value = "请详细描述商品介绍", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "type", value = "类型（1-商机  2-商品）", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "label", value = "请选择标签  标签id[1,2]", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "picture", value = "商品多图片上传['src1','src2']", required = true, paramType = "query"), })
+			@ApiImplicitParam(name = "id", value="商机/商品id",required = false, paramType = "query"),
+			@ApiImplicitParam(name = "picture", value = "商品多图片上传['src1','src2'...]", required = true, paramType = "query"), })
 	@PostMapping("/api/pushGoods")
 	public BaseResult pushGoods(String token, @NotBlank(message = "请添加一个正确的标签") String title,
 			@NotBlank(message = "请添加一个正确的内容") String content, @NotBlank(message = "请选择一个正确的标签") String label,
-			String picture, @NotBlank(message = "类型不能为空") String type) {
+			String picture, @NotBlank(message = "类型不能为空") String type,String id) {
 		try {
 			SessionUser sessionUser = sessionState.getCurrentUser(token);
 			EhbOpportunity ehbOpportunity = new EhbOpportunity();
-			ehbOpportunity.setTitle(title);
-			ehbOpportunity.setContent(content);
-			ehbOpportunity.setLabel(label);
-			ehbOpportunity.setPicture(picture);
-			ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
-			ehbOpportunity.setCreatetime(LocalDateTime.now());
-			ehbOpportunity.setIsdel(false);
-			ehbOpportunity.setExhibitorid(sessionUser.getBopie());
-			ehbOpportunityService.save(ehbOpportunity);
+			if(StringUtils.isEmpty(id)) {
+				ehbOpportunity.setTitle(title);
+				ehbOpportunity.setContent(content);
+				ehbOpportunity.setLabel(label);
+				ehbOpportunity.setPicture(picture);
+				ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
+				ehbOpportunity.setCreatetime(LocalDateTime.now());
+				ehbOpportunity.setIsdel(false);
+				ehbOpportunity.setExhibitorid(sessionUser.getBopie());
+				ehbOpportunityService.save(ehbOpportunity);
+			}else {
+				ehbOpportunity =ehbOpportunityService.getById(id);
+				if(null==ehbOpportunity) {
+					return error(-904,"修改的商机或商品不存在");
+				}
+				ehbOpportunity.setTitle(title);
+				ehbOpportunity.setContent(content);
+				ehbOpportunity.setLabel(label);
+				ehbOpportunity.setPicture(picture);
+				ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
+				ehbOpportunityService.updateById(ehbOpportunity);
+			}
 			return ok2(ehbOpportunity);
 		} catch (Exception e) {
 			e.printStackTrace();
