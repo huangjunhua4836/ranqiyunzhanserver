@@ -28,6 +28,13 @@ layui.use('core', function(){
                 {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field: 'exhibitorname', title: '企业名称'}
                 ,{field: 'boothno', title: '展位号'}
+                ,{field: 'views', title: '浏览量'}
+                ,{field: 'recommend', title: '是否推荐',
+                    templet: function(d){
+                        return d.recommend == 1 ? '推荐' : '不推荐';
+                    }
+                }
+                ,{field: 'sort', title: '排序'}
                 ,{field: 'createtime', title: '创建时间',sort: true,
                     templet: function(d){
                         return util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss");
@@ -43,7 +50,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加虚拟展厅','/platform/hall/input?type=add',['500px', '200px'],false,initTable);
+                core.openIframeDialog('添加虚拟展厅','/platform/hall/input?type=add',['500px', '440px'],false,initTable);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
@@ -56,7 +63,7 @@ layui.use('core', function(){
     table.on('tool(tableFilter)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
-            layer.confirm('真的删除虚拟展厅么？绑定该虚拟展厅的用户丢失虚拟展厅！', function(index){
+            layer.confirm('真的删除么？', function(index){
                 layer.close(index);
                 //向服务端发送删除指令
                 var resultData = core.ajax('/platform/hall/delete',false,'POST','id='+data.id);
@@ -66,7 +73,7 @@ layui.use('core', function(){
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改虚拟展厅','/platform/hall/input?type=update&id='+data.id,['500px', '200px'],false,initTable);
+            core.openIframeDialog('修改虚拟展厅','/platform/hall/input?type=update&id='+data.id,['500px', '440px'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('虚拟展厅详情',$('#detail').html(),['500px','480px']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);

@@ -9,9 +9,9 @@ import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
-import com.yl.soft.po.CrmRole;
+import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbHall;
-import com.yl.soft.service.CrmRoleService;
+import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.service.EhbHallService;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,8 @@ import java.util.List;
 public class HallController extends BaseController {
     @Autowired
     public EhbHallService ehbHallService;
+    @Autowired
+    public EhbExhibitorService ehbExhibitorService;
 
     @GetMapping("/list")
     public String list() {
@@ -74,60 +76,69 @@ public class HallController extends BaseController {
         return tableVo;
     }
 
-//    /**
-//     * 跳转到单个虚拟展厅添加或者修改页面
-//     * @param id
-//     * @return
-//     */
-//    @GetMapping("/input")
-//    public String input(String id, String type, ModelMap modelMap) {
-//        CrmRole crmRole = new CrmRole();
-//        if("add".equals(type)){
-//
-//        }else if("update".equals(type)){
-//            crmRole = crmRoleService.getById(id);
-//        }
-//        modelMap.put("crmRole",crmRole);
-//
-//        return "role/input";
-//    }
-//
-//    /**
-//     * 添加或者修改虚拟展厅
-//     * @param crmRole
-//     * @return
-//     */
-//    @PostMapping("/saveOrUpdate")
-//    @ResponseBody
-//    public BaseResponse saveOrUpdate(CrmRole crmRole) {
-//        if(StringUtils.isEmpty(crmRole.getId())){
-//            crmRole.setCreatetime(LocalDateTime.now());
-//            crmRole.setCreateuser(1);
-//            crmRole.setIsdel(false);
-//        }else{
-//            crmRole.setUpdatetime(LocalDateTime.now());
-//            crmRole.setUpdateuser(1);
-//        }
-//        if(crmRoleService.saveOrUpdate(crmRole)){
-//            return setResultSuccess();
-//        }else{
-//            return setResultError("操作失败！");
-//        }
-//    }
-//
-//    /**
-//     * 删除虚拟展厅
-//     * @return
-//     */
-//    @PostMapping("/delete")
-//    @ResponseBody
-//    public BaseResponse delete(String id) {
-//        System.out.println("ok");
-//        if(StringUtils.isEmpty(id)){
-//            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
-//                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
-//        }
-//        crmRoleService.deleteRole(id);
-//        return setResultSuccess();
-//    }
+    /**
+     * 跳转到单个虚拟展厅添加或者修改页面
+     * @param id
+     * @return
+     */
+    @GetMapping("/input")
+    public String input(String id, String type, ModelMap modelMap) {
+        EhbHall ehbHall  = new EhbHall();
+        if("add".equals(type)){
+
+        }else if("update".equals(type)){
+            ehbHall = ehbHallService.getById(id);
+        }
+        modelMap.put("ehbHall",ehbHall);
+
+        QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+        ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        ehbExhibitorQueryWrapper.eq("state",1);
+        List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
+        modelMap.put("ehbExhibitors",ehbExhibitors);
+        return "hall/input";
+    }
+
+    /**
+     * 添加或者修改虚拟展厅
+     * @param ehbHall
+     * @return
+     */
+    @PostMapping("/saveOrUpdate")
+    @ResponseBody
+    public BaseResponse saveOrUpdate(EhbHall ehbHall) {
+        EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(ehbHall.getExhibitorid());
+        ehbHall.setExhibitorname(ehbExhibitor.getEnterprisename());
+        ehbHall.setBoothno(ehbExhibitor.getBoothno());
+        ehbHall.setHallurl(ehbExhibitor.getHalurl());
+        if(StringUtils.isEmpty(ehbHall.getId())){
+            ehbHall.setCreatetime(LocalDateTime.now());
+            ehbHall.setCreateuser(1);
+            ehbHall.setIsdel(false);
+        }else{
+            ehbHall.setUpdatetime(LocalDateTime.now());
+            ehbHall.setUpdateuser(1);
+        }
+        if(ehbHallService.saveOrUpdate(ehbHall)){
+            return setResultSuccess();
+        }else{
+            return setResultError("操作失败！");
+        }
+    }
+
+    /**
+     * 删除虚拟展厅
+     * @return
+     */
+    @PostMapping("/delete")
+    @ResponseBody
+    public BaseResponse delete(String id) {
+        System.out.println("ok");
+        if(StringUtils.isEmpty(id)){
+            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
+                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
+        }
+        ehbHallService.removeById(id);
+        return setResultSuccess();
+    }
 }
