@@ -34,8 +34,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
                 //配置APP登录拦截器
                 registry.addInterceptor(new AppLoginInterceptor(redisService,ehbAudienceService)).addPathPatterns("/api/**")
-                    .excludePathPatterns("/api/login","/api/credentialsDown","/api/emailverificationcode")
-                    .excludePathPatterns("/api/listLabel","/api/upLoadByHttp","/api/showFile");
+                    .excludePathPatterns("/api/login","/api/credentialsDownUrl","/api/emailverificationcode")
+                    .excludePathPatterns("/api/listLabel","/api/upLoadByHttp","/api/showFile","/api/down");
             }
         };
         return interceptorConfig;

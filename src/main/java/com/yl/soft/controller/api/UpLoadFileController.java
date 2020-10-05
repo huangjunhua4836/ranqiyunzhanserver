@@ -1,11 +1,14 @@
 package com.yl.soft.controller.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.service.BaseResponseUtil;
 import com.yl.soft.common.util.DateUtils;
 import com.yl.soft.common.util.IOUtil;
 import com.yl.soft.dto.AttachmentDTO;
+import com.yl.soft.dto.app.FileDto;
 import com.yl.soft.po.CrmFile;
+import com.yl.soft.po.EhbDataUpload;
 import com.yl.soft.service.CrmFileService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +51,6 @@ public class UpLoadFileController extends BaseResponseUtil {
 
 	/**
 	 * 上传文件
-	 * @param o
 	 * @return
 	 */
 	@ApiOperation(value = "上传营业执照、企业授权书")
@@ -155,4 +157,59 @@ public class UpLoadFileController extends BaseResponseUtil {
 		}
 		return null;
 	}
+
+	/**
+	 * 获取企业授权书模板下载地址
+	 * @return
+	 */
+	@ApiOperation(value = "获取企业授权书模板下载地址", notes = "企业授权书模板下载")
+	@ApiImplicitParams({
+	})
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "成功")
+			,@ApiResponse(code = 401, message = "token为空！")
+			,@ApiResponse(code = 402, message = "token失效！")
+			,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+			,@ApiResponse(code = -1, message = "系统异常")
+	})
+	@GetMapping("/credentialsDownUrl")
+	public BaseResponse<EhbDataUpload> credentialsDownUrl() {
+		QueryWrapper<CrmFile> crmFileQueryWrapper = new QueryWrapper<>();
+		crmFileQueryWrapper.eq("title","企业授权书模板");
+		CrmFile crmFile = crmFileService.getOne(crmFileQueryWrapper);
+
+		FileDto fileDto = new FileDto();
+		fileDto.setId(crmFile.getId());
+		fileDto.setTitle(crmFile.getTitle());
+		fileDto.setDownpath("http://"+ip+":"+port+contextPath+"/api/down?id="+crmFile.getId());
+
+		return setResultSuccess(fileDto);
+	}
+
+	/**
+	 * 下载
+	 * @param response
+	 * @return
+	 */
+    @ApiOperation(value = "下载", notes = "下载",hidden = true)
+    @ApiImplicitParams({
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @GetMapping("/down")
+    public BaseResponse<EhbDataUpload> down(HttpServletResponse response,String id) {
+        try {
+            CrmFile crmFile = crmFileService.getById(id);
+            IOUtil.download(response,uploadPath+crmFile.getPath());
+        }catch (Exception e){
+            e.printStackTrace();
+            return setResultError("下载失败！");
+        }
+        return setResultSuccess();
+    }
 }
