@@ -137,7 +137,7 @@ public class PersonalCenterController extends BaseController {
 			}
 			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait())) {
 				ehbAudience.setHeadPortrait(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait());
-				ehbExhibitorService.updateById(ehbExhibitor);
+				ehbAudienceService.updateById(ehbAudience);
 			}
 			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone())) {
 				ehbExhibitor.setPhone(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone());
@@ -151,8 +151,7 @@ public class PersonalCenterController extends BaseController {
 			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getExname())) {
 				ehbExhibitor.setName(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getExname());
 			}
-			
-			ehbAudienceService.updateById(ehbAudience);
+			ehbExhibitorService.updateById(ehbExhibitor);
 		}else {
 			return error(-900,"服务器繁忙请稍后再试");
 		}
