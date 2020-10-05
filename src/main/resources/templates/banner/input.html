@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="common::headr('添加或修改banner')"></head>
+<body>
+    <div class="layui-container">
+        <div class="layui-row" style="margin-top: 10px;">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                <form class="layui-form" th:object="${ehbBanner}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{name}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">类型</label>
+                        <div class="layui-input-block" th:if="*{id == null}">
+                            <input type="radio" name="type" th:title="首页顶部" value="1" lay-filter="typeRadio" checked="checked">
+                            <input type="radio" name="type" th:title="首页大会预告" value="2" lay-filter="typeRadio">
+                        </div>
+                        <div class="layui-input-block" th:if="*{id != null}">
+                            <input type="radio" name="type" th:title="首页顶部" value="1" th:checked="${ehbBanner.type == 1}?checked" lay-filter="typeRadio">
+                            <input type="radio" name="type" th:title="首页大会预告" value="2" th:checked="${ehbBanner.type == 2}?checked" lay-filter="typeRadio">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">图片地址</label>
+<!--                        <div class="layui-input-block">-->
+<!--                            <input type="text" th:field="*{imgurl}" required  lay-verify="required" placeholder="请输入图片地址" autocomplete="off" class="layui-input">-->
+<!--                        </div>-->
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn" id="test2">多图片上传</button>
+                            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                                预览图：
+                                <div class="layui-upload-list" id="demo2"></div>
+                            </blockquote>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">链接地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{linkurl}" required  lay-verify="required" placeholder="请输入链接地址" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">内容</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{content}" required  lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <input th:field="*{id}" type="hidden"/>
+                    <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        layui.use('core', function(){
+            var form = layui.form,
+            core = layui.core,
+            upload = layui.upload,
+            $ = layui.jquery;
+
+            form.on('submit(submitFrom)', function(data){
+                var resultData = core.ajax('/crmRole/saveOrUpdate',false,'POST',data.field);
+                if(resultData!=false){
+                    parent.layer.msg('操作成功',core.showtime);
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                }
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+        });
+    </script>
+</body>
+</html>

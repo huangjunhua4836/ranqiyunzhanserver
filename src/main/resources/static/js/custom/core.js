@@ -1,7 +1,7 @@
 /**
  * layer核心模块预加载
  */
-layui.define(['tree','layer','util','jquery','form','table','element','laydate','transfer'], function(exports){
+layui.define(['tree','layer','util','jquery','form','table','element','laydate','transfer','upload'], function(exports){
     var $ = layui.jquery;
     var obj = {
         showtime : {time:5000},//提示层显示时间
