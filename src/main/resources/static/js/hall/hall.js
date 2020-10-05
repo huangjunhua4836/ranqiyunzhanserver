@@ -76,12 +76,16 @@ layui.use('core', function(){
             core.openIframeDialog('修改虚拟展厅','/platform/hall/input?type=update&id='+data.id,['500px', '440px'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('虚拟展厅详情',$('#detail').html(),['500px','480px']);
-            $('.layui-layer-content').find('input').eq(0).val(data.id);
-            $('.layui-layer-content').find('input').eq(1).val(data.name);
-            $('.layui-layer-content').find('input').eq(2).val(data.createUser);
-            $('.layui-layer-content').find('input').eq(3).val(util.toDateString(data.createTime, "yyyy-MM-dd HH:mm:ss"));
-            $('.layui-layer-content').find('input').eq(4).val(data.updateUser);
-            $('.layui-layer-content').find('input').eq(5).val(util.toDateString(data.updateTime, "yyyy-MM-dd HH:mm:ss"));
+            $('.layui-layer-content').find('input').eq(0).val(data.exhibitorname);
+            $('.layui-layer-content').find('input').eq(1).val(data.boothno);
+            $('.layui-layer-content').find('input').eq(2).val(data.hallurl);
+            $('.layui-layer-content').find('input').eq(3).val(data.views);
+            $('.layui-layer-content').find('input').eq(4).val(data.recommend);
+            $('.layui-layer-content').find('input').eq(5).val(data.sort);
+            $('.layui-layer-content').find('input').eq(6).val(data.createUser);
+            $('.layui-layer-content').find('input').eq(7).val(util.toDateString(data.createTime, "yyyy-MM-dd HH:mm:ss"));
+            $('.layui-layer-content').find('input').eq(8).val(data.updateUser);
+            $('.layui-layer-content').find('input').eq(9).val(util.toDateString(data.updateTime, "yyyy-MM-dd HH:mm:ss"));
         }
     });
 
