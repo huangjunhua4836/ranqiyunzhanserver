@@ -239,25 +239,32 @@ public class PersonalCenterController extends BaseController {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "title", value = "请输入商品名称标题", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "content", value = "请详细描述商品介绍", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "type", value = "类型[1,2...]（1-商机  2-商品）", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "type", value = "类型（1-商机  2-商品）", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "label", value = "请选择标签  标签id[1,2]", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "picture", value = "商品多图片上传['src1','src2']", required = true, paramType = "query"), })
 	@PostMapping("/api/pushGoods")
 	public BaseResult pushGoods(String token, @NotBlank(message = "请添加一个正确的标签") String title,
 			@NotBlank(message = "请添加一个正确的内容") String content, @NotBlank(message = "请选择一个正确的标签") String label,
-			String picture, Integer type) {
-		SessionUser sessionUser = sessionState.getCurrentUser(token);
-		EhbOpportunity ehbOpportunity = new EhbOpportunity();
-		ehbOpportunity.setTitle(title);
-		ehbOpportunity.setContent(content);
-		ehbOpportunity.setLabel(label);
-		ehbOpportunity.setPicture(picture);
-		ehbOpportunity.setType(type); // 1-商机 2-商品
-		ehbOpportunity.setCreatetime(LocalDateTime.now());
-		ehbOpportunity.setIsdel(false);
-		ehbOpportunity.setExhibitorid(sessionUser.getBopie());
-		ehbOpportunityService.save(ehbOpportunity);
-		return ok2();
+			String picture, @NotBlank(message = "类型不能为空") String type) {
+		try {
+			SessionUser sessionUser = sessionState.getCurrentUser(token);
+			EhbOpportunity ehbOpportunity = new EhbOpportunity();
+			ehbOpportunity.setTitle(title);
+			ehbOpportunity.setContent(content);
+			ehbOpportunity.setLabel(label);
+			ehbOpportunity.setPicture(picture);
+			ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
+			ehbOpportunity.setCreatetime(LocalDateTime.now());
+			ehbOpportunity.setIsdel(false);
+			ehbOpportunity.setExhibitorid(sessionUser.getBopie());
+			ehbOpportunityService.save(ehbOpportunity);
+			return ok2(ehbOpportunity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return error(-900,e.getMessage());
+		}
+		
+		
 	}
 
 	@ApiOperation(value = "我的橱窗商品/商机详情", notes = "我的橱窗商品详情")
