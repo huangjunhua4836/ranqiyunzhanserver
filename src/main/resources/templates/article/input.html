@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::headr('添加或修改')"></head>
+<body>
+<div class="layui-container">
+    <div class="layui-row" style="margin-top: 10px;">
+        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+            <form class="layui-form" th:object="${ehbLabel}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{title}" required lay-verify="required" placeholder="请输入名称"
+                               autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">内容</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{content}" required lay-verify="required" placeholder="请输入内容"
+                               autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">头图</label>
+                    <div class="layui-form-label layui-upload">
+                        <button type="button" class="layui-btn" id="test1">上传</button>
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" id="demo1" th:width='80' th:src="*{headpicture}">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">图片</label>
+                    <div class="layui-form-label layui-upload">
+                        <button type="button" class="layui-btn" id="test2">上传</button>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 20px;">
+                            <div class="layui-upload-list"  id="demo2"></div>
+                        </blockquote>
+<!--                        <div class="layui-upload-list">-->
+<!--                            <img class="layui-upload-img" id="demo2" th:field="*{picture}">-->
+<!--                            <img id="demoText2"/>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否推荐</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" th:field="*{isrecommend}" th:checked="${isrecommend==1}?checked"
+                               lay-skin="switch" lay-filter="switchTest" lay-text="推荐|不推荐">
+                    </div>
+                </div>
+                <input th:field="*{id}" type="hidden"/>
+                <input th:field="*{headpicture}" type="hidden" id="im"/>
+                <input th:field="*{picture}" type="hidden" id="ims"/>
+                <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('core', function () {
+        var form = layui.form,
+            core = layui.core,
+            $ = layui.jquery;
+
+        form.on('submit(submitFrom)', function (data) {
+            var resultData = core.ajax('/platform/article/saveOrUpdate', false, 'POST', data.field);
+            if (resultData != false) {
+                parent.layer.msg('操作成功', core.showtime);
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            }
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+
+
+    layui.use('upload', function () {
+        var $ = layui.jquery
+            , upload = layui.upload;
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code != 200) {
+                    return layer.msg('上传失败');
+                }
+                if (res.code == 200) {
+                    $('#im').val(res.data[0].url);
+                    return layer.alert('上传成功！');
+                }
+
+                //上传成功
+            }
+        });
+        var uploadInst = upload.render({
+            elem: '#test2'
+            , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo2').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img" width=150%  >')
+                    // $('#demo2').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code != 200) {
+                    return layer.msg('上传失败');
+                }
+                if (res.code == 200) {
+                    $('#ims').val(res.data[0].url);
+                    return layer.alert('上传成功！');
+                }
+
+            }
+        });
+    });
+</script>
+</body>
+</html>
