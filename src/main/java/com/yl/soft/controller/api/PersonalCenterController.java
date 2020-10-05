@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yl.soft.common.util.BaseConv;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbAudienceDto;
 import com.yl.soft.dto.EhbAudienceInfoDto;
@@ -228,9 +229,9 @@ public class PersonalCenterController extends BaseController {
 					.or()
 					.like(EhbOpportunity::getContent, titleorconnent)
 				).list().stream().map(i -> {
-					EhbOpportunityDto ehbOpportunityDto = new EhbOpportunityDto();
-					BeanUtils.copyProperties(i, ehbOpportunityDto);
-					return ehbOpportunityDto;
+					int c=ehbAudienceService.lambdaQuery().eq(EhbAudience::getBopie, i.getExhibitorid()).count();
+					Map<Integer, EhbLabel> map = ehbLabelService.list().stream().collect(Collectors.toMap(EhbLabel::getId, j -> j));
+					return EhbOpportunityDto.of(i, ehbExhibitorService.getById(i.getExhibitorid()), c, map);
 				}).collect(Collectors.toList()));
 		return ok(pageInfo.getList(), pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
 	}
