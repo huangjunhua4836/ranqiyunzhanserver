@@ -1,15 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="common::headr('添加或修改角色')"></head>
+    <head th:replace="common::headr('添加或修改')"></head>
 <body>
     <div class="layui-container">
         <div class="layui-row" style="margin-top: 10px;">
             <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
-                <form class="layui-form" th:object="${crmRole}">
+                <form class="layui-form" th:object="${ehbHall}">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">名称</label>
+                        <label class="layui-form-label">展商</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{name}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                            <select name="exhibitorid" required  lay-verify="required" lay-filter="selectOrgFilter">
+                                <option value="">请选择</option>
+                                <option th:each="ehbExhibitor,memberStat:${ehbExhibitors}" th:value="${ehbExhibitor.id}" th:text="${ehbExhibitor.enterprisename}" th:selected="${ehbExhibitor.id == ehbHall.exhibitorid}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">html地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{hallurl}" required  lay-verify="required" placeholder="请输入虚拟html地址" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">推荐</label>
+                        <div class="layui-input-block" th:if="*{id == null}">
+                            <input type="radio" name="recommend" th:title="推荐" value="1" lay-filter="typeRadio">
+                            <input type="radio" name="recommend" th:title="不推荐" value="0" lay-filter="typeRadio" checked="checked">
+                        </div>
+                        <div class="layui-input-block" th:if="*{id != null}">
+                            <input type="radio" name="recommend" th:title="推荐" value="1" th:checked="${ehbHall.recommend == 1}?checked" lay-filter="typeRadio">
+                            <input type="radio" name="recommend" th:title="不推荐" value="0" th:checked="${ehbHall.recommend == 0}?checked" lay-filter="typeRadio">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
@@ -26,7 +52,7 @@
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
-                var resultData = core.ajax('/crmRole/saveOrUpdate',false,'POST',data.field);
+                var resultData = core.ajax('/platform/hall/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){
                     parent.layer.msg('操作成功',core.showtime);
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

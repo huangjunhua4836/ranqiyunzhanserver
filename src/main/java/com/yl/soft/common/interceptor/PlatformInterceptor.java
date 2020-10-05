@@ -4,7 +4,6 @@
  */
 package com.yl.soft.common.interceptor;
 
-import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,11 +19,6 @@ import java.io.PrintWriter;
  * @version $Id: TracebacktoLoginInterceptor.java, v 0.1 2016年2月22日 下午4:00:42 Administrator Exp $
  */
 public class PlatformInterceptor implements HandlerInterceptor {
-    RedisService redisService;
-
-    public PlatformInterceptor(RedisService redisService){
-        this.redisService = redisService;
-    }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {

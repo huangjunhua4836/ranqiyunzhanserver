@@ -93,7 +93,9 @@ layui.use('core', function(){
             $('.layui-layer-content').find('input').eq(3).val(data.enterprisename);
             $('.layui-layer-content').find('input').eq(4).val(data.mailbox);
             $('.layui-layer-content').find('input').eq(5).val(data.boothno);
-            $('.layui-layer-content').find('input').eq(6).val(util.toDateString(data.createtime, "yyyy-MM-dd HH:mm:ss"));
+            $('.layui-layer-content').find('input').eq(6).val(data.fid);
+            $('.layui-layer-content').find('input').eq(7).val(data.halurl);
+            $('.layui-layer-content').find('input').eq(8).val(util.toDateString(data.createtime, "yyyy-MM-dd HH:mm:ss"));
         }
     });
 

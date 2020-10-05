@@ -21,6 +21,6 @@ public class RegisterAudienceDto {
     private String mailbox;
     @ApiModelProperty(value = "行为标签ID，单个：[1]  多个：[1,2,3,4,5,6,7,8,9,10]",required = true)
     private String labelid;
-    @ApiModelProperty(value = "邮箱验证码")
+    @ApiModelProperty(value = "邮箱验证码",required = true)
     private String emailverificationcode;
 }

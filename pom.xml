@@ -1,257 +1,290 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.1.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
-    <groupId>com.yl.soft.rqyz</groupId>
-    <artifactId>rqyz-platform</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>rqyz-platform</name>
-    <description>燃气云展平台管理</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.1.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+	<groupId>com.yl.soft.rqyz</groupId>
+	<artifactId>rqyz-platform</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>rqyz-platform</name>
+	<description>燃气云展平台管理</description>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Hoxton.SR6</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Hoxton.SR6</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <!-- 数据源配置开始  -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.18</version>
-        </dependency>
-        <!-- pagehelper -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.12</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mybatis</groupId>
-                    <artifactId>mybatis</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- 支持访问 mysql 数据库 -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.19</version>
-        </dependency>
-        <!-- mybatis-plus -->
-       
-<dependency >
-            <groupId >javax.mail </groupId >
-            <artifactId >mail </artifactId >
-            <version >1.4.5 </version >
-        </dependency >
-        <dependency >
-            <groupId >com.sun.mail </groupId >
-            <artifactId >javax.mail </artifactId >
-            <version >1.5.4 </version >
-        </dependency >
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.2.0</version>
-        </dependency>
-        <!-- mybatis-plus-generator -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.2.0</version>
-        </dependency>
-        <!-- 数据源配置结束  -->
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        
-        	   <!-- quartz -->
+	<dependencies>
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-quartz</artifactId>
-	    </dependency>
-        
-        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<!-- 数据源配置开始 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>1.1.18</version>
+		</dependency>
+		<!-- pagehelper -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>1.2.12</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.mybatis</groupId>
+					<artifactId>mybatis</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- 支持访问 mysql 数据库 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.19</version>
+		</dependency>
+		<!-- mybatis-plus -->
+
+		<dependency>
+			<groupId>javax.mail </groupId>
+			<artifactId>mail </artifactId>
+			<version>1.4.5 </version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.mail </groupId>
+			<artifactId>javax.mail </artifactId>
+			<version>1.5.4 </version>
+		</dependency>
+		<dependency>
+			<groupId>cn.jpush.api</groupId>
+			<artifactId>jpush-client</artifactId>
+			<version>3.4.7</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.jpush.api</groupId>
+			<artifactId>jiguang-common</artifactId>
+			<version>1.1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.6.Final</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+
+		<!-- For log4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		<!-- mybatis-plus-generator -->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-generator</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		<!-- 数据源配置结束 -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- quartz -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-quartz</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>1.9.4</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
 
-        <!-- 工具类开始 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
+		<!-- 工具类开始 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.6</version>
-        </dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.12.1</version>
-        </dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.12.1</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.59</version>
-        </dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.59</version>
+		</dependency>
 
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.1.0</version>
-        </dependency>
-        <!-- 工具类结束 -->
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>5.1.0</version>
+		</dependency>
+		<!-- 工具类结束 -->
 
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-engine-core</artifactId>
-            <version>2.1</version>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-engine-core</artifactId>
+			<version>2.1</version>
+		</dependency>
 
-        <!-- 引入swagger-bootstrap-ui包 -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
+		<!-- 引入swagger-bootstrap-ui包 -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>swagger-bootstrap-ui</artifactId>
-            <version>1.9.6</version>
-        </dependency>
+		<dependency>
+			<groupId>com.github.xiaoymin</groupId>
+			<artifactId>swagger-bootstrap-ui</artifactId>
+			<version>1.9.6</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient</artifactId>
-		    <version>4.5.12</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.12</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpcore</artifactId>
-		    <version>4.4.13</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.13</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
 		<dependency>
-		    <groupId>commons-logging</groupId>
-		    <artifactId>commons-logging</artifactId>
-		    <version>1.2</version>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
 		</dependency>
-		
-		
-        <!-- 微服务热部署-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
-        </dependency>
-<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-<dependency>
-    <groupId>org.apache.httpcomponents</groupId>
-    <artifactId>httpclient</artifactId>
-    <version>4.5.12</version>
-</dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.belerweb/pinyin4j -->
-        <dependency>
-            <groupId>com.belerweb</groupId>
-            <artifactId>pinyin4j</artifactId>
-            <version>2.5.1</version>
-        </dependency>
 
 
-    </dependencies>
+		<!-- 微服务热部署 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.12</version>
+		</dependency>
 
-    <build>
-        <finalName>rqyz-platform</finalName>
-        <plugins>
-            <!-- 编译环境 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.3.3.RELEASE</version>
-            </plugin>
-        </plugins>
-        <!--本地调试时注释，提交代码时，去掉注释-->
-       <resources>
-          <resource>
-            <directory>src/main/resources</directory>
-              <excludes>
-                   <exclude>**/*.properties</exclude>
-                  <exclude>doc/*.*</exclude>
-                   <exclude>**/*.yml</exclude>
-                 <exclude>*.properties</exclude>
-                  <exclude>*.conf</exclude>
-                  <exclude>*.yml</exclude>
-                  <exclude>*.xml</exclude>
-                   <exclude>generator/*.*</exclude>
-            </excludes>
-          </resource>
-        </resources>
-    </build>
+		<!-- https://mvnrepository.com/artifact/com.belerweb/pinyin4j -->
+		<dependency>
+			<groupId>com.belerweb</groupId>
+			<artifactId>pinyin4j</artifactId>
+			<version>2.5.1</version>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>
+		<finalName>rqyz-platform</finalName>
+		<plugins>
+			<!-- 编译环境 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.3.3.RELEASE</version>
+			</plugin>
+		</plugins>
+		<!--本地调试时注释，提交代码时，去掉注释 -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>**/*.properties</exclude>
+					<exclude>doc/*.*</exclude>
+					<exclude>**/*.yml</exclude>
+					<exclude>*.properties</exclude>
+					<exclude>*.conf</exclude>
+					<exclude>*.yml</exclude>
+					<exclude>*.xml</exclude>
+					<exclude>generator/*.*</exclude>
+				</excludes>
+			</resource>
+		</resources>
+	</build>
 </project>

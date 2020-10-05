@@ -19,8 +19,11 @@ public class EhbAudienceyeDto implements Serializable{
 	@ApiModelProperty(value = "用户id")
 	private Integer id;
 
-	@ApiModelProperty(value = "姓名（如果企业认证了这里显示的就是企业名称）")
+	@ApiModelProperty(value = "用户姓名")
 	private String name;
+	
+	@ApiModelProperty(value = "企业名称")
+	private String enterprisename;
 
 	@ApiModelProperty(value = "头像")
 	@TableField("head_portrait")
@@ -49,4 +52,11 @@ public class EhbAudienceyeDto implements Serializable{
 	
 	@ApiModelProperty("企业电话")
 	private String telphone;
+	
+	
+    @ApiModelProperty(value = "公司地址")
+    private String address;
+    
+    @ApiModelProperty(value = "公司主页")
+    private String website;
 }

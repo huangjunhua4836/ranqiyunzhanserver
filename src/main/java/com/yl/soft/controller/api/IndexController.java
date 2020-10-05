@@ -276,6 +276,8 @@ public class IndexController extends BaseController {
     @ApiOperation(value = "首页嘉宾列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
+            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -285,15 +287,21 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/guestList")
-    public BaseResponse<List<GuestDto>> guestList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResponse<BasePage<GuestDto>> guestList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
+            return setResultError(403,"","当前页码不能为空！");
+        }
+
         QueryWrapper<EhbGuest>  ehbGuestQueryWrapper= new QueryWrapper<>();
         ehbGuestQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
 
+        Integer pageParam[] = pageValidParam(paramMap);
+        PageHelper.startPage(pageParam[0], pageParam[1]);
         List<EhbGuest> ehbGuests = ehbGuestService.list(ehbGuestQueryWrapper);
         List<GuestDto> guestDtos = new ArrayList<>();
         for(EhbGuest ehbGuest : ehbGuests){
             guestDtos.add(GuestDto.of(ehbGuest));
         }
-        return setResultSuccess(guestDtos);
+        return setResultSuccess(getBasePage(ehbGuests,guestDtos));
     }
 }

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbAudienceDto;
+import com.yl.soft.dto.EhbAudienceInfoDto;
 import com.yl.soft.dto.EhbAudiencegrDto;
 import com.yl.soft.dto.EhbAudienceyeDto;
 import com.yl.soft.dto.EhbExhibitorDto;
@@ -108,6 +110,53 @@ public class PersonalCenterController extends BaseController {
 		ehbDto.setQqState(ehbAudience.getQqOpenid()==null?"0":"1");
 		return ok(ehbDto);
 	}
+	
+	@ApiOperation(value = "改个人信息修", notes = "参数名称前缀为ehbAudienceInfogrDto是修改个人账号信息，参数名称前缀为ehbAudienceInfoyeDto是修改企业账号信息，两个类型不能同时传")
+	@PostMapping("/api/upMe")
+	public BaseResult<EhbAudienceDto> upMe(EhbAudienceInfoDto ehbAudienceInfoDto) {
+		SessionUser sessionUser = sessionState.getCurrentUser(ehbAudienceInfoDto.getToken());
+		if(null==sessionUser.getBopie()) {
+			
+			EhbAudience ehbAudience=ehbAudienceService.getById(sessionUser.getId());
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getName())) {
+				ehbAudience.setName(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getName());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getQyname())) {
+				ehbAudience.setQyname(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getQyname());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getHeadPortrait())) {
+				ehbAudience.setHeadPortrait(ehbAudienceInfoDto.getEhbAudienceInfogrDto().getHeadPortrait());
+			}
+			ehbAudienceService.updateById(ehbAudience);
+		}else if(null!=sessionUser.getBopie()) {
+			EhbAudience ehbAudience=ehbAudienceService.getById(sessionUser.getId());
+			EhbExhibitor ehbExhibitor=ehbExhibitorService.getById(sessionUser.getBopie());
+			
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getEnterprisename())) {
+				ehbExhibitor.setEnterprisename(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getEnterprisename());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait())) {
+				ehbAudience.setHeadPortrait(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait());
+				ehbAudienceService.updateById(ehbAudience);
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone())) {
+				ehbExhibitor.setPhone(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getMailbox())) {
+				ehbExhibitor.setMailbox(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getMailbox());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getTelphone())) {
+				ehbExhibitor.setTelphone(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getTelphone());
+			}
+			if(StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getExname())) {
+				ehbExhibitor.setName(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getExname());
+			}
+			ehbExhibitorService.updateById(ehbExhibitor);
+		}else {
+			return error(-900,"服务器繁忙请稍后再试");
+		}
+		return ok();
+	}
 
 	@ApiOperation(value = "我的企业", notes = "我的企业")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
@@ -178,36 +227,57 @@ public class PersonalCenterController extends BaseController {
 					.or()
 					.like(EhbOpportunity::getContent, titleorconnent)
 				).list().stream().map(i -> {
-					EhbOpportunityDto ehbOpportunityDto = new EhbOpportunityDto();
-					BeanUtils.copyProperties(i, ehbOpportunityDto);
-					return ehbOpportunityDto;
+					int c=ehbAudienceService.lambdaQuery().eq(EhbAudience::getBopie, i.getExhibitorid()).count();
+					Map<Integer, EhbLabel> map = ehbLabelService.list().stream().collect(Collectors.toMap(EhbLabel::getId, j -> j));
+					return EhbOpportunityDto.of(i, ehbExhibitorService.getById(i.getExhibitorid()), c, map);
 				}).collect(Collectors.toList()));
 		return ok(pageInfo.getList(), pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
 	}
 
-	@ApiOperation(value = "发布商品/商机", notes = "发布商品/商机")
+	@ApiOperation(value = "(发布/修改)商品/商机", notes = "发布商品/商机（传id就是修改，不传就是添加）")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "title", value = "请输入商品名称标题", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "content", value = "请详细描述商品介绍", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "type", value = "类型[1,2...]（1-商机  2-商品）", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "type", value = "类型（1-商机  2-商品）", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "label", value = "请选择标签  标签id[1,2]", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "picture", value = "商品多图片上传['src1','src2']", required = true, paramType = "query"), })
+			@ApiImplicitParam(name = "id", value="商机/商品id",required = false, paramType = "query"),
+			@ApiImplicitParam(name = "picture", value = "商品多图片上传['src1','src2'...]", required = true, paramType = "query"), })
 	@PostMapping("/api/pushGoods")
 	public BaseResult pushGoods(String token, @NotBlank(message = "请添加一个正确的标签") String title,
 			@NotBlank(message = "请添加一个正确的内容") String content, @NotBlank(message = "请选择一个正确的标签") String label,
-			String picture, Integer type) {
-		SessionUser sessionUser = sessionState.getCurrentUser(token);
-		EhbOpportunity ehbOpportunity = new EhbOpportunity();
-		ehbOpportunity.setTitle(title);
-		ehbOpportunity.setContent(content);
-		ehbOpportunity.setLabel(label);
-		ehbOpportunity.setPicture(picture);
-		ehbOpportunity.setType(type); // 1-商机 2-商品
-		ehbOpportunity.setCreatetime(LocalDateTime.now());
-		ehbOpportunity.setIsdel(false);
-		ehbOpportunity.setExhibitorid(sessionUser.getBopie());
-		ehbOpportunityService.save(ehbOpportunity);
-		return ok2();
+			String picture, @NotBlank(message = "类型不能为空") String type,String id) {
+		try {
+			SessionUser sessionUser = sessionState.getCurrentUser(token);
+			EhbOpportunity ehbOpportunity = new EhbOpportunity();
+			if(StringUtils.isEmpty(id)) {
+				ehbOpportunity.setTitle(title);
+				ehbOpportunity.setContent(content);
+				ehbOpportunity.setLabel(label);
+				ehbOpportunity.setPicture(picture);
+				ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
+				ehbOpportunity.setCreatetime(LocalDateTime.now());
+				ehbOpportunity.setIsdel(false);
+				ehbOpportunity.setExhibitorid(sessionUser.getBopie());
+				ehbOpportunityService.save(ehbOpportunity);
+			}else {
+				ehbOpportunity =ehbOpportunityService.getById(id);
+				if(null==ehbOpportunity) {
+					return error(-904,"修改的商机或商品不存在");
+				}
+				ehbOpportunity.setTitle(title);
+				ehbOpportunity.setContent(content);
+				ehbOpportunity.setLabel(label);
+				ehbOpportunity.setPicture(picture);
+				ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
+				ehbOpportunityService.updateById(ehbOpportunity);
+			}
+			return ok2(ehbOpportunity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return error(-900,e.getMessage());
+		}
+		
+		
 	}
 
 	@ApiOperation(value = "我的橱窗商品/商机详情", notes = "我的橱窗商品详情")

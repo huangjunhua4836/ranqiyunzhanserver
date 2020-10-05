@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="common::headr('专业观众列表')"></head>
+    <head th:replace="common::headr('展商列表')"></head>
     <body>
         <div class="layui-container">
             <div class="layui-row">
@@ -32,7 +32,15 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">企业名称</label>
                                                 <div class="layui-input-block">
-                                                    <input type="text" name="enterprisename" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                                                    <input type="text" name="enterprisename" placeholder="请输入企业名称" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">fid</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="fid" placeholder="蜂鸟云地图Fid" autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
                                         </div>
@@ -40,7 +48,7 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">审核状态</label>
                                                 <div class="layui-input-block">
-                                                    <select name="organizationId" lay-filter="selectOrgFilter">
+                                                    <select name="state" lay-filter="selectOrgFilter">
                                                         <option value="">请选择</option>
                                                         <option value="0">未审核</option>
                                                         <option value="1">已审核</option>
@@ -118,6 +126,18 @@
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">展位号</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" readonly>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">fid</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" readonly>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">虚拟展厅url</label>
                     <div class="layui-input-block">
                         <input type="text" class="layui-input" readonly>
                     </div>
