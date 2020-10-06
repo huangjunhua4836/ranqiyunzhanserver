@@ -43,7 +43,7 @@ public class CrmRoleController extends BaseController {
     }
 
     /**
-     * 查询角色列表
+     * 查询列表
      * @param page
      * @param limit
      * @param crmRole
@@ -73,7 +73,7 @@ public class CrmRoleController extends BaseController {
     }
 
     /**
-     * 跳转到单个角色添加或者修改页面
+     * 跳转到单个添加或者修改页面
      * @param id
      * @return
      */
@@ -91,7 +91,7 @@ public class CrmRoleController extends BaseController {
     }
 
     /**
-     * 添加或者修改角色
+     * 添加或者修改
      * @param crmRole
      * @return
      */
@@ -114,7 +114,7 @@ public class CrmRoleController extends BaseController {
     }
 
     /**
-     * 删除角色
+     * 删除
      * @return
      */
     @PostMapping("/delete")

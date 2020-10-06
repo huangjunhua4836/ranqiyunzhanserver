@@ -1,5 +1,5 @@
 /**
- * 角色表
+ * 表
  */
 layui.use('core', function(){
     var table = layui.table;
@@ -47,7 +47,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加角色','/crmRole/input?type=add',['500px', '200px'],false,initTable);
+                core.openIframeDialog('添加','/crmRole/input?type=add',['500px', '200px'],false,initTable);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
@@ -60,7 +60,7 @@ layui.use('core', function(){
     table.on('tool(tableFilter)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
-            layer.confirm('真的删除角色么？绑定该角色的用户丢失角色！', function(index){
+            layer.confirm('真的删除么？', function(index){
                 layer.close(index);
                 //向服务端发送删除指令
                 var resultData = core.ajax('/crmRole/delete',false,'POST','id='+data.id);
@@ -70,9 +70,9 @@ layui.use('core', function(){
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改角色','/crmRole/input?type=update&id='+data.id,['500px', '200px'],false,initTable);
+            core.openIframeDialog('修改','/crmRole/input?type=update&id='+data.id,['500px', '200px'],false,initTable);
         } else if(obj.event === 'detail'){
-            core.openDialog('角色详情',$('#detail').html(),['500px','480px']);
+            core.openDialog('详情',$('#detail').html(),['500px','480px']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);
             $('.layui-layer-content').find('input').eq(1).val(data.name);
             $('.layui-layer-content').find('input').eq(2).val(data.createUser);
