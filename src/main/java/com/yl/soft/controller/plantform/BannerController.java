@@ -90,43 +90,43 @@ public class BannerController extends BaseController {
 
         return "banner/input";
     }
-//
-//    /**
-//     * 添加或者修改banner
-//     * @param crmRole
-//     * @return
-//     */
-//    @PostMapping("/saveOrUpdate")
-//    @ResponseBody
-//    public BaseResponse saveOrUpdate(CrmRole crmRole) {
-//        if(StringUtils.isEmpty(crmRole.getId())){
-//            crmRole.setCreatetime(LocalDateTime.now());
-//            crmRole.setCreateuser(1);
-//            crmRole.setIsdel(false);
-//        }else{
-//            crmRole.setUpdatetime(LocalDateTime.now());
-//            crmRole.setUpdateuser(1);
-//        }
-//        if(crmRoleService.saveOrUpdate(crmRole)){
-//            return setResultSuccess();
-//        }else{
-//            return setResultError("操作失败！");
-//        }
-//    }
-//
-//    /**
-//     * 删除banner
-//     * @return
-//     */
-//    @PostMapping("/delete")
-//    @ResponseBody
-//    public BaseResponse delete(String id) {
-//        System.out.println("ok");
-//        if(StringUtils.isEmpty(id)){
-//            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
-//                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
-//        }
-//        crmRoleService.deleteRole(id);
-//        return setResultSuccess();
-//    }
+
+    /**
+     * 添加或者修改banner
+     * @param ehbBanner
+     * @return
+     */
+    @PostMapping("/saveOrUpdate")
+    @ResponseBody
+    public BaseResponse saveOrUpdate(EhbBanner ehbBanner) {
+        if(StringUtils.isEmpty(ehbBanner.getId())){
+            ehbBanner.setCreatetime(LocalDateTime.now());
+            ehbBanner.setCreateuser(1);
+            ehbBanner.setIsdel(false);
+        }else{
+            ehbBanner.setUpdatetime(LocalDateTime.now());
+            ehbBanner.setUpdateuser(1);
+        }
+        if(ehbBannerService.saveOrUpdate(ehbBanner)){
+            return setResultSuccess();
+        }else{
+            return setResultError("操作失败！");
+        }
+    }
+
+    /**
+     * 删除banner
+     * @return
+     */
+    @PostMapping("/delete")
+    @ResponseBody
+    public BaseResponse delete(String id) {
+        System.out.println("ok");
+        if(StringUtils.isEmpty(id)){
+            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
+                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
+        }
+        ehbBannerService.removeById(id);
+        return setResultSuccess();
+    }
 }

@@ -1,7 +1,7 @@
 #开发环境
 server:
   # 服务器端口配置
-  port: 8100
+  port: 80
   servlet:
     context-path:
 spring:

@@ -25,11 +25,9 @@
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">图片地址</label>
-<!--                        <div class="layui-input-block">-->
-<!--                            <input type="text" th:field="*{imgurl}" required  lay-verify="required" placeholder="请输入图片地址" autocomplete="off" class="layui-input">-->
-<!--                        </div>-->
                         <div class="layui-upload">
-                            <button type="button" class="layui-btn" id="test2">多图片上传</button>
+                            <button type="button" class="layui-btn" id="test2">图片选择</button>
+                            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
                             <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
                                 预览图：
                                 <div class="layui-upload-list" id="demo2"></div>
@@ -55,6 +53,7 @@
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
+                    <input name="imgurl" type="hidden" id="imgurl"/>
                     <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
                 </form>
             </div>
@@ -69,13 +68,58 @@
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
-                var resultData = core.ajax('/crmRole/saveOrUpdate',false,'POST',data.field);
+                console.log(JSON.stringify(data.field));
+                if(core.isEmpty(data.field.imgurl)){
+                    layer.msg('图片未上传！',core.showtime);
+                    return false;
+                }
+                var resultData = core.ajax('/platform/banner/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){
                     parent.layer.msg('操作成功',core.showtime);
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                     parent.layer.close(index); //再执行关闭
                 }
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //多图片上传
+            upload.render({
+                elem: '#test2'
+                ,url: '/api/upLoadByHttp?remarks=3' //改成您自己的上传接口
+                ,multiple: true
+                ,auto: false //选择文件后不自动上传
+                ,bindAction: '#testListAction' //指向一个按钮触发上传
+                ,choose: function(obj){
+                    var files = obj.pushFile();
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result){
+                        $('#demo2').append('<span style="padding-left: 10px;"><img width="60px;" src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">' +
+                            '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" id="del_'+index+'">删除</a></span>');
+
+                        $('#del_'+index).on('click', function(){
+                            $(this).parent().remove();//移除样式
+                            delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                        });
+                    });
+                }
+                ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    if($('#demo2').find("span").size() == 0){
+                        layer.msg('请选择文件！',core.showtime);
+                    }
+                }
+                ,done: function(res, index, upload){
+                    //上传完毕
+                    console.log(JSON.stringify(res));
+                    var imgurl = $('#imgurl').val();
+                    imgurl += res.data[0].url+",";
+                    $('#imgurl').val(imgurl);
+                }
+                ,allDone: function(obj){ //当文件全部被提交后，才触发
+                    console.log(obj.total); //得到总文件数
+                    console.log(obj.successful); //请求成功的文件数
+                    console.log(obj.aborted); //请求失败的文件数
+                    return layer.alert('上传成功！');
+                }
             });
         });
     </script>
