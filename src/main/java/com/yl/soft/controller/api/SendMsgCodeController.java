@@ -1,5 +1,7 @@
 package com.yl.soft.controller.api;
 
+import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -21,7 +23,9 @@ import com.yl.soft.common.util.SendSms;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.ResultItem;
+import com.yl.soft.po.EhbDataUpload;
 import com.yl.soft.po.Smsrecord;
+import com.yl.soft.service.EhbDataUploadService;
 import com.yl.soft.service.SmsrecordService;
 
 import io.swagger.annotations.Api;
@@ -45,6 +49,9 @@ public class SendMsgCodeController extends BaseController {
 
 	@Autowired
 	private SendEmail sendEmail;
+	
+	@Autowired
+	private EhbDataUploadService ehbDataUploadService;
 
 	/**
 	 * 短信验证码过期时间
@@ -86,6 +93,28 @@ public class SendMsgCodeController extends BaseController {
 			e.printStackTrace();
 		}
 		return r;
+	}
+	
+	@ApiOperation(value = "发邮箱附件", notes = "发邮箱附件")
+	@ApiImplicitParams({ 
+		@ApiImplicitParam(name = "mail", value = "发送人邮件地址", required = true, paramType = "query"), 
+		@ApiImplicitParam(name = "id", value = "附件id", required = true, paramType = "query"), 
+		})
+	@PostMapping("/send/mailfile")
+	public BaseResult mailfile(@NotBlank(message = "-101-请输入正确的邮箱地址") String mail,String id) {
+		if (mail == null) {
+			return error();
+		}
+		EhbDataUpload ed=ehbDataUploadService.getById(id);
+	    String subject ="【燃气云展】资料";
+	    String msg ="【燃气云展】资料详情请查看附件";
+	    try {
+		    URL filename =new URL(ed.getUpadd());
+	    	sendEmail.sendMail(mail, subject, msg, filename,ed.getTitle());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		return ok2();
 	}
 
 	@ApiOperation(value = "发邮箱证码", notes = "发邮箱证码")
