@@ -22,24 +22,21 @@
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">头图</label>
-                    <div class="layui-form-label layui-upload">
+                    <div class="layui-upload">
                         <button type="button" class="layui-btn" id="test1">上传</button>
-                        <div class="layui-upload-list">
-                            <img class="layui-upload-img" id="demo1" th:width='80' th:src="*{headpicture}">
+                        <div class="layui-upload-list" style="margin-left: 100px;">
+                            <img class="layui-upload-img" id="demo1" th:src="*{headpicture}">
                         </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">图片</label>
-                    <div class="layui-form-label layui-upload">
+                    <div class="layui-upload">
                         <button type="button" class="layui-btn" id="test2">上传</button>
-                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 20px;">
-                            <div class="layui-upload-list"  id="demo2"></div>
-                        </blockquote>
-<!--                        <div class="layui-upload-list">-->
-<!--                            <img class="layui-upload-img" id="demo2" th:field="*{picture}">-->
-<!--                            <img id="demoText2"/>-->
-<!--                        </div>-->
+                        <div class="layui-upload-list" id="demo2" style="margin-left: 110px;">
+                            <div style="margin-top: 10px;">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -62,7 +59,8 @@
     layui.use('core', function () {
         var form = layui.form,
             core = layui.core,
-            $ = layui.jquery;
+            $ = layui.jquery,
+            upload = layui.upload;
 
         form.on('submit(submitFrom)', function (data) {
             var resultData = core.ajax('/platform/article/saveOrUpdate', false, 'POST', data.field);
@@ -73,12 +71,7 @@
             }
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
-    });
 
-
-    layui.use('upload', function () {
-        var $ = layui.jquery
-            , upload = layui.upload;
         //普通图片上传
         var uploadInst = upload.render({
             elem: '#test1'
@@ -98,18 +91,20 @@
                     $('#im').val(res.data[0].url);
                     return layer.alert('上传成功！');
                 }
-
                 //上传成功
             }
         });
         var uploadInst = upload.render({
             elem: '#test2'
             , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
-            , before: function (obj) {
+            // ,auto: false //选择文件后不自动上传
+            ,choose: function (obj) {
                 //预读本地文件示例，不支持ie8
                 obj.preview(function (index, file, result) {
-                    $('#demo2').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img" width=150%  >')
-                    // $('#demo2').attr('src', result); //图片链接（base64）
+                    $('#demo2').append('<div style="margin-top: 10px;">' +
+                        '<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img" height="60px;">' +
+                        // '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>' +
+                        '</div>')
                 });
             }
             , done: function (res) {
@@ -118,10 +113,12 @@
                     return layer.msg('上传失败');
                 }
                 if (res.code == 200) {
-                    $('#ims').val(res.data[0].url);
+                    console.log(JSON.stringify(res));
+                    var pictureUrl = $('#ims').val();
+                    pictureUrl += res.data[0].url+",";
+                    $('#ims').val(pictureUrl);
                     return layer.alert('上传成功！');
                 }
-
             }
         });
     });

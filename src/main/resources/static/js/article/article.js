@@ -27,18 +27,21 @@ layui.use('core', function () {
                 , cols: [[ //表头
                     {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
                     , {field: 'title', title: '标题'}
-                    , {field: 'content', title: '内容'}
-                    , {
-                        field: 'headpicture', title: '头图', width: 100, templet: function (d) {
-                            return '<div><img src=' + d.headpicture + '></div>'
-                        }
-
-                    }
-                    , {
-                        field: 'picture', title: '图片', width: 100, templet: function (d) {
-                            return '<div><img src=' + d.picture + '></div>'
-                        }
-                    }
+                    , {field: 'countcollection', title: '总收藏量'}
+                    , {field: 'countthumbs', title: '总点赞量'}
+                    , {field: 'countfollow', title: '总关注量'}
+                    , {field: 'countbrowse', title: '总浏览量'}
+                    , {field: 'countcomment', title: '总评论量'}
+                    // , {field: 'headpicture', title: '头图', width: 100,
+                    //     templet: function (d) {
+                    //         return '<div><img src=' + d.headpicture + '></div>'
+                    //     }
+                    // }
+                    // , {field: 'picture', title: '图片', width: 100,
+                    //     templet: function (d) {
+                    //         return '<div><img src=' + d.picture + '></div>'
+                    //     }
+                    // }
                     , {
                         field: 'releasetime', title: '发布时间', sort: true,
                         templet: function (d) {return util.toDateString(d.releasetime, "yyyy-MM-dd HH:mm:ss");}
@@ -80,7 +83,7 @@ layui.use('core', function () {
                 }
             });
         } else if (obj.event === 'edit') {
-            core.openIframeDialog('修改热搜词', '/platform/article/input?type=update&id=' + data.id, ['500px', '300px'], false, initTable);
+            core.openIframeDialog('修改热资讯', '/platform/article/input?type=update&id=' + data.id, ['500px', '300px'], false, initTable);
         } else if (obj.event === 'detail') {
             core.openDialog('咨询详情', $('#detail').html(), ['500px', '480px']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);
