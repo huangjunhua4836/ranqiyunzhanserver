@@ -25,6 +25,9 @@ public class EhbHallDto implements Serializable {/**
 
     @ApiModelProperty(value="浏览量")
     private Integer views;
+    
+    @ApiModelProperty(value="封面图")
+    private Integer coverimage;
 	
 	
 
