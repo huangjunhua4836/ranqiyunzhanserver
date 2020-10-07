@@ -44,5 +44,8 @@ public class EhbHall extends BaseEntity implements Serializable {
     @ApiModelProperty(value="排序，值越大越靠前")
     private Integer sort;
     
+    @ApiModelProperty(value="封面图")
+    private String coverimage;
+    
     
 }
