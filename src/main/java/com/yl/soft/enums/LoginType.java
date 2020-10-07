@@ -16,9 +16,9 @@ public enum LoginType {
 	public static LoginType of(Integer value) {
 		if (value != null) {
 			switch (value) {
-			case 0:
-				return 微信;
 			case 1:
+				return 微信;
+			case 2:
 				return QQ;
 			}
 		}
