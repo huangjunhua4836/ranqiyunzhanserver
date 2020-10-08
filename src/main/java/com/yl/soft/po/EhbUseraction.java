@@ -31,7 +31,7 @@ public class EhbUseraction extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "收藏人")
     private Integer userid;
 
-    @ApiModelProperty(value = "1：企业   2：商机  3：资讯")
+    @ApiModelProperty(value = "1：企业   2：商机  3：资讯  4:商品")
     private Integer type;
 
     @ApiModelProperty(value = "关联ID")
