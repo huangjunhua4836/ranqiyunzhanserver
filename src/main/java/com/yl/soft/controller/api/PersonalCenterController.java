@@ -320,7 +320,7 @@ public class PersonalCenterController extends BaseController {
 		return ok(dataList, pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
 	}
 
-	@ApiOperation(value = "收藏的商机列表", notes = "我收藏的商机")
+	@ApiOperation(value = "收藏的商机列表", notes = "我收藏的商机" )
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "page", value = "分页当前页", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "size", value = "一页显示条数", required = true, paramType = "query"), })
@@ -370,7 +370,7 @@ public class PersonalCenterController extends BaseController {
 		return ok(dataList, pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
 	}
 
-	@ApiOperation(value = "添加/删除（收藏/关注）", notes = "用户添加收藏（收藏关注展商就是收藏）行为")
+	@ApiOperation(value = "添加/删除（收藏/关注）", notes = "用户添加收藏（收藏关注展商就是收藏）行为" , tags = {"C端模块-H5详情"})
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "relateid", value = "收藏（如果是关注展商就是展示id）内容的id", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "type", value = "1：展商   2：商机  3：资讯  4:商品", required = true, paramType = "query"), })
@@ -418,10 +418,10 @@ public class PersonalCenterController extends BaseController {
 		return ok2();
 	}
 
-	@ApiOperation(value = "添加/取消点赞", notes = "用户点赞行为")
+	@ApiOperation(value = "添加/取消点赞", notes = "用户点赞行为" , tags = {"C端模块-H5详情"})
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "relateid", value = "点赞内容的id", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "type", value = "1：企业   2：商机  3：资讯", required = true, paramType = "query"), })
+			@ApiImplicitParam(name = "type", value = "1：企业   2：商机  3：资讯 4:商品", required = true, paramType = "query"), })
 	@PostMapping("/api/addOrDelPraise")
 	public BaseResult addOrDelPraise(String token, Integer relateid, Integer type) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
