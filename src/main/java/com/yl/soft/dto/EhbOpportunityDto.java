@@ -13,10 +13,13 @@ import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbLabel;
 import com.yl.soft.po.EhbOpportunity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+
 @Data
+@ApiModel(value="EhbArticle对象", description="资讯表")
 public class EhbOpportunityDto implements Serializable {
 	/**
 	* 
@@ -35,7 +38,7 @@ public class EhbOpportunityDto implements Serializable {
 	@ApiModelProperty(value = "图片")
 	private String picture;
 
-	@ApiModelProperty(value = "标签")
+	@ApiModelProperty(value = "标签返回")
 	private List<EhbLabelDto> labels;
 
 	@ApiModelProperty(value = "企业名称")
@@ -61,6 +64,21 @@ public class EhbOpportunityDto implements Serializable {
 
 	@ApiModelProperty(value = "总评论量")
 	private Integer countcomment;
+	
+    @ApiModelProperty(value="当前我是否点赞商机 0:否，1：是")
+    private Integer isSjZan;
+    
+    @ApiModelProperty(value="当前我是否点赞商品 0:否，1：是")
+    private Integer isSpZan;
+
+    @ApiModelProperty(value="当前我是否收藏商机0:否，1：是")
+    private Integer isSCsj;
+    
+    @ApiModelProperty(value="当前我是否收藏商商品0:否，1：是")
+    private Integer isSCsp;
+
+    @ApiModelProperty(value="当前我是否收藏企业0:否，1：是")
+    private Integer isSCqy;
 
 	public static EhbOpportunityDto of(EhbOpportunity ehbOpportunity, EhbExhibitor ehbExhibitor, Integer i,
 			Map<Integer, EhbLabel> map) {
