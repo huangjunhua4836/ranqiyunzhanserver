@@ -38,7 +38,7 @@ public class EhbAudienceyeDto implements Serializable{
 	@ApiModelProperty(value="联系人")
 	private String exname;
 	
-	@ApiModelProperty(value="认证状态（0：未认证，1：已认证）")
+	@ApiModelProperty(value="认证状态（0：未审核  1：审核通过 2:审核中，3审核失败）")
 	private String state;
 	
 	@ApiModelProperty(value="邮箱")
