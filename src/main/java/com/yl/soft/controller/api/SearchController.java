@@ -57,7 +57,7 @@ public class SearchController extends BaseController {
     public BaseResponse<List<HottitleDto>> hottitleList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         QueryWrapper<EhbHottitle> ehbHottitleQueryWrapper = new QueryWrapper<>();
         ehbHottitleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        ehbHottitleQueryWrapper.orderByDesc("releasetime");
+        ehbHottitleQueryWrapper.orderByDesc("createtime");
         List<EhbHottitle> ehbHottitles = ehbHottitleService.list(ehbHottitleQueryWrapper);
         List<HottitleDto> hottitleDtos = new ArrayList<>();
         for(EhbHottitle ehbHottitle : ehbHottitles){
