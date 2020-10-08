@@ -74,7 +74,7 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectAudience")
     public BaseResponse perfectAudience(RegisterAudienceDto registerAudienceDto,String token) {
-        String randNum = redisService.get(registerAudienceDto.getEmailverificationcode());
+        String randNum = redisService.get(registerAudienceDto.getMailbox());
         if(!randNum.equals(registerAudienceDto.getEmailverificationcode())){
             return setResultError("验证码错误");
         }
@@ -110,7 +110,7 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectExhibitor")
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
-        String randNum = redisService.get(registerExhibitorDto.getEmailverificationcode());
+        String randNum = redisService.get(registerExhibitorDto.getMailbox());
         if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
             return setResultError("验证码错误");
         }
@@ -123,7 +123,7 @@ public class RegisterController extends BaseController {
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
         ehbExhibitor.setIsdel(false);
         ehbExhibitor.setUpdatetime(LocalDateTime.now());
-        ehbExhibitor.setState(0);//待审核
+        ehbExhibitor.setState(2);//审核中
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return setResultSuccess();
         }else{
@@ -160,37 +160,37 @@ public class RegisterController extends BaseController {
         return setResultSuccess(labelDtos);
     }
 
-    /**
-     * 获取邮箱验证码
-     * @param paramMap
-     * @return
-     */
-    @ApiOperation(value = "获取邮箱验证码", notes = "获取邮箱验证码")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "mailbox", value = "邮箱",paramType = "query",required = true)
-    })
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "成功")
-            ,@ApiResponse(code = 401, message = "token为空！")
-            ,@ApiResponse(code = 402, message = "token失效！")
-            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
-            ,@ApiResponse(code = -1, message = "系统异常")
-    })
-    @PostMapping("/emailverificationcode")
-    public BaseResponse<EhbDataUpload> emailverificationcode(@ApiParam(hidden = true) @RequestParam Map paramMap) {
-        if(StringUtils.isEmpty(paramMap.get("mailbox"))){
-            return setResultError("邮箱为空！");
-        }
-        String randNum = ProductNumUtil.getRandNum();
-        boolean b = sendEmail.sendMail(paramMap.get("mailbox").toString(),randNum);
-        if(!b){
-            return setResultError("邮件发送失败！");
-        }
-        boolean flag = redisService.set(randNum,randNum,60*30);
-        if(flag){
-            return setResultSuccess("验证码已发送到邮箱："+paramMap.get("mailbox"));
-        }else{
-            return setResultError("邮件缓存失败！");
-        }
-    }
+//    /**
+//     * 获取邮箱验证码
+//     * @param paramMap
+//     * @return
+//     */
+//    @ApiOperation(value = "获取邮箱验证码", notes = "获取邮箱验证码")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "mailbox", value = "邮箱",paramType = "query",required = true)
+//    })
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "成功")
+//            ,@ApiResponse(code = 401, message = "token为空！")
+//            ,@ApiResponse(code = 402, message = "token失效！")
+//            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+//            ,@ApiResponse(code = -1, message = "系统异常")
+//    })
+//    @PostMapping("/emailverificationcode")
+//    public BaseResponse<EhbDataUpload> emailverificationcode(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+//        if(StringUtils.isEmpty(paramMap.get("mailbox"))){
+//            return setResultError("邮箱为空！");
+//        }
+//        String randNum = ProductNumUtil.getRandNum();
+//        boolean b = sendEmail.sendMail(paramMap.get("mailbox").toString(),randNum);
+//        if(!b){
+//            return setResultError("邮件发送失败！");
+//        }
+//        boolean flag = redisService.set(randNum,randNum,60*30);
+//        if(flag){
+//            return setResultSuccess("验证码已发送到邮箱："+paramMap.get("mailbox"));
+//        }else{
+//            return setResultError("邮件缓存失败！");
+//        }
+//    }
 }
