@@ -43,7 +43,7 @@ public class ArticleDto implements Serializable {
     @ApiModelProperty(value = "头图")
     private String headpicture;
 
-    @ApiModelProperty(value = "图片")
+    @ApiModelProperty(value = "图片,多张图片用英文逗号隔开src1,src2....")
     private String picture;
 
     @ApiModelProperty(value = "发布时间")
@@ -65,6 +65,12 @@ public class ArticleDto implements Serializable {
 
     @ApiModelProperty(value = "总评论量")
     private Integer countcomment;
+    
+    @ApiModelProperty(value="当前我是否点赞")
+    private Integer isZan;
+
+    @ApiModelProperty(value="当前我是否收藏商品/商机")
+    private Integer isSCsj;
 
     public static ArticleDto of(EhbArticle ehbArticle) {
         ArticleDto articleDto = new ArticleDto();
