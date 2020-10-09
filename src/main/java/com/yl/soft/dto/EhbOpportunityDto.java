@@ -1,7 +1,6 @@
 package com.yl.soft.dto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,8 +50,8 @@ public class EhbOpportunityDto implements Serializable {
 	@ApiModelProperty(value = "企业id")
 	private String exhibitorid;
 	
-	@ApiModelProperty(value = "企业认证（0:未认证，1:已认证）")
-	private String attestation;
+	@ApiModelProperty(value = "企业认证（0:未认证，1:已认证，2:审核中，3审核失败")
+	private Integer attestation;
 
 	@ApiModelProperty(value = "总收藏量")
 	private Integer countcollection;
@@ -100,8 +99,8 @@ public class EhbOpportunityDto implements Serializable {
 					}).collect(Collectors.toList());
 			ehbOpportunityDto.setLabels(ehbLabelDtos);
 		}
-		// 企业认证（1：以认证，2：未认证）
-		ehbOpportunityDto.setAttestation(i > 0 ? "1" : "2");
+		// 企业认证（1：以认证，2：未认证  3：审核中 4：审核失败）
+		ehbOpportunityDto.setAttestation(i > 0 ? ehbExhibitor.getState() : 2);
 		return ehbOpportunityDto;
 	}
 }

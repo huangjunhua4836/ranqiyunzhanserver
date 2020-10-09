@@ -55,7 +55,7 @@ public class EhbExhibitorDto  implements Serializable{/**
     private String floorplan;
     
     
-	@ApiModelProperty("是否已认证0:未认证，1:已认证")
+	@ApiModelProperty("是否已认证0:未认证，1:已认证 2:审核中 3：审核失败")
 	private Integer state;
 	
 	
