@@ -96,7 +96,7 @@ public class PersonalCenterController extends BaseController {
 		@ApiImplicitParam(name = "userid", value = "用户id", required = false, paramType = "query"), 
 	})
 	@PostMapping("/getMe")
-	public ResultItem<EhbAudienceDto> getMe(String token,String userid) { 
+	public ResultItem<EhbAudienceDto> getMe(String token,Integer userid) { 
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		EhbAudience ehbAudience = ehbAudienceService.getById(null!=userid?userid:sessionUser.getId());
 		EhbAudienceDto ehbDto=new EhbAudienceDto();
