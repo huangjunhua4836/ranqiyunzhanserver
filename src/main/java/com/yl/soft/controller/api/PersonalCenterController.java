@@ -92,10 +92,10 @@ public class PersonalCenterController extends BaseController {
 
 	@ApiOperation(value = "获取我的个人信息", notes = "通过用户登录token查询当前用户信息，如果传userid就按照userid查询")
 	@ApiImplicitParams({ 
-		@ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), 
-		@ApiImplicitParam(name = "userid", value = "用户id", required = true, paramType = "query"), 
+		@ApiImplicitParam(name = "token", value = "登陆标识", required = false, paramType = "query"), 
+		@ApiImplicitParam(name = "userid", value = "用户id", required = false, paramType = "query"), 
 	})
-	@PostMapping("/api/getMe")
+	@PostMapping("/getMe")
 	public ResultItem<EhbAudienceDto> getMe(String token,String userid) { 
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		EhbAudience ehbAudience = ehbAudienceService.getById(null!=userid?userid:sessionUser.getId());
