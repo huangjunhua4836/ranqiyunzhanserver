@@ -26,7 +26,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
 //                registry.addInterceptor(new SameUrlDataInterceptor()).addPathPatterns("/**");
-//                registry.addInterceptor(new ApiInterceptor()).addPathPatterns("/**");
+               registry.addInterceptor(new ApiInterceptor()).addPathPatterns("/**");
 
                 //配置后台登录拦截器
                 registry.addInterceptor(new PlatformInterceptor()).addPathPatterns("/platform/**")
