@@ -34,7 +34,7 @@ import java.util.List;
 
 /**
  * <p>
- * 关于表 前端控制器
+ * 首页-关于表 前端控制器
  * </p>
  *
  * @author ${author}
@@ -42,7 +42,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/platform/about")
-public class AboutManagerController extends BaseController {
+public class AboutPlantformController extends BaseController {
     @Autowired
     public EhbAboutService ehbAboutService;
 
