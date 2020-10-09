@@ -125,7 +125,7 @@ public class HtmlDetails extends BaseController {
 		//展商信息
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(ehbOpportunity.getExhibitorid());
 		ehbOpportunityDto.setExhibitorname(ehbExhibitor.getEnterprisename());
-		ehbOpportunityDto.setAttestation(ehbExhibitor.getState()==1?"已认证":"未认证");
+		ehbOpportunityDto.setAttestation(ehbExhibitor.getState());
 		QueryWrapper<EhbLabel> ehbLabelQueryWrapper = new QueryWrapper<>();
 		ehbLabelQueryWrapper.in("id",JSONArray.parseArray(ehbExhibitor.getLabelid(),Integer.class));
 		List<EhbLabel> ehbLabels = ehbLabelService.list(ehbLabelQueryWrapper);
