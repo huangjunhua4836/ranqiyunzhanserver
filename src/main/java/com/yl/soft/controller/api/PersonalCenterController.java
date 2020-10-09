@@ -260,7 +260,7 @@ public class PersonalCenterController extends BaseController {
 				ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
 				ehbOpportunity.setCreatetime(LocalDateTime.now());
 				ehbOpportunity.setIsdel(false);
-				ehbOpportunity.setExhibitorid(sessionUser.getBopie());
+				ehbOpportunity.setExhibitorid(ehbAudienceService.getById(sessionUser.getId()).getBopie());
 				ehbOpportunityService.save(ehbOpportunity);
 			}else {
 				ehbOpportunity =ehbOpportunityService.getById(id);
