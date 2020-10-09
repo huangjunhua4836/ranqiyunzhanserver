@@ -1,11 +1,14 @@
 package com.yl.soft.dto;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 public class EhbAudienceyeDto implements Serializable{
@@ -59,4 +62,12 @@ public class EhbAudienceyeDto implements Serializable{
     
     @ApiModelProperty(value = "公司主页")
     private String website;
+
+	@ApiModelProperty(value = "身份证")
+	private String idcard;
+
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
+	@ApiModelProperty(value = "认证时间")
+	private LocalDateTime certificationtime;
 }

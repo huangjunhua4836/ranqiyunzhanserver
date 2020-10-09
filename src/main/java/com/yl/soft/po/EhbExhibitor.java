@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -92,4 +93,6 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
     @ApiModelProperty(value="展商拼音名字首字母大写")
     private String firstletter;
 
+    @ApiModelProperty(value = "认证时间")
+    private LocalDateTime certificationtime;
 }

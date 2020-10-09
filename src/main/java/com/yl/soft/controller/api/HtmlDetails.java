@@ -166,7 +166,7 @@ public class HtmlDetails extends BaseController {
 	
 	@ApiOperation(value = "发评论", notes = "发评论")
 	@ApiImplicitParams({ 
-			@ApiImplicitParam(name = "type", value = "1：企业   2：商机  3：资讯", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "type", value = "1：企业   2：商机  3：资讯  4：商品", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "content", value = "评论内容", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "id", value = "评论作品的id", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "token", value = "授权标识", required = true, paramType = "query"),
