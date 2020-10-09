@@ -58,7 +58,7 @@ public class FeedbackController extends BaseController {
 	@Autowired
 	private ProblemService problemService;
 
-	@ApiOperation(value = "提交反馈", notes = "修改个人资料")
+	@ApiOperation(value = "提交反馈", notes = "提交反馈信息" , tags = {"C端模块-H5详情"})
 	@ApiImplicitParams({ @ApiImplicitParam(name = "content", value = "反馈内容", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "media", value = "图片地址", required = false, paramType = "query"),
 			@ApiImplicitParam(name = "concat", value = "联系方式", required = true, paramType = "query"),
@@ -85,7 +85,7 @@ public class FeedbackController extends BaseController {
 		return ok(feedback.getId());
 	}
 	
-	@ApiOperation(value = "帮助问题列表", notes = "帮助问题列表")
+	@ApiOperation(value = "帮助问题列表", notes = "帮助问题列表" , tags = {"C端模块-H5详情"})
 	@PostMapping("/getProblem")
 	public ResultItem<List<Problem>> getProblem(Integer page,Integer size) {
 		PageHelper.startPage(page, size, "sort DESC");

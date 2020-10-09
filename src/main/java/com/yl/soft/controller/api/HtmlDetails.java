@@ -2,9 +2,7 @@ package com.yl.soft.controller.api;
 
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.util.BaseConv;
 import com.yl.soft.controller.base.BaseController;
-import com.yl.soft.dto.EhbHallDto;
 import com.yl.soft.dto.EhbOpportunityDto;
 import com.yl.soft.dto.app.ArticleDto;
 import com.yl.soft.dto.app.EhbCommentDto;
@@ -26,9 +23,7 @@ import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbArticle;
-import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbComment;
-import com.yl.soft.po.EhbHall;
 import com.yl.soft.po.EhbOpportunity;
 import com.yl.soft.po.EhbUseraction;
 import com.yl.soft.service.EhbArticleService;
@@ -74,12 +69,17 @@ public class HtmlDetails extends BaseController {
 		EhbArticle ehbArticle=ehbArticleService.getById(id);
 		
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
-		Map<Integer, EhbUseraction> dataMap= ehbUseractionService.lambdaQuery()
+		EhbUseraction isZxZan=ehbUseractionService.lambdaQuery()
 				.eq(null!=sessionUser,EhbUseraction::getUserid, sessionUser.getId())
-				.eq(EhbUseraction::getRelateid, ehbArticle.getId()).list().stream().collect(Collectors.toMap(EhbUseraction::getActivetype, i->i));
+				.eq(EhbUseraction::getRelateid, ehbArticle.getId()).eq(EhbUseraction::getActivetype, 2).eq(EhbUseraction::getType, 3).last("LIMIT 1").one();
+		
+		EhbUseraction isSc=ehbUseractionService.lambdaQuery()
+				.eq(null!=sessionUser,EhbUseraction::getUserid, sessionUser.getId())
+				.eq(EhbUseraction::getRelateid, ehbArticle.getId()).eq(EhbUseraction::getActivetype, 2).eq(EhbUseraction::getType, 1).last("LIMIT 1").one();
+		
 		ArticleDto articleDto=BaseConv.copy(ehbArticle, new ArticleDto());
-		articleDto.setIsZan(dataMap.get(2)!=null?1:0);
-		articleDto.setIsSCsj(dataMap.get(1)!=null?1:0);
+		articleDto.setIsZan(isZxZan!=null?1:0);
+		articleDto.setIsSCZx(isSc!=null?1:0);
 		return ok(articleDto);
 	}
 	
@@ -128,39 +128,6 @@ public class HtmlDetails extends BaseController {
 		
 		ehbOpportunityDto.setIsSpZan(null!=isSpZan?1:0);
 			
-		
-		
-//		Map<Integer, EhbUseraction> dataMap=new HashMap<>();
-//		List<EhbUseraction> dataList1=ehbUseractionService.lambdaQuery()
-//				.eq(null!=sessionUser,EhbUseraction::getUserid, sessionUser.getId())
-//				.eq(EhbUseraction::getRelateid, ehbOpportunity.getId()).list();
-//		
-//		for (EhbUseraction ehbUseraction : dataList1) {
-//			dataMap.put(ehbUseraction.getType(), ehbUseraction);
-//		}
-//		
-//		List<EhbUseraction> datalist= ehbUseractionService.lambdaQuery()
-//				.eq(null!=sessionUser,EhbUseraction::getUserid, sessionUser.getId())
-//				.eq(EhbUseraction::getRelateid, ehbOpportunity.getExhibitorid()).list();
-		
-		
-		
-//		Map<Integer, EhbUseraction> dataMap1=new HashMap<Integer, EhbUseraction>();
-//		for (EhbUseraction ehbUseraction : datalist) {
-//			dataMap1.put(ehbUseraction.getType(), ehbUseraction);
-//		}
-//		
-//		EhbOpportunityDto ehbOpportunityDto=BaseConv.copy(ehbOpportunity, new EhbOpportunityDto());
-//		
-//		EhbUseraction ehbUseraction=dataMap1.get(ehbOpportunity.getType()==1?2:ehbOpportunity.getType()==2?4:-1);
-//		ehbOpportunityDto.setIsSCsj(null!=ehbUseraction?ehbUseraction.getActivetype()==1?1:0:0);
-//		
-//		
-//		EhbUseraction ehbUseraction1=dataMap.get(2);
-//		ehbOpportunityDto.setIsZan(null!=ehbUseraction1?ehbUseraction1.getActivetype()==2?1:0:0);
-//		
-//		EhbUseraction ehbUseraction2=dataMap1.get(1);
-//		ehbOpportunityDto.setIsSCqy(null!=ehbUseraction2?ehbUseraction2.getActivetype()==1?1:0:0);
 		return ok(ehbOpportunityDto);
 	}
 	

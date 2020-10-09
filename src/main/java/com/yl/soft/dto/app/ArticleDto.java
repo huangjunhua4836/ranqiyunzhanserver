@@ -45,6 +45,9 @@ public class ArticleDto implements Serializable {
 
     @ApiModelProperty(value = "图片,多张图片用英文逗号隔开src1,src2....")
     private String picture;
+    
+    @ApiModelProperty(value = "标签id 显示标签id[1,2....]")
+    private Integer labelid;
 
     @ApiModelProperty(value = "发布时间")
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")//出参格式化
@@ -69,8 +72,8 @@ public class ArticleDto implements Serializable {
     @ApiModelProperty(value="当前我是否点赞")
     private Integer isZan;
 
-    @ApiModelProperty(value="当前我是否收藏商品/商机")
-    private Integer isSCsj;
+    @ApiModelProperty(value="当前我是否收藏资讯")
+    private Integer isSCZx;
 
     public static ArticleDto of(EhbArticle ehbArticle) {
         ArticleDto articleDto = new ArticleDto();
