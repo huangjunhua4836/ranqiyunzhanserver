@@ -74,7 +74,7 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectAudience")
     public BaseResponse perfectAudience(RegisterAudienceDto registerAudienceDto,String token) {
-        String randNum = redisService.get(registerAudienceDto.getMailbox());
+        String randNum = redisService.get("I"+registerAudienceDto.getMailbox());
         if(!randNum.equals(registerAudienceDto.getEmailverificationcode())){
             return setResultError("验证码错误");
         }
@@ -110,7 +110,7 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectExhibitor")
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
-        String randNum = redisService.get(registerExhibitorDto.getMailbox());
+        String randNum = redisService.get("I"+registerExhibitorDto.getMailbox());
         if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
             return setResultError("验证码错误");
         }
