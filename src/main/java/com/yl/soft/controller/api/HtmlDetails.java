@@ -1,16 +1,9 @@
 package com.yl.soft.controller.api;
 
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson.JSONArray;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.util.BaseConv;
@@ -18,24 +11,27 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbOpportunityDto;
 import com.yl.soft.dto.app.ArticleDto;
 import com.yl.soft.dto.app.EhbCommentDto;
+import com.yl.soft.dto.app.OpportunityDetailsDto;
 import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
-import com.yl.soft.po.EhbArticle;
-import com.yl.soft.po.EhbComment;
-import com.yl.soft.po.EhbOpportunity;
-import com.yl.soft.po.EhbUseraction;
-import com.yl.soft.service.EhbArticleService;
-import com.yl.soft.service.EhbAudienceService;
-import com.yl.soft.service.EhbCommentService;
-import com.yl.soft.service.EhbOpportunityService;
-import com.yl.soft.service.EhbUseractionService;
-
+import com.yl.soft.po.*;
+import com.yl.soft.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = {"C端模块-H5详情"})
 @RestController
@@ -56,7 +52,12 @@ public class HtmlDetails extends BaseController {
     
     @Autowired
     private EhbUseractionService ehbUseractionService;
-    
+
+    @Autowired
+    private EhbExhibitorService ehbExhibitorService;
+    @Autowired
+    private EhbLabelService ehbLabelService;
+
     @Autowired
     private SessionState sessionState;
 	
@@ -90,10 +91,8 @@ public class HtmlDetails extends BaseController {
 			@ApiImplicitParam(name = "token", value = "授权标识", required = false, paramType = "query")
 	})
 	@GetMapping("/sjDetails")
-	public BaseResult<EhbOpportunityDto> sjDetails(Integer id,String token) {
+	public BaseResult<OpportunityDetailsDto> sjDetails(Integer id, String token) {
 		EhbOpportunity ehbOpportunity=ehbOpportunityService.getById(id);
-		
-		
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		
 		EhbUseraction isSj=ehbUseractionService.lambdaQuery()
@@ -117,18 +116,28 @@ public class HtmlDetails extends BaseController {
 			.eq(null!=sessionUser,EhbUseraction::getUserid, sessionUser.getId())
 			.eq(EhbUseraction::getRelateid, ehbOpportunity.getExhibitorid()).eq(EhbUseraction::getActivetype, 1).eq(EhbUseraction::getType, 1).last("LIMIT 1").one();
 		EhbOpportunityDto ehbOpportunityDto=BaseConv.copy(ehbOpportunity, new EhbOpportunityDto());
-		
 		ehbOpportunityDto.setIsSCqy(null!=isShouc?1:0);
-		
 		ehbOpportunityDto.setIsSCsj(null!=isSj?1:0);
-		
 		ehbOpportunityDto.setIsSCsp(null!=isSp?1:0);
-		
 		ehbOpportunityDto.setIsSjZan(null!=isSjZan?1:0);
-		
 		ehbOpportunityDto.setIsSpZan(null!=isSpZan?1:0);
-			
-		return ok(ehbOpportunityDto);
+
+		//展商信息
+		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(ehbOpportunity.getExhibitorid());
+		ehbOpportunityDto.setExhibitorname(ehbExhibitor.getEnterprisename());
+		ehbOpportunityDto.setAttestation(ehbExhibitor.getState()==1?"已认证":"未认证");
+		QueryWrapper<EhbLabel> ehbLabelQueryWrapper = new QueryWrapper<>();
+		ehbLabelQueryWrapper.in("id",JSONArray.parseArray(ehbExhibitor.getLabelid(),Integer.class));
+		List<EhbLabel> ehbLabels = ehbLabelService.list(ehbLabelQueryWrapper);
+		List<String> labelList = new ArrayList<>();
+		for(EhbLabel ehbLabel : ehbLabels){
+			labelList.add(ehbLabel.getName());
+		}
+		OpportunityDetailsDto opportunityDetailsDto = new OpportunityDetailsDto();
+		BeanUtil.copyProperties(ehbOpportunityDto,opportunityDetailsDto);
+		opportunityDetailsDto.setLabelStrings(labelList);
+
+		return ok(opportunityDetailsDto);
 	}
 	
 	@ApiOperation(value = "查询评论信息列表", notes = "查询评论信息列表")
