@@ -2,6 +2,7 @@ package com.yl.soft.controller.api;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
@@ -108,6 +109,7 @@ public class UserLoginController extends BaseController {
 		user.setUpdatetime(LocalDateTime.now());
 		user.setIsdel(Boolean.FALSE);
 		user.setPhone(phone);
+		user.setName(String.valueOf(new Random().nextInt(899999) + 100000));
 		user.setState(UserEnum.Qualification.未认证.getValue());
 		user.setEnabled(UserEnum.State.启用.getValue());
 		return user;
@@ -154,6 +156,7 @@ public class UserLoginController extends BaseController {
 		}
 		return setSessionUser(user);
 	}
+
 	
 	@ApiOperation(value = "手机验证码注册", notes = "使用手机验证码注册")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
@@ -180,6 +183,7 @@ public class UserLoginController extends BaseController {
 		EhbAudience ehbAudience=new EhbAudience();
 		ehbAudience.setPhone(phone);
 		ehbAudience.setLoginname(phone);
+		ehbAudience.setName(String.valueOf(new Random().nextInt(899999) + 100000));
 		ehbAudience.setPassword(ehbAudienceService.encryptPassword(password));
 		ehbAudience.setType(0);
 		ehbAudience.setIsnew(0);
