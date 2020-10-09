@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +22,10 @@ import com.github.pagehelper.util.StringUtil;
 import com.yl.soft.common.config.Constants;
 import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.DateUtils;
-import com.yl.soft.common.util.SendEmail;
 import com.yl.soft.controller.base.BaseController;
-import com.yl.soft.dto.EhbAudienceDto;
 import com.yl.soft.dto.EhbAudiencedlDto;
 import com.yl.soft.dto.UserConv;
 import com.yl.soft.dto.base.BaseResult;
-import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.enums.LoginType;
@@ -71,8 +67,6 @@ public class UserLoginController extends BaseController {
 	@Autowired
 	private SessionState sessionState;
 	
-	@Autowired
-	private SendEmail sendEmail;
 
 	
 	
