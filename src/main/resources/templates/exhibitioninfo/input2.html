@@ -7,6 +7,18 @@
             <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
                 <form class="layui-form" th:object="${ehbExhibitor}">
                     <div class="layui-form-item">
+                        <label class="layui-form-label">注册手机</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{phone}" required  autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{mailbox}" required  autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">管理人员</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{name}" required  autocomplete="off" class="layui-input">
@@ -16,12 +28,6 @@
                         <label class="layui-form-label">身份证</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{idcard}" required  autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">手机</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{phone}" required  autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">

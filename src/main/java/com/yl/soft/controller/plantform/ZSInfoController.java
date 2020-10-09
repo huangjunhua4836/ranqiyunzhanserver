@@ -12,7 +12,9 @@ import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.app.ExhibitorDto;
+import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
+import com.yl.soft.service.EhbAudienceService;
 import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.service.EhbHallService;
 import com.yl.soft.vo.TableVo;
@@ -40,6 +42,8 @@ import java.util.List;
 public class ZSInfoController extends BaseController {
     @Autowired
     public EhbExhibitorService ehbExhibitorService;
+    @Autowired
+    public EhbAudienceService ehbAudienceService;
     @Autowired
     public EhbHallService ehbHallService;
     @Autowired
@@ -130,6 +134,20 @@ public class ZSInfoController extends BaseController {
         }
         ehbExhibitor.setFirstletter(firstWord);//名称首字母设置
         if(ehbExhibitorService.saveOrUpdate(ehbExhibitor)){
+            //查询展商
+            QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+            ehbExhibitorQueryWrapper.orderByDesc("createtime");
+            ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+            ehbExhibitorQueryWrapper.eq("enterprisename",ehbExhibitor.getEnterprisename());
+            EhbExhibitor one = ehbExhibitorService.getOne(ehbExhibitorQueryWrapper);
+            //添加展商用户
+            EhbAudience ehbAudience = new EhbAudience();
+            ehbAudience.setIsdel(false);
+            ehbAudience.setCreatetime(LocalDateTime.now());
+            ehbAudience.setCreateuser(1);
+            ehbAudience.setPhone(ehbExhibitor.getPhone());
+            ehbAudience.setPassword(ehbAudienceService.encryptPassword("123456"));
+            ehbAudienceService.saveOrUpdate(ehbAudience);
             return setResultSuccess();
         }else{
             return setResultError("操作失败！");

@@ -54,6 +54,7 @@ public class CZRInfoController extends BaseController {
         ehbAudienceQueryWrapper.like(!StringUtils.isEmpty(ehbAudience.getName()),"name",ehbAudience.getName());
         ehbAudienceQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"createtime",startTime,endTime);
         ehbAudienceQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
+        ehbAudienceQueryWrapper.isNull("bopie");//非展商
         ehbAudienceQueryWrapper.orderByDesc("createtime");
         PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
         List<EhbAudience> ehbAudiences = ehbAudienceService.list(ehbAudienceQueryWrapper);
