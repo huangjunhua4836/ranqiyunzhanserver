@@ -22,12 +22,15 @@ public interface BaseConv {
 
 	static final Logger logger = LoggerFactory.getLogger(BaseConv.class);
 
-	public static <T, R> R copy(@NotNull T source, @NotNull R target, String... ignores) {
+	public static <T, R> R copy( T source,  R target, String... ignores) {
+		if (source==null) {
+			return null;
+		}
 		BeanUtils.copyProperties(source, target, ignores);
 		return target;
 	}
 
-	public static <T, R> R copy(@NotNull T source, @NotNull R target) {
+	public static <T, R> R copy( T source,  R target) {
 		return copy(source, target, new String[0]);
 	}
 
