@@ -14,13 +14,6 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">内容</label>
-                    <div class="layui-input-block">
-                        <input type="text" th:field="*{content}" required lay-verify="required" placeholder="请输入内容"
-                               autocomplete="off" class="layui-input"/>
-                    </div>
-                </div>
-                <div class="layui-form-item">
                     <label class="layui-form-label">头图</label>
                     <div class="layui-upload">
                         <button type="button" class="layui-btn" id="test1">上传</button>
@@ -30,15 +23,23 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">图片</label>
-                    <div class="layui-upload">
-                        <button type="button" class="layui-btn" id="test2">上传</button>
-                        <div class="layui-upload-list" id="demo2" style="margin-left: 110px;">
-                            <div style="margin-top: 10px;">
-                            </div>
-                        </div>
+                    <label class="layui-form-label">内容</label>
+                    <div class="layui-input-block">
+                        <textarea id="editor_id" required  lay-verify="required" th:field="*{content}" style="width:700px;height:300px;" class="layui-textarea" >
+                        </textarea>
                     </div>
                 </div>
+
+<!--                <div class="layui-form-item">-->
+<!--                    <label class="layui-form-label">图片</label>-->
+<!--                    <div class="layui-upload">-->
+<!--                        <button type="button" class="layui-btn" id="test2">上传</button>-->
+<!--                        <div class="layui-upload-list" id="demo2" style="margin-left: 110px;">-->
+<!--                            <div style="margin-top: 10px;">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="layui-form-item">
                     <label class="layui-form-label">是否推荐</label>
                     <div class="layui-input-block">
@@ -48,14 +49,52 @@
                 </div>
                 <input th:field="*{id}" type="hidden"/>
                 <input th:field="*{headpicture}" type="hidden" id="im"/>
-                <input th:field="*{picture}" type="hidden" id="ims"/>
+<!--                <input th:field="*{picture}" type="hidden" id="ims"/>-->
                 <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
             </form>
         </div>
     </div>
 </div>
 
+<link rel="stylesheet" th:href="@{/static/tools/kindeditor/themes/default/default.css}" />
+<link rel="stylesheet" th:href="@{/static/tools/kindeditor/plugins/code/prettify.css}" />
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/kindeditor-all-min.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/lang/zh-CN.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/plugins/code/prettify.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/jquery-3.4.1.min.js}"></script>
+
 <script>
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#editor_id',{
+            // 上传图片的名字
+            filePostName  : "uploadFile",
+            // 配置上传路径
+            uploadJson : '/platform/about/uploadImg?remarks=3',
+            allowFileManager : true,
+            allowPreviewEmoticons: true,
+            allowImageUpload: true,
+            // 设置上传文件类型
+            dir : "image",
+            afterCreate: function () {//创建完成之后回显
+                this.sync();
+            },
+            afterChange: function () {//内容改动之后回显
+                this.sync();
+            },
+            items:[
+                '|', 'undo', 'redo', '|', 'preview', 'print', 'cut', 'copy', 'paste',
+                'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+                'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+                'anchor', 'link', 'unlink', '|', 'about'
+            ]
+        });
+    });
+
+
     layui.use('core', function () {
         var form = layui.form,
             core = layui.core,
@@ -94,33 +133,33 @@
                 //上传成功
             }
         });
-        var uploadInst = upload.render({
-            elem: '#test2'
-            , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
-            // ,auto: false //选择文件后不自动上传
-            ,choose: function (obj) {
-                //预读本地文件示例，不支持ie8
-                obj.preview(function (index, file, result) {
-                    $('#demo2').append('<div style="margin-top: 10px;">' +
-                        '<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img" height="60px;">' +
-                        // '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>' +
-                        '</div>')
-                });
-            }
-            , done: function (res) {
-                //如果上传失败
-                if (res.code != 200) {
-                    return layer.msg('上传失败');
-                }
-                if (res.code == 200) {
-                    console.log(JSON.stringify(res));
-                    var pictureUrl = $('#ims').val();
-                    pictureUrl += res.data[0].url+",";
-                    $('#ims').val(pictureUrl);
-                    return layer.alert('上传成功！');
-                }
-            }
-        });
+        // var uploadInst = upload.render({
+        //     elem: '#test2'
+        //     , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
+        //     // ,auto: false //选择文件后不自动上传
+        //     ,choose: function (obj) {
+        //         //预读本地文件示例，不支持ie8
+        //         obj.preview(function (index, file, result) {
+        //             $('#demo2').append('<div style="margin-top: 10px;">' +
+        //                 '<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img" height="60px;">' +
+        //                 // '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>' +
+        //                 '</div>')
+        //         });
+        //     }
+        //     , done: function (res) {
+        //         //如果上传失败
+        //         if (res.code != 200) {
+        //             return layer.msg('上传失败');
+        //         }
+        //         if (res.code == 200) {
+        //             console.log(JSON.stringify(res));
+        //             var pictureUrl = $('#ims').val();
+        //             pictureUrl += res.data[0].url+",";
+        //             $('#ims').val(pictureUrl);
+        //             return layer.alert('上传成功！');
+        //         }
+        //     }
+        // });
     });
 </script>
 </body>
