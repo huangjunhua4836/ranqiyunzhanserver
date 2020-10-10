@@ -188,6 +188,14 @@ public class UserLoginController extends BaseController {
 		ehbAudience.setLoginname(phone);
 		ehbAudience.setName(String.valueOf(new Random().nextInt(899999) + 100000));
 		ehbAudience.setPassword(ehbAudienceService.encryptPassword(password));
+		ehbAudience.setIsdel(false);
+		if(type==1) {
+			EhbExhibitor ehbExhibitor=new EhbExhibitor();
+			ehbExhibitor.setCreatetime(LocalDateTime.now());
+			ehbExhibitor.setIsdel(false);
+			ehbAudience.setBopie(ehbExhibitor.getId());
+		}
+		
 		ehbAudience.setType(0);
 		ehbAudience.setIsnew(0);
 		if(type==1) { //普通用户
