@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yl.soft.common.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 
@@ -19,6 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Data
@@ -88,6 +90,8 @@ public class EhbOpportunityDto implements Serializable {
     @ApiModelProperty(value="当前我是否收藏企业0:否，1：是")
     private Integer isSCqy;
 
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
 	@ApiModelProperty(value = "发布时间")
 	private LocalDateTime releasetime;
 
