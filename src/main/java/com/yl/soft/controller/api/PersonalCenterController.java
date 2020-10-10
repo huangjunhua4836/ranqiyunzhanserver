@@ -102,14 +102,17 @@ public class PersonalCenterController extends BaseController {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		EhbAudience ehbAudience = ehbAudienceService.getById(null!=userid?userid:sessionUser.getId());
 		EhbAudienceDto ehbDto=new EhbAudienceDto();
+		boolean bool=true;
 		if(null==ehbAudience.getBopie()) {
 			EhbAudiencegrDto ge=MeUserConv.do2dto1(ehbAudience);
 			ehbDto.setAudienceyegrDto(ge);
+			bool=false;
 		}else {
 			EhbExhibitor ee=ehbExhibitorService.getById(ehbAudience.getBopie());
 			EhbAudienceyeDto qy=MeUserConv.do2dto(ehbAudience,ee);
 			ehbDto.setEhbAudienceyeDto(qy);
 		}
+		ehbDto.setUserType(bool);
 		ehbDto.setPhoneState(ehbAudience.getPhone()==null?"0":"1");
 		ehbDto.setWxState(ehbAudience.getWxOpenid()==null?"0":"1");
 		ehbDto.setQqState(ehbAudience.getQqOpenid()==null?"0":"1");
