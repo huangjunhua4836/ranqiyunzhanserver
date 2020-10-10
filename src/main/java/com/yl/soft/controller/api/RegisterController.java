@@ -98,7 +98,7 @@ public class RegisterController extends BaseController {
                 labs.add(Integer.valueOf(temp));
             }
         }
-        registerAudienceDto.setLabelid(JSONArray.toJSONString(labs));
+        ehbAudience.setLabelid(JSONArray.toJSONString(labs));
 
         if(ehbAudienceService.updateById(ehbAudience)){
             return setResultSuccess();
@@ -147,7 +147,7 @@ public class RegisterController extends BaseController {
                 labs.add(Integer.valueOf(temp));
             }
         }
-        registerExhibitorDto.setLabelid(JSONArray.toJSONString(labs));
+        ehbExhibitor.setLabelid(JSONArray.toJSONString(labs));
 
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return setResultSuccess();
