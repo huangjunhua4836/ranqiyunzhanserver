@@ -117,6 +117,11 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectExhibitor")
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
+        List<String> list = registerExhibitorDto.getLabelid();
+        for(String s: list){
+            System.out.println("*************************"+s);
+        }
+
         String randNum = redisService.get("I"+registerExhibitorDto.getMailbox());
         if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
 //            return setResultError("验证码错误");
@@ -138,6 +143,7 @@ public class RegisterController extends BaseController {
             List<Integer> integers=registerExhibitorDto.getLabelid().stream().map(i->{
                return Integer.parseInt(i);
             }).collect(Collectors.toList());
+//            String s = "http:\\/\\/rqyz.plf.yl-mall.cn:80\\/api\\/showFile?id=332";
             ehbExhibitor.setLabelid(JSONArray.toJSONString(integers));
         }
 
