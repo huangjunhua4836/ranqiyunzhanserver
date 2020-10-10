@@ -508,6 +508,31 @@ public class PersonalCenterController extends BaseController {
 		return ok(eh);
 	}
 
+	@ApiOperation(value = "添加参展登记", notes = "添加参展登记", tags = {"C端模块-H5详情"})
+	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
+	@PostMapping("/api/addregistration")
+	public BaseResult<String> addregistration(EhbVisitorRegistration ehbVisitorRegistration,String token) {
+		SessionUser sessioner = sessionState.getCurrentUser(token);
+		if(StringUtils.isAllEmpty(ehbVisitorRegistration.getName()) ) {
+			return error(-101, "联系人不能为空");
+		}
+		if(StringUtils.isAllEmpty(ehbVisitorRegistration.getCompname()) ) {
+			return error(-102, "公司名称不能为空");
+		}
+		if(StringUtils.isAllEmpty(ehbVisitorRegistration.getPhone()) ) {
+			return error(-103, "联系人不能为空");
+		}
+		if(StringUtils.isAllEmpty(ehbVisitorRegistration.getShowarea()) ) {
+			return error(-104, "预展位面积不能为空");
+		}
+		if(ehbVisitorRegistration.getAppellation()==null) {
+			return error(-105, "称谓不能为空");
+		}
+		ehbVisitorRegistration.setUserid(sessioner.getId());
+		ehbVisitorRegistrationService.save(ehbVisitorRegistration);
+		return ok(ehbVisitorRegistration.getId()+"");
+	}
+	
 	@ApiOperation(value = "参展登记详情", notes = "参展登记详情")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
 	@PostMapping("/api/registrationDes")
