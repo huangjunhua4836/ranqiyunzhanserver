@@ -146,3 +146,11 @@ custom:
     key: s%1ldespACsl@ada #内部 aes 加密密钥
     parameter: 0aQ20$7V2(92&3*0 #";//内部 aes 加密偏移量
     value: 123dkds # 内部通信key
+
+#腾讯云IM
+tencent_yun:
+  im:
+    sdk_app_id: 1400433496
+    secret_key: 5853ffdfd5c8c9f4f99fb4e26ae18a90fc84ce4eb17cdceea800ae7a528bd309
+    expire_time: 100
+    default_im_admin_account: administrator

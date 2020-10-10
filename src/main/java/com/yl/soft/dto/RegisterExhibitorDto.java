@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -28,8 +27,8 @@ public class RegisterExhibitorDto implements Serializable {
     private String mailbox;
     @ApiModelProperty(value = "是否参加过：1-参加  2-没参加",required = true)
     private Integer isjoin;
-    @ApiModelProperty(value = "行为标签ID，数组",required = true)
-    private List<String> labelid;
+    @ApiModelProperty(value = "行为标签ID，单个标签就一个 比如：1 ;多个标签就用逗号隔开 比如：1,2,3,4,5",required = true)
+    private String labelid;
     @ApiModelProperty(value = "邮箱验证码",required = true)
     private String emailverificationcode;
     @ApiModelProperty(value = "营业执照地址",required = true)
