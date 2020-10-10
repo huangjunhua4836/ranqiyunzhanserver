@@ -1,7 +1,6 @@
 package com.yl.soft.controller.plantform;
 
 
-import com.yl.soft.common.constants.BaseApiConstants;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
@@ -70,21 +69,5 @@ public class ResourceUpLoadController extends BaseController {
         }else{
             return setResultError("操作失败！");
         }
-    }
-
-    /**
-     * 删除
-     * @return
-     */
-    @PostMapping("/delete")
-    @ResponseBody
-    public BaseResponse delete(String id) {
-        System.out.println("ok");
-        if(StringUtils.isEmpty(id)){
-            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
-                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
-        }
-        ehbLabelService.removeById(id);
-        return setResultSuccess();
     }
 }

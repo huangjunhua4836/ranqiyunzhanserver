@@ -69,7 +69,7 @@ layui.use('core', function(){
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改banner','/platform/banner/input?type=update&id='+data.id,['500px', '200px'],false,initTable);
+            core.openIframeDialog('修改banner','/platform/banner/input?type=update&id='+data.id,['500px', '440px'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('banner详情',$('#detail').html(),['500px','480px']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);

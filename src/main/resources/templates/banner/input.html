@@ -32,6 +32,7 @@
                                 预览图：
                                 <div class="layui-upload-list" id="demo2"></div>
                             </blockquote>
+                            <div id="editimg"></div>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -66,6 +67,14 @@
             core = layui.core,
             upload = layui.upload,
             $ = layui.jquery;
+
+            var imgurl = $('#imgurl').val();
+            var tempArr = imgurl.split(",");
+            var imgsrc = "";
+            for(var i=0;i<tempArr.length;i++){
+                imgsrc += '<img class=\"layui-upload-img\" src=\"'+tempArr[i]+'\" width=\"100px;\" height=\"100px;\" style="padding-left: 10px;">';
+            }
+            $('#editimg').html(imgsrc);
 
             form.on('submit(submitFrom)', function(data){
                 console.log(JSON.stringify(data.field));
