@@ -51,11 +51,11 @@
 		<ul>
 			<li v-for="li in hotList" @click="hotLinkFn(li.id)">
 				<a href="javascript:void(0)" title="">
-					<img :src="li.picture" alt="" />
+					<img :src="li.headpicture" alt="" />
 					<p v-html="li.title"></p>
 					<div class="g_newslist-data">
 						<div class="g_newslist-browse">
-							<img src="images/g_01.png" alt="">{li.countbrowse}}
+							<img src="images/g_01.png" alt="">{{li.countbrowse}}
 						</div>
 						<time v-html="li.releasetime"></time>
 					</div>
@@ -136,7 +136,7 @@
 					var jsonData=data.data;
 					for(var i=0;i<jsonData.length;i++){
 						if(jsonData[i].user.headPortrait){
-							jsonData[i].headPortrait=JSON.parse(jsonData[i].user.headPortrait)[0];
+							jsonData[i].headPortrait=jsonData[i].user.headPortrait;
 						}else{
 							jsonData[i].headPortrait="";
 						}
@@ -163,26 +163,7 @@
 			call_net("post", "/api/hotArticleList",newsObj, function(data){
 				if(data.code==200){
 					var jsonData=data.data;
-					for(var i=0;i<jsonData.length;i++){
-						if(jsonData[i].picture!=null&&jsonData[i].picture!=""){
-							if(jsonData[i].picture.indexOf("“")>-1){
-								jsonData[i].picture=jsonData[i].picture.split("“").join("\"");
-								jsonData[i].picture=jsonData[i].picture.split("”").join("\"");
-							}
-							if(jsonData[i].picture.indexOf("'")>-1){
-								jsonData[i].picture=jsonData[i].picture.split("\'").join("\"");
-							}
-							if(jsonData[i].picture.indexOf("[")>-1){
-								console.log(i+"----asdasd")
-								jsonData[i].picture=JSON.parse(jsonData[i].picture)[0];
-							}else{
-								jsonData[i].picture=jsonData[i].picture;
-							}
-							
-						}else{
-							jsonData[i].picture="";
-						}
-					}
+					
 					newsData.hotList=jsonData;
 				}else{
 					console.log(data.desc)
