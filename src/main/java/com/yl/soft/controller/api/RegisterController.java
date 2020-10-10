@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Api(tags = {"C端模块-燃气云展信息完善"})
 @RestController
@@ -118,7 +119,7 @@ public class RegisterController extends BaseController {
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
         String randNum = redisService.get("I"+registerExhibitorDto.getMailbox());
         if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
-            return setResultError("验证码错误");
+//            return setResultError("验证码错误");
         }
         SessionUser sessionUser = sessionState.getCurrentUser(token);
         EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
@@ -133,8 +134,11 @@ public class RegisterController extends BaseController {
 
         //展商标签
         if(registerExhibitorDto.getLabelid()!=null && registerExhibitorDto.getLabelid().size() > 0){
-            String temps = JSONArray.toJSONString(registerExhibitorDto.getLabelid());
-            ehbExhibitor.setLabelid(temps);
+            registerExhibitorDto.getLabelid();
+            List<Integer> integers=registerExhibitorDto.getLabelid().stream().map(i->{
+               return Integer.parseInt(i);
+            }).collect(Collectors.toList());
+            ehbExhibitor.setLabelid(JSONArray.toJSONString(integers));
         }
 
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
