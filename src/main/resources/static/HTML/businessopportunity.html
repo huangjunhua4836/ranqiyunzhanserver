@@ -1,0 +1,306 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Pragma" content="no-cache">
+<link rel="stylesheet" type="text/css" href="css/base.css" media="all">
+<link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+<link rel="stylesheet" type="text/css" href="css/Yform.css" media="all">
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/Yeffect.js"></script>
+<script type="text/javascript" src="js/Yform.js"></script>
+<script type="text/javascript" src="js/ind.js"></script>
+<title>商机详情</title>
+</head>
+
+<body id="niches">
+	<div class="g_niches-head">{{detailes.title}}<img src="images/g_10.png" alt=""></div>
+	<div class="g_banner">
+		<img :src="bigImg" alt="" class="g_banner-big" />
+		<div class="g_banner-small">
+			<img v-for="img in detailes.picture" :src="img" alt="" :class="$index==0?'g_banner-dqys':''" @click="clickBigImgFn(img)">
+		</div>
+	</div>
+	<div class="g_niches-article">
+		<h1 v-html="detailes.title"></h1>
+		<time>发布时间：{{detailes.releasetime}}</time>
+		<div class="g_niches-content" v-html="detailes.content"></div>
+		<div class="g_news-functions">
+			<a href="javascript:void(0)" title="" @click="dianzanFn">
+				<img src="images/g_02.png" alt="" v-if="detailes.isSjZan==0" />
+				<img src="images/g_12.png" alt="" v-if="detailes.isSjZan==1" />
+				<span>点赞({{detailes.countthumbs}})</span>
+			</a>
+			<a href="javascript:void(0)" title="" @click="shoucangFn">
+				<img src="images/g_03.png" alt="" v-if="detailes.isSCsj==0" />
+				<img src="images/g_13.png" alt="" v-if="detailes.isSCsj==1" />
+				<span>收藏</span>
+			</a>
+			<a href="javascript:void(0)" title="" @click="shareFn">
+				<img src="images/g_04.png" alt="" />
+				<span>分享</span>
+			</a>
+		</div>
+	</div>
+	<div class="g_comment g_niches-comment">
+		<div class="g_comment-list">
+			<ul>
+				<li v-for="li in commentList">
+					<img :src="li.headPortrait" alt="">
+					<div class="g_comment-div">
+						<span>{{li.user.loginname}}：</span><b v-html="li.content"></b>
+						<time v-html="li.createtime"></time>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="g_more" v-if="loading" @click="getMoreFn">
+			查看更多<img src="images/g_07.png" alt="">
+		</div>
+	</div>
+	<div class="g_niches-more">
+		<div class="g_comment-head">更多商机</div>
+		<div class="g_niches-list">
+			<ul>
+				<li v-for="li in hotList">
+					<a href="javascript:void(0)" title="">
+						<img :src="li.picture" alt="">
+						<div class="g_niches-div">
+							<p v-html="li.title"></p>
+							<span v-html="li.content"></span>
+						</div>
+						<div class="g_newslist-browse">
+							<img src="images/g_01.png" alt="">{{li.countbrowse}}
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="g_comment-enter">
+		<input type="text" class="g_txt-comment" placeholder="说点什么..." v-model="commentTxt" />
+		<a href="javascript:void(0)" title="" @click="sendCommentFn"><img src="images/g_06.png" alt=""></a>
+	</div>
+	<script>
+		
+		var token="";
+		var sid="";
+		
+		if(getUrlParamURLys("token")){
+			token=getUrlParamURLys("token");
+		}
+		if(getUrlParamURLys("id")){
+			sid=getUrlParamURLys("id");
+		}
+		
+		var shangjiData={};
+		shangjiData.detailes={};
+		shangjiData.commentList=[];
+		shangjiData.loading=true;
+		shangjiData.pageZ=1;
+		shangjiData.commentTxt="";
+		shangjiData.bigImg="";
+		shangjiData.hotList=[];
+		
+		//获取数据
+		getDetailesFn()
+		function getDetailesFn(){
+			var detailesObj={};
+			detailesObj.token=token;
+			detailesObj.id=sid;
+			call_net("get", "/sjDetails",detailesObj, function(data){
+				if(data.code==200){
+					var jsonData=data.data;
+					if(jsonData.picture){
+						jsonData.picture=JSON.parse(jsonData.picture);
+						shangjiData.bigImg=jsonData.picture[0]
+					}else{
+						jsonData.picture=[];
+						shangjiData.bigImg="";
+					}
+					
+					shangjiData.detailes=jsonData;
+				}else{
+					console.log(data.desc)
+				}
+			}, function(error){})	
+		}
+		
+		
+		//获取评论列表
+		getCommentListFn(1);
+		function getCommentListFn(page){
+			var commentObj={};
+			commentObj.page=page;
+			commentObj.size=3;
+			commentObj.type=2;
+			call_net("get", "/commentList",commentObj, function(data){
+				if(data.code==200){
+					var jsonData=data.data;
+					for(var i=0;i<jsonData.length;i++){
+						if(jsonData[i].user.headPortrait){
+							jsonData[i].headPortrait=JSON.parse(jsonData[i].user.headPortrait)[0];
+						}else{
+							jsonData[i].headPortrait="";
+						}
+						shangjiData.commentList.push(jsonData[i]);
+					}
+					if(jsonData.length==3){
+						shangjiData.loading=true
+					}else{
+						shangjiData.loading=false
+					}
+				}else{
+					console.log(data.desc)
+				}
+			}, function(error){})
+		}
+		
+		
+		
+		
+		//获取热门商机
+		getHotNewsFn();
+		function getHotNewsFn(){
+			var newsObj={};
+			newsObj.token=token;
+			newsObj.pageNum=1;
+			call_net("post", "/api/opportunitySearch",newsObj, function(data){
+				if(data.code==200){
+					var jsonData=data.data.data;
+					for(var i=0;i<jsonData.length;i++){
+						if(jsonData[i].picture!=null&&jsonData[i].picture!=""){
+							if(jsonData[i].picture.indexOf("“")>-1){
+								jsonData[i].picture=jsonData[i].picture.split("“").join("\"");
+								jsonData[i].picture=jsonData[i].picture.split("”").join("\"");
+							}
+							if(jsonData[i].picture.indexOf("'")>-1){
+								jsonData[i].picture=jsonData[i].picture.split("\'").join("\"");
+							}
+							if(jsonData[i].picture.indexOf("[")>-1){
+								console.log(i+"----asdasd")
+								jsonData[i].picture=JSON.parse(jsonData[i].picture)[0];
+							}else{
+								jsonData[i].picture=jsonData[i].picture;
+							}
+							
+						}else{
+							jsonData[i].picture="";
+						}
+					}
+					shangjiData.hotList=jsonData;
+				}else{
+					console.log(data.desc)
+				}
+			}, function(error){})	
+		}
+		
+		
+		
+		
+		//控制器
+		new Vue({
+			el:'#niches',
+			data:shangjiData,
+			methods:{
+				//切换大图
+				clickBigImgFn:function(url){
+					this.bigImg=url;
+				},
+				//加载更多
+				getMoreFn:function(){
+					this.pageZ++;
+					if(newsData.loading){
+						getCommentListFn(this.pageZ);
+					};
+				},
+				//点赞
+				dianzanFn:function(){
+					var _this=this;
+					var dianzanObj={};
+					dianzanObj.token=token;
+					dianzanObj.type=2;
+					dianzanObj.relateid=sid;
+					call_net("POST", "/api/addOrDelPraise",dianzanObj, function(data){
+						if(data.code==200){
+							if(_this.detailes.isSjZan==0){
+								_this.detailes.isSjZan=1;
+							}else{
+								_this.detailes.isSjZan=0;
+							}
+							
+						}else if(data.code==401){
+							window.location.href="login()";
+						}else{
+							console.log(data.desc)
+						}
+					}, function(error){})
+					
+				},
+				//收藏
+				shoucangFn:function(){
+					var _this=this;
+					var shoucangObj={};
+					shoucangObj.token=token;
+					shoucangObj.type=2;
+					shoucangObj.relateid=sid;
+					call_net("POST", "/api/addOrDelCollention",shoucangObj, function(data){
+						if(data.code==200){
+							if(_this.detailes.isSCsj==0){
+								_this.detailes.isSCsj=1;
+							}else{
+								_this.detailes.isSCsj=0;
+							}
+							
+						}else if(data.code==401){
+							window.location.href="login()";
+						}else{
+							console.log(data.desc)
+						}
+					}, function(error){})
+					
+				},
+				//评论
+				sendCommentFn:function(){
+					var _this=this;
+					var commentObj={};
+					commentObj.token=token;
+					commentObj.id=sid;
+					commentObj.content=this.commentTxt;
+					commentObj.type=2;
+					call_net("POST", "/api/addComment",commentObj, function(data){
+						if(data.code==200){
+							_this.pageZ=1;
+							_this.commentList=[];
+							_this.commentTxt="";
+							getCommentListFn(_this.pageZ);
+							getDetailesFn();
+							
+						}else if(data.code==401){
+							window.location.href="login()";
+						}else{
+							console.log(data.desc)
+						}
+					}, function(error){})
+				},
+				//分享
+				shareFn:function(){
+					window.location.href="share("+sid+","+token+")";
+				}
+			},
+			filters:{
+				
+			}
+		});
+		
+	</script>
+</body>
+</html>

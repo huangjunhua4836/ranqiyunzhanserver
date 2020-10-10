@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Pragma" content="no-cache">
+<link rel="stylesheet" type="text/css" href="css/base.css" media="all">
+<link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+<link rel="stylesheet" type="text/css" href="css/Yform.css" media="all">
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/Yeffect.js"></script>
+<script type="text/javascript" src="js/Yform.js"></script>
+<script type="text/javascript" src="js/ind.js"></script>
+<title>全部常见问题</title>
+</head>
+
+<body id="quesstion">
+	<div class="g_quesstion-list">
+		<ul>
+			<li v-html="li in list" @click="toDetailesFn{li.id}">
+				<a href="javascript:void(0)" title="" v-html="li.content"></li>
+		</ul>
+	</div>
+	
+	<script type="text/javascript">
+		
+		
+		var quesstionData={};
+		quesstionData.list=[];
+		
+		//获取数据
+		getDetailesFn()
+		function getDetailesFn(){
+			call_net("POST", "/cms/feedback/getProblem",{}, function(data){
+				if(data.code==200){
+					var jsonData=data.data;
+					quesstionData.list=jsonData;
+				}else{
+					console.log(data.desc)
+				}
+			}, function(error){})	
+		}
+		
+		
+		//控制器
+		new Vue({
+			el:'#quesstion',
+			data:quesstionData,
+			methods:{
+				toDetailesFn:function(ind){
+					window.location.href="answer.html?id="+ind
+				}
+			},
+			filters:{
+				
+			}
+		});
+	</script>
+</body>
+</html>
