@@ -120,26 +120,26 @@ public class RegisterController extends BaseController {
     })
     @PostMapping("/perfectExhibitor")
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
-        List<String> list = registerExhibitorDto.getLabelid();
-        log.info("####################################"+JSONArray.toJSONString(list));
-        for(String s: list){
-            log.info("**********************************************************"+s);
-        }
+        String list = registerExhibitorDto.getLabelid();
+        System.err.println("####################################"+JSONArray.toJSONString(list));
+//        for(String s: list){
+//            log.info("**********************************************************"+s);
+//        }
 
-        String randNum = redisService.get("I"+registerExhibitorDto.getMailbox());
-        if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
-//            return setResultError("验证码错误");
-        }
-        SessionUser sessionUser = sessionState.getCurrentUser(token);
-        EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
-        if(ehbAudience == null){
-            return setResultError("参展商没有注册！");
-        }
-        EhbExhibitor ehbExhibitor = new EhbExhibitor();
-        BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
-        ehbExhibitor.setIsdel(false);
-        ehbExhibitor.setUpdatetime(LocalDateTime.now());
-        ehbExhibitor.setState(2);//审核中
+//        String randNum = redisService.get("I"+registerExhibitorDto.getMailbox());
+//        if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
+////            return setResultError("验证码错误");
+//        }
+//        SessionUser sessionUser = sessionState.getCurrentUser(token);
+//        EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
+//        if(ehbAudience == null){
+//            return setResultError("参展商没有注册！");
+//        }
+//        EhbExhibitor ehbExhibitor = new EhbExhibitor();
+//        BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
+//        ehbExhibitor.setIsdel(false);
+//        ehbExhibitor.setUpdatetime(LocalDateTime.now());
+//        ehbExhibitor.setState(2);//审核中
 
         //展商标签
 //        if(registerExhibitorDto.getLabelid()!=null && registerExhibitorDto.getLabelid().size() > 0){
@@ -149,12 +149,14 @@ public class RegisterController extends BaseController {
 //            }).collect(Collectors.toList());
 //            ehbExhibitor.setLabelid(JSONArray.toJSONString(integers));
 //        }
+//
+//        if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
+//            return setResultSuccess();
+//        }else{
+//            return setResultError("保存失败！");
+//        }
 
-        if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
-            return setResultSuccess();
-        }else{
-            return setResultError("保存失败！");
-        }
+        return setResultSuccess();
     }
 
     /**
