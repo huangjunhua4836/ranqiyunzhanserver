@@ -87,7 +87,7 @@ public class RegisterController extends BaseController {
         ehbAudience.setUpdatetime(LocalDateTime.now());
 
         //展商标签
-        if(registerAudienceDto.getLabelid().length > 0){
+        if(registerAudienceDto.getLabelid()!=null && registerAudienceDto.getLabelid().size() > 0){
             String temps = JSONArray.toJSONString(registerAudienceDto.getLabelid());
             ehbAudience.setLabelid(temps);
         }
@@ -132,7 +132,7 @@ public class RegisterController extends BaseController {
         ehbExhibitor.setState(2);//审核中
 
         //展商标签
-        if(registerExhibitorDto.getLabelid().length > 0){
+        if(registerExhibitorDto.getLabelid()!=null && registerExhibitorDto.getLabelid().size() > 0){
             String temps = JSONArray.toJSONString(registerExhibitorDto.getLabelid());
             ehbExhibitor.setLabelid(temps);
         }

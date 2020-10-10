@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
@@ -19,8 +21,8 @@ public class RegisterAudienceDto {
     private String enterprise;
     @ApiModelProperty(value = "邮箱",required = true)
     private String mailbox;
-    @ApiModelProperty(value = "行为标签ID，整型数组",required = true)
-    private Integer[] labelid;
+    @ApiModelProperty(value = "行为标签ID，数组",required = true)
+    private List labelid;
     @ApiModelProperty(value = "邮箱验证码",required = true)
     private String emailverificationcode;
 }
