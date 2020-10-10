@@ -23,6 +23,7 @@ import com.yl.soft.service.EhbAudienceService;
 import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.service.EhbLabelService;
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ import java.util.stream.Collectors;
 @Api(tags = {"C端模块-燃气云展信息完善"})
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class RegisterController extends BaseController {
     @Autowired
     private EhbAudienceService ehbAudienceService;
@@ -119,8 +121,9 @@ public class RegisterController extends BaseController {
     @PostMapping("/perfectExhibitor")
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
         List<String> list = registerExhibitorDto.getLabelid();
+        log.info("####################################"+JSONArray.toJSONString(list));
         for(String s: list){
-            LogUtils.writeErrorLog(this.getClass(),"*************************"+s,new Exception("xxxxx"));
+            log.info("**********************************************************"+s);
         }
 
         String randNum = redisService.get("I"+registerExhibitorDto.getMailbox());
@@ -139,14 +142,13 @@ public class RegisterController extends BaseController {
         ehbExhibitor.setState(2);//审核中
 
         //展商标签
-        if(registerExhibitorDto.getLabelid()!=null && registerExhibitorDto.getLabelid().size() > 0){
-            registerExhibitorDto.getLabelid();
-            List<Integer> integers=registerExhibitorDto.getLabelid().stream().map(i->{
-               return Integer.parseInt(i);
-            }).collect(Collectors.toList());
-//            String s = "http:\\/\\/rqyz.plf.yl-mall.cn:80\\/api\\/showFile?id=332";
-            ehbExhibitor.setLabelid(JSONArray.toJSONString(integers));
-        }
+//        if(registerExhibitorDto.getLabelid()!=null && registerExhibitorDto.getLabelid().size() > 0){
+//            registerExhibitorDto.getLabelid();
+//            List<Integer> integers=registerExhibitorDto.getLabelid().stream().map(i->{
+//               return Integer.parseInt(i);
+//            }).collect(Collectors.toList());
+//            ehbExhibitor.setLabelid(JSONArray.toJSONString(integers));
+//        }
 
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return setResultSuccess();
