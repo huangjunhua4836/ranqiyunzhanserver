@@ -42,7 +42,7 @@ public class EhbExhibitorDto  implements Serializable{/**
     @ApiModelProperty("企业描述")
     private String describes;
     
-    @ApiModelProperty(value="展商图片['src1','src2'....]")
+    @ApiModelProperty(value="展商图片 多张图片逗号隔开")
     private String img;
     
     @ApiModelProperty(value="logo")
@@ -59,8 +59,8 @@ public class EhbExhibitorDto  implements Serializable{/**
 	private Integer state;
 	
 	
-	@ApiModelProperty("企业图片集合['src1','src2'....]")
-	private List<String> bannerList;
+//	@ApiModelProperty("展商图片 多张图片逗号隔开")
+//	private List<String> bannerList;
 	
 	public static EhbExhibitorDto of(EhbExhibitor ehbExhibitor) {
 		EhbExhibitorDto ehbExhibitorDto=new EhbExhibitorDto();
@@ -68,8 +68,8 @@ public class EhbExhibitorDto  implements Serializable{/**
 			return ehbExhibitorDto;
 		}
 		BeanUtils.copyProperties(ehbExhibitor, ehbExhibitorDto);
-		List<String> list = JSONArray.parseArray(ehbExhibitor.getImg(), String.class);
-		ehbExhibitorDto.setBannerList(list);
+//		List<String> list = JSONArray.parseArray(ehbExhibitor.getImg(), String.class);
+//		ehbExhibitorDto.setBannerList(list);
 		return ehbExhibitorDto;
 	}
     
