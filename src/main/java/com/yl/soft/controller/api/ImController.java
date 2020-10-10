@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.yl.soft.common.im.ImOperator;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.base.BaseResult;
+import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbLiveBroadcast;
 import com.yl.soft.service.EhbLiveBroadcastService;
@@ -32,6 +33,10 @@ public class ImController extends BaseController {
 	private ImOperator imOperator;
 	@Autowired
 	private EhbLiveBroadcastService ehbLiveBroadcastService;
+	
+
+    @Autowired
+    private SessionState sessionState;
 
     @ApiOperation(value = "获取用户sig", notes = "获取sig用于腾讯im")
     @ApiImplicitParams({
@@ -42,7 +47,7 @@ public class ImController extends BaseController {
             @ApiResponse(code = 500, message = "未知异常,请联系管理员")})
     @GetMapping("/sig")
     public BaseResult<String> sig(String token) {
-        SessionUser sessionUser = new SessionUser();
+    	SessionUser sessionUser= sessionState.getCurrentUser(token);
         return ok2(imOperator.getUserSig(sessionUser.getId()+""));
     }
     
