@@ -22,7 +22,7 @@
 </head>
 
 <body id="niches">
-	<div class="g_niches-head">{{detailes.title}}<img src="images/g_10.png" alt=""></div>
+	<div class="g_niches-head">{{detailes.exhibitorname}}<img src="images/g_10.png" alt="" v-if="detailes.attestation==1"></div>
 	<div class="g_banner">
 		<img :src="bigImg" alt="" class="g_banner-big" />
 		<div class="g_banner-small">
