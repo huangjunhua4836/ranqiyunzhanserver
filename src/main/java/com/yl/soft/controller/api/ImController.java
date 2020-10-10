@@ -1,33 +1,19 @@
 package com.yl.soft.controller.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.yl.soft.common.im.ImOperator;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.base.BaseResult;
-import com.yl.soft.dto.base.ResultItem;
-import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
-import com.yl.soft.po.EhbAudience;
-import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbLiveBroadcast;
-import com.yl.soft.service.EhbAudienceService;
-import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.service.EhbLiveBroadcastService;
 
 import io.swagger.annotations.Api;
@@ -64,7 +50,7 @@ public class ImController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "登录标识",paramType = "query",required = true),
             @ApiImplicitParam(name = "liveid", value = "直播间id", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "gropName", value = "群组id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "gropName", value = "群组名字", required = true, paramType = "query"),
     })
     @ApiResponses({@ApiResponse(code = 0, message = "成功！"),
             @ApiResponse(code = -401, message = "请先登录"),
