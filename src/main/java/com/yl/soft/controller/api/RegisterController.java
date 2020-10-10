@@ -82,14 +82,16 @@ public class RegisterController extends BaseController {
 		if(ehbAudience == null){
             return setResultError("参展人没有注册！");
         }
-        if(!StringUtils.isEmpty(registerAudienceDto.getLabelid())){
-            List<Integer> labels = JSONArray.parseArray(registerAudienceDto.getLabelid(),Integer.class);
-            String temps = JSONArray.toJSONString(labels);
-            registerAudienceDto.setLabelid(temps);
-        }
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
         ehbAudience.setIsdel(false);
         ehbAudience.setUpdatetime(LocalDateTime.now());
+
+        //展商标签
+        if(registerAudienceDto.getLabelid().length > 0){
+            String temps = JSONArray.toJSONString(registerAudienceDto.getLabelid());
+            ehbAudience.setLabelid(temps);
+        }
+
         if(ehbAudienceService.updateById(ehbAudience)){
             return setResultSuccess();
         }else{
@@ -116,23 +118,25 @@ public class RegisterController extends BaseController {
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
         String randNum = redisService.get("I"+registerExhibitorDto.getMailbox());
         if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
-//            return setResultError("验证码错误");
+            return setResultError("验证码错误");
         }
         SessionUser sessionUser = sessionState.getCurrentUser(token);
         EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
         if(ehbAudience == null){
             return setResultError("参展商没有注册！");
         }
-        if(!StringUtils.isEmpty(registerExhibitorDto.getLabelid())){
-            List<Integer> labels = JSONArray.parseArray(registerExhibitorDto.getLabelid(),Integer.class);
-            String temps = JSONArray.toJSONString(labels);
-            registerExhibitorDto.setLabelid(temps);
-        }
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
         ehbExhibitor.setIsdel(false);
         ehbExhibitor.setUpdatetime(LocalDateTime.now());
         ehbExhibitor.setState(2);//审核中
+
+        //展商标签
+        if(registerExhibitorDto.getLabelid().length > 0){
+            String temps = JSONArray.toJSONString(registerExhibitorDto.getLabelid());
+            ehbExhibitor.setLabelid(temps);
+        }
+
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return setResultSuccess();
         }else{

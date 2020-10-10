@@ -1,23 +1,16 @@
 package com.yl.soft.controller.plantform;
 
 
-import com.yl.soft.common.constants.BaseApiConstants;
-import com.yl.soft.common.unified.entity.BaseResponse;
-import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
-import com.yl.soft.po.EhbAbout;
 import com.yl.soft.po.EhbAboutus;
-import com.yl.soft.service.EhbAboutService;
 import com.yl.soft.service.EhbAboutusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -39,13 +32,10 @@ public class AboutUsController extends BaseController {
     }
 
     @GetMapping("/input")
-    public String input(String id, String type, ModelMap modelMap) {
+    public String input(ModelMap modelMap) {
         EhbAboutus ehbAboutus = new EhbAboutus();
-        if("add".equals(type)){
+        List<EhbAboutus> ehbAboutuses = ehbAboutusService.list();
 
-        }else if("update".equals(type)){
-            ehbAboutus = ehbAboutusService.getById(id);
-        }
         modelMap.put("ehbAboutus",ehbAboutus);
         return "aboutus/input";
     }
