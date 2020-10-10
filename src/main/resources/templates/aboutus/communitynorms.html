@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::headr('关于我们')"></head>
+<body>
+<div class="layui-container">
+    <div class="layui-row" style="margin-top: 10px;">
+        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+            <form class="layui-form" th:object="${ehbAboutus}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">社区规范</label>
+                    <div class="layui-input-block">
+                        <textarea id="communitynorms" required  lay-verify="required" th:field="*{communitynorms}" style="width:700px;height:300px;" class="layui-textarea" >
+                        </textarea>
+                    </div>
+                </div>
+                <input th:field="*{id}" type="hidden"/>
+                <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" th:href="@{/static/tools/kindeditor/themes/default/default.css}" />
+<link rel="stylesheet" th:href="@{/static/tools/kindeditor/plugins/code/prettify.css}" />
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/kindeditor-all-min.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/lang/zh-CN.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/kindeditor/plugins/code/prettify.js}"></script>
+<script charset="utf-8" th:src="@{/static/tools/jquery-3.4.1.min.js}"></script>
+
+<script>
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#communitynorms',{
+            // 上传图片的名字
+            filePostName  : "uploadFile",
+            // 配置上传路径
+            uploadJson : '/platform/about/uploadImg?remarks=3',
+            allowFileManager : true,
+            allowPreviewEmoticons: true,
+            allowImageUpload: true,
+            // 设置上传文件类型
+            dir : "image",
+            afterCreate: function () {//创建完成之后回显
+                this.sync();
+            },
+            afterChange: function () {//内容改动之后回显
+                this.sync();
+            },
+            items:[
+                '|', 'undo', 'redo', '|', 'preview', 'print', 'cut', 'copy', 'paste',
+                'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+                'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+                'anchor', 'link', 'unlink', '|', 'about'
+            ]
+        });
+    });
+
+    layui.use('core', function(){
+        var form = layui.form,
+            core = layui.core,
+            $ = layui.jquery;
+
+        form.on('submit(submitFrom)', function(data){
+            var resultData = core.ajax('/platform/aboutus/saveOrUpdate',false,'POST',data.field);
+            if(resultData!=false){
+                parent.layer.msg('操作成功',core.showtime);
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            }
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+</script>
+</body>
+</html>

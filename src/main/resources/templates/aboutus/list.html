@@ -25,14 +25,13 @@
         //处理属性 为 lay-active 的所有元素事件
         util.event('lay-event', {
             communitynorms: function(){
-                alert('触发了事件1');
-                core.openIframeDialog('设置','/platform/about/input?type=add',['100%', '440px'],false,null);
+                core.openIframeDialog('社区规范设置','/platform/aboutus/input?type=communitynorms',['100%', '440px'],false,null);
             }
             ,privacyclause: function(){
-                alert('触发了事件2');
+                core.openIframeDialog('隐私条款设置','/platform/aboutus/input?type=privacyclause',['100%', '440px'],false,null);
             }
             ,useragr: function(){
-                alert('触发了事件3');
+                core.openIframeDialog('用户协议设置','/platform/aboutus/input?type=useragr',['100%', '440px'],false,null);
             }
         });
     });

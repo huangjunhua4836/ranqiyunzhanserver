@@ -1,6 +1,8 @@
 package com.yl.soft.controller.plantform;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.po.EhbAboutus;
 import com.yl.soft.service.EhbAboutusService;
@@ -8,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * <p>
@@ -32,46 +34,40 @@ public class AboutUsController extends BaseController {
     }
 
     @GetMapping("/input")
-    public String input(ModelMap modelMap) {
-        EhbAboutus ehbAboutus = new EhbAboutus();
-        List<EhbAboutus> ehbAboutuses = ehbAboutusService.list();
-
-        modelMap.put("ehbAboutus",ehbAboutus);
-        return "aboutus/input";
+    public String input(String type,ModelMap modelMap) {
+        QueryWrapper<EhbAboutus> ehbAboutusQueryWrapper = new QueryWrapper<>();
+        if("communitynorms".equals(type)){
+            ehbAboutusQueryWrapper.select("id","communitynorms");
+            EhbAboutus ehbAboutus = ehbAboutusService.getOne(ehbAboutusQueryWrapper);
+            modelMap.put("ehbAboutus",ehbAboutus);
+            return "aboutus/communitynorms";
+        }else if("privacyclause".equals(type)){
+            ehbAboutusQueryWrapper.select("id","privacyclause");
+            EhbAboutus ehbAboutus = ehbAboutusService.getOne(ehbAboutusQueryWrapper);
+            modelMap.put("ehbAboutus",ehbAboutus);
+            return "aboutus/privacyclause";
+        }else if("useragr".equals(type)){
+            ehbAboutusQueryWrapper.select("id","useragr");
+            EhbAboutus ehbAboutus = ehbAboutusService.getOne(ehbAboutusQueryWrapper);
+            modelMap.put("ehbAboutus",ehbAboutus);
+            return "aboutus/useragr";
+        }else{
+            return "";
+        }
     }
 
-//    /**
-//     * 添加或者修改
-//     * @param ehbAbout
-//     * @return
-//     */
-//    @PostMapping("/saveOrUpdate")
-//    @ResponseBody
-//    public BaseResponse saveOrUpdate(EhbAbout ehbAbout) {
-//        if(StringUtils.isEmpty(ehbAbout.getId())){
-//            ehbAbout.setCreatetime(LocalDateTime.now());
-//        }else{
-//        }
-//        if(ehbAboutService.saveOrUpdate(ehbAbout)){
-//            return setResultSuccess();
-//        }else{
-//            return setResultError("操作失败！");
-//        }
-//    }
-//
-//    /**
-//     * 删除关于
-//     * @return
-//     */
-//    @PostMapping("/delete")
-//    @ResponseBody
-//    public BaseResponse delete(String id) {
-//        System.out.println("ok");
-//        if(StringUtils.isEmpty(id)){
-//            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
-//                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
-//        }
-//        ehbAboutService.removeById(id);
-//        return setResultSuccess();
-//    }
+    /**
+     * 添加或者修改
+     * @param ehbAboutus
+     * @return
+     */
+    @PostMapping("/saveOrUpdate")
+    @ResponseBody
+    public BaseResponse saveOrUpdate(EhbAboutus ehbAboutus) {
+        if(ehbAboutusService.saveOrUpdate(ehbAboutus)){
+            return setResultSuccess();
+        }else{
+            return setResultError("操作失败！");
+        }
+    }
 }
