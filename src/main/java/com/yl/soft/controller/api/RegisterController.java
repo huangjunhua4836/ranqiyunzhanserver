@@ -1,10 +1,10 @@
 package com.yl.soft.controller.api;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.redis.RedisService;
-import com.yl.soft.common.util.ProductNumUtil;
 import com.yl.soft.common.util.SendEmail;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
@@ -15,7 +15,6 @@ import com.yl.soft.dto.app.LabelDto;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbAudience;
-import com.yl.soft.po.EhbDataUpload;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbLabel;
 import com.yl.soft.service.CrmFileService;
@@ -83,6 +82,11 @@ public class RegisterController extends BaseController {
 		if(ehbAudience == null){
             return setResultError("参展人没有注册！");
         }
+        if(!StringUtils.isEmpty(registerAudienceDto.getLabelid())){
+            List<Integer> labels = JSONArray.parseArray(registerAudienceDto.getLabelid(),Integer.class);
+            String temps = JSONArray.toJSONString(labels);
+            registerAudienceDto.setLabelid(temps);
+        }
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
         ehbAudience.setIsdel(false);
         ehbAudience.setUpdatetime(LocalDateTime.now());
@@ -112,12 +116,17 @@ public class RegisterController extends BaseController {
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
         String randNum = redisService.get("I"+registerExhibitorDto.getMailbox());
         if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
-            return setResultError("验证码错误");
+//            return setResultError("验证码错误");
         }
         SessionUser sessionUser = sessionState.getCurrentUser(token);
         EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
         if(ehbAudience == null){
             return setResultError("参展商没有注册！");
+        }
+        if(!StringUtils.isEmpty(registerExhibitorDto.getLabelid())){
+            List<Integer> labels = JSONArray.parseArray(registerExhibitorDto.getLabelid(),Integer.class);
+            String temps = JSONArray.toJSONString(labels);
+            registerExhibitorDto.setLabelid(temps);
         }
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);

@@ -8,6 +8,7 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.po.EhbAbout;
 import com.yl.soft.po.EhbAboutus;
 import com.yl.soft.service.EhbAboutService;
+import com.yl.soft.service.EhbAboutusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,25 +31,25 @@ import java.time.LocalDateTime;
 @RequestMapping("/platform/aboutus")
 public class AboutUsController extends BaseController {
     @Autowired
-    public EhbAboutService ehbAboutService;
+    public EhbAboutusService ehbAboutusService;
 
     @GetMapping("/list")
     public String list() {
         return "aboutus/list";
     }
 
-//    @GetMapping("/input")
-//    public String input(String id, String type, ModelMap modelMap) {
-//        EhbAboutus ehbAboutus = new EhbAboutus();3333
-//        if("add".equals(type)){
-//
-//        }else if("update".equals(type)){
-//            ehbAbout = ehbAboutService.getById(id);
-//        }
-//        modelMap.put("ehbAbout",ehbAbout);
-//        return "aboutus/input";
-//    }
-//
+    @GetMapping("/input")
+    public String input(String id, String type, ModelMap modelMap) {
+        EhbAboutus ehbAboutus = new EhbAboutus();
+        if("add".equals(type)){
+
+        }else if("update".equals(type)){
+            ehbAboutus = ehbAboutusService.getById(id);
+        }
+        modelMap.put("ehbAboutus",ehbAboutus);
+        return "aboutus/input";
+    }
+
 //    /**
 //     * 添加或者修改
 //     * @param ehbAbout
