@@ -21,45 +21,99 @@
 <title>参展预登记</title>
 </head>
 
-<body>
+<body id="preregist">
 	<div class="g_preregistration-form">
 		<ul>
 			<li>
 				<p>公司名称</p>
-				<input type="text" class="g_txt-preregistration" placeholder="请输入企业名称" />
+				<input type="text" class="g_txt-preregistration" placeholder="请输入企业名称" v-model="form.compname" />
 			</li>
 			<li>
 				<p>联系人</p>
-				<input type="text" class="g_txt-preregistration" placeholder="联系人姓名" />
+				<input type="text" class="g_txt-preregistration" placeholder="联系人姓名" v-model="form.name" />
 			</li>
 			<li>
 				<p>职位</p>
-				<input type="text" class="g_txt-preregistration" placeholder="请输入您的职位" />
+				<input type="text" class="g_txt-preregistration" placeholder="请输入您的职位" v-model="form.position" />
 			</li>
 			<li>
 				<p>称谓</p>
 				<div class="g_form-radios">
-					<input type="radio" name="sex" class="yradio g_rdo-sex" />女士
-					<input type="radio" name="sex" class="yradio g_rdo-sex" />先生
+					<input type="radio" name="sex" class="yradio g_rdo-sex" value="1" v-model="form.appellation" />女士
+					<input type="radio" name="sex" class="yradio g_rdo-sex" value="0" v-model="form.appellation" />先生
 				</div>
 			</li>
 			<li>
 				<p>联系方式</p>
-				<input type="text" class="g_txt-preregistration" placeholder="请输入您的职位" />
+				<input type="text" class="g_txt-preregistration" placeholder="请输入您的联系方式" v-model="form.phone" />
 			</li>
 			<li>
 				<p>预期展位面积</p>
 				<div class="g_form-areas">
-					<input type="text" class="g_txt-area" placeholder="9" />平米　~<input type="text" class="g_txt-area" placeholder="36" />平米
+					<input type="text" class="g_txt-area" placeholder="9" v-model="form.min" />平米　~<input type="text" class="g_txt-area" placeholder="36" v-model="form.max" />平米
 				</div>
 			</li>
 		</ul>
 		<p class="g_notes">注：此次登记只作为平面图规划需要</p>
 		<div class="g_remark">
 			<p>其他备注</p>
-			<textarea placeholder="">50 字以内（选填） </textarea>
+			<textarea placeholder="50 字以内（选填） " v-model="form.remarks"></textarea>
 		</div>
-		<a href="javascript:void(0)" title="" class="g_btn-sub">提 交</a>
+		<a href="javascript:void(0)" title="" class="g_btn-sub" @click="sendInfoFn">提 交</a>
 	</div>
+	<script>
+		
+		
+		
+		var token="";
+		
+		if(getUrlParamURLys("token")){
+			token=getUrlParamURLys("token");
+		}
+		
+		var preregistData={};
+		preregistData.form={
+			compname:"",
+			appellation:1,
+			name:"",
+			phone:"",
+			position:"",
+			remarks:"",
+			showarea:"",
+			min:"",
+			max:""
+		};
+		
+		
+		
+		//控制器
+		new Vue({
+			el:'#preregist',
+			data:preregistData,
+			methods:{
+				sendInfoFn:function(){
+					var _this=this;
+					var sendObj=_this.form;
+					sendObj.showarea=_this.form.min+","+_this.form.max;
+					delete sendObj.min;
+					delete sendObj.max;
+					sendObj.token=token;
+					call_net("POST", "/api/addregistration",sendObj, function(data){
+						if(data.code==200){
+							window.location.href="successFn()";
+						}else if(data.code==401){
+							window.location.href="login()";
+						}else{
+							console.log(data.desc)
+						}
+					}, function(error){})
+				}
+			},
+			filters:{
+				
+			}
+		});
+		
+	</script>
 </body>
 </html>

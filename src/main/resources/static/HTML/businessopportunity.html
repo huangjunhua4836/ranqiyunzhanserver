@@ -70,7 +70,7 @@
 		<div class="g_comment-head">更多商机</div>
 		<div class="g_niches-list">
 			<ul>
-				<li v-for="li in hotList">
+				<li v-for="li in hotList" @click="linkFn(li.id)">
 					<a href="javascript:void(0)" title="">
 						<img :src="li.picture" alt="">
 						<div class="g_niches-div">
@@ -121,7 +121,7 @@
 					var jsonData=data.data;
 					if(jsonData.picture){
 						jsonData.picture=jsonData.picture.split(",");
-						productData.bigImg=jsonData.picture;
+						shangjiData.bigImg=jsonData.picture;
 					}else{
 						jsonData.picture=[];
 						productData.bigImg="";
@@ -294,6 +294,10 @@
 				//分享
 				shareFn:function(){
 					window.location.href="share("+sid+","+token+")";
+				},
+				//热门商机跳转
+				linkFn:function(id){
+					window.location.href="businessopportunity.html?token="+token+"&id="+id;
 				}
 			},
 			filters:{

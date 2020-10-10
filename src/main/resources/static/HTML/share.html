@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Pragma" content="no-cache">
+<link rel="stylesheet" type="text/css" href="css/base.css" media="all">
+<link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+<link rel="stylesheet" type="text/css" href="css/Yform.css" media="all">
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/Yeffect.js"></script>
+<script type="text/javascript" src="js/Yform.js"></script>
+<script type="text/javascript" src="js/ind.js"></script>
+<title>中国城市燃气协会</title>
+</head>
+
+<body id="share">
+	<div class="g_share-head">
+		<a href="javascript:void(0)" title="">app下载</a>
+	</div>
+	<div class="g_share-banner" v-if="detailes.bannerList.length>0">
+		<ul>
+			<li v-for="li in detailes.bannerList"><img :src="li" alt=""></li>
+		</ul>
+		<div class="g_sharebanner-kz">
+			<a href="javascript:void(0)" title="" v-for="a in detailes.bannerList"></a>
+		</div>
+	</div>
+	<div class="g_share-article">
+		<div class="g_article-head">
+			<img :src="detailes.logo" alt="">
+			<div class="g_article-div">
+				<p>{{detailes.enterprisename}}<img src="images/g_10.png" alt="" v-if="detailes.state==1"></p>
+				<span v-html="detailes.boothno"></span>
+			</div>
+		</div>
+		<div class="g_share-content">{{detailes.describes}}</div>
+		<a href="javascript:void(0)" title="" class="g_btn-zk">展开</a>
+	</div>
+	<div class="g_share-hsk">
+		<div class="g_hsk-head">
+			<b>展位号：</b>
+			<span v-html="detailes.boothno"></span>
+			<span v-if="detailes.halurl">虚拟展厅</span>
+			<span v-if="detailes.floorplan">展位效果图</span>
+		</div>
+		<div class="g_hsk-body">
+			电话：{{detailes.tel}}<br><br>
+			邮箱：{{detailes.mailbox}}<br><br>
+			公司主页：{{detailes.website}}<br><br>
+			地址：{{detailes.address}}
+		</div>
+		<div class="g_hsk-body">
+			<iframe :src="detailes.halurl"></iframe>
+		</div>
+		<div class="g_hsk-body"><img :src="detailes.floorplan" alt=""></div>
+	</div>
+	<a href="javascript:void(0)" title="" class="g_btn-sc">
+		<img src="images/g_14.png" alt="">
+	</a>
+	<script>
+		
+		var cid="";
+		
+		if(getUrlParamURLys("id")){
+			cid=getUrlParamURLys("id");
+		}
+		
+		
+		
+		var aboutData={};
+		aboutData.detailes={};
+		
+		//获取数据
+		getDetailesFn()
+		function getDetailesFn(){
+			var compObj={};
+			compObj.id=cid;
+			call_net("POST", "/fn/getComp",compObj, function(data){
+				if(data.code==200){
+					var jsonData=data.data;
+					if(jsonData.bannerList){
+						jsonData.bannerList=jsonData.bannerList.split(",");
+					}else{
+						jsonData.bannerList=[];
+					}
+					aboutData.detailes=jsonData;
+					if(jsonData.bannerList.length>0){
+						setTimeout(function(){
+							Yeffect.mobileBanner(".g_share-banner ul",".g_share-banner ul li",".g_sharebanner-kz a","","","g_sharebanner-dqys",5000,500,"easeInOutSine");
+						},300)
+					}
+					setTimeout(function(){
+						console.log($(".g_share-content").height())
+						if($(".g_share-content").height()>75){
+							$(".g_share-content").height("1.5rem");
+						}else{
+							$(".g_btn-zk").hide();
+						}
+					},300)
+				}else{
+					console.log(data.desc)
+				}
+			}, function(error){})	
+		}
+		
+		$(document).on("click",".g_hsk-head span",function(){
+			$(".g_hsk-body").hide();
+			$(".g_hsk-body").eq($(this).index()-1).show();
+		})
+		$(document).on("click",".g_btn-zk",function(){
+			if($(this).hasClass("g_btn-sq")){
+				$(this).html("展开");
+				$(this).removeClass("g_btn-sq");
+				$(".g_share-content").height("1.5rem");
+			}else{
+				$(this).html("收起");
+				$(this).addClass("g_btn-sq");
+				$(".g_share-content").height("auto");
+			}
+		})
+		
+	
+		
+		//控制器
+		new Vue({
+			el:'#share',
+			data:aboutData,
+			methods:{
+				
+			},
+			filters:{
+				
+			}
+		});
+	</script>
+</body>
+</html>
