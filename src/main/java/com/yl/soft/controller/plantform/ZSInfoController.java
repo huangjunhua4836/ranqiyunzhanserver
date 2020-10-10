@@ -126,7 +126,7 @@ public class ZSInfoController extends BaseController {
             exhibitorDto.setName(ehbExhibitor.getEnterprisename());
             exhibitorDto.setLogo(ehbExhibitor.getLogo());
             exhibitorDto.setBoothno(ehbExhibitor.getBoothno());
-            if(ehbExhibitor.getState() == 0){//待审核
+            if(ehbExhibitor.getState() == 3){//审核不通过
                 redisService.setRemove(firstWord,JSONObject.toJSONString(exhibitorDto));
             }else if(ehbExhibitor.getState() == 1){//已审核
                 redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
@@ -148,6 +148,7 @@ public class ZSInfoController extends BaseController {
             ehbAudience.setCreateuser(1);
             ehbAudience.setPhone(ehbExhibitor.getPhone());
             ehbAudience.setPassword(ehbAudienceService.encryptPassword("123456"));
+            ehbAudience.setBopie(one.getId());
             ehbAudienceService.saveOrUpdate(ehbAudience);
             return setResultSuccess();
         }else{

@@ -95,4 +95,7 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "认证时间")
     private LocalDateTime certificationtime;
+
+    @ApiModelProperty(value = "认证失败原因")
+    private String failreason;
 }
