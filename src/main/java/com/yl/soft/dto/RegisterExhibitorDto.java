@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="参展商信息")
-public class RegisterExhibitorDto {
+public class RegisterExhibitorDto implements Serializable {
     @ApiModelProperty(value = "所属企业",required = true)
     private String enterprisename;
     @ApiModelProperty(value = "管理员姓名",required = true)
