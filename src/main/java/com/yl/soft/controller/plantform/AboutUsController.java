@@ -38,16 +38,19 @@ public class AboutUsController extends BaseController {
         QueryWrapper<EhbAboutus> ehbAboutusQueryWrapper = new QueryWrapper<>();
         if("communitynorms".equals(type)){
             ehbAboutusQueryWrapper.select("id","communitynorms");
+            ehbAboutusQueryWrapper.last("limit 1");
             EhbAboutus ehbAboutus = ehbAboutusService.getOne(ehbAboutusQueryWrapper);
             modelMap.put("ehbAboutus",ehbAboutus);
             return "aboutus/communitynorms";
         }else if("privacyclause".equals(type)){
             ehbAboutusQueryWrapper.select("id","privacyclause");
+            ehbAboutusQueryWrapper.last("limit 1");
             EhbAboutus ehbAboutus = ehbAboutusService.getOne(ehbAboutusQueryWrapper);
             modelMap.put("ehbAboutus",ehbAboutus);
             return "aboutus/privacyclause";
         }else if("useragr".equals(type)){
             ehbAboutusQueryWrapper.select("id","useragr");
+            ehbAboutusQueryWrapper.last("limit 1");
             EhbAboutus ehbAboutus = ehbAboutusService.getOne(ehbAboutusQueryWrapper);
             modelMap.put("ehbAboutus",ehbAboutus);
             return "aboutus/useragr";

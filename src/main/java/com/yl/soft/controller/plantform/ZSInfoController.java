@@ -139,6 +139,7 @@ public class ZSInfoController extends BaseController {
             ehbExhibitorQueryWrapper.orderByDesc("createtime");
             ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
             ehbExhibitorQueryWrapper.eq("enterprisename",ehbExhibitor.getEnterprisename());
+            ehbExhibitorQueryWrapper.last("limit 1");
             EhbExhibitor one = ehbExhibitorService.getOne(ehbExhibitorQueryWrapper);
             //添加展商用户
             EhbAudience ehbAudience = new EhbAudience();
