@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.LogUtils;
 import com.yl.soft.common.util.SendEmail;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
@@ -119,7 +120,7 @@ public class RegisterController extends BaseController {
     public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
         List<String> list = registerExhibitorDto.getLabelid();
         for(String s: list){
-            System.out.println("*************************"+s);
+            LogUtils.writeErrorLog(this.getClass(),"*************************"+s,new Exception("xxxxx"));
         }
 
         String randNum = redisService.get("I"+registerExhibitorDto.getMailbox());
