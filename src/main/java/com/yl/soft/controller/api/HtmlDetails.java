@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.util.BaseConv;
+import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbOpportunityDto;
 import com.yl.soft.dto.app.ArticleDto;
@@ -126,12 +127,14 @@ public class HtmlDetails extends BaseController {
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(ehbOpportunity.getExhibitorid());
 		ehbOpportunityDto.setExhibitorname(ehbExhibitor.getEnterprisename());
 		ehbOpportunityDto.setAttestation(ehbExhibitor.getState());
-		QueryWrapper<EhbLabel> ehbLabelQueryWrapper = new QueryWrapper<>();
-		ehbLabelQueryWrapper.in("id",JSONArray.parseArray(ehbExhibitor.getLabelid(),Integer.class));
-		List<EhbLabel> ehbLabels = ehbLabelService.list(ehbLabelQueryWrapper);
 		List<String> labelList = new ArrayList<>();
-		for(EhbLabel ehbLabel : ehbLabels){
-			labelList.add(ehbLabel.getName());
+		if(!StringUtils.isEmpty(ehbExhibitor.getLabelid())){
+			QueryWrapper<EhbLabel> ehbLabelQueryWrapper = new QueryWrapper<>();
+			ehbLabelQueryWrapper.in(!StringUtils.isEmpty(ehbExhibitor.getLabelid()),"id",JSONArray.parseArray(ehbExhibitor.getLabelid(),Integer.class));
+			List<EhbLabel> ehbLabels = ehbLabelService.list(ehbLabelQueryWrapper);
+			for(EhbLabel ehbLabel : ehbLabels){
+				labelList.add(ehbLabel.getName());
+			}
 		}
 		OpportunityDetailsDto opportunityDetailsDto = new OpportunityDetailsDto();
 		BeanUtil.copyProperties(ehbOpportunityDto,opportunityDetailsDto);
