@@ -34,9 +34,13 @@ layui.use('core', function(){
                 ,{field: 'state', title: '审核状态',
                     templet: function(d){
                         if(d.state == '0'){
-                            return '未审核';
+                            return '未认证';
                         }else if(d.state == '1'){
-                            return '已审核';
+                            return '审核通过';
+                        } if(d.state == '2'){
+                            return '审核中';
+                        } if(d.state == '3'){
+                            return '审核失败';
                         }else{
                             return '错误状态';
                         }

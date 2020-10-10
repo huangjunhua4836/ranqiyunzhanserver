@@ -65,8 +65,8 @@
                         <div class="layui-input-block">
                             <select name="state" required  lay-verify="required">
                                 <option value="">请选择</option>
-                                <option value="0" th:selected="${ehbExhibitor.state == 0}">待审核</option>
-                                <option value="1" th:selected="${ehbExhibitor.state == 1}">已审核</option>
+                                <option value="0" th:selected="${ehbExhibitor.state == 0}">审核不通过</option>
+                                <option value="1" th:selected="${ehbExhibitor.state == 1}">审核通过</option>
                             </select>
                         </div>
                     </div>
