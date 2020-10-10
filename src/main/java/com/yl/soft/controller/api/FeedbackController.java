@@ -60,7 +60,7 @@ public class FeedbackController extends BaseController {
 
 	@ApiOperation(value = "提交反馈", notes = "提交反馈信息" , tags = {"C端模块-H5详情"})
 	@ApiImplicitParams({ @ApiImplicitParam(name = "content", value = "反馈内容", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "media", value = "图片地址", required = false, paramType = "query"),
+			@ApiImplicitParam(name = "media", value = "图片地址（多个图片地址逗号隔开）", required = false, paramType = "query"),
 			@ApiImplicitParam(name = "concat", value = "联系方式", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "token", value = "登陆标识", required = false, paramType = "query") })
 	@ApiResponses({ @ApiResponse(code = -101, message = "请输入反馈内容"),

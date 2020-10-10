@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="common::headr('关于我们')"></head>
+    <body>
+            <div style="margin-top: 200px;margin-left: 300px;">
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-lg" lay-event="communitynorms">社区规范</button>
+                <button type="button" class="layui-btn layui-btn-lg" lay-event="privacyclause">隐私条款</button>
+                <button type="button" class="layui-btn layui-btn-lg layui-btn-normal" lay-event="useragr">用户协议</button>
+            </div>
+    </body>
+</html>
+
+<script>
+    /**
+     * 关于表
+     */
+    layui.use('core', function(){
+        var table = layui.table;
+        var util = layui.util;
+        var laydate = layui.laydate;
+        var form = layui.form;
+        var core = layui.core;
+        var $ = layui.jquery;
+
+        //处理属性 为 lay-active 的所有元素事件
+        util.event('lay-event', {
+            communitynorms: function(){
+                alert('触发了事件1');
+                core.openIframeDialog('添加','/platform/about/input?type=add',['100%', '440px'],false,initTable);
+            }
+            ,privacyclause: function(){
+                alert('触发了事件2');
+            }
+            ,useragr: function(){
+                alert('触发了事件3');
+            }
+        });
+    });
+</script>
