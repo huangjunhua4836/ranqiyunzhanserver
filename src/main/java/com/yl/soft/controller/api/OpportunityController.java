@@ -88,15 +88,17 @@ public class OpportunityController extends BaseController {
         }
         Collections.shuffle(advertisingDtos);
 
-        OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
-        opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
-        opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
-        opportunityAndAdvertisingDto2.setAdvertisingposition(advertisingDtos.get(0).getPosition());
-        opportunityAndAdvertisingDto2.setAdvertisingsort(advertisingDtos.get(0).getSort());
-        opportunityAndAdvertisingDto2.setAdvertisingtitle(advertisingDtos.get(0).getTitle());
-        opportunityAndAdvertisingDto2.setAdvertisingtype(advertisingDtos.get(0).getType());
-        opportunityAndAdvertisingDto2.setAdvertisingurl(advertisingDtos.get(0).getUrl());
-        opportunityAndAdvertisingDto2s.add(opportunityAndAdvertisingDto2);
+        if(!advertisingDtos.isEmpty()) {
+            OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
+            opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
+            opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
+            opportunityAndAdvertisingDto2.setAdvertisingposition(advertisingDtos.get(0).getPosition());
+            opportunityAndAdvertisingDto2.setAdvertisingsort(advertisingDtos.get(0).getSort());
+            opportunityAndAdvertisingDto2.setAdvertisingtitle(advertisingDtos.get(0).getTitle());
+            opportunityAndAdvertisingDto2.setAdvertisingtype(advertisingDtos.get(0).getType());
+            opportunityAndAdvertisingDto2.setAdvertisingurl(advertisingDtos.get(0).getUrl());
+            opportunityAndAdvertisingDto2s.add(opportunityAndAdvertisingDto2);
+        }
 
         return setResultSuccess(getBasePage(ehbOpportunities,opportunityAndAdvertisingDto2s));
     }
@@ -149,15 +151,17 @@ public class OpportunityController extends BaseController {
         }
         Collections.shuffle(advertisingDtos);
 
-        OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
-        opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
-        opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
-        opportunityAndAdvertisingDto2.setAdvertisingposition(advertisingDtos.get(0).getPosition());
-        opportunityAndAdvertisingDto2.setAdvertisingsort(advertisingDtos.get(0).getSort());
-        opportunityAndAdvertisingDto2.setAdvertisingtitle(advertisingDtos.get(0).getTitle());
-        opportunityAndAdvertisingDto2.setAdvertisingtype(advertisingDtos.get(0).getType());
-        opportunityAndAdvertisingDto2.setAdvertisingurl(advertisingDtos.get(0).getUrl());
-        opportunityAndAdvertisingDto2s.add(opportunityAndAdvertisingDto2);
+        if(!advertisingDtos.isEmpty()) {
+            OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
+            opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
+            opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
+            opportunityAndAdvertisingDto2.setAdvertisingposition(advertisingDtos.get(0).getPosition());
+            opportunityAndAdvertisingDto2.setAdvertisingsort(advertisingDtos.get(0).getSort());
+            opportunityAndAdvertisingDto2.setAdvertisingtitle(advertisingDtos.get(0).getTitle());
+            opportunityAndAdvertisingDto2.setAdvertisingtype(advertisingDtos.get(0).getType());
+            opportunityAndAdvertisingDto2.setAdvertisingurl(advertisingDtos.get(0).getUrl());
+            opportunityAndAdvertisingDto2s.add(opportunityAndAdvertisingDto2);
+        }
 
         return setResultSuccess(getBasePage(ehbOpportunities,opportunityAndAdvertisingDto2s));
     }
