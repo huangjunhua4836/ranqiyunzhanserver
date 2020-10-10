@@ -63,5 +63,8 @@ public class EhbLiveBroadcastDto implements Serializable{/**
     
     @ApiModelProperty(value="主播公告")
     private String announcement;
+    
+    @ApiModelProperty(value="直播间弹幕聊天id")
+    private String gropid;
 
 }
