@@ -1,10 +1,12 @@
 package com.yl.soft.dto;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.yl.soft.common.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.alibaba.fastjson.JSONObject;
@@ -86,6 +88,9 @@ public class EhbOpportunityDto implements Serializable {
     @ApiModelProperty(value="当前我是否收藏企业0:否，1：是")
     private Integer isSCqy;
 
+	@ApiModelProperty(value = "发布时间")
+	private LocalDateTime releasetime;
+
 	public static EhbOpportunityDto of(EhbOpportunity ehbOpportunity, EhbExhibitor ehbExhibitor, Integer i,
 			Map<Integer, EhbLabel> map) {
 		EhbOpportunityDto ehbOpportunityDto = new EhbOpportunityDto();
@@ -105,6 +110,22 @@ public class EhbOpportunityDto implements Serializable {
 		// 企业认证（1：以认证，2：未认证  3：审核中 4：审核失败）
 		ehbOpportunityDto.setAttestation(ehbExhibitor.getState());
 		ehbOpportunityDto.setBoothno(ehbExhibitor.getBoothno());
+		if(StringUtils.isEmpty(ehbOpportunityDto.getIsSCqy())){
+			ehbOpportunityDto.setIsSCqy(0);
+		}
+		if(StringUtils.isEmpty(ehbOpportunityDto.getIsSCsj())){
+			ehbOpportunityDto.setIsSCsj(0);
+		}
+		if(StringUtils.isEmpty(ehbOpportunityDto.getIsSCsp())){
+			ehbOpportunityDto.setIsSCsp(0);
+		}
+		if(StringUtils.isEmpty(ehbOpportunityDto.getIsSjZan())){
+			ehbOpportunityDto.setIsSjZan(0);
+		}
+		if(StringUtils.isEmpty(ehbOpportunityDto.getIsSpZan())){
+			ehbOpportunityDto.setIsSpZan(0);
+		}
+		ehbOpportunityDto.setReleasetime(ehbOpportunity.getReleasetime());
 		return ehbOpportunityDto;
 	}
 }
