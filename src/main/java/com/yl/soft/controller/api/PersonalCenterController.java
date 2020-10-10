@@ -1,6 +1,7 @@
 package com.yl.soft.controller.api;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.controller.base.BaseController;
@@ -242,9 +244,9 @@ public class PersonalCenterController extends BaseController {
 			@ApiImplicitParam(name = "title", value = "请输入商品名称标题", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "content", value = "请详细描述商品介绍", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "type", value = "类型（1-商机  2-商品）", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "label", value = "请选择标签  标签id[1,2]", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "label", value = "请选择标签  标签id用英文逗号分隔 1,2,3...", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "id", value="商机/商品id",required = false, paramType = "query"),
-			@ApiImplicitParam(name = "picture", value = "商品多图片上传['src1','src2'...]", required = true, paramType = "query"), })
+			@ApiImplicitParam(name = "picture", value = "商品多图片上传多张用印文逗号分隔 src1,src2", required = true, paramType = "query"), })
 	@PostMapping("/api/pushGoods")
 	public BaseResult pushGoods(String token, @NotBlank(message = "请添加一个正确的标签") String title,
 			@NotBlank(message = "请添加一个正确的内容") String content, @NotBlank(message = "请选择一个正确的标签") String label,
@@ -255,8 +257,10 @@ public class PersonalCenterController extends BaseController {
 			if(StringUtils.isEmpty(id)) {
 				ehbOpportunity.setTitle(title);
 				ehbOpportunity.setContent(content);
-				ehbOpportunity.setLabel(label);
-				ehbOpportunity.setPicture(picture);
+				List<Integer> ids = Arrays.asList(label.split(",")).stream().map(Integer::parseInt)
+						.collect(Collectors.toList());
+				ehbOpportunity.setLabel(JSON.toJSONString(ids));
+				ehbOpportunity.setPicture(JSON.toJSONString(picture.split(",")));
 				ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
 				ehbOpportunity.setCreatetime(LocalDateTime.now());
 				ehbOpportunity.setIsdel(false);
@@ -269,7 +273,9 @@ public class PersonalCenterController extends BaseController {
 				}
 				ehbOpportunity.setTitle(title);
 				ehbOpportunity.setContent(content);
-				ehbOpportunity.setLabel(label);
+				List<Integer> ids = Arrays.asList(label.split(",")).stream().map(Integer::parseInt)
+						.collect(Collectors.toList());
+				ehbOpportunity.setLabel(JSON.toJSONString(ids));
 				ehbOpportunity.setPicture(picture);
 				ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
 				ehbOpportunityService.updateById(ehbOpportunity);
