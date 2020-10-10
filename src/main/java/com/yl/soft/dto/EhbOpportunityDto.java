@@ -46,6 +46,9 @@ public class EhbOpportunityDto implements Serializable {
 
 	@ApiModelProperty(value = "企业名称")
 	private String exhibitorname;
+	
+    @ApiModelProperty(value = "展位号")
+    private String boothno;
 
 	@ApiModelProperty(value = "企业id")
 	private String exhibitorid;
@@ -101,6 +104,7 @@ public class EhbOpportunityDto implements Serializable {
 		}
 		// 企业认证（1：以认证，2：未认证  3：审核中 4：审核失败）
 		ehbOpportunityDto.setAttestation(i > 0 ? ehbExhibitor.getState() : 2);
+		ehbOpportunityDto.setBoothno(ehbExhibitor.getBoothno());
 		return ehbOpportunityDto;
 	}
 }
