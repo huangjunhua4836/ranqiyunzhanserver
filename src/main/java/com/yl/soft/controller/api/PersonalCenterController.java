@@ -260,7 +260,7 @@ public class PersonalCenterController extends BaseController {
 				List<Integer> ids = Arrays.asList(label.split(",")).stream().map(Integer::parseInt)
 						.collect(Collectors.toList());
 				ehbOpportunity.setLabel(JSON.toJSONString(ids));
-				ehbOpportunity.setPicture(JSON.toJSONString(picture.split(",")));
+				ehbOpportunity.setPicture(picture);
 				ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
 				ehbOpportunity.setCreatetime(LocalDateTime.now());
 				ehbOpportunity.setIsdel(false);
