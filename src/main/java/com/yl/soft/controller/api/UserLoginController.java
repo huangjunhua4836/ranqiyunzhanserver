@@ -81,6 +81,9 @@ public class UserLoginController extends BaseController {
 		sessionUser.setCode(200);
 		sessionUser.setId(user.getId());
 		BeanUtils.copyProperties(user, sessionUser);
+		if(sessionUser.getBopie() != null) {
+			sessionUser.setLabelid(ehbExhibitorService.getById(sessionUser.getBopie()).getLabelid());
+		}
 		sessionState.setSessionUser(token, sessionUser);
 		EhbAudiencedlDto userDto = UserConv.do2dto(user);
 		userDto.setPassword(pass);
