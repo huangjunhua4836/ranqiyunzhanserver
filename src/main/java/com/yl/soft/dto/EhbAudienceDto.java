@@ -26,4 +26,7 @@ public class EhbAudienceDto implements Serializable  {
 	@ApiModelProperty(value="绑定qq 0：未绑定，1：已绑定")
 	private String qqState;
 	
+	@ApiModelProperty(value="个人0:false,展商1:true")
+	private Boolean userType;
+	
 }
