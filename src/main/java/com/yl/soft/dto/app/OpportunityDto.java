@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -70,6 +71,9 @@ public class OpportunityDto implements Serializable {
 
     @ApiModelProperty(value = "企业名称")
     private String enterprisename;
+
+    @ApiModelProperty(value = "标签集合")
+    private List<String> labelList;
 
     public static OpportunityDto of(EhbOpportunity po) {
         OpportunityDto dto = new OpportunityDto();

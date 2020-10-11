@@ -14,10 +14,7 @@ import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.app.*;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
-import com.yl.soft.po.EhbArticle;
-import com.yl.soft.po.EhbBanner;
-import com.yl.soft.po.EhbGuest;
-import com.yl.soft.po.EhbOpportunity;
+import com.yl.soft.po.*;
 import com.yl.soft.service.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +40,8 @@ public class IndexController extends BaseController {
     private EhbBannerService ehbBannerService;
     @Autowired
     private EhbGuestService ehbGuestService;
+    @Autowired
+    private EhbLabelService ehbLabelService;
     @Autowired
     private SessionState sessionState;
     @Autowired
@@ -180,6 +179,7 @@ public class IndexController extends BaseController {
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
             ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "exhibitorid", value = "展商ID",  paramType = "query",required = true)
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -193,10 +193,12 @@ public class IndexController extends BaseController {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
-        SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
+        if(StringUtils.isEmpty(paramMap.get("exhibitorid"))){
+            return setResultError(403,"","展商ID不能为空！");
+        }
         QueryWrapper<EhbOpportunity> ehbOpportunityQueryWrapper = new QueryWrapper<>();
         ehbOpportunityQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        ehbOpportunityQueryWrapper.eq("createuser",appLoginDTO.getId());//必须是本企业
+        ehbOpportunityQueryWrapper.eq("exhibitorid",paramMap.get("exhibitorid"));
         ehbOpportunityQueryWrapper.eq("type",2);//类别是商品
         ehbOpportunityQueryWrapper.orderByDesc("releasetime");
 
@@ -205,7 +207,17 @@ public class IndexController extends BaseController {
         List<EhbOpportunity> ehbOpportunities = ehbOpportunityService.list(ehbOpportunityQueryWrapper);
         List<OpportunityDto> opportunityDtos = new ArrayList<>();
         for(EhbOpportunity ehbOpportunity : ehbOpportunities){
-            opportunityDtos.add(OpportunityDto.of(ehbOpportunity));
+            OpportunityDto opportunityDto = OpportunityDto.of(ehbOpportunity);
+            if(!StringUtils.isEmpty(opportunityDto.getLabel())){
+                QueryWrapper<EhbLabel> ehbLabelQueryWrapper = new QueryWrapper<>();
+                ehbLabelQueryWrapper.in("id",JSONArray.parseArray(opportunityDto.getLabel(),Integer.class));
+                ehbLabelQueryWrapper.in("isdel",CommonDict.CORRECT_STATE);
+                List<String> labelList = ehbLabelService.list(ehbLabelQueryWrapper).stream().map(i->{
+                    return i.getName();
+                }).collect(Collectors.toList());
+                opportunityDto.setLabelList(labelList);
+            }
+            opportunityDtos.add(opportunityDto);
         }
         Collections.shuffle(opportunityDtos);
         return setResultSuccess(getBasePage(ehbOpportunities,opportunityDtos));
