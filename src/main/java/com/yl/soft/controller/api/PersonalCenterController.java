@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.additional.update.impl.UpdateChainWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.controller.base.BaseController;
@@ -35,6 +39,7 @@ import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbAboutus;
+import com.yl.soft.po.EhbAdvertising;
 import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbDataUpload;
 import com.yl.soft.po.EhbExhibitor;
@@ -266,6 +271,7 @@ public class PersonalCenterController extends BaseController {
 				ehbOpportunity.setPicture(picture);
 				ehbOpportunity.setType(Integer.parseInt(type)); // 1-商机 2-商品
 				ehbOpportunity.setCreatetime(LocalDateTime.now());
+				ehbOpportunity.setReleasetime(LocalDateTime.now());
 				ehbOpportunity.setIsdel(false);
 				ehbOpportunity.setExhibitorid(ehbAudienceService.getById(sessionUser.getId()).getBopie());
 				ehbOpportunityService.save(ehbOpportunity);
@@ -284,6 +290,30 @@ public class PersonalCenterController extends BaseController {
 				ehbOpportunityService.updateById(ehbOpportunity);
 			}
 			return ok2(ehbOpportunity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return error(-900,e.getMessage());
+		}
+		
+		
+	}
+	
+	
+	@ApiOperation(value = "(删除)商品/商机", notes = "删除我发布的商品/商机")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "id", value="商机/商品id",required = false, paramType = "query"),
+	})
+	@PostMapping("/api/deleGoods")
+	public BaseResult deleGoods(String token,Integer id) {
+		try {
+			SessionUser sessionUser = sessionState.getCurrentUser(token);
+			if(sessionUser.getBopie()==null) {
+				return error(-101,"您没有权限删除该商品或商机");
+			}
+			EhbOpportunity ehbOpportunity=ehbOpportunityService.lambdaQuery().eq(EhbOpportunity::getExhibitorid, sessionUser.getBopie()).last("LIMIT 1").one();
+			ehbUseractionService.remove(new UpdateWrapper<EhbUseraction>().lambda().eq(EhbUseraction::getRelateid, ehbOpportunity.getId()).and(i-> i.eq(EhbUseraction::getType, 2).or().eq(EhbUseraction::getType, 4)));
+			ehbOpportunityService.removeById(ehbOpportunity.getId());
+			return ok2(ehbOpportunity.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return error(-900,e.getMessage());
@@ -474,6 +504,8 @@ public class PersonalCenterController extends BaseController {
 		}
 		return ok2();
 	}
+	
+	
 
 	@ApiOperation(value = "浏览", notes = "用户浏览行为")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
