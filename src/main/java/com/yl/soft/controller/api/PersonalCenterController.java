@@ -312,7 +312,7 @@ public class PersonalCenterController extends BaseController {
 			}
 			EhbOpportunity ehbOpportunity=ehbOpportunityService.lambdaQuery().eq(EhbOpportunity::getExhibitorid, sessionUser.getBopie()).last("LIMIT 1").one();
 			ehbUseractionService.remove(new UpdateWrapper<EhbUseraction>().lambda().eq(EhbUseraction::getRelateid, ehbOpportunity.getId()).and(i-> i.eq(EhbUseraction::getType, 2).or().eq(EhbUseraction::getType, 4)));
-			ehbOpportunityService.removeById(ehbOpportunity.getId());
+			ehbOpportunityService.removeById(id);
 			return ok2(ehbOpportunity.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
