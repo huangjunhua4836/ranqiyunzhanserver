@@ -130,6 +130,7 @@ public class ZSInfoController extends BaseController {
                 redisService.setRemove(firstWord,JSONObject.toJSONString(exhibitorDto));
             }else if(ehbExhibitor.getState() == 1){//已审核
                 redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
+                ehbExhibitor.setCertificationtime(LocalDateTime.now());//认证时间
             }
         }
         ehbExhibitor.setFirstletter(firstWord);//名称首字母设置
