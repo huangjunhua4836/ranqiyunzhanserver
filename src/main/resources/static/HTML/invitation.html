@@ -18,50 +18,37 @@
 <script type="text/javascript" src="js/Yeffect.js"></script>
 <script type="text/javascript" src="js/Yform.js"></script>
 <script type="text/javascript" src="js/ind.js"></script>
-<title>全部常见问题</title>
+<title>邀请好友</title>
 </head>
 
-<body id="quesstion">
-	<div class="g_quesstion-list">
-		<ul>
-			<li v-html="li in list" @click="toDetailesFn{li.id}">
-				<a href="javascript:void(0)" title="" v-html="li.content"></li>
-		</ul>
+<body>
+	<div class="g_invitation">
+		<img src="images/g_09.jpg" alt="">
+		<a href="javascript:void(0)" title="" class="g_btn-invitation">邀请好友</a>
 	</div>
-	
-	<script type="text/javascript">
+	<script>
+		var isShare="";
 		
 		
-		var quesstionData={};
-		quesstionData.list=[];
-		
-		//获取数据
-		getDetailesFn()
-		function getDetailesFn(){
-			call_net("POST", "/cms/feedback/getProblem",{}, function(data){
-				if(data.code==200){
-					var jsonData=data.data;
-					quesstionData.list=jsonData;
-				}else{
-					console.log(data.desc)
-				}
-			}, function(error){})	
+		if(getUrlParamURLys("isShare")){
+			isShare=getUrlParamURLys("isShare");
 		}
 		
 		
-		//控制器
-		new Vue({
-			el:'#quesstion',
-			data:quesstionData,
-			methods:{
-				toDetailesFn:function(ind){
-					window.location.href="answer.html?id="+ind
-				}
-			},
-			filters:{
-				
+		if(isShare){
+			$(".g_btn-invitation").html("立即下载");
+		}else{
+			$(".g_btn-invitation").html("邀请好友");
+		}
+		
+		
+		$(".g_btn-invitation").click(function(){
+			if(isShare){
+				window.location.href="";//APP下载链接
+			}else{
+				window.location.href="invitationFn()";
 			}
-		});
+		})
 	</script>
 </body>
 </html>

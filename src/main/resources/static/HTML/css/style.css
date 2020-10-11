@@ -171,3 +171,11 @@
 .g_btn-sc{display: block; width: 4.15rem; height: 0.92rem; margin: 1rem auto;}
 .g_btn-sc img{display: block; width: 4.15rem; height: 0.92rem;}
 .g_hsk-body iframe{width: 100%; height: 2.3rem; display: block;}
+
+
+
+
+/*邀请好友*/
+.g_invitation{width: 100%; overflow: hidden; position: relative;}
+.g_invitation img{display: block; width: 100%;}
+.g_btn-invitation{display: block; width: 4.44rem; height: 0.82rem; line-height: 0.82rem; text-align: center; border-radius: 0.82rem; font-size: 0.32rem; color: #fff; background: #4ac4f3; position: absolute; left: 50%; margin-left: -2.22rem; bottom: 1.4rem;}
