@@ -4,7 +4,7 @@
 layui.define(['tree','layer','util','jquery','form','table','element','laydate','transfer','upload'], function(exports){
     var $ = layui.jquery;
     var obj = {
-        showtime : {time:5000},//提示层显示时间
+        showtime : {time:3000},//提示层显示时间
         ajax: function(url,async,type,data){
             var resultData = false;//初始化返回数据
             var index;

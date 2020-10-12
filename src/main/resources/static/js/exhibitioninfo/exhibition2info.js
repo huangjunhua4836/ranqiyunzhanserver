@@ -63,6 +63,12 @@ layui.use('core', function(){
             case 'add':
                 core.openIframeDialog('添加','/platform/zsInfo/input?type=add',['500px', '440px'],false,initTable);
                 break;
+            case 'refreshCloudWindows':
+                var resultData = core.ajax('/platform/zsInfo/refreshCloudWindows',false,'POST',null);
+                if(resultData!=false){
+                    layer.msg('操作成功！',core.showtime);
+                }
+                break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
                 layer.alert('这是工具栏右侧自定义的一个图标按钮');

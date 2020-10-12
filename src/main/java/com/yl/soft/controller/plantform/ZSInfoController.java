@@ -156,4 +156,24 @@ public class ZSInfoController extends BaseController {
             return setResultError("操作失败！");
         }
     }
+
+    /**
+     * 刷新redis云端橱窗
+     * @return
+     */
+    @PostMapping("/refreshCloudWindows")
+    @ResponseBody
+    public BaseResponse refreshCloudWindows() {
+        String keys[] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q"
+                        ,"R","S","T","U","V","W","X","Y","Z"};
+        redisService.del(keys);
+        QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+        ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        ehbExhibitorQueryWrapper.eq("state",1);
+        ehbExhibitorService.list(ehbExhibitorQueryWrapper).stream().forEach(i->{
+            String firstWord = PinyinUtil.getPinYinHeadChar(i.getEnterprisename()).toUpperCase().charAt(0)+"";
+            redisService.sSet(firstWord, JSONObject.toJSONString(i));
+        });
+        return setResultSuccess();
+    }
 }
