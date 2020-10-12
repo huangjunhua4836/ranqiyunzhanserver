@@ -34,15 +34,18 @@ import com.yl.soft.dto.EhbOpportunityDto;
 import com.yl.soft.dto.EhbUseractionDto;
 import com.yl.soft.dto.MeCollectionDto;
 import com.yl.soft.dto.MeUserConv;
+import com.yl.soft.dto.app.OpportunityDto;
 import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbAboutus;
 import com.yl.soft.po.EhbAdvertising;
+import com.yl.soft.po.EhbArticle;
 import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbDataUpload;
 import com.yl.soft.po.EhbExhibitor;
+import com.yl.soft.po.EhbHall;
 import com.yl.soft.po.EhbLabel;
 import com.yl.soft.po.EhbOpportunity;
 import com.yl.soft.po.EhbUseraction;
@@ -454,8 +457,20 @@ public class PersonalCenterController extends BaseController {
 				.eq(EhbUseraction::getActivetype, i).one();
 		if (ehbUseraction != null) {
 			ehbUseractionService.removeById(ehbUseraction.getId());
+			if(type==4||type==2) {
+				ehbOpportunityService.lambdaUpdate().setSql("countcollection=countcollection-1").eq(EhbOpportunity::getId, relateid).update();
+			}
+			if(type==3) {
+				ehbArticleService.lambdaUpdate().setSql("countcollection=countcollection-1").eq(EhbArticle::getId, relateid).update();
+			}
 		} else {
 			ehbUseractionService.save(EhbUseractionDto.of(sessioner, type, relateid, i));
+			if(type==4||type==2) {
+				ehbOpportunityService.lambdaUpdate().setSql("countcollection=countcollection+1").eq(EhbOpportunity::getId, relateid).update();
+			}
+			if(type==3) {
+				ehbArticleService.lambdaUpdate().setSql("countcollection=countcollection+1").eq(EhbArticle::getId, relateid).update();
+			}
 		}
 		return ok2();
 	}
@@ -499,8 +514,21 @@ public class PersonalCenterController extends BaseController {
 				.eq(EhbUseraction::getActivetype, i).one();
 		if (ehbUseraction != null) {
 			ehbUseractionService.removeById(ehbUseraction.getId());
+			if(type==4||type==2) {
+				ehbOpportunityService.lambdaUpdate().setSql("countthumbs=countthumbs-1").eq(EhbOpportunity::getId, relateid).update();
+			}
+			if(type==3) {
+				ehbArticleService.lambdaUpdate().setSql("countthumbs=countthumbs-1").eq(EhbArticle::getId, relateid).update();
+			}
+			
 		} else {
 			ehbUseractionService.save(EhbUseractionDto.of(sessioner, type, relateid, i));
+			if(type==4||type==2) {
+				ehbOpportunityService.lambdaUpdate().setSql("countthumbs=countthumbs+1").eq(EhbOpportunity::getId, relateid).update();
+			}
+			if(type==3) {
+				ehbArticleService.lambdaUpdate().setSql("countthumbs=countthumbs+1").eq(EhbArticle::getId, relateid).update();
+			}
 		}
 		return ok2();
 	}
