@@ -311,7 +311,7 @@
 						if(equipment){
 							window.location.href="share("+3+","+bid+")";
 						}else{
-							window.webkit.messageHandlers.share.postMessage(3,bid);
+							window.webkit.messageHandlers.share.postMessage("3,"+bid);
 						}
 					}
 				}

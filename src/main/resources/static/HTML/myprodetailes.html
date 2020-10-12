@@ -313,7 +313,7 @@
 						if(equipment){
 							window.location.href="share("+4+","+pid+")";
 						}else{
-							window.webkit.messageHandlers.share.postMessage(4,pid);
+							window.webkit.messageHandlers.share.postMessage("4,"+pid);
 						}
 					}
 				}

@@ -362,7 +362,7 @@
 						if(equipment){
 							window.location.href="share("+2+","+sid+")";
 						}else{
-							window.webkit.messageHandlers.share.postMessage(2,sid);
+							window.webkit.messageHandlers.share.postMessage("2,"+sid);
 						}
 					}
 				},

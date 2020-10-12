@@ -327,7 +327,7 @@
 						if(equipment){
 							window.location.href="share("+1+","+nid+")";
 						}else{
-							window.webkit.messageHandlers.share.postMessage("1,nid");
+							window.webkit.messageHandlers.share.postMessage("1,"+nid);
 						}
 					}
 				},
