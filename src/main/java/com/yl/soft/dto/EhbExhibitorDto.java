@@ -23,6 +23,12 @@ public class EhbExhibitorDto  implements Serializable{/**
 
     @ApiModelProperty(value = "企业名称")
     private String enterprisename;
+    
+    @ApiModelProperty(value="手机号")
+    private String phone;
+    
+    @ApiModelProperty(value = "联系人")
+    private String name;
 
     @ApiModelProperty(value = "电话号")
     private String tel;
