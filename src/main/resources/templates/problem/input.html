@@ -7,9 +7,22 @@
             <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
                 <form class="layui-form" th:object="${problem}">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">名称</label>
+                        <label class="layui-form-label">标题</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{title}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">内容</label>
+                        <div class="layui-input-block">
+                        <textarea id="editor_id" required  lay-verify="required" th:field="*{content}" style="width:700px;height:300px;" class="layui-textarea" >
+                        </textarea>
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
@@ -19,14 +32,51 @@
         </div>
     </div>
 
+    <link rel="stylesheet" th:href="@{/static/tools/kindeditor/themes/default/default.css}" />
+    <link rel="stylesheet" th:href="@{/static/tools/kindeditor/plugins/code/prettify.css}" />
+    <script charset="utf-8" th:src="@{/static/tools/kindeditor/kindeditor-all-min.js}"></script>
+    <script charset="utf-8" th:src="@{/static/tools/kindeditor/lang/zh-CN.js}"></script>
+    <script charset="utf-8" th:src="@{/static/tools/kindeditor/plugins/code/prettify.js}"></script>
+    <script charset="utf-8" th:src="@{/static/tools/jquery-3.4.1.min.js}"></script>
+
     <script>
+        KindEditor.ready(function(K) {
+            window.editor = K.create('#editor_id',{
+                // 上传图片的名字
+                filePostName  : "uploadFile",
+                // 配置上传路径
+                uploadJson : '/platform/about/uploadImg?remarks=3',
+                allowFileManager : true,
+                allowPreviewEmoticons: true,
+                allowImageUpload: true,
+                // 设置上传文件类型
+                dir : "image",
+                afterCreate: function () {//创建完成之后回显
+                    this.sync();
+                },
+                afterChange: function () {//内容改动之后回显
+                    this.sync();
+                },
+                items:[
+                    '|', 'undo', 'redo', '|', 'preview', 'print', 'cut', 'copy', 'paste',
+                    'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                    'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                    'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                    'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                    'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+                    'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+                    'anchor', 'link', 'unlink', '|', 'about'
+                ]
+            });
+        });
+
         layui.use('core', function(){
             var form = layui.form,
             core = layui.core,
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
-                var resultData = core.ajax('/crmRole/saveOrUpdate',false,'POST',data.field);
+                var resultData = core.ajax('/platform/problem/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){
                     parent.layer.msg('操作成功',core.showtime);
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

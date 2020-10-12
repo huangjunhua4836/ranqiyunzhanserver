@@ -89,43 +89,39 @@ public class ProblemController extends BaseController {
 
         return "problem/input";
     }
-//
-//    /**
-//     * 添加或者修改
-//     * @param crmRole
-//     * @return
-//     */
-//    @PostMapping("/saveOrUpdate")
-//    @ResponseBody
-//    public BaseResponse saveOrUpdate(CrmRole crmRole) {
-//        if(StringUtils.isEmpty(crmRole.getId())){
-//            crmRole.setCreatetime(LocalDateTime.now());
-//            crmRole.setCreateuser(1);
-//            crmRole.setIsdel(false);
-//        }else{
-//            crmRole.setUpdatetime(LocalDateTime.now());
-//            crmRole.setUpdateuser(1);
-//        }
-//        if(crmRoleService.saveOrUpdate(crmRole)){
-//            return setResultSuccess();
-//        }else{
-//            return setResultError("操作失败！");
-//        }
-//    }
-//
-//    /**
-//     * 删除
-//     * @return
-//     */
-//    @PostMapping("/delete")
-//    @ResponseBody
-//    public BaseResponse delete(String id) {
-//        System.out.println("ok");
-//        if(StringUtils.isEmpty(id)){
-//            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
-//                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
-//        }
-//        crmRoleService.deleteRole(id);
-//        return setResultSuccess();
-//    }
+
+    /**
+     * 添加或者修改
+     * @param problem
+     * @return
+     */
+    @PostMapping("/saveOrUpdate")
+    @ResponseBody
+    public BaseResponse saveOrUpdate(Problem problem) {
+        if(StringUtils.isEmpty(problem.getId())){
+            problem.setCreatetime(LocalDateTime.now());
+        }else{
+        }
+        if(problemService.saveOrUpdate(problem)){
+            return setResultSuccess();
+        }else{
+            return setResultError("操作失败！");
+        }
+    }
+
+    /**
+     * 删除
+     * @return
+     */
+    @PostMapping("/delete")
+    @ResponseBody
+    public BaseResponse delete(String id) {
+        System.out.println("ok");
+        if(StringUtils.isEmpty(id)){
+            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
+                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
+        }
+        problemService.removeById(id);
+        return setResultSuccess();
+    }
 }
