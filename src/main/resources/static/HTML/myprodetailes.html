@@ -129,6 +129,7 @@
 		getCommentListFn(1);
 		function getCommentListFn(page){
 			var commentObj={};
+			commentObj.id=pid;
 			commentObj.page=page;
 			commentObj.size=3;
 			commentObj.type=2;
@@ -310,9 +311,9 @@
 				shareFn:function(){
 					if(!isShare){
 						if(equipment){
-							window.location.href="share("+pid+","+token+")";
+							window.location.href="share("+4+","+pid+")";
 						}else{
-							window.webkit.messageHandlers.share.postMessage(pid,token);
+							window.webkit.messageHandlers.share.postMessage(4,pid);
 						}
 					}
 				}

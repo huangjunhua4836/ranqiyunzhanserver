@@ -143,6 +143,7 @@
 		getCommentListFn(1);
 		function getCommentListFn(page){
 			var commentObj={};
+			commentObj.id=sid;
 			commentObj.page=page;
 			commentObj.size=3;
 			commentObj.type=2;
@@ -359,9 +360,9 @@
 				shareFn:function(){
 					if(!isShare){
 						if(equipment){
-							window.location.href="share("+sid+","+token+")";
+							window.location.href="share("+2+","+sid+")";
 						}else{
-							window.webkit.messageHandlers.share.postMessage(sid,token);
+							window.webkit.messageHandlers.share.postMessage(2,sid);
 						}
 					}
 				},

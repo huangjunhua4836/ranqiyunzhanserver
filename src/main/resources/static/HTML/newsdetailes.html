@@ -132,6 +132,7 @@
 		getCommentListFn(1);
 		function getCommentListFn(page){
 			var commentObj={};
+			commentObj.id=nid;
 			commentObj.page=page;
 			commentObj.size=3;
 			commentObj.type=3;
@@ -324,9 +325,9 @@
 				shareFn:function(){
 					if(!isShare){
 						if(equipment){
-							window.location.href="share("+this.detailes.title+","+this.detailes.content+")";
+							window.location.href="share("+1+","+nid+")";
 						}else{
-							window.webkit.messageHandlers.share.postMessage(this.detailes.title,this.detailes.content);
+							window.webkit.messageHandlers.share.postMessage(1,nid);
 						}
 					}
 				},
