@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbExhibitorDto;
 import com.yl.soft.dto.base.ResultItem;
+import com.yl.soft.dto.base.SessionState;
+import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.service.EhbExhibitorService;
 
@@ -24,6 +26,9 @@ public class FengNiaoController extends BaseController{
 
 	@Autowired
 	private EhbExhibitorService ehbExhibitorService;
+	
+	@Autowired
+	private SessionState sessionState;
 	
 	
 	@ApiOperation(value = "点击展位弹出企业名称logo等信息", notes = "点击展位弹出企业名称logo等信息")

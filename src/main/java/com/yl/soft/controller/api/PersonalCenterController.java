@@ -156,7 +156,7 @@ public class PersonalCenterController extends BaseController {
 
 	@ApiOperation(value = "我的企业编辑", notes = "我的企业编辑")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "img", value = "企业封面图", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "img", value = "企业封面banner图 多张用英文逗号分隔", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "phone", value = "联系电话", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "mailbox", value = "联系邮箱", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "website", value = "公司主页", required = true, paramType = "query"),
