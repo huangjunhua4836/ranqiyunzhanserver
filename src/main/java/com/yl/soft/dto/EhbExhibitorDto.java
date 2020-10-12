@@ -63,6 +63,9 @@ public class EhbExhibitorDto  implements Serializable{/**
     
 	@ApiModelProperty("是否已认证0:未认证，1:已认证 2:审核中 3：审核失败")
 	private Integer state;
+
+    @ApiModelProperty(value = "展商英文名称")
+    private String englishname;
 	
 	
 //	@ApiModelProperty("展商图片 多张图片逗号隔开")
@@ -75,6 +78,7 @@ public class EhbExhibitorDto  implements Serializable{/**
 		}
 		BeanUtils.copyProperties(ehbExhibitor, ehbExhibitorDto);
 		ehbExhibitorDto.setFloorplan(ehbExhibitor.getZwimg());
+		ehbExhibitorDto.setEnglishname(ehbExhibitor.getEnglishname());
 //		List<String> list = JSONArray.parseArray(ehbExhibitor.getImg(), String.class);
 //		ehbExhibitorDto.setBannerList(list);
 		return ehbExhibitorDto;
