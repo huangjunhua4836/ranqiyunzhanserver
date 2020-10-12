@@ -1,13 +1,22 @@
 package com.yl.soft.controller.api;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.validation.constraints.NotBlank;
-
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.yl.soft.controller.base.BaseController;
+import com.yl.soft.dto.*;
+import com.yl.soft.dto.base.BaseResult;
+import com.yl.soft.dto.base.ResultItem;
+import com.yl.soft.dto.base.SessionState;
+import com.yl.soft.dto.base.SessionUser;
+import com.yl.soft.po.*;
+import com.yl.soft.service.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,54 +25,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.update.impl.UpdateChainWrapper;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.yl.soft.controller.base.BaseController;
-import com.yl.soft.dto.EhbAudienceDto;
-import com.yl.soft.dto.EhbAudienceInfoDto;
-import com.yl.soft.dto.EhbAudiencegrDto;
-import com.yl.soft.dto.EhbAudienceyeDto;
-import com.yl.soft.dto.EhbExhibitorDto;
-import com.yl.soft.dto.EhbLabelDto;
-import com.yl.soft.dto.EhbOpportunityDto;
-import com.yl.soft.dto.EhbUseractionDto;
-import com.yl.soft.dto.MeCollectionDto;
-import com.yl.soft.dto.MeUserConv;
-import com.yl.soft.dto.app.OpportunityDto;
-import com.yl.soft.dto.base.BaseResult;
-import com.yl.soft.dto.base.ResultItem;
-import com.yl.soft.dto.base.SessionState;
-import com.yl.soft.dto.base.SessionUser;
-import com.yl.soft.po.EhbAboutus;
-import com.yl.soft.po.EhbAdvertising;
-import com.yl.soft.po.EhbArticle;
-import com.yl.soft.po.EhbAudience;
-import com.yl.soft.po.EhbDataUpload;
-import com.yl.soft.po.EhbExhibitor;
-import com.yl.soft.po.EhbHall;
-import com.yl.soft.po.EhbLabel;
-import com.yl.soft.po.EhbOpportunity;
-import com.yl.soft.po.EhbUseraction;
-import com.yl.soft.po.EhbVisitorRegistration;
-import com.yl.soft.service.EhbAboutusService;
-import com.yl.soft.service.EhbArticleService;
-import com.yl.soft.service.EhbAudienceService;
-import com.yl.soft.service.EhbDataUploadService;
-import com.yl.soft.service.EhbExhibitorService;
-import com.yl.soft.service.EhbLabelService;
-import com.yl.soft.service.EhbOpportunityService;
-import com.yl.soft.service.EhbUseractionService;
-import com.yl.soft.service.EhbVisitorRegistrationService;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Api(tags = { "C端模块-个人中心" })
 @RestController
@@ -557,7 +525,78 @@ public class PersonalCenterController extends BaseController {
 	@ApiOperation(value = "资料下载", notes = "资料下载")
 	@PostMapping("/dataUpLoad")
 	public ResultItem<List<EhbDataUpload>> dataUpLoad() {
-		List<EhbDataUpload> ehbDataUploads = ehbDataUploadService.list();
+//		List<EhbDataUpload> ehbDataUploads = ehbDataUploadService.list();
+		List<EhbDataUpload> ehbDataUploads = new ArrayList<>();
+		QueryWrapper<EhbDataUpload> ehbDataUploadQueryWrapper = null;
+		//企业授权书模板
+		ehbDataUploadQueryWrapper = new QueryWrapper<>();
+		ehbDataUploadQueryWrapper.eq("title","企业授权书模板");
+		ehbDataUploadQueryWrapper.orderByDesc("createtime");
+		ehbDataUploadQueryWrapper.last("limit 1");
+		List<EhbDataUpload> qysqsmbs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
+		if(qysqsmbs!=null && !qysqsmbs.isEmpty()){
+			ehbDataUploads.addAll(qysqsmbs);
+		}
+
+		//展会中英文邀请函
+		ehbDataUploadQueryWrapper = new QueryWrapper<>();
+		ehbDataUploadQueryWrapper.eq("title","展会中英文邀请函");
+		ehbDataUploadQueryWrapper.orderByDesc("createtime");
+		ehbDataUploadQueryWrapper.last("limit 1");
+		List<EhbDataUpload> zhzywyqhs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
+		if(zhzywyqhs!=null && !zhzywyqhs.isEmpty()){
+			ehbDataUploads.addAll(zhzywyqhs);
+		}
+
+		//展商合约
+		ehbDataUploadQueryWrapper = new QueryWrapper<>();
+		ehbDataUploadQueryWrapper.eq("title","展商合约");
+		ehbDataUploadQueryWrapper.orderByDesc("createtime");
+		ehbDataUploadQueryWrapper.last("limit 1");
+		List<EhbDataUpload> zshys = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
+		if(zshys!=null && !zshys.isEmpty()){
+			ehbDataUploads.addAll(zshys);
+		}
+
+		//参展商手册
+		ehbDataUploadQueryWrapper = new QueryWrapper<>();
+		ehbDataUploadQueryWrapper.eq("title","参展商手册");
+		ehbDataUploadQueryWrapper.orderByDesc("createtime");
+		ehbDataUploadQueryWrapper.last("limit 1");
+		List<EhbDataUpload> czsscs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
+		if(czsscs!=null && !czsscs.isEmpty()){
+			ehbDataUploads.addAll(czsscs);
+		}
+
+		//搭建商手册
+		ehbDataUploadQueryWrapper = new QueryWrapper<>();
+		ehbDataUploadQueryWrapper.eq("title","搭建商手册");
+		ehbDataUploadQueryWrapper.orderByDesc("createtime");
+		ehbDataUploadQueryWrapper.last("limit 1");
+		List<EhbDataUpload> djsscs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
+		if(djsscs!=null && !djsscs.isEmpty()){
+			ehbDataUploads.addAll(djsscs);
+		}
+
+		//团体观众登记表
+		ehbDataUploadQueryWrapper = new QueryWrapper<>();
+		ehbDataUploadQueryWrapper.eq("title","团体观众登记表");
+		ehbDataUploadQueryWrapper.orderByDesc("createtime");
+		ehbDataUploadQueryWrapper.last("limit 1");
+		List<EhbDataUpload> ttgzdjbs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
+		if(ttgzdjbs!=null && !ttgzdjbs.isEmpty()){
+			ehbDataUploads.addAll(ttgzdjbs);
+		}
+
+		//观众邀请券
+		ehbDataUploadQueryWrapper = new QueryWrapper<>();
+		ehbDataUploadQueryWrapper.eq("title","观众邀请券");
+		ehbDataUploadQueryWrapper.orderByDesc("createtime");
+		ehbDataUploadQueryWrapper.last("limit 1");
+		List<EhbDataUpload> gzyqqs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
+		if(gzyqqs!=null && !gzyqqs.isEmpty()){
+			ehbDataUploads.addAll(gzyqqs);
+		}
 		return ok(ehbDataUploads);
 	}
 
