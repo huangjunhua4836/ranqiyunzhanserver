@@ -18,7 +18,6 @@
 <script type="text/javascript" src="js/Yeffect.js"></script>
 <script type="text/javascript" src="js/Yform.js"></script>
 <script type="text/javascript" src="js/ind.js"></script>
-<script type="text/javascript" src="//bjc1.t4m.cn/applink.js"></script>
 <title>邀请好友</title>
 </head>
 
@@ -41,6 +40,8 @@
 		
 		
 		if(isShare){
+			var scriptUrl="<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">"+"\<\/script>";
+			$("head").append(scriptUrl)
 			$(".g_btn-invitation").html("立即下载");
 		}else{
 			$(".g_btn-invitation").html("邀请好友");

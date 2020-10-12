@@ -18,7 +18,6 @@
 <script type="text/javascript" src="js/Yeffect.js"></script>
 <script type="text/javascript" src="js/Yform.js"></script>
 <script type="text/javascript" src="js/ind.js"></script>
-<script type="text/javascript" src="//bjc1.t4m.cn/applink.js"></script>
 <title>商品详情</title>
 </head>
 
@@ -160,27 +159,32 @@
 		var equipment=IsAndroid();
 		
 		if(isShare){
-			if(equipment){
-				MobLink([
-				    {
-				        el: "",
-				        path: "rqyz/goodsDetails",
-				        params: {
-				            key1: pid,
-				        }
-				    }
-				]);
-			}else{
-				MobLink([
-				    {
-				        el: "",
-				        path: "cloudExhbition",
-				        params: {
-				            key1: pid,
-				        }
-				    }
-				]);
-			}
+			var scriptUrl="<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">"+"\<\/script>";
+			$("head").append(scriptUrl)
+			setTimeout(function(){
+				if(equipment){
+					MobLink([
+					    {
+					        el: "",
+					        path: "rqyz/goodsDetails",
+					        params: {
+					            key1: pid,
+					        }
+					    }
+					]);
+				}else{
+					MobLink([
+					    {
+					        el: "",
+					        path: "cloudExhbition",
+					        params: {
+					            key1: pid,
+					        }
+					    }
+					]);
+				}
+			},1000)
+			
 		}
 		
 		

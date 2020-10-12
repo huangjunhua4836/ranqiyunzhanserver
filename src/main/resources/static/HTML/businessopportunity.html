@@ -18,7 +18,6 @@
 <script type="text/javascript" src="js/Yeffect.js"></script>
 <script type="text/javascript" src="js/Yform.js"></script>
 <script type="text/javascript" src="js/ind.js"></script>
-<script type="text/javascript" src="//bjc1.t4m.cn/applink.js"></script>
 <title>商机详情</title>
 </head>
 
@@ -212,27 +211,32 @@
 		var equipment=IsAndroid();
 		
 		if(isShare){
-			if(equipment){
-				MobLink([
-				    {
-				        el: "",
-				        path: "rqyz/sjDetails",
-				        params: {
-				            key1: sid,
-				        }
-				    }
-				]);
-			}else{
-				MobLink([
-				    {
-				        el: "",
-				        path: "cloudExhbition",
-				        params: {
-				            key1: sid,
-				        }
-				    }
-				]);
-			}
+			var scriptUrl="<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">"+"\<\/script>";
+			$("head").append(scriptUrl);
+			setTimeout(function(){
+				if(equipment){
+					MobLink([
+					    {
+					        el: "",
+					        path: "rqyz/sjDetails",
+					        params: {
+					            key1: sid,
+					        }
+					    }
+					]);
+				}else{
+					MobLink([
+					    {
+					        el: "",
+					        path: "cloudExhbition",
+					        params: {
+					            key1: sid,
+					        }
+					    }
+					]);
+				}
+			},1000)
+			
 		}
 		
 		//控制器
