@@ -98,4 +98,7 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "认证失败原因")
     private String failreason;
+
+    @ApiModelProperty(value = "展商英文名称")
+    private String englishname;
 }

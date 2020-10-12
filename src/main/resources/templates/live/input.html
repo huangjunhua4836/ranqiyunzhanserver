@@ -38,14 +38,14 @@
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">直播开始时间</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{liveStartTime}" required  lay-verify="required" placeholder="请输入直播开始时间" autocomplete="off" class="layui-input">
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">直播结束时间</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{liveEndtime}" required  lay-verify="required" placeholder="请输入直播结束时间" autocomplete="off" class="layui-input">
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="test6" placeholder="yyyy-MM-dd HH:mm:ss">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -89,6 +89,7 @@
         layui.use('core', function(){
             var form = layui.form,
             core = layui.core,
+                laydate = layui.laydate,
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
@@ -99,6 +100,12 @@
                     parent.layer.close(index); //再执行关闭
                 }
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //日期时间选择器
+            laydate.render({
+                elem: '#test5'
+                ,type: 'datetime'
             });
         });
     </script>
