@@ -18,6 +18,7 @@
 <script type="text/javascript" src="js/Yeffect.js"></script>
 <script type="text/javascript" src="js/Yform.js"></script>
 <script type="text/javascript" src="js/ind.js"></script>
+<script type="text/javascript" src="//bjc1.t4m.cn/applink.js"></script>
 <title>商机详情</title>
 </head>
 
@@ -77,6 +78,7 @@
 		
 		var token="";
 		var bid="";
+		var isShare=""
 		
 		if(getUrlParamURLys("token")){
 			token=getUrlParamURLys("token");
@@ -84,6 +86,12 @@
 		if(getUrlParamURLys("id")){
 			bid=getUrlParamURLys("id");
 		}
+		if(getUrlParamURLys("isShare")){
+			isShare=getUrlParamURLys("isShare");
+		}
+		
+		
+		
 		
 		var productData={};
 		productData.detailes={};
@@ -148,6 +156,32 @@
 		}
 		
 		
+		var equipment=IsAndroid();
+		
+		if(isShare){
+			if(equipment){
+				MobLink([
+				    {
+				        el: "",
+				        path: "rqyz/sjDetails",
+				        params: {
+				            key1: bid,
+				        }
+				    }
+				]);
+			}else{
+				MobLink([
+				    {
+				        el: "",
+				        path: "cloudExhbition",
+				        params: {
+				            key1: bid,
+				        }
+				    }
+				]);
+			}
+		}
+		
 		
 		
 		//控制器
@@ -155,6 +189,22 @@
 			el:'#mybusiness',
 			data:productData,
 			methods:{
+				//下载APP
+				downloadAppFn:function(){
+					if(equipment){
+						window.location.href="bjc1.t4m.cn";
+					}else{
+						window.location.href="https://www.pgyer.com/l36o";
+					}
+				},
+				//交互拦截
+				callAppFn:function(){
+					if(equipment){
+						window.location.href="login()";
+					}else{
+						window.webkit.messageHandlers.login.postMessage("");
+					}
+				},
 				//切换大图
 				clickBigImgFn:function(url){
 					this.bigImg=url;
@@ -182,7 +232,12 @@
 							}
 							
 						}else if(data.code==401){
-							window.location.href="login()";
+							if(isShare){
+								_this.downloadAppFn()
+							}else{
+								_this.callAppFn();
+							}
+							
 						}else{
 							console.log(data.desc)
 						}
@@ -205,7 +260,12 @@
 							}
 							
 						}else if(data.code==401){
-							window.location.href="login()";
+							if(isShare){
+								_this.downloadAppFn()
+							}else{
+								_this.callAppFn();
+							}
+							
 						}else{
 							console.log(data.desc)
 						}
@@ -229,7 +289,12 @@
 							getDetailesFn();
 							
 						}else if(data.code==401){
-							window.location.href="login()";
+							if(isShare){
+								_this.downloadAppFn()
+							}else{
+								_this.callAppFn();
+							}
+							
 						}else{
 							console.log(data.desc)
 						}
@@ -237,7 +302,13 @@
 				},
 				//分享
 				shareFn:function(){
-					window.location.href="share("+bid+","+token+")";
+					if(!isShare){
+						if(equipment){
+							window.location.href="share("+bid+","+token+")";
+						}else{
+							window.webkit.messageHandlers.share.postMessage(bid,token);
+						}
+					}
 				}
 			},
 			filters:{

@@ -18,12 +18,13 @@
 <script type="text/javascript" src="js/Yeffect.js"></script>
 <script type="text/javascript" src="js/Yform.js"></script>
 <script type="text/javascript" src="js/ind.js"></script>
+<script type="text/javascript" src="//bjc1.t4m.cn/applink.js"></script>
 <title>中国城市燃气协会</title>
 </head>
 
 <body id="share">
 	<div class="g_share-head">
-		<a href="javascript:void(0)" title="">app下载</a>
+		<a href="javascript:void(0)" title="" id="g_btn-download">app下载</a>
 	</div>
 	<div class="g_share-banner" v-if="detailes.bannerList.length>0">
 		<ul>
@@ -62,7 +63,7 @@
 		</div>
 		<div class="g_hsk-body"><img :src="detailes.floorplan" alt=""></div>
 	</div>
-	<a href="javascript:void(0)" title="" class="g_btn-sc">
+	<a href="javascript:void(0)" title="" class="g_btn-sc" id="g_btn-shoucang">
 		<img src="images/g_14.png" alt="">
 	</a>
 	<script>
@@ -127,7 +128,49 @@
 			}
 		})
 		
-	
+		
+		var equipment=IsAndroid();
+		
+		if(isShare){
+			if(equipment){
+				MobLink([
+				    {
+				        el: "#g_btn-download",
+				        path: "rqyz/zsDetails",
+				        params: {
+				            key1: cid,
+				        }
+				    },
+				    {
+				        el: "#g_btn-shoucang",
+				        path: "rqyz/zsDetails",
+				        params: {
+				            key1: cid,
+				        }
+				    }
+				]);
+			}else{
+				MobLink([
+				    {
+				        el: "#g_btn-download",
+				        path: "cloudExhbition",
+				        params: {
+				            key1: cid,
+				        }
+				    },
+				    {
+				        el: "#g_btn-shoucang",
+				        path: "cloudExhbition",
+				        params: {
+				            key1: cid,
+				        }
+				    }
+				]);
+			}
+		}
+		
+		
+		
 		
 		//控制器
 		new Vue({

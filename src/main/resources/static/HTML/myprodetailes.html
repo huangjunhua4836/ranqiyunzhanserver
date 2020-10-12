@@ -18,6 +18,7 @@
 <script type="text/javascript" src="js/Yeffect.js"></script>
 <script type="text/javascript" src="js/Yform.js"></script>
 <script type="text/javascript" src="js/ind.js"></script>
+<script type="text/javascript" src="//bjc1.t4m.cn/applink.js"></script>
 <title>商品详情</title>
 </head>
 
@@ -78,6 +79,7 @@
 		
 		var token="";
 		var pid="";
+		var isShare=""
 		
 		if(getUrlParamURLys("token")){
 			token=getUrlParamURLys("token");
@@ -85,6 +87,11 @@
 		if(getUrlParamURLys("id")){
 			pid=getUrlParamURLys("id");
 		}
+		if(getUrlParamURLys("isShare")){
+			isShare=getUrlParamURLys("isShare");
+		}
+		
+		
 		
 		var productData={};
 		productData.detailes={};
@@ -150,12 +157,56 @@
 		
 		
 		
+		var equipment=IsAndroid();
+		
+		if(isShare){
+			if(equipment){
+				MobLink([
+				    {
+				        el: "",
+				        path: "rqyz/goodsDetails",
+				        params: {
+				            key1: pid,
+				        }
+				    }
+				]);
+			}else{
+				MobLink([
+				    {
+				        el: "",
+				        path: "cloudExhbition",
+				        params: {
+				            key1: pid,
+				        }
+				    }
+				]);
+			}
+		}
+		
+		
+		
 		
 		//控制器
 		new Vue({
 			el:'#product',
 			data:productData,
 			methods:{
+				//下载APP
+				downloadAppFn:function(){
+					if(equipment){
+						window.location.href="bjc1.t4m.cn";
+					}else{
+						window.location.href="https://www.pgyer.com/l36o";
+					}
+				},
+				//交互拦截
+				callAppFn:function(){
+					if(equipment){
+						window.location.href="login()";
+					}else{
+						window.webkit.messageHandlers.login.postMessage("");
+					}
+				},
 				//切换大图
 				clickBigImgFn:function(url){
 					this.bigImg=url;
@@ -183,7 +234,12 @@
 							}
 							
 						}else if(data.code==401){
-							window.location.href="login()";
+							if(isShare){
+								_this.downloadAppFn()
+							}else{
+								_this.callAppFn();
+							}
+							
 						}else{
 							console.log(data.desc)
 						}
@@ -206,7 +262,12 @@
 							}
 							
 						}else if(data.code==401){
-							window.location.href="login()";
+							if(isShare){
+								_this.downloadAppFn()
+							}else{
+								_this.callAppFn();
+							}
+							
 						}else{
 							console.log(data.desc)
 						}
@@ -230,7 +291,12 @@
 							getDetailesFn();
 							
 						}else if(data.code==401){
-							window.location.href="login()";
+							if(isShare){
+								_this.downloadAppFn()
+							}else{
+								_this.callAppFn();
+							}
+							
 						}else{
 							console.log(data.desc)
 						}
@@ -238,7 +304,13 @@
 				},
 				//分享
 				shareFn:function(){
-					window.location.href="share("+pid+","+token+")";
+					if(!isShare){
+						if(equipment){
+							window.location.href="share("+pid+","+token+")";
+						}else{
+							window.webkit.messageHandlers.share.postMessage(pid,token);
+						}
+					}
 				}
 			},
 			filters:{
