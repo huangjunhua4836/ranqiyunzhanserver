@@ -64,7 +64,7 @@ layui.use('core', function(){
             layer.confirm('真的删除么？', function(index){
                 layer.close(index);
                 //向服务端发送删除指令
-                var resultData = core.ajax('/crmRole/delete',false,'POST','id='+data.id);
+                var resultData = core.ajax('/platform/live/delete',false,'POST','id='+data.id);
                 if(resultData!=false){
                     layer.msg('操作成功！',core.showtime);
                     initTable({});
@@ -75,11 +75,22 @@ layui.use('core', function(){
         } else if(obj.event === 'detail'){
             core.openDialog('详情',$('#detail').html(),['500px','480px']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);
-            $('.layui-layer-content').find('input').eq(1).val(data.name);
-            $('.layui-layer-content').find('input').eq(2).val(data.createUser);
-            $('.layui-layer-content').find('input').eq(3).val(util.toDateString(data.createTime, "yyyy-MM-dd HH:mm:ss"));
-            $('.layui-layer-content').find('input').eq(4).val(data.updateUser);
-            $('.layui-layer-content').find('input').eq(5).val(util.toDateString(data.updateTime, "yyyy-MM-dd HH:mm:ss"));
+            $('.layui-layer-content').find('input').eq(1).val(data.mainTitle);
+            $('.layui-layer-content').find('input').eq(2).val(data.subTitle);
+            $('.layui-layer-content').find('input').eq(3).val(data.roomNum);
+            $('.layui-layer-content').find('input').eq(4).val(data.flowName);
+            $('.layui-layer-content').find('input').eq(5).val(data.liveDuration);
+            $('.layui-layer-content').find('input').eq(6).val(data.livePassword);
+            $('.layui-layer-content').find('input').eq(7).val(data.liveStartTime);
+            $('.layui-layer-content').find('input').eq(8).val(data.liveEndtime);
+            $('.layui-layer-content').find('input').eq(9).val(data.videoDownUrl);
+            $('.layui-layer-content').find('input').eq(10).val(data.pushFlowUrl);
+            $('.layui-layer-content').find('input').eq(11).val(data.pullFlowUrl);
+            $('.layui-layer-content').find('input').eq(12).val(data.notice);
+            $('.layui-layer-content').find('input').eq(13).val(data.playback);
+            $('.layui-layer-content').find('input').eq(14).val(data.sort);
+            $('.layui-layer-content').find('input').eq(15).val(data.announcement);
+            $('.layui-layer-content').find('input').eq(16).val(data.createtime);
         }
     });
 

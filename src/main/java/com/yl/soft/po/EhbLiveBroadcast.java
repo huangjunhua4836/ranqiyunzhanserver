@@ -2,6 +2,7 @@ package com.yl.soft.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -53,6 +55,8 @@ public class EhbLiveBroadcast implements Serializable {
     @TableField("live_duration")
     private Integer liveDuration;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
     @ApiModelProperty(value = "直播结束时间")
     @TableField("live_endTime")
     private LocalDateTime liveEndtime;
@@ -65,6 +69,8 @@ public class EhbLiveBroadcast implements Serializable {
     @TableField("live_password")
     private String livePassword;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
     @ApiModelProperty(value = "直播开始时间")
     @TableField("live_start_time")
     private LocalDateTime liveStartTime;
@@ -99,7 +105,8 @@ public class EhbLiveBroadcast implements Serializable {
     @ApiModelProperty(value = "删除时间")
     private LocalDateTime deltime;
 
-    
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createtime;
 

@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.yl.soft.common.unified.entity.BasePage;
 import com.yl.soft.common.unified.entity.BaseResponse;
@@ -12,6 +13,7 @@ import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.app.*;
+import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.*;
@@ -189,12 +191,12 @@ public class IndexController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/goodsList")
-    public BaseResponse<BasePage<OpportunityDto>> goodsList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+    public BaseResult<List<OpportunityDto>> goodsList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
-            return setResultError(403,"","当前页码不能为空！");
+            return error(403,"当前页码不能为空！");
         }
         if(StringUtils.isEmpty(paramMap.get("exhibitorid"))){
-            return setResultError(403,"","展商ID不能为空！");
+            return error(403,"展商ID不能为空！");
         }
         QueryWrapper<EhbOpportunity> ehbOpportunityQueryWrapper = new QueryWrapper<>();
         ehbOpportunityQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
@@ -220,7 +222,8 @@ public class IndexController extends BaseController {
             opportunityDtos.add(opportunityDto);
         }
         Collections.shuffle(opportunityDtos);
-        return setResultSuccess(getBasePage(ehbOpportunities,opportunityDtos));
+        Page pageInfo = (Page) ehbOpportunities;
+        return ok(opportunityDtos, pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), pageInfo.getPageSize());
     }
 
     /**

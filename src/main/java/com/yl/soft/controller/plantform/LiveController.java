@@ -8,10 +8,7 @@ import com.yl.soft.common.constants.BaseApiConstants;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
-import com.yl.soft.dict.CommonDict;
-import com.yl.soft.po.CrmRole;
 import com.yl.soft.po.EhbLiveBroadcast;
-import com.yl.soft.service.CrmRoleService;
 import com.yl.soft.service.EhbLiveBroadcastService;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +60,7 @@ public class LiveController extends BaseController {
         ehbLiveBroadcastQueryWrapper.like(!StringUtils.isEmpty(ehbLiveBroadcast.getFlowName()),"flow_name",ehbLiveBroadcast.getFlowName());
         ehbLiveBroadcastQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"createtime",startTime,endTime);
         ehbLiveBroadcastQueryWrapper.orderByDesc("createtime");
+        ehbLiveBroadcastQueryWrapper.eq("isdel","1");
         PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
         List<EhbLiveBroadcast> ehbLiveBroadcasts = ehbLiveBroadcastService.list(ehbLiveBroadcastQueryWrapper);
         PageInfo pageInfo = new PageInfo<>(ehbLiveBroadcasts);
@@ -93,42 +91,41 @@ public class LiveController extends BaseController {
         return "live/input";
     }
 
-//    /**
-//     * 添加或者修改
-//     * @param crmRole
-//     * @return
-//     */
-//    @PostMapping("/saveOrUpdate")
-//    @ResponseBody
-//    public BaseResponse saveOrUpdate(CrmRole crmRole) {
-//        if(StringUtils.isEmpty(crmRole.getId())){
-//            crmRole.setCreatetime(LocalDateTime.now());
-//            crmRole.setCreateuser(1);
-//            crmRole.setIsdel(false);
-//        }else{
-//            crmRole.setUpdatetime(LocalDateTime.now());
-//            crmRole.setUpdateuser(1);
-//        }
-//        if(crmRoleService.saveOrUpdate(crmRole)){
-//            return setResultSuccess();
-//        }else{
-//            return setResultError("操作失败！");
-//        }
-//    }
-//
-//    /**
-//     * 删除
-//     * @return
-//     */
-//    @PostMapping("/delete")
-//    @ResponseBody
-//    public BaseResponse delete(String id) {
-//        System.out.println("ok");
-//        if(StringUtils.isEmpty(id)){
-//            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
-//                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
-//        }
-//        crmRoleService.deleteRole(id);
-//        return setResultSuccess();
-//    }
+    /**
+     * 添加或者修改
+     * @param ehbLiveBroadcast
+     * @return
+     */
+    @PostMapping("/saveOrUpdate")
+    @ResponseBody
+    public BaseResponse saveOrUpdate(EhbLiveBroadcast ehbLiveBroadcast) {
+        if(StringUtils.isEmpty(ehbLiveBroadcast.getId())){
+            ehbLiveBroadcast.setCreatetime(LocalDateTime.now());
+        }else{
+        }
+        if(ehbLiveBroadcastService.saveOrUpdate(ehbLiveBroadcast)){
+            return setResultSuccess();
+        }else{
+            return setResultError("操作失败！");
+        }
+    }
+
+    /**
+     * 删除
+     * @return
+     */
+    @PostMapping("/delete")
+    @ResponseBody
+    public BaseResponse delete(String id) {
+        System.out.println("ok");
+        if(StringUtils.isEmpty(id)){
+            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
+                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"删除ID为空！");
+        }
+        EhbLiveBroadcast ehbLiveBroadcast = ehbLiveBroadcastService.getById(id);
+        ehbLiveBroadcast.setDeltime(LocalDateTime.now());
+        ehbLiveBroadcast.setIsdel(2);
+        ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
+        return setResultSuccess();
+    }
 }
