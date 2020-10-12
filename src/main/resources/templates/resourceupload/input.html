@@ -1,21 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="common::headr('添加或修改')"></head>
+    <head th:replace="common::headr('设置上传')"></head>
 <body>
     <div class="layui-container">
         <div class="layui-row" style="margin-top: 10px;">
-            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
-                <form class="layui-form" th:object="${crmRole}">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">名称</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{name}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <input th:field="*{id}" type="hidden"/>
-                    <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
-                </form>
-            </div>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>企业授权书模板</legend>
+            </fieldset>
+            <button lay-event="add" type="button" class="layui-btn" id="qysqsmb"><i class="layui-icon"></i>上传文件</button>
+            <div style="margin-top: 10px;" id="qysqsmb_msg" th:text="${qysqsmb.upadd}"></div>
+
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>展会中英文邀请函</legend>
+            </fieldset>
+            <button type="button" class="layui-btn" id="zhzywyqh"><i class="layui-icon"></i>上传文件</button>
+            <div style="margin-top: 10px;" id="zhzywyqh_msg" th:text="${zhzywyqh.upadd}"></div>
+
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>展商合约</legend>
+            </fieldset>
+            <button type="button" class="layui-btn" id="zshy"><i class="layui-icon"></i>上传文件</button>
+            <div style="margin-top: 10px;" id="zshy_msg" th:text="${zshy.upadd}"></div>
+
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>参展商手册</legend>
+            </fieldset>
+            <button type="button" class="layui-btn" id="czssc"><i class="layui-icon"></i>上传文件</button>
+            <div style="margin-top: 10px;" id="czssc_msg" th:text="${czssc.upadd}"></div>
+
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>搭建商手册</legend>
+            </fieldset>
+            <button type="button" class="layui-btn" id="djssc"><i class="layui-icon"></i>上传文件</button>
+            <div style="margin-top: 10px;" id="djssc_msg" th:text="${djssc.upadd}"></div>
+
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>团体观众登记表</legend>
+            </fieldset>
+            <button type="button" class="layui-btn" id="ttgzdjb"><i class="layui-icon"></i>上传文件</button>
+            <div style="margin-top: 10px;" id="ttgzdjb_msg" th:text="${ttgzdjb.upadd}"></div>
+
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>观众邀请券</legend>
+            </fieldset>
+            <button type="button" class="layui-btn" id="gzyqq"><i class="layui-icon"></i>上传文件</button>
+            <div style="margin-top: 10px;" id="gzyqq_msg" th:text="${gzyqq.upadd}"></div>
         </div>
     </div>
 
@@ -23,16 +52,155 @@
         layui.use('core', function(){
             var form = layui.form,
             core = layui.core,
+                upload = layui.upload,
+                util = layui.util,
             $ = layui.jquery;
 
-            form.on('submit(submitFrom)', function(data){
-                var resultData = core.ajax('/crmRole/saveOrUpdate',false,'POST',data.field);
-                if(resultData!=false){
-                    parent.layer.msg('操作成功',core.showtime);
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index); //再执行关闭
+            //企业授权书模板
+            upload.render({
+                elem: '#qysqsmb'
+                ,url: '/api/upLoadByHttp?remarks=3&title=企业授权书模板' //改成您自己的上传接口
+                ,accept: 'file' //普通文件
+                ,done: function(res){
+                    if(res.code == 200){
+                        $('#qysqsmb_msg').text(res.data[0].url);
+                        var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
+                            ,"title=企业授权书模板&upadd="+res.data[0].url);
+                        if(resultData!=false){
+                            layer.msg('上传成功！');
+                        }else{
+                            layer.msg('上传失败！');
+                        }
+                    }else{
+                        layer.msg('上传失败！');
+                    }
                 }
-                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //展会中英文邀请函
+            upload.render({
+                elem: '#zhzywyqh'
+                ,url: '/api/upLoadByHttp?remarks=3&title=展会中英文邀请函' //改成您自己的上传接口
+                ,accept: 'file' //普通文件
+                ,done: function(res){
+                    if(res.code == 200){
+                        $('#zhzywyqh_msg').text(res.data[0].url);
+                        var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
+                            ,"title=展会中英文邀请函&upadd="+res.data[0].url);
+                        if(resultData!=false){
+                            layer.msg('上传成功！');
+                        }else{
+                            layer.msg('上传失败！');
+                        }
+                    }else{
+                        layer.msg('上传失败！');
+                    }
+                }
+            });
+
+            //展商合约
+            upload.render({
+                elem: '#zshy'
+                ,url: '/api/upLoadByHttp?remarks=3&title=展商合约' //改成您自己的上传接口
+                ,accept: 'file' //普通文件
+                ,done: function(res){
+                    if(res.code == 200){
+                        $('#zshy_msg').text(res.data[0].url);
+                        var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
+                            ,"title=展商合约&upadd="+res.data[0].url);
+                        if(resultData!=false){
+                            layer.msg('上传成功！');
+                        }else{
+                            layer.msg('上传失败！');
+                        }
+                    }else{
+                        layer.msg('上传失败！');
+                    }
+                }
+            });
+
+            //参展商手册
+            upload.render({
+                elem: '#czssc'
+                ,url: '/api/upLoadByHttp?remarks=3&title=参展商手册' //改成您自己的上传接口
+                ,accept: 'file' //普通文件
+                ,done: function(res){
+                    if(res.code == 200){
+                        $('#czssc_msg').text(res.data[0].url);
+                        var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
+                            ,"title=参展商手册&upadd="+res.data[0].url);
+                        if(resultData!=false){
+                            layer.msg('上传成功！');
+                        }else{
+                            layer.msg('上传失败！');
+                        }
+                    }else{
+                        layer.msg('上传失败！');
+                    }
+                }
+            });
+
+            //搭建商手册
+            upload.render({
+                elem: '#djssc'
+                ,url: '/api/upLoadByHttp?remarks=3&title=搭建商手册' //改成您自己的上传接口
+                ,accept: 'file' //普通文件
+                ,done: function(res){
+                    if(res.code == 200){
+                        $('#djssc_msg').text(res.data[0].url);
+                        var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
+                            ,"title=搭建商手册&upadd="+res.data[0].url);
+                        if(resultData!=false){
+                            layer.msg('上传成功！');
+                        }else{
+                            layer.msg('上传失败！');
+                        }
+                    }else{
+                        layer.msg('上传失败！');
+                    }
+                }
+            });
+
+            //团体观众登记表
+            upload.render({
+                elem: '#ttgzdjb'
+                ,url: '/api/upLoadByHttp?remarks=3&title=团体观众登记表' //改成您自己的上传接口
+                ,accept: 'file' //普通文件
+                ,done: function(res){
+                    if(res.code == 200){
+                        $('#ttgzdjb_msg').text(res.data[0].url);
+                        var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
+                            ,"title=团体观众登记表&upadd="+res.data[0].url);
+                        if(resultData!=false){
+                            layer.msg('上传成功！');
+                        }else{
+                            layer.msg('上传失败！');
+                        }
+                    }else{
+                        layer.msg('上传失败！');
+                    }
+                }
+            });
+
+            //观众邀请券
+            upload.render({
+                elem: '#gzyqq'
+                ,url: '/api/upLoadByHttp?remarks=3&title=观众邀请券' //改成您自己的上传接口
+                ,accept: 'file' //普通文件
+                ,done: function(res){
+                    if(res.code == 200){
+                        $('#gzyqq_msg').text(res.data[0].url);
+                        var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
+                            ,"title=观众邀请券&upadd="+res.data[0].url);
+                        if(resultData!=false){
+                            layer.msg('上传成功！');
+                        }else{
+                            layer.msg('上传失败！');
+                        }
+                    }else{
+                        layer.msg('上传失败！');
+                    }
+                }
             });
         });
     </script>

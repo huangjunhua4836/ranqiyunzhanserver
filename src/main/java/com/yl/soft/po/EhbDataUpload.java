@@ -1,8 +1,11 @@
 package com.yl.soft.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -34,5 +37,7 @@ public class EhbDataUpload implements Serializable {
     @ApiModelProperty(value = "资料上传地址")
     private String upadd;
 
-
+    @ApiModelProperty(hidden = true)
+    @TableField("createtime")
+    private LocalDateTime createtime;
 }

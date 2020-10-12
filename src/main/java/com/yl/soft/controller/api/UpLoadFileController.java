@@ -5,6 +5,7 @@ import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.service.BaseResponseUtil;
 import com.yl.soft.common.util.DateUtils;
 import com.yl.soft.common.util.IOUtil;
+import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.dto.AttachmentDTO;
 import com.yl.soft.dto.app.FileDto;
 import com.yl.soft.po.CrmFile;
@@ -13,7 +14,6 @@ import com.yl.soft.service.CrmFileService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -110,7 +110,11 @@ public class UpLoadFileController extends BaseResponseUtil {
                     AttachmentDTO attachmentDTO = new AttachmentDTO();
                     attachmentDTO.setId(crmFile.getId());
                     attachmentDTO.setName(oldName);
-                    attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/showFile?id="+crmFile.getId());
+                    if(StringUtils.isEmpty(title)){//图片预览
+						attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/showFile?id="+crmFile.getId());
+					}else{//文件下载
+						attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/down?id="+crmFile.getId());
+					}
                     attachments.add(attachmentDTO);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -176,6 +180,8 @@ public class UpLoadFileController extends BaseResponseUtil {
 	public BaseResponse<EhbDataUpload> credentialsDownUrl() {
 		QueryWrapper<CrmFile> crmFileQueryWrapper = new QueryWrapper<>();
 		crmFileQueryWrapper.eq("title","企业授权书模板");
+		crmFileQueryWrapper.orderByDesc("createtime");
+		crmFileQueryWrapper.last("limit 1");
 		CrmFile crmFile = crmFileService.getOne(crmFileQueryWrapper);
 
 		FileDto fileDto = new FileDto();
