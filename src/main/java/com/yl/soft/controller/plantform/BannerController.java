@@ -99,9 +99,9 @@ public class BannerController extends BaseController {
     @PostMapping("/saveOrUpdate")
     @ResponseBody
     public BaseResponse saveOrUpdate(EhbBanner ehbBanner) {
-        StringBuffer buffer = new StringBuffer(ehbBanner.getImgurl());
-        buffer = buffer.deleteCharAt(buffer.lastIndexOf(","));
-        ehbBanner.setImgurl(buffer.toString());
+//        StringBuffer buffer = new StringBuffer(ehbBanner.getImgurl());
+//        buffer = buffer.deleteCharAt(buffer.lastIndexOf(","));
+//        ehbBanner.setImgurl(buffer.toString());
         if(StringUtils.isEmpty(ehbBanner.getId())){
             ehbBanner.setCreatetime(LocalDateTime.now());
             ehbBanner.setCreateuser(1);

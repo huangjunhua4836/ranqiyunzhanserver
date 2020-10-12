@@ -49,4 +49,10 @@ public class EhbBanner extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
+
+    @ApiModelProperty(value = "1：内联    2：外联")
+    private Integer nw;
+
+    @ApiModelProperty(value = "内联下跳转id")
+    private Integer nlid;
 }

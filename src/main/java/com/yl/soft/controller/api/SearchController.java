@@ -111,7 +111,7 @@ public class SearchController extends BaseController {
         PageHelper.startPage(1, 5);
         List<EhbArticle> ehbArticles = ehbArticleService.list(ehbArticleQueryWrapper);
         List<ArticleDto> articleDtos = ehbArticles.stream().map(e->ArticleDto.of(e)).collect(Collectors.toList());
-        Collections.shuffle(articleDtos);
+//        Collections.shuffle(articleDtos);
 
         CommonInfoDto commonInfoDto = new CommonInfoDto();
         commonInfoDto.setExhibitorDtos(exhibitorDtos);
@@ -152,7 +152,7 @@ public class SearchController extends BaseController {
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
         List<ExhibitorDto> exhibitorDtos = ehbExhibitors.stream().map(e->ExhibitorDto.of(e)).collect(Collectors.toList());
-        Collections.shuffle(exhibitorDtos);
+//        Collections.shuffle(exhibitorDtos);
         return setResultSuccess(getBasePage(ehbExhibitors,exhibitorDtos));
     }
 
@@ -186,7 +186,7 @@ public class SearchController extends BaseController {
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<OpportunityDto> opportunityDtos = ehbOpportunityService.opportunityList(conditionMap);
-        Collections.shuffle(opportunityDtos);
+//        Collections.shuffle(opportunityDtos);
         return setResultSuccess(getBasePage(opportunityDtos,opportunityDtos));
     }
 
@@ -221,7 +221,7 @@ public class SearchController extends BaseController {
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<EhbArticle> ehbArticles = ehbArticleService.list(ehbArticleQueryWrapper);
         List<ArticleDto> articleDtos = ehbArticles.stream().map(e->ArticleDto.of(e)).collect(Collectors.toList());
-        Collections.shuffle(articleDtos);
+//        Collections.shuffle(articleDtos);
         return setResultSuccess(getBasePage(ehbArticles,articleDtos));
     }
 }

@@ -27,7 +27,17 @@ layui.use('core', function(){
             ,cols: [[ //表头
                 {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field: 'name', title: 'banner名'}
-                ,{field: 'type', title: '类型'}
+                ,{field: 'type', title: '类型',
+                    templet: function(d){
+                        if(d.type == '1'){
+                            return '首页顶部';
+                        }else if(d.type == '2'){
+                            return '首页大会预告';
+                        }else{
+                            return '未知';
+                        }
+                    }
+                }
                 ,{field: 'imgurl', title: '图片地址'}
                 ,{field: 'linkurl', title: '链接地址'}
                 ,{field: 'createUser', title: '创建者'}
