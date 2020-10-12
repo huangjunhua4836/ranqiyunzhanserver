@@ -146,17 +146,19 @@ public class HtmlDetails extends BaseController {
 	@ApiOperation(value = "查询评论信息列表", notes = "查询评论信息列表")
 	@ApiImplicitParams({ 
 		    @ApiImplicitParam(name = "type", value = "1：企业   2：商机  3：资讯", required = true, paramType = "query"),
+		    @ApiImplicitParam(name = "id", value = "评论企业，商机，商品的id", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "page", value = "分页当前页", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "size", value = "一页显示条数", required = true, paramType = "query"),
 	})
 	@GetMapping("/commentList")
 	public ResultItem<List<EhbCommentDto>> commentList(Integer page,
-			Integer size,Integer type) {
+			Integer size,Integer type,Integer id) {
 		
 		PageHelper.startPage(page, size, "createtime DESC");
 		PageInfo<EhbComment> pageInfo = new PageInfo<>(ehbCommentService.lambdaQuery()
 				.eq(EhbComment::getIsdel, 0)
-				.eq(null!=type,EhbComment::getType, type).list());
+				.eq(null!=type,EhbComment::getType, type)
+				.eq(null!=id,EhbComment::getRelateid, id).list());
 		List<EhbCommentDto> dataList=pageInfo.getList().stream().map(i->{
 			EhbCommentDto ehbCommentDto=new EhbCommentDto();
 			BaseConv.copy(i, ehbCommentDto);
@@ -186,6 +188,52 @@ public class HtmlDetails extends BaseController {
 		ehbComment.setType(type);
 		ehbComment.setRelateid(id);
 		ehbCommentService.save(ehbComment);
+		switch (type) {
+		case 1:
+			
+			break;
+		case 2: //评论商机
+			ehbOpportunityService.lambdaUpdate().setSql("countcomment=countcomment+1").eq(EhbOpportunity::getId, id).update();
+			break;
+		case 3:  //评论资讯
+			ehbArticleService.lambdaUpdate().setSql("countcomment=countcomment+1").eq(EhbArticle::getId, id).update();
+			break;
+		case 4:  //评论商品
+			ehbOpportunityService.lambdaUpdate().setSql("countcomment=countcomment+1").eq(EhbOpportunity::getId, id).update();
+			break;
+		default:
+			break;
+		}
+		return ok(ehbComment.getId());
+	}
+	
+	@ApiOperation(value = "删除我发的评论", notes = "删除我发的评论")
+	@ApiImplicitParams({ 
+			@ApiImplicitParam(name = "id", value = "评论作品的id", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "token", value = "授权标识", required = true, paramType = "query"),
+	})
+	@PostMapping("/api/deleComment")
+	public BaseResult deleComment(Integer id,String token) {
+		SessionUser sessionUser = sessionState.getCurrentUser(token);
+		if(null==id) {
+			return error(-100,"系统繁忙请稍后重试");
+		}
+		EhbComment ehbComment=ehbCommentService.lambdaQuery().eq(EhbComment::getUserid, sessionUser.getId()).eq(EhbComment::getId, id).last("LIMIT 1").one();
+		if(null==ehbComment) {
+			return error(-101,"该评论不存在");
+		}
+		switch (ehbComment.getType()) {
+		case 2: //评论商机
+			ehbOpportunityService.lambdaUpdate().setSql("countcomment=countcomment-1").eq(EhbOpportunity::getId, id).update();
+			break;
+		case 3:  //评论资讯
+			ehbArticleService.lambdaUpdate().setSql("countcomment=countcomment-1").eq(EhbArticle::getId, id).update();
+			break;
+		case 4:  //评论商品
+			ehbOpportunityService.lambdaUpdate().setSql("countcomment=countcomment-1").eq(EhbOpportunity::getId, id).update();
+			break;
+		}
+		ehbCommentService.removeById(ehbComment.getId());
 		return ok(ehbComment.getId());
 	}
 	

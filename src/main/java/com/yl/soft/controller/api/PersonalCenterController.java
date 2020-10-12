@@ -488,6 +488,7 @@ public class PersonalCenterController extends BaseController {
 			if(type==3) {
 				ehbArticleService.lambdaUpdate().setSql("countthumbs=countthumbs-1").eq(EhbArticle::getId, relateid).update();
 			}
+			return ok2(ehbOpportunityService.getById(ehbUseraction.getRelateid()).getCountthumbs());
 			
 		} else {
 			ehbUseractionService.save(EhbUseractionDto.of(sessioner, type, relateid, i));
@@ -497,8 +498,9 @@ public class PersonalCenterController extends BaseController {
 			if(type==3) {
 				ehbArticleService.lambdaUpdate().setSql("countthumbs=countthumbs+1").eq(EhbArticle::getId, relateid).update();
 			}
+			return ok2(ehbOpportunityService.getById(ehbUseraction.getRelateid()).getCountthumbs());
 		}
-		return ok2();
+		
 	}
 	
 	
