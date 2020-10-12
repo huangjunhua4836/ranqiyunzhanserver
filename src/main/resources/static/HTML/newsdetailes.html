@@ -17,7 +17,6 @@
 <script type="text/javascript" src="js/vue.min.js"></script>
 <script type="text/javascript" src="js/Yeffect.js"></script>
 <script type="text/javascript" src="js/ind.js"></script>
-<script type="text/javascript" src="//bjc1.t4m.cn/applink.js"></script>
 <title>资讯详情</title>
 </head>
 
@@ -179,27 +178,33 @@
 		var equipment=IsAndroid();
 		
 		if(isShare){
-			if(equipment){
-				MobLink([
-				    {
-				        el: "",
-				        path: "rqyz/goodsDetails",
-				        params: {
-				            key1: nid,
-				        }
-				    }
-				]);
-			}else{
-				MobLink([
-				    {
-				        el: "",
-				        path: "cloudExhbition",
-				        params: {
-				            key1: nid,
-				        }
-				    }
-				]);
-			}
+			var scriptUrl="<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">"+"\<\/script>";
+			$("head").append(scriptUrl)
+			setTimeout(function(){
+				console.log(MobLink)
+//				if(equipment){
+//					MobLink([
+//					    {
+//					        el: "",
+//					        path: "rqyz/goodsDetails",
+//					        params: {
+//					            key1: nid,
+//					        }
+//					    }
+//					]);
+//				}else{
+//					MobLink([
+//					    {
+//					        el: "",
+//					        path: "cloudExhbition",
+//					        params: {
+//					            key1: nid,
+//					        }
+//					    }
+//					]);
+//				}
+			},1000)
+			
 		}
 		
 		

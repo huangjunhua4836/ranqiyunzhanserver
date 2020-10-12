@@ -15,13 +15,11 @@ import com.yl.soft.dto.RegisterExhibitorDto;
 import com.yl.soft.dto.app.LabelDto;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
+import com.yl.soft.po.EhbAboutus;
 import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbLabel;
-import com.yl.soft.service.CrmFileService;
-import com.yl.soft.service.EhbAudienceService;
-import com.yl.soft.service.EhbExhibitorService;
-import com.yl.soft.service.EhbLabelService;
+import com.yl.soft.service.*;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,15 +48,11 @@ public class RegisterController extends BaseController {
     @Autowired
     private EhbExhibitorService ehbExhibitorService;
     @Autowired
+    private EhbAboutusService ehbAboutusService;
+    @Autowired
     private SessionState sessionState;
     @Autowired
-    private SendEmail sendEmail;
-    @Autowired
-    private CrmFileService crmFileService;
-    @Autowired
     private RedisService redisService;
-    @Value("${custom.uploadPath}")
-    private String uploadPath;
 
     /**
      * 参展用户补充信息提交接口
@@ -183,6 +177,28 @@ public class RegisterController extends BaseController {
             labelDtos.add(LabelDto.of(ehbLabel));
         }
         return setResultSuccess(labelDtos);
+    }
+
+    /**
+     * 用户协议接口
+     * @return
+     */
+    @ApiOperation(value = "用户协议接口")
+    @ApiImplicitParams({
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @PostMapping("/userAgreement")
+    public BaseResponse userAgreement(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        QueryWrapper<EhbAboutus> ehbAboutusQueryWrapper = new QueryWrapper<>();
+        ehbAboutusQueryWrapper.last("limit 1");
+        EhbAboutus ehbAboutus = ehbAboutusService.getOne(ehbAboutusQueryWrapper);
+        return setResultSuccess(ehbAboutus.getUseragr());
     }
 
 //    /**
