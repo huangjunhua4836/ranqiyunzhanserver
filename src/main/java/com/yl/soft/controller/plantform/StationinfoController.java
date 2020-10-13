@@ -9,6 +9,7 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.po.CrmRole;
 import com.yl.soft.service.CrmRoleService;
+import com.yl.soft.service.StationinfoService;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,42 +31,42 @@ import java.util.List;
 @RequestMapping("/platform/stationinfo")
 public class StationinfoController extends BaseController {
     @Autowired
-    public CrmRoleService crmRoleService;
+    public StationinfoService stationinfoService;
 
     @GetMapping("/list")
     public String list() {
-        return "role/list";
+        return "stationinfo/list";
     }
 
-    /**
-     * 查询列表
-     * @param page
-     * @param limit
-     * @param crmRole
-     * @param startTime
-     * @param endTime
-     * @return
-     */
-    @GetMapping("/initTable")
-    @ResponseBody
-    public TableVo initTable(String page, String limit, CrmRole crmRole, String startTime, String endTime) {
-        QueryWrapper<CrmRole> crmRoleQueryWrapper = new QueryWrapper<>();
-        crmRoleQueryWrapper.eq(!StringUtils.isEmpty(crmRole.getId()),"ID",crmRole.getId());
-        crmRoleQueryWrapper.like(!StringUtils.isEmpty(crmRole.getName()),"NAME",crmRole.getName());
-        crmRoleQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"CREATE_TIME",startTime,endTime);
-        crmRoleQueryWrapper.eq("ISDEL", CommonDict.CORRECT_STATE);
-        crmRoleQueryWrapper.orderByDesc("CREATE_TIME");
-        PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
-        List<CrmRole> crmRoles = crmRoleService.list(crmRoleQueryWrapper);
-        PageInfo pageInfo = new PageInfo<>(crmRoles);
-
-        TableVo tableVo = new TableVo();
-        tableVo.setCode(0);
-        tableVo.setMsg("");
-        tableVo.setCount((int)pageInfo.getTotal());
-        tableVo.setData(pageInfo.getList());
-        return tableVo;
-    }
+//    /**
+//     * 查询列表
+//     * @param page
+//     * @param limit
+//     * @param crmRole
+//     * @param startTime
+//     * @param endTime
+//     * @return
+//     */
+//    @GetMapping("/initTable")
+//    @ResponseBody
+//    public TableVo initTable(String page, String limit, CrmRole crmRole, String startTime, String endTime) {
+//        QueryWrapper<CrmRole> crmRoleQueryWrapper = new QueryWrapper<>();
+//        crmRoleQueryWrapper.eq(!StringUtils.isEmpty(crmRole.getId()),"ID",crmRole.getId());
+//        crmRoleQueryWrapper.like(!StringUtils.isEmpty(crmRole.getName()),"NAME",crmRole.getName());
+//        crmRoleQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"CREATE_TIME",startTime,endTime);
+//        crmRoleQueryWrapper.eq("ISDEL", CommonDict.CORRECT_STATE);
+//        crmRoleQueryWrapper.orderByDesc("CREATE_TIME");
+//        PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
+//        List<CrmRole> crmRoles = crmRoleService.list(crmRoleQueryWrapper);
+//        PageInfo pageInfo = new PageInfo<>(crmRoles);
+//
+//        TableVo tableVo = new TableVo();
+//        tableVo.setCode(0);
+//        tableVo.setMsg("");
+//        tableVo.setCount((int)pageInfo.getTotal());
+//        tableVo.setData(pageInfo.getList());
+//        return tableVo;
+//    }
 
 //    /**
 //     * 跳转到单个添加或者修改页面
