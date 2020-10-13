@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.*;
+import com.yl.soft.dto.app.ArticleDto;
 import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
@@ -515,6 +516,18 @@ public class PersonalCenterController extends BaseController {
 	public BaseResult addBrowse(String token, Integer relateid, Integer type) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
 		Integer i = 4;// （1：收藏 2：点赞 3：关注 4：浏览）
+		switch (type) {
+		case 2:
+			ehbOpportunityService.lambdaUpdate().setSql("countbrowse=countbrowse+1").eq(EhbOpportunity::getId, relateid).update();
+			break;
+		case 3:
+			ehbArticleService.lambdaUpdate().setSql("countbrowse=countbrowse+1").eq(EhbArticle::getId, relateid).update();
+			break;
+		case 4:
+			ehbOpportunityService.lambdaUpdate().setSql("countbrowse=countbrowse+1").eq(EhbOpportunity::getId, relateid).update();
+			break;
+		}
+		
 		ehbUseractionService.save(EhbUseractionDto.of(sessioner, type, relateid, i));
 		return ok2();
 	}
