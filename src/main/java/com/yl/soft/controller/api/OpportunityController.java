@@ -77,7 +77,7 @@ public class OpportunityController extends BaseController {
             BeanUtil.copyProperties(i,opportunityAndAdvertisingDto2);
             return opportunityAndAdvertisingDto2;
         }).collect(Collectors.toList());
-        Collections.shuffle(opportunityAndAdvertisingDto2s);
+//        Collections.shuffle(opportunityAndAdvertisingDto2s);
         //广告
         QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
         ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
@@ -140,7 +140,7 @@ public class OpportunityController extends BaseController {
             BeanUtil.copyProperties(i,opportunityAndAdvertisingDto2);
             return opportunityAndAdvertisingDto2;
         }).collect(Collectors.toList());
-        Collections.shuffle(opportunityAndAdvertisingDto2s);
+//        Collections.shuffle(opportunityAndAdvertisingDto2s);
         //广告
         QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
         ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
@@ -206,7 +206,7 @@ public class OpportunityController extends BaseController {
             BeanUtil.copyProperties(i,opportunityAndAdvertisingDto2);
             return opportunityAndAdvertisingDto2;
         }).collect(Collectors.toList());
-        Collections.shuffle(opportunityAndAdvertisingDto2s);
+//        Collections.shuffle(opportunityAndAdvertisingDto2s);
         //广告
         QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
         ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
