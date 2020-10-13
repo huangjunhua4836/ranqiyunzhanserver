@@ -79,7 +79,6 @@ public class HtmlDetails extends BaseController {
 				.eq(null!=sessionUser,EhbUseraction::getUserid, sessionUser.getId())
 				.eq(EhbUseraction::getRelateid, ehbArticle.getId()).eq(EhbUseraction::getActivetype, 2).eq(EhbUseraction::getType, 1).last("LIMIT 1").one();
 
-		ehbArticleService.lambdaUpdate().setSql("countbrowse=countbrowse+1").eq(EhbArticle::getId, id).update();
 		ArticleDto articleDto=BaseConv.copy(ehbArticle, new ArticleDto());
 		articleDto.setIsZan(isZxZan!=null?1:0);
 		articleDto.setIsSCZx(isSc!=null?1:0);
