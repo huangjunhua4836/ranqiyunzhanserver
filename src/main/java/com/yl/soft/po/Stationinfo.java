@@ -1,8 +1,12 @@
 package com.yl.soft.po;
 
 import java.time.LocalDateTime;
+
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,22 +29,27 @@ public class Stationinfo implements Serializable {
 
     private static final long serialVersionUID=1L;
 
+    @ApiModelProperty(value = "主键id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty(value = "通知内容标题")
+    @TableField("notification_title")
     private String notificationTitle;
 
     @ApiModelProperty(value = "消息内容标题")
+    @TableField("msg_title")
     private String msgTitle;
 
     @ApiModelProperty(value = "消息内容")
+    @TableField("msg_content")
     private String msgContent;
 
     @ApiModelProperty(value = "扩展字段")
     private String extrasparam;
 
     @ApiModelProperty(value = "1-成功  0-失败")
-    private Integer issuccess;
+    private Boolean issuccess;
 
     private LocalDateTime createtime;
 
@@ -52,5 +61,8 @@ public class Stationinfo implements Serializable {
     private String bieming;
 
     @ApiModelProperty(value = "0-正常  1-删除")
-    private Integer isdel;
+    private Boolean isdel;
+
+    @ApiModelProperty(value = "1-安卓  2-IOS  3-ALL")
+    private Integer sendtype;
 }

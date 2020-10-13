@@ -19,22 +19,44 @@ layui.use('core', function(){
         //第一个实例
         table.render({
             elem: '#table'
-            ,url: '/crmRole/initTable' //数据接口
+            ,url: '/platform/stationinfo/initTable' //数据接口
             ,where: where
             ,toolbar: '#titleToolbar' //开启头部工具栏，并为其绑定左侧模板
-            ,defaultToolbar: ['filter', 'exports', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
-                title: '导入'
-                ,layEvent: 'LAYTABLE_TIPS'
-                ,icon: 'layui-icon-upload'
-            },'print']
+            ,defaultToolbar: ['filter']
             ,title: '机构数据表'
             ,cols: [[ //表头
                 {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
-                ,{field: 'name', title: '角色名'}
-                ,{field: 'createUser', title: '创建者'}
-                ,{field: 'createTime', title: '创建时间',sort: true,
+                ,{field: 'notificationTitle', title: '通知标题'}
+                ,{field: 'msgTitle', title: '消息标题'}
+                ,{field: 'sendtype', title: '发送类型',
                     templet: function(d){
-                        return util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss");
+                        if(d.sendtype == '1'){
+                            return '安卓';
+                        }else if(d.sendtype == '2'){
+                            return 'IOS';
+                        }else if(d.sendtype == '3'){
+                            return '所有';
+                        }else{
+                            return '未知';
+                        }
+                    }
+                }
+                ,{field: 'msgContent', title: '消息内容'}
+                ,{field: 'issuccess', title: '发送状态',
+                    templet: function(d){
+                        return d.issuccess == true?'成功':'失败';
+                    }
+                }
+                ,{field: 'registrationId', title: '设备标识'}
+                ,{field: 'bieming', title: '别名'}
+                ,{field: 'isdel', title: '删除状态',
+                    templet: function(d){
+                        return d.isdel == false?'正常':'删除';
+                    }
+                }
+                ,{field: 'createtime', title: '创建时间',sort: true,
+                    templet: function(d){
+                        return util.toDateString(d.createtime, "yyyy-MM-dd HH:mm:ss");
                     }
                 }
                 ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:150,unresize: true}
@@ -47,7 +69,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加','/crmRole/input?type=add',['500px', '200px'],false,initTable);
+                core.openIframeDialog('添加','/platform/stationinfo/input?type=add',['500px', '100%'],false,initTable);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
@@ -63,22 +85,24 @@ layui.use('core', function(){
             layer.confirm('真的删除么？', function(index){
                 layer.close(index);
                 //向服务端发送删除指令
-                var resultData = core.ajax('/crmRole/delete',false,'POST','id='+data.id);
+                var resultData = core.ajax('/platform/stationinfo/delete',false,'POST','id='+data.id);
                 if(resultData!=false){
                     layer.msg('操作成功！',core.showtime);
                     initTable({});
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改','/crmRole/input?type=update&id='+data.id,['500px', '200px'],false,initTable);
+            core.openIframeDialog('修改','/platform/stationinfo/input?type=update&id='+data.id,['500px', '100%'],false,initTable);
         } else if(obj.event === 'detail'){
-            core.openDialog('详情',$('#detail').html(),['500px','480px']);
-            $('.layui-layer-content').find('input').eq(0).val(data.id);
-            $('.layui-layer-content').find('input').eq(1).val(data.name);
-            $('.layui-layer-content').find('input').eq(2).val(data.createUser);
-            $('.layui-layer-content').find('input').eq(3).val(util.toDateString(data.createTime, "yyyy-MM-dd HH:mm:ss"));
-            $('.layui-layer-content').find('input').eq(4).val(data.updateUser);
-            $('.layui-layer-content').find('input').eq(5).val(util.toDateString(data.updateTime, "yyyy-MM-dd HH:mm:ss"));
+            layer.confirm('真的发送么？', function(index){
+                layer.close(index);
+                //向服务端发送删除指令
+                var resultData = core.ajax('/platform/stationinfo/sendOut',false,'POST','id='+data.id);
+                if(resultData!=false){
+                    layer.msg('操作成功！',core.showtime);
+                    initTable({});
+                }
+            });
         }
     });
 

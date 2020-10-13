@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="common::headr('角色列表')"></head>
+    <head th:replace="common::headr('站内信列表')"></head>
     <body>
         <div class="layui-container">
             <div class="layui-row">
@@ -14,17 +14,17 @@
                                     <div class="layui-row">
                                         <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
                                             <div class="layui-form-item">
-                                                <label class="layui-form-label">ID</label>
+                                                <label class="layui-form-label">通知标题</label>
                                                 <div class="layui-input-block">
-                                                    <input type="text" name="id" placeholder="请输入ID" autocomplete="off" class="layui-input">
+                                                    <input type="text" name="notificationTitle" placeholder="请输入通知标题" autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
                                             <div class="layui-form-item">
-                                                <label class="layui-form-label">名称</label>
+                                                <label class="layui-form-label">消息标题</label>
                                                 <div class="layui-input-block">
-                                                    <input type="text" name="name" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                                                    <input type="text" name="msgTitle" placeholder="请输入消息标题" autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
                                         </div>
@@ -63,48 +63,6 @@
             </div>
         </div>
 
-        <!--详情模板-->
-        <div id="detail" style="display: none;">
-            <form class="layui-form layui-form-pane">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">id</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">名称</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">创建人</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">创建时间</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">修改者</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">修改时间</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-            </form>
-        </div>
-
         <script type="text/html" id="titleToolbar">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-circle" title="添加"></i>添加</button>
@@ -112,10 +70,10 @@
         </script>
 
         <script type="text/html" id="rowToolBar">
-            <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-form" title="查看"></i></a>
+            <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-form" title="发送"></i></a>
             <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit" title="编辑"></i></a>
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete" title="删除"></i></a>
         </script>
-        <script type="text/javascript" th:src="@{/static/js/role/role.js}"></script>
+        <script type="text/javascript" th:src="@{/static/js/stationinfo/stationinfo.js}"></script>
     </body>
 </html>
