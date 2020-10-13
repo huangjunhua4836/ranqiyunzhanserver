@@ -23,6 +23,7 @@ public interface MeUserConv {
 		ehbAudienceDto.setWebsite(ehbExhibitor.getWebsite());
 		ehbAudienceDto.setExname(ehbExhibitor.getName());
 		ehbAudienceDto.setIdcard(ehbExhibitor.getIdcard());
+		ehbAudienceDto.setEnglishname(ehbExhibitor.getEnglishname());
 		ehbAudienceDto.setCertificationtime(ehbExhibitor.getCertificationtime());
 		return ehbAudienceDto;
 	}
