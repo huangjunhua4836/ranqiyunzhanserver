@@ -90,10 +90,11 @@ public class HtmlDetails extends BaseController {
 	@ApiOperation(value = "商机/商品详情", notes = "H5页面商机/商品详情")
 	@ApiImplicitParams({ 
 			@ApiImplicitParam(name = "id", value = "商机/商机id", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "token", value = "授权标识", required = false, paramType = "query")
+			@ApiImplicitParam(name = "token", value = "授权标识", required = false, paramType = "query"),
+			@ApiImplicitParam(name = "type", value = "0：App调用时必填，否则浏览数量会出错", required = false, paramType = "query"),
 	})
 	@GetMapping("/sjDetails")
-	public BaseResult<OpportunityDetailsDto> sjDetails(Integer id, String token) {
+	public BaseResult<OpportunityDetailsDto> sjDetails(Integer id, String token,Integer type) {
 		EhbOpportunity ehbOpportunity=ehbOpportunityService.getById(id);
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 		
@@ -137,7 +138,9 @@ public class HtmlDetails extends BaseController {
 				labelList.add(ehbLabel.getName());
 			}
 		}
-		ehbOpportunityService.lambdaUpdate().setSql("countbrowse=countbrowse+1").eq(EhbOpportunity::getId, id).update();
+		if(type==null) {
+			ehbOpportunityService.lambdaUpdate().setSql("countbrowse=countbrowse+1").eq(EhbOpportunity::getId, id).update();
+		}
 		OpportunityDetailsDto opportunityDetailsDto = new OpportunityDetailsDto();
 		BeanUtil.copyProperties(ehbOpportunityDto,opportunityDetailsDto);
 		opportunityDetailsDto.setLabelStrings(labelList);
