@@ -48,7 +48,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加','/platform/live/input?type=add',['500px', '100%'],false,initTable);
+                core.openIframeDialog('添加','/platform/live/input?type=add',['500px', '900px'],false,initTable);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
@@ -71,7 +71,7 @@ layui.use('core', function(){
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改','/platform/live/input?type=update&id='+data.id,['500px', '100%'],false,initTable);
+            core.openIframeDialog('修改','/platform/live/input?type=update&id='+data.id,['500px', '900px'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('详情',$('#detail').html(),['500px','480px']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);

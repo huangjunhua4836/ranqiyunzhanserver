@@ -48,7 +48,7 @@ layui.use('core', function(){
         switch(obj.event){
             case 'add':
                 // window.open("/platform/about/input?type=add");
-                core.openIframeDialog('添加','/platform/about/input?type=add',['100%', '440px'],false,initTable);
+                core.openIframeDialog('添加','/platform/about/input?type=add',['100%', '900px'],false,initTable);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
@@ -72,7 +72,7 @@ layui.use('core', function(){
             });
         } else if(obj.event === 'edit'){
             // window.open("/platform/about/input?type=update&id="+data.id);
-            core.openIframeDialog('修改关于','/platform/about/input?type=update&id='+data.id,['100%', '440px'],false,initTable);
+            core.openIframeDialog('修改关于','/platform/about/input?type=update&id='+data.id,['100%', '900px'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('关于详情',$('#detail').html(),['500px','480px']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);
