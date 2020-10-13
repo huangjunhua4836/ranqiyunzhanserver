@@ -1,7 +1,6 @@
 package com.yl.soft.controller.plantform;
 
 
-import cn.jpush.api.JPushClient;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -11,7 +10,13 @@ import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
+import com.yl.soft.po.EhbAudience;
+import com.yl.soft.po.EhbExhibitor;
+import com.yl.soft.po.Message;
 import com.yl.soft.po.Stationinfo;
+import com.yl.soft.service.EhbAudienceService;
+import com.yl.soft.service.EhbExhibitorService;
+import com.yl.soft.service.MessageService;
 import com.yl.soft.service.StationinfoService;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -39,6 +46,12 @@ import java.util.List;
 public class StationinfoController extends BaseController {
     @Autowired
     public StationinfoService stationinfoService;
+    @Autowired
+    public MessageService messageService;
+    @Autowired
+    public EhbAudienceService ehbAudienceService;
+    @Autowired
+    public EhbExhibitorService ehbExhibitorService;
 
     @GetMapping("/list")
     public String list() {
@@ -142,8 +155,47 @@ public class StationinfoController extends BaseController {
                     , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"发送信息ID为空！");
         }
         Stationinfo stationinfo = stationinfoService.getById(id);
-        int i = JpushUtil.sendToAllAndroid(stationinfo.getNotificationTitle(),stationinfo.getMsgTitle()
-                ,stationinfo.getMsgContent(),new HashMap<>());
+        QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+        ehbExhibitorQueryWrapper.ne("state",1);
+        List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
+        List<Integer> ids = ehbExhibitors.stream().map(i->{
+           return i.getId();
+        }).collect(Collectors.toList());
+
+        QueryWrapper<EhbAudience> ehbAudienceQueryWrapper = new QueryWrapper<>();
+        ehbAudienceQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        ehbAudienceQueryWrapper.notIn("isdel",ids);
+        List<EhbAudience> ehbAudiences = ehbAudienceService.list(ehbAudienceQueryWrapper);
+        List<Message> messages = new ArrayList<>();
+        for(EhbAudience ehbAudience : ehbAudiences){
+            Message message = new Message();
+            message.setRuid(ehbAudience.getId());
+            message.setRuname(ehbAudience.getName());
+            message.setTitle(stationinfo.getMsgTitle());
+            message.setContent(stationinfo.getMsgContent());
+            message.setCreatetime(LocalDateTime.now());
+            message.setStatus(0);//未读
+            message.setImgurl(stationinfo.getImgurl());
+            message.setUrl(stationinfo.getUrl());
+            messages.add(message);
+            message.setUsertype(0);//全部类型
+            message.setIsdel(0);
+            message.setStationinfoid(stationinfo.getId());
+            messages.add(message);
+        }
+        messageService.saveBatch(messages);
+
+        int i = 0;
+        if(1 == stationinfo.getSendtype()){
+            i = JpushUtil.sendToAllAndroid(stationinfo.getNotificationTitle(),stationinfo.getMsgTitle()
+                    ,stationinfo.getMsgContent(),new HashMap<>());
+        }else if(2 == stationinfo.getSendtype()){
+            i = JpushUtil.sendToAllIos(stationinfo.getNotificationTitle(),stationinfo.getMsgTitle()
+                    ,stationinfo.getMsgContent(),"");
+        }else if(3 == stationinfo.getSendtype()){
+            i = JpushUtil.sendToAll(stationinfo.getNotificationTitle(),stationinfo.getMsgTitle()
+                    ,stationinfo.getMsgContent(),new HashMap<>());
+        }
         if(i > 0){
             stationinfo.setIssuccess(true);
             stationinfoService.updateById(stationinfo);

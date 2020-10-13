@@ -65,4 +65,10 @@ public class Stationinfo implements Serializable {
 
     @ApiModelProperty(value = "1-安卓  2-IOS  3-ALL")
     private Integer sendtype;
+
+    @ApiModelProperty(value = "图片地址")
+    private String imgurl;
+
+    @ApiModelProperty(value = "链接地址")
+    private String url;
 }

@@ -60,5 +60,8 @@ public class Message implements Serializable {
     @ApiModelProperty(value = "是否删除 0 否 1 是")
     private Integer isdel;
 
+    @ApiModelProperty(value = "消息配置ID")
+    private Integer stationinfoid;
+
 
 }
