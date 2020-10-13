@@ -70,7 +70,7 @@ public class EhbLiveBroadcast implements Serializable {
     @TableField("live_endTime")
     private LocalDateTime liveEndtime;
 
-    @ApiModelProperty(value = "直播封面")
+    @ApiModelProperty(value = "直播封面")//上传视频
     @TableField("live_image_url")
     private String liveImageUrl;
 

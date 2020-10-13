@@ -56,8 +56,12 @@
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">直播封面</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{liveImageUrl}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn" id="test2">上传图片</button>
+                            <div class="layui-upload-list">
+                                <img class="layui-upload-img" id="demo1" th:src="*{liveImageUrl}">
+                                <p id="demoText"></p>
+                            </div>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -72,34 +76,36 @@
                             <input type="text" th:field="*{liveStatus}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">直播下载地址</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{liveStatus}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                    <div th:if="*{id != null}">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">直播下载地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" th:field="*{videoDownUrl}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">直播回访地址</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{liveStatus}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">直播回访地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" th:field="*{playback}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">推流地址</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{pushFlowUrl}" required  lay-verify="required" placeholder="请输入推流地址" autocomplete="off" class="layui-input">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">推流地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" th:field="*{pushFlowUrl}" required  lay-verify="required" placeholder="请输入推流地址" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">拉流地址</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{pullFlowUrl}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">拉流地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" th:field="*{pullFlowUrl}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">直播间弹幕聊天id</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{gropid}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">直播间弹幕聊天id</label>
+                            <div class="layui-input-block">
+                                <input type="text" th:field="*{gropid}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -133,6 +139,7 @@
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
+                    <input th:field="*{liveImageUrl}" type="hidden" id="imgurl"/>
                     <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
                 </form>
             </div>
@@ -165,6 +172,29 @@
             laydate.render({
                 elem: '#test6'
                 ,type: 'datetime'
+            });
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test2'
+                , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
+                , before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    if (res.code != 200) {
+                        return layer.msg('上传失败');
+                    }
+                    if (res.code == 200) {
+                        $('#imgurl').val(res.data[0].url);
+                        return layer.msg('上传成功！');
+                    }
+                    //上传成功
+                }
             });
         });
     </script>
