@@ -85,7 +85,8 @@ public class UpLoadFileController extends BaseResponseUtil {
 					if(!image_upload_ext.contains(suffix)){
 						return setResultError("单个文件："+multipartFiles[i].getOriginalFilename()+"文件后缀错误！");
 					}
-                    String relativePath = nowDateDir+File.separator+oldName;
+					String newName =System.currentTimeMillis()+new Random().nextLong()+"."+suffix;
+                    String relativePath = nowDateDir+File.separator+newName;
                     //以原来的名称命名,覆盖掉旧的
                     String storagePath = uploadPath + relativePath;
                     buffer.append("上传的文件：" + multipartFiles[i].getName()+";")
@@ -97,7 +98,7 @@ public class UpLoadFileController extends BaseResponseUtil {
                     //保存文件
                     CrmFile crmFile = new CrmFile();
                     crmFile.setTitle(title);
-                    crmFile.setName(multipartFiles[i].getOriginalFilename());
+                    crmFile.setName(newName);
                     crmFile.setType(Integer.parseInt(remarks));
                     crmFile.setPath(relativePath);
                     crmFile.setIsdel(false);

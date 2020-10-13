@@ -24,10 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Api(tags = {"C端模块-一龄云多文件上传"})
 @RestController
@@ -93,8 +90,8 @@ public class UpLoadFileController2 extends BaseResponseUtil {
 						if(!image_upload_ext.contains(suffix)){
 							return setResultError("单个文件："+multipartFiles.get(i).getOriginalFilename()+"文件后缀错误！");
 						}
-						String relativePath = nowDateDir+File.separator+oldName;
-						//以原来的名称命名,覆盖掉旧的
+						String newName =System.currentTimeMillis()+new Random().nextLong()+"."+suffix;
+						String relativePath = nowDateDir+File.separator+newName;						//以原来的名称命名,覆盖掉旧的
 						String storagePath = uploadPath + relativePath;
 						buffer.append("上传的文件：" + multipartFiles.get(i).getName()+";")
 								.append("上传文件类型：" + multipartFiles.get(i).getContentType()+";")
@@ -105,7 +102,7 @@ public class UpLoadFileController2 extends BaseResponseUtil {
 						//保存文件
 						CrmFile crmFile = new CrmFile();
 						crmFile.setTitle(title);
-						crmFile.setName(multipartFiles.get(i).getOriginalFilename());
+						crmFile.setName(newName);
 						crmFile.setType(Integer.parseInt(remarks));
 						crmFile.setPath(relativePath);
 						crmFile.setIsdel(false);
