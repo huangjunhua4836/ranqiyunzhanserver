@@ -1,12 +1,11 @@
 package com.yl.soft.controller.api;
 
 import cn.hutool.core.bean.BeanUtil;
+
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.redis.RedisService;
-import com.yl.soft.common.util.LogUtils;
-import com.yl.soft.common.util.SendEmail;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
@@ -34,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Api(tags = {"C端模块-燃气云展信息完善"})
@@ -53,6 +54,7 @@ public class RegisterController extends BaseController {
     private SessionState sessionState;
     @Autowired
     private RedisService redisService;
+    
 
     /**
      * 参展用户补充信息提交接口
@@ -80,6 +82,51 @@ public class RegisterController extends BaseController {
 		if(ehbAudience == null){
             return setResultError("参展人没有注册！");
         }
+		if(StringUtils.isEmpty(registerAudienceDto.getName())) {
+			 return setResultError("请输入您的姓名！");
+		}
+		
+		if(registerAudienceDto.getName().length()>30) {
+			 return setResultError("请输入一个正确的姓名！");
+		}
+		
+		if(StringUtils.isEmpty(registerAudienceDto.getPhone())) {
+			 return setResultError("请输入手机号！");
+		}
+		String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$";
+        if(registerAudienceDto.getPhone().length() != 11){
+        	return setResultError("手机号应为11位数！");
+        }else{
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(registerAudienceDto.getPhone());
+            boolean isMatch = m.matches();
+            if(!isMatch){
+            	return setResultError("请输入一个正确的手机号");
+            }
+        }
+		
+        if(StringUtils.isEmpty(registerAudienceDto.getEnterprise())) {
+        	return setResultError("请输入您的企业名称！");
+        }
+        
+        if(registerAudienceDto.getEnterprise().length()>50) {
+        	return setResultError("请输入一个正确的企业名称！");
+        }
+        
+        if(StringUtils.isEmpty(registerAudienceDto.getMailbox())) {
+        	return setResultError("请输入您的邮箱地址");
+        }
+        
+        String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        Pattern regexmail = Pattern.compile(check);
+        Matcher matcher = regexmail.matcher(registerAudienceDto.getMailbox());
+        boolean isMatchmail = matcher.matches();
+        
+        if(!isMatchmail) {
+        	return setResultError("请输入一个正确的邮箱地址");
+        }
+        
+		
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
         ehbAudience.setIsdel(false);
         ehbAudience.setUpdatetime(LocalDateTime.now());
