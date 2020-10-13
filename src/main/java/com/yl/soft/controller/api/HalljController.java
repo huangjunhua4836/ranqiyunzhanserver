@@ -1,7 +1,6 @@
 package com.yl.soft.controller.api;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,15 +14,10 @@ import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.util.BaseConv;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbHallDto;
-import com.yl.soft.dto.EhbOpportunityDto;
 import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
-import com.yl.soft.dto.base.SessionUser;
-import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbHall;
-import com.yl.soft.po.EhbLabel;
-import com.yl.soft.po.EhbOpportunity;
 import com.yl.soft.service.EhbHallService;
 
 import io.swagger.annotations.Api;

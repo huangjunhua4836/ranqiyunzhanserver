@@ -302,6 +302,8 @@ public class PersonalCenterController extends BaseController {
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(ehbOpportunity.getExhibitorid());
 		Integer i = ehbAudienceService.lambdaQuery().eq(EhbAudience::getBopie, ehbExhibitor.getId()).count();
 		Map<Integer, EhbLabel> map = ehbLabelService.list().stream().collect(Collectors.toMap(EhbLabel::getId, j -> j));
+		//修改访问量
+		ehbOpportunityService.lambdaUpdate().setSql("countcollection=countcollection+1").eq(EhbOpportunity::getId, id).update();
 		return ok(EhbOpportunityDto.of(ehbOpportunity, ehbExhibitor, i, map));
 	}
 
@@ -633,6 +635,7 @@ public class PersonalCenterController extends BaseController {
 			return error(-105, "称谓不能为空");
 		}
 		ehbVisitorRegistration.setUserid(sessioner.getId());
+		ehbVisitorRegistration.setCreatetime(LocalDateTime.now());
 		ehbVisitorRegistrationService.save(ehbVisitorRegistration);
 		return ok(ehbVisitorRegistration.getId()+"");
 	}

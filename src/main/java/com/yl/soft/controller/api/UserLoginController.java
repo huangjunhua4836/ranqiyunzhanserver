@@ -441,24 +441,15 @@ public class UserLoginController extends BaseController {
 		@ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
     @PostMapping(value = "/heartbeat")
     public BaseResult heartbeat(String token) {
-    	BaseResult r = new BaseResult();
         if (StringUtil.isEmpty(token)) {
-            r.setDesc("token为空！");
-            r.setCode(-501);
-            return r;
+            return error(-501,"token为空！");
         }
         boolean timeout = sessionState.DelayTokenTimeOut(token);
         if (timeout) {
-            r.setCode(200);
-            r.setDesc("续命成功！");
+            return ok2("续命成功！");
         } else {
-            r.setCode(-601);
-            r.setDesc("续命失败！");
+            return error(-601,"续命失败！");
         }
-        return r;
     }
-    
-    
-    
     
 }
