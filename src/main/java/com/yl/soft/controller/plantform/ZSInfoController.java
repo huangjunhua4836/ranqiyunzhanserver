@@ -126,6 +126,7 @@ public class ZSInfoController extends BaseController {
             exhibitorDto.setName(ehbExhibitor.getEnterprisename());
             exhibitorDto.setLogo(ehbExhibitor.getLogo());
             exhibitorDto.setBoothno(ehbExhibitor.getBoothno());
+            exhibitorDto.setEnglishname(ehbExhibitor.getEnglishname());
             if(ehbExhibitor.getState() == 3){//审核不通过
                 if(StringUtils.isEmpty(ehbExhibitor.getFailreason())){
                     return setResultError("审核原因不能为空！");

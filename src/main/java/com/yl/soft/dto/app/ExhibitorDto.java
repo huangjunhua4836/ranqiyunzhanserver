@@ -61,6 +61,9 @@ public class ExhibitorDto implements Serializable{/**
 	@ApiModelProperty("认证状态翻译")
 	private String state_show;
 
+    @ApiModelProperty(value = "展商英文名称")
+    private String englishname;
+
     public static ExhibitorDto of(EhbExhibitor ehbExhibitor) {
         ExhibitorDto exhibitorDto = new ExhibitorDto();
         BeanUtil.copyProperties(ehbExhibitor,exhibitorDto);
