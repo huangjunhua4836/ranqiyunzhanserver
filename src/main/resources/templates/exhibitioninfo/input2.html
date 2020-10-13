@@ -42,6 +42,26 @@
                             <input type="text" th:field="*{enterprisename}" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
                     </div>
+                    <div th:if="${ehbExhibitor.id != null}">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">企业logo</label>
+                            <div class="layui-input-block">
+                                <img th:src="*{logo}" width="100px" height="100px">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">营业执照</label>
+                            <div class="layui-input-block">
+                                <img th:src="*{businesslicense}" width="100px" height="100px">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">企业授权书</label>
+                            <div class="layui-input-block">
+                                <img th:src="*{credentials}" width="100px" height="100px">
+                            </div>
+                        </div>
+                    </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">展位号</label>
                         <div class="layui-input-block">
@@ -63,21 +83,20 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">审核操作</label>
                         <div class="layui-input-block">
-                            <select name="state" required  lay-verify="required">
+                            <select name="state" required  lay-verify="required" lay-filter="selectFilter">
                                 <option value="">请选择</option>
                                 <option value="3">审核不通过</option>
                                 <option value="1">审核通过</option>
                             </select>
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-form-item" style="display: none;" id="failreason">
                         <label class="layui-form-label">审核失败原因（审核通过不填写）</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{failreason}" required  autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{failreason}" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
-                    <input th:field="*{logo}" type="hidden"/>
                     <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
                 </form>
             </div>
@@ -98,6 +117,16 @@
                     parent.layer.close(index); //再执行关闭
                 }
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //下拉框监听事件
+            form.on('select(selectFilter)', function(data){
+                if(data.value == '3'){//审核不通过
+                    $('#failreason').show();
+                }else{
+                    $('#failreason').hide();
+                    $('#failreason').val("");
+                }
             });
         });
     </script>

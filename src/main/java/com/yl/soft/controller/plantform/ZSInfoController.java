@@ -127,8 +127,17 @@ public class ZSInfoController extends BaseController {
             exhibitorDto.setLogo(ehbExhibitor.getLogo());
             exhibitorDto.setBoothno(ehbExhibitor.getBoothno());
             if(ehbExhibitor.getState() == 3){//审核不通过
+                if(StringUtils.isEmpty(ehbExhibitor.getFailreason())){
+                    return setResultError("审核原因不能为空！");
+                }
                 redisService.setRemove(firstWord,JSONObject.toJSONString(exhibitorDto));
             }else if(ehbExhibitor.getState() == 1){//已审核
+                if(StringUtils.isEmpty(ehbExhibitor.getBusinesslicense())){
+                    return setResultError("营业执照未上传！");
+                }
+                if(StringUtils.isEmpty(ehbExhibitor.getCredentials())){
+                    return setResultError("企业授权书未上传！");
+                }
                 redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
                 ehbExhibitor.setCertificationtime(LocalDateTime.now());//认证时间
             }

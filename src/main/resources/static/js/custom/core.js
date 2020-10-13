@@ -21,7 +21,8 @@ layui.define(['tree','layer','util','jquery','form','table','element','laydate',
                 },
                 success:function(result,status,xhr){
                     if(result.code != 200){
-                        layer.msg('接口访问成功，但是返回错误！状态：'+ status + '<br>错误信息：' + JSON.stringify(result),obj.showtime);
+                        // layer.msg('接口访问成功，但是返回错误！状态：'+ status + '<br>错误信息：' + JSON.stringify(result),obj.showtime);
+                        layer.msg(result.msg,obj.showtime);
                         return;
                     }
                     resultData = result.data;
