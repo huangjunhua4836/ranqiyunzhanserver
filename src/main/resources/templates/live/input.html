@@ -55,9 +55,33 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">直播封面</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{liveImageUrl}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">私密口令</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{livePassword}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">直播状态</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{liveStatus}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">直播下载地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{liveStatus}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">直播回访地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{liveStatus}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -73,9 +97,33 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">直播间弹幕聊天id</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{gropid}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">直播预告</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{notice}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">全部禁言（1：否，2：是）</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{forbiddenWords}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">排序</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">禁言成员（[用户id1,用户id2]）</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{forbiddenMember}" required  lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">

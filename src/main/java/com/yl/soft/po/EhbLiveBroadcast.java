@@ -43,11 +43,14 @@ public class EhbLiveBroadcast implements Serializable {
     @TableField("sub_title")
     private String subTitle;
 
+    @ApiModelProperty(value="类别名称")
+    private String type;
+
     @ApiModelProperty(value = "直播号")
     @TableField("room_num")
     private String roomNum;
 
-    @ApiModelProperty(value = "流名称")
+    @ApiModelProperty(value = "流名称")//流名称
     @TableField("flow_name")
     private String flowName;
 
@@ -57,7 +60,13 @@ public class EhbLiveBroadcast implements Serializable {
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
-    @ApiModelProperty(value = "直播结束时间")
+    @ApiModelProperty(value = "直播开始时间")
+    @TableField("live_start_time")
+    private LocalDateTime liveStartTime;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
+    @ApiModelProperty(value = "直播结束时间")//功能结束时填写
     @TableField("live_endTime")
     private LocalDateTime liveEndtime;
 
@@ -69,39 +78,35 @@ public class EhbLiveBroadcast implements Serializable {
     @TableField("live_password")
     private String livePassword;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
-    @ApiModelProperty(value = "直播开始时间")
-    @TableField("live_start_time")
-    private LocalDateTime liveStartTime;
-
     @ApiModelProperty(value = "直播状态 0即将开播 1直播中 2直播结束（回放）")
     @TableField("live_status")
     private Integer liveStatus;
 
-    @ApiModelProperty(value = "直播视频下载地址")
+    @ApiModelProperty(value = "直播视频下载地址")//待定
     @TableField("video_down_url")
     private String videoDownUrl;
 
-    @ApiModelProperty(value = "推流地址")
+    @ApiModelProperty(value = "直播回放地址")//待定
+    private String playback;
+
+    @ApiModelProperty(value = "推流地址")//API调用
     @TableField("push_flow_url")
     private String pushFlowUrl;
 
-    @ApiModelProperty(value = "拉流地址")
+    @ApiModelProperty(value = "拉流地址")//API调用
     @TableField("pull_Flow_url")
     private String pullFlowUrl;
 
-    @ApiModelProperty(value = "直播预告")
-    private String notice;
+    @ApiModelProperty(value="直播间弹幕聊天id")//API调用
+    private String gropid;
 
-    @ApiModelProperty(value = "直播回放地址")
-    private String playback;
+    @ApiModelProperty(value = "直播预告")//上传视频
+    private String notice;
 
     @ApiModelProperty(value = "全部禁言（1：否，2：是）")
     @TableField("forbidden_words")
     private Integer forbiddenWords;
 
-    
     @ApiModelProperty(value = "删除时间")
     private LocalDateTime deltime;
 
@@ -110,7 +115,6 @@ public class EhbLiveBroadcast implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createtime;
 
-    
     @ApiModelProperty(value = "排序")
     private Integer sort;
     
@@ -118,17 +122,10 @@ public class EhbLiveBroadcast implements Serializable {
     @ApiModelProperty(value = "删除（1：否，2：是）")
     private Integer isdel;
 
-    @ApiModelProperty(value = "禁言成员（[用户id1,用户id2]）")
+    @ApiModelProperty(value = "禁言成员（[用户id1,用户id2]）")//下拉列表系统用户
     @TableField("forbidden_member")
     private String forbiddenMember;
     
-    @ApiModelProperty(value="类别名称")
-    private String type;
-    
     @ApiModelProperty(value="主播公告")
     private String announcement;
-    @ApiModelProperty(value="直播间弹幕聊天id")
-    private String gropid;
-
-
 }
