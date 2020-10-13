@@ -65,6 +65,9 @@ public class EhbAudienceyeDto implements Serializable{
 
 	@ApiModelProperty(value = "身份证")
 	private String idcard;
+	
+    @ApiModelProperty(value = "展商英文名称")
+    private String englishname;
 
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
