@@ -115,6 +115,12 @@ public class ZSInfoController extends BaseController {
     public BaseResponse saveOrUpdate(EhbExhibitor ehbExhibitor) {
         String firstWord = PinyinUtil.getPinYinHeadChar(ehbExhibitor.getEnterprisename()).toUpperCase().charAt(0)+"";
         if(StringUtils.isEmpty(ehbExhibitor.getId())){
+            QueryWrapper<EhbExhibitor> zswrapper = new QueryWrapper<>();
+            zswrapper.eq("phone",ehbExhibitor.getPhone());
+            if(ehbExhibitorService.count(zswrapper)>0){
+                return setResultError("该手机号已注册！");
+            }
+
             ehbExhibitor.setCreatetime(LocalDateTime.now());
             ehbExhibitor.setCreateuser(1);
             ehbExhibitor.setIsdel(false);
@@ -127,20 +133,22 @@ public class ZSInfoController extends BaseController {
             exhibitorDto.setLogo(ehbExhibitor.getLogo());
             exhibitorDto.setBoothno(ehbExhibitor.getBoothno());
             exhibitorDto.setEnglishname(ehbExhibitor.getEnglishname());
-            if(ehbExhibitor.getState() == 3){//审核不通过
-                if(StringUtils.isEmpty(ehbExhibitor.getFailreason())){
-                    return setResultError("审核原因不能为空！");
+            if(ehbExhibitor.getState() != null){
+                if(ehbExhibitor.getState() == 3){//审核不通过
+                    if(StringUtils.isEmpty(ehbExhibitor.getFailreason())){
+                        return setResultError("审核原因不能为空！");
+                    }
+                    redisService.setRemove(firstWord,JSONObject.toJSONString(exhibitorDto));
+                }else if(ehbExhibitor.getState() == 1){//已审核
+                    if(StringUtils.isEmpty(ehbExhibitor.getBusinesslicense())){
+                        return setResultError("营业执照未上传！");
+                    }
+                    if(StringUtils.isEmpty(ehbExhibitor.getCredentials())){
+                        return setResultError("企业授权书未上传！");
+                    }
+                    redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
+                    ehbExhibitor.setCertificationtime(LocalDateTime.now());//认证时间
                 }
-                redisService.setRemove(firstWord,JSONObject.toJSONString(exhibitorDto));
-            }else if(ehbExhibitor.getState() == 1){//已审核
-                if(StringUtils.isEmpty(ehbExhibitor.getBusinesslicense())){
-                    return setResultError("营业执照未上传！");
-                }
-                if(StringUtils.isEmpty(ehbExhibitor.getCredentials())){
-                    return setResultError("企业授权书未上传！");
-                }
-                redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
-                ehbExhibitor.setCertificationtime(LocalDateTime.now());//认证时间
             }
         }
         ehbExhibitor.setFirstletter(firstWord);//名称首字母设置
@@ -148,7 +156,7 @@ public class ZSInfoController extends BaseController {
             //查询展商
             QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
             ehbExhibitorQueryWrapper.orderByDesc("createtime");
-            ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+//            ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
             ehbExhibitorQueryWrapper.eq("enterprisename",ehbExhibitor.getEnterprisename());
             ehbExhibitorQueryWrapper.last("limit 1");
             EhbExhibitor one = ehbExhibitorService.getOne(ehbExhibitorQueryWrapper);

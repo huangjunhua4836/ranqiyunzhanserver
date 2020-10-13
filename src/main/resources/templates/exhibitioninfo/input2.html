@@ -9,7 +9,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">注册手机</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{phone}" lay-verify="required"  autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{phone}" lay-verify="required"  autocomplete="off" class="layui-input" maxlength="11">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -80,7 +80,7 @@
                             <input type="text" th:field="*{halurl}" lay-verify="required"  autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-form-item" th:if="*{id != null}">
                         <label class="layui-form-label">审核操作</label>
                         <div class="layui-input-block">
                             <select name="state" lay-filter="selectFilter">

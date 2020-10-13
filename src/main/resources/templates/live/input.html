@@ -115,7 +115,7 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">全部禁言（1：否，2：是）</label>
+                        <label class="layui-form-label">全部禁言</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{forbiddenWords}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
                         </div>
@@ -127,7 +127,7 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">禁言成员（[用户id1,用户id2]）</label>
+                        <label class="layui-form-label">禁言成员</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{forbiddenMember}" required  lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
                         </div>
@@ -151,6 +151,7 @@
             var form = layui.form,
             core = layui.core,
                 laydate = layui.laydate,
+                upload = layui.upload,
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
