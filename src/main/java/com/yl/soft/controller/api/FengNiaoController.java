@@ -11,7 +11,9 @@ import com.yl.soft.dto.EhbExhibitorDto;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
+import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
+import com.yl.soft.service.EhbAudienceService;
 import com.yl.soft.service.EhbExhibitorService;
 
 import io.swagger.annotations.Api;
@@ -28,6 +30,8 @@ public class FengNiaoController extends BaseController{
 	private EhbExhibitorService ehbExhibitorService;
 	
 	@Autowired
+	private EhbAudienceService EhbAudienceService;
+	@Autowired
 	private SessionState sessionState;
 	
 	
@@ -38,7 +42,8 @@ public class FengNiaoController extends BaseController{
 	@PostMapping("/registrationDes")
 	public ResultItem<EhbExhibitorDto> registrationDes(String fid) {
 		EhbExhibitor eh = ehbExhibitorService.lambdaQuery().eq(EhbExhibitor::getFid, fid).one();
-		return ok(EhbExhibitorDto.of(eh));
+		EhbAudience user=EhbAudienceService.lambdaQuery().eq(EhbAudience::getBopie, eh.getId()).last("LIMIT 1").one();
+		return ok(EhbExhibitorDto.of(eh,user));
 	}
 	
 	@ApiOperation(value = "根据企业ID查询企业详情", notes = "根据企业ID查询企业详情")
@@ -46,6 +51,7 @@ public class FengNiaoController extends BaseController{
 	@PostMapping("/getComp")
 	public ResultItem<EhbExhibitorDto> getComp(String id) {
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(id);
-		return ok(EhbExhibitorDto.of(ehbExhibitor));
+		EhbAudience user=EhbAudienceService.lambdaQuery().eq(EhbAudience::getBopie, ehbExhibitor.getId()).last("LIMIT 1").one();
+		return ok(EhbExhibitorDto.of(ehbExhibitor,user));
 	}
 }

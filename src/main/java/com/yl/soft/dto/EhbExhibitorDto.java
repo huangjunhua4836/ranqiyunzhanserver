@@ -1,11 +1,10 @@
 package com.yl.soft.dto;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 
-import com.alibaba.fastjson.JSONArray;
+import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -71,13 +70,14 @@ public class EhbExhibitorDto  implements Serializable{/**
 //	@ApiModelProperty("展商图片 多张图片逗号隔开")
 //	private List<String> bannerList;
 	
-	public static EhbExhibitorDto of(EhbExhibitor ehbExhibitor) {
+	public static EhbExhibitorDto of(EhbExhibitor ehbExhibitor,EhbAudience user) {
 		EhbExhibitorDto ehbExhibitorDto=new EhbExhibitorDto();
 		if(ehbExhibitor==null) {
 			return ehbExhibitorDto;
 		}
 		BeanUtils.copyProperties(ehbExhibitor, ehbExhibitorDto);
 		ehbExhibitorDto.setFloorplan(ehbExhibitor.getZwimg());
+		ehbExhibitorDto.setLogo(user.getHeadPortrait());
 		ehbExhibitorDto.setEnglishname(ehbExhibitor.getEnglishname());
 //		List<String> list = JSONArray.parseArray(ehbExhibitor.getImg(), String.class);
 //		ehbExhibitorDto.setBannerList(list);

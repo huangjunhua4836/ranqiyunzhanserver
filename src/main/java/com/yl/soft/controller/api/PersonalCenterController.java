@@ -152,7 +152,8 @@ public class PersonalCenterController extends BaseController {
 			return error(-502,"服务器繁忙请稍后再试！");
 		}
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(sessionUser.getBopie());
-		return ok(EhbExhibitorDto.of(ehbExhibitor));
+		EhbAudience user=ehbAudienceService.getById(sessionUser.getId());
+		return ok(EhbExhibitorDto.of(ehbExhibitor,user));
 	}
 
 	@ApiOperation(value = "我的企业编辑", notes = "我的企业编辑")
