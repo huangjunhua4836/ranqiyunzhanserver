@@ -54,6 +54,12 @@ public class BannerDto implements Serializable {
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
+    
+    @ApiModelProperty(value = "1：内联    2：外联")
+    private Integer nw;
+
+    @ApiModelProperty(value = "内联下跳转id")
+    private Integer nlid;
 
     public static BannerDto of(EhbBanner po) {
         BannerDto dto = new BannerDto();
