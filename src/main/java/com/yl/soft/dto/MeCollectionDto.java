@@ -17,6 +17,9 @@ public class MeCollectionDto implements Serializable{/**
 	@ApiModelProperty("企业名称")
 	private String enterprisename;
 	
+    @ApiModelProperty(value = "展商英文名称")
+    private String englishname;
+	
 	@ApiModelProperty("展位")
 	private String boothno;
 	
