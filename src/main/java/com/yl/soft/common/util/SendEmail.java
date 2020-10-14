@@ -114,7 +114,7 @@ public class SendEmail {
 
             // messageBodyPart.setFileName(filename);
             // 处理附件名称中文（附带文件路径）乱码问题
-            messageBodyPart.setFileName(name);
+            messageBodyPart.setFileName(MimeUtility.encodeText(name).replaceAll("\r", "").replaceAll("\n", ""));
             multipart.addBodyPart(messageBodyPart);
 
             // 发送完整消息
