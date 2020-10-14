@@ -54,7 +54,7 @@ public class HalljController extends BaseController{
 		if(StringUtils.isEmpty(id)) {
 			return error();
 		}
-		ehbHallService.lambdaUpdate().setSql("views=views+1").eq(EhbHall::getId, Integer.parseInt(id)).update();
+		ehbHallService.lambdaUpdate().setSql("views=views+1").eq(EhbHall::getExhibitorid, Integer.parseInt(id)).update();
 		return ok2();
 	}
 	
