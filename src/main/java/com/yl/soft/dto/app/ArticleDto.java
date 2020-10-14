@@ -50,8 +50,6 @@ public class ArticleDto implements Serializable {
     private Integer labelid;
 
     @ApiModelProperty(value = "发布时间")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")//出参格式化
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//入参格式化
     private LocalDateTime releasetime;
 
     @ApiModelProperty(value = "总收藏量")
