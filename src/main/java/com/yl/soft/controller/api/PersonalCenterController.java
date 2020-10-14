@@ -228,22 +228,22 @@ public class PersonalCenterController extends BaseController {
 			@ApiImplicitParam(name = "describes", value = "企业简介", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "zwimg", value = "展位效果图", required = false, paramType = "query"), })
 	@PostMapping("/api/updateComp")
-	public BaseResult updateComp(String token, String img, @NotBlank(message = "请输入一个正确的手机号") String phone,
+	public BaseResult updateComp(String token, String img,String phone,
 			@NotBlank(message = "请输入一个正确邮箱地址") String mailbox, @NotBlank(message = "请输入一个正确官网地址") String website,
 			String address, String describes, String zwimg) {
 		SessionUser sessionUser = sessionState.getCurrentUser(token);
 
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(sessionUser.getBopie());
 		ehbExhibitor.setImg(img);
-		if (!isMobile(phone) || StringUtils.isEmpty(phone)) {
+		if (!isMobile(phone)) {
 			return error(-100, "请输入一个正确的联系电话");
 		}
-		ehbExhibitor.setPhone(phone);
-		if (!isEmail(mailbox) || StringUtils.isEmpty(mailbox)) {
+		ehbExhibitor.setTelphone(phone);
+		if (!isEmail(mailbox)) {
 			return error(-100, "请输入一个正确的邮箱地址");
 		}
 		ehbExhibitor.setMailbox(mailbox);
-		if(!isWeb(website)|| StringUtils.isEmpty(website)) {
+		if(!isWeb(website)) {
 			return error(-100, "输入一个正确的网址");
 		}
 		ehbExhibitor.setWebsite(website);
