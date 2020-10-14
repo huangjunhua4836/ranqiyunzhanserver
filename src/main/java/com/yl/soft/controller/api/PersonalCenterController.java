@@ -592,7 +592,7 @@ public class PersonalCenterController extends BaseController {
 				ehbArticleService.lambdaUpdate().setSql("countthumbs=countthumbs+1").eq(EhbArticle::getId, relateid)
 						.update();
 			}
-			return ok2(ehbOpportunityService.getById(ehbUseraction.getRelateid()).getCountthumbs());
+			return ok2(ehbOpportunityService.getById(relateid).getCountthumbs());
 		}
 
 	}

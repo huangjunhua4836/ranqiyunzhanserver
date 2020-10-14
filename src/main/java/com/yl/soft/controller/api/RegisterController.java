@@ -115,10 +115,6 @@ public class RegisterController extends BaseController {
         	return error(-100,"请输入一个正确的企业名称！");
         }
         
-        if(StringUtils.isEmpty(registerAudienceDto.getMailbox())) {
-        	return error(-100,"请输入您的邮箱地址");
-        }
-        
         String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
         Pattern regexmail = Pattern.compile(check);
         Matcher matcher = regexmail.matcher(registerAudienceDto.getMailbox());
@@ -229,27 +225,27 @@ public class RegisterController extends BaseController {
         if(ehbAudience == null){
             return setResultError("参展商没有注册！");
         }
-        if(StringUtils.isEmpty(registerExhibitorDto.getEnterprisename())) {
-        	return setResultError("请输入所属企业");
-        }
-        if(StringUtils.isEmpty(registerExhibitorDto.getName())) {
-        	return setResultError("请输入管理员");
-        }
-        if(StringUtils.isEmpty(registerExhibitorDto.getIdcard())) {
-        	return setResultError("请输入管理员身份证号");
-        }
-        
-        if(!IDUtils.isIDNumber(registerExhibitorDto.getIdcard())) {
-        	return setResultError("请输入一个正确的身份证号码");
-        }
-        
-        if(!isMobile(registerExhibitorDto.getPhone())) {
-        	return setResultError("请输入正确的手机号");
-        }
-        
-        if(!isPhone(registerExhibitorDto.getTel())) {
-        	return setResultError("请输入正确的电话号码");
-        }
+//        if(StringUtils.isEmpty(registerExhibitorDto.getEnterprisename())) {
+//        	return setResultError("请输入所属企业");
+//        }
+//        if(StringUtils.isEmpty(registerExhibitorDto.getName())) {
+//        	return setResultError("请输入管理员");
+//        }
+//        if(StringUtils.isEmpty(registerExhibitorDto.getIdcard())) {
+//        	return setResultError("请输入管理员身份证号");
+//        }
+//        
+//        if(!IDUtils.isIDNumber(registerExhibitorDto.getIdcard())) {
+//        	return setResultError("请输入一个正确的身份证号码");
+//        }
+//        
+//        if(!isMobile(registerExhibitorDto.getPhone())) {
+//        	return setResultError("请输入正确的手机号");
+//        }
+//        
+//        if(!isPhone(registerExhibitorDto.getTel())) {
+//        	return setResultError("请输入正确的电话号码");
+//        }
         
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
