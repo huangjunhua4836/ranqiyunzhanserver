@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="common::headr('添加或修改')"></head>
+<body>
+    <div class="layui-container">
+        <div class="layui-row" style="margin-top: 10px;">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                <form class="layui-form" th:object="${ehbWonderfulVideo}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{title}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属直播</label>
+                        <div class="layui-input-block">
+                            <select name="liveId" lay-filter="selectFilter" lay-verify="required">
+                                <option value="">请选择</option>
+                                <option th:each="ehbLiveBroadcast,memberStat:${ehbLiveBroadcasts}" th:value="${ehbLiveBroadcast.id}" th:text="${ehbLiveBroadcast.mainTitle}" th:selected="${ehbLiveBroadcast.id==ehbWonderfulVideo.liveId}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">封面图</label>
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn" id="test1">上传</button>
+                            <div class="layui-upload-list" style="margin-left: 100px;">
+                                <img class="layui-upload-img" id="demo1" th:src="*{coverImage}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">视频地址</label>
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn" id="test5"><i class="layui-icon"></i>上传视频</button>
+                            <input type="text" id="videoUrl" th:field="*{videoUrl}" readonly lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <input th:field="*{id}" type="hidden"/>
+                    <input th:field="*{coverImage}" type="hidden" id="coverImage"/>
+                    <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        layui.use('core', function(){
+            var form = layui.form,
+            core = layui.core,
+                upload = layui.upload,
+            $ = layui.jquery;
+
+            form.on('submit(submitFrom)', function(data){
+                if(core.isEmpty(data.field.coverImage)){
+                    layer.msg('封面图未上传！');
+                    return false;
+                }
+
+                var resultData = core.ajax('/platform/video/saveOrUpdate',false,'POST',data.field);
+                if(resultData!=false){
+                    parent.layer.msg('操作成功',core.showtime);
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                }
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test1'
+                , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
+                , before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    if (res.code != 200) {
+                        return layer.msg('上传失败');
+                    }
+                    if (res.code == 200) {
+                        $('#im').val(res.data[0].url);
+                        $('#coverImage').val(res.data[0].url);
+                        return layer.msg('上传成功！');
+                    }
+                    //上传成功
+                }
+            });
+
+            upload.render({
+                elem: '#test5'
+                , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
+                ,accept: 'file' //视频
+                ,done: function(res){
+                    layer.msg('上传成功');
+                    $('#videoUrl').val(res.data[0].url);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
