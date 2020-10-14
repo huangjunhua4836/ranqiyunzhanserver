@@ -39,7 +39,7 @@
 .g_comment-list ul li:last-child{margin-bottom: 0;}
 .g_comment-list ul li img{display: block; position: absolute; left: 0.3rem; top: 0; width: 0.73rem; height: 0.73rem; border-radius: 0.73rem;}
 .g_comment-div span{font-size: 0.26rem; color: #ffa800;}
-.g_comment-div b{color: #333;}
+.g_comment-div b{color: #333; font-size: 0.26rem;}
 .g_comment-div time{display: block; font-size: 0.22rem; color: #999; margin-top: 0.1rem;}
 .g_more{padding: 0.3rem 0; text-align: center; font-size: 0.24rem; color: #666;}
 .g_more img{width: 0.12rem; height: 0.24rem; margin-left: 0.1rem; position: relative; top: 0.04rem;}
