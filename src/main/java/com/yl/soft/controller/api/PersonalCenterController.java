@@ -127,8 +127,10 @@ public class PersonalCenterController extends BaseController {
 				ehbAudienceService.updateById(ehbAudience);
 			}
 			if (StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone())) {
-				return error(-100, "请到个人中心设置修改绑定手机号");
-				//ehbExhibitor.setPhone(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone());
+				if(!isMobile(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone())) {
+					return error(-100, "请输入一个正确的手机号");
+				}
+				ehbExhibitor.setPhone(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone());
 			}
 			if (StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getMailbox())) {
 				if (!isEmail(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getMailbox())) {
