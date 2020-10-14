@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="common::headr('参展预登记列表')"></head>
+    <body>
+        <div class="layui-container">
+            <div class="layui-row">
+                <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                    <div class="layui-collapse">
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">条件查询</h2>
+                            <div class="layui-colla-content layui-show">
+
+                                <form class="layui-form">
+                                    <div class="layui-row">
+                                        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">登记人姓名</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="id" placeholder="登记人姓名" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">公司名称</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="name" placeholder="公司名称" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">创建时间段</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name = "startTime" placeholder="开始时间" autocomplete="off" class="layui-input" id="startTime">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs2 layui-col-sm2 layui-col-md2">
+                                            <input type="text" name="endTime" placeholder="结束时间" autocomplete="off" class="layui-input" id="endTime">
+                                        </div>
+                                    </div>
+                                    <div class="layui-row">
+                                        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                                            <div class="layui-form-item">
+                                                <div class="layui-input-block">
+                                                    <button class="layui-btn" lay-submit lay-filter="searchFrom"><i class="layui-icon layui-icon-search" title="搜索"></i>搜索</button>
+                                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                    <table id="table" lay-filter="tableFilter"></table>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/html" id="titleToolbar">
+            <div class="layui-btn-container">
+<!--                <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-circle" title="添加"></i>添加</button>-->
+            </div>
+        </script>
+
+        <script type="text/html" id="rowToolBar">
+<!--            <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-form" title="查看"></i></a>-->
+<!--            <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit" title="编辑"></i></a>-->
+<!--            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete" title="删除"></i></a>-->
+        </script>
+        <script type="text/javascript" th:src="@{/static/js/visitpre/visitpre.js}"></script>
+    </body>
+</html>
