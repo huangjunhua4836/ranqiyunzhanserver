@@ -11,6 +11,8 @@ import com.yl.soft.dto.app.FileDto;
 import com.yl.soft.po.CrmFile;
 import com.yl.soft.po.EhbDataUpload;
 import com.yl.soft.service.CrmFileService;
+import com.yl.soft.service.EhbDataUploadService;
+
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +50,9 @@ public class UpLoadFileController extends BaseResponseUtil {
 
 	@Autowired
 	private CrmFileService crmFileService;
+	
+	@Autowired
+	private EhbDataUploadService ehbDataUploadService;
 
 	/**
 	 * 上传文件
@@ -179,11 +184,11 @@ public class UpLoadFileController extends BaseResponseUtil {
 	})
 	@GetMapping("/credentialsDownUrl")
 	public BaseResponse<EhbDataUpload> credentialsDownUrl() {
-		QueryWrapper<CrmFile> crmFileQueryWrapper = new QueryWrapper<>();
+		QueryWrapper<EhbDataUpload> crmFileQueryWrapper = new QueryWrapper<>();
 		crmFileQueryWrapper.eq("title","企业授权书模板");
 		crmFileQueryWrapper.orderByDesc("createtime");
 		crmFileQueryWrapper.last("limit 1");
-		CrmFile crmFile = crmFileService.getOne(crmFileQueryWrapper);
+		EhbDataUpload crmFile = ehbDataUploadService.getOne(crmFileQueryWrapper);
 
 		FileDto fileDto = new FileDto();
 		fileDto.setId(crmFile.getId());
