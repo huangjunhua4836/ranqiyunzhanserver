@@ -137,7 +137,7 @@ public class WonderfulVideoController extends BaseController {
             return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
                     , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
         }
-        ehbWonderfulVideoService.removeById(id);
+        ehbWonderfulVideoService.updateById(ehbWonderfulVideoService.getById(id).setIsdel(2));
         return setResultSuccess();
     }
 }

@@ -79,63 +79,63 @@ public class WonderfulAtlasController extends BaseController {
         tableVo.setData(pageInfo.getList());
         return tableVo;
     }
-//
-//    /**
-//     * 跳转到单个添加或者修改页面
-//     * @param id
-//     * @return
-//     */
-//    @GetMapping("/input")
-//    public String input(String id, String type, ModelMap modelMap) {
-//        EhbWonderfulVideo ehbWonderfulVideo = new EhbWonderfulVideo();
-//        if("add".equals(type)){
-//
-//        }else if("update".equals(type)){
-//            ehbWonderfulVideo = ehbWonderfulVideoService.getById(id);
-//        }
-//        modelMap.put("ehbWonderfulVideo",ehbWonderfulVideo);
-//
-//        QueryWrapper<EhbLiveBroadcast> ehbLiveBroadcastQueryWrapper = new QueryWrapper<>();
-//        ehbLiveBroadcastQueryWrapper.eq("isdel",1);
-//        List<EhbLiveBroadcast> ehbLiveBroadcasts = ehbLiveBroadcastService.list(ehbLiveBroadcastQueryWrapper);
-//        modelMap.put("ehbLiveBroadcasts",ehbLiveBroadcasts);
-//
-//        return "video/input";
-//    }
-//
-//    /**
-//     * 添加或者修改
-//     * @param ehbWonderfulVideo
-//     * @return
-//     */
-//    @PostMapping("/saveOrUpdate")
-//    @ResponseBody
-//    public BaseResponse saveOrUpdate(EhbWonderfulVideo ehbWonderfulVideo) {
-//        if(StringUtils.isEmpty(ehbWonderfulVideo.getId())){
-//            ehbWonderfulVideo.setCreatetime(LocalDateTime.now());
-//            ehbWonderfulVideo.setIsdel(1);
-//        }else{
-//        }
-//        if(ehbWonderfulVideoService.saveOrUpdate(ehbWonderfulVideo)){
-//            return setResultSuccess();
-//        }else{
-//            return setResultError("操作失败！");
-//        }
-//    }
-//
-//    /**
-//     * 删除
-//     * @return
-//     */
-//    @PostMapping("/delete")
-//    @ResponseBody
-//    public BaseResponse delete(String id) {
-//        System.out.println("ok");
-//        if(StringUtils.isEmpty(id)){
-//            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
-//                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
-//        }
-//        ehbWonderfulVideoService.removeById(id);
-//        return setResultSuccess();
-//    }
+
+    /**
+     * 跳转到单个添加或者修改页面
+     * @param id
+     * @return
+     */
+    @GetMapping("/input")
+    public String input(String id, String type, ModelMap modelMap) {
+        EhbWonderfulAtlas ehbWonderfulAtlas = new EhbWonderfulAtlas();
+        if("add".equals(type)){
+
+        }else if("update".equals(type)){
+            ehbWonderfulAtlas = ehbWonderfulAtlasService.getById(id);
+        }
+        modelMap.put("ehbWonderfulAtlas",ehbWonderfulAtlas);
+
+        QueryWrapper<EhbLiveBroadcast> ehbLiveBroadcastQueryWrapper = new QueryWrapper<>();
+        ehbLiveBroadcastQueryWrapper.eq("isdel",1);
+        List<EhbLiveBroadcast> ehbLiveBroadcasts = ehbLiveBroadcastService.list(ehbLiveBroadcastQueryWrapper);
+        modelMap.put("ehbLiveBroadcasts",ehbLiveBroadcasts);
+
+        return "atlas/input";
+    }
+
+    /**
+     * 添加或者修改
+     * @param ehbWonderfulAtlas
+     * @return
+     */
+    @PostMapping("/saveOrUpdate")
+    @ResponseBody
+    public BaseResponse saveOrUpdate(EhbWonderfulAtlas ehbWonderfulAtlas) {
+        if(StringUtils.isEmpty(ehbWonderfulAtlas.getId())){
+            ehbWonderfulAtlas.setCreatetime(LocalDateTime.now());
+            ehbWonderfulAtlas.setIsdel(1);
+        }else{
+        }
+        if(ehbWonderfulAtlasService.saveOrUpdate(ehbWonderfulAtlas)){
+            return setResultSuccess();
+        }else{
+            return setResultError("操作失败！");
+        }
+    }
+
+    /**
+     * 删除
+     * @return
+     */
+    @PostMapping("/delete")
+    @ResponseBody
+    public BaseResponse delete(String id) {
+        System.out.println("ok");
+        if(StringUtils.isEmpty(id)){
+            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
+                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
+        }
+        ehbWonderfulAtlasService.updateById(ehbWonderfulAtlasService.getById(id).setIsdel(2));
+        return setResultSuccess();
+    }
 }

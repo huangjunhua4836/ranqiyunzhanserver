@@ -5,13 +5,13 @@
     <div class="layui-container">
         <div class="layui-row" style="margin-top: 10px;">
             <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
-                <form class="layui-form" th:object="${ehbWonderfulVideo}">
+                <form class="layui-form" th:object="${ehbWonderfulAtlas}">
                     <div class="layui-form-item">
                         <label class="layui-form-label">所属直播</label>
                         <div class="layui-input-block">
                             <select name="liveId" lay-filter="selectFilter" lay-verify="required">
                                 <option value="">请选择</option>
-                                <option th:each="ehbLiveBroadcast,memberStat:${ehbLiveBroadcasts}" th:value="${ehbLiveBroadcast.id}" th:text="${ehbLiveBroadcast.mainTitle}" th:selected="${ehbLiveBroadcast.id==ehbWonderfulVideo.liveId}"></option>
+                                <option th:each="ehbLiveBroadcast,memberStat:${ehbLiveBroadcasts}" th:value="${ehbLiveBroadcast.id}" th:text="${ehbLiveBroadcast.mainTitle}" th:selected="${ehbLiveBroadcast.id==ehbWonderfulAtlas.liveId}"></option>
                             </select>
                         </div>
                     </div>
@@ -27,19 +27,19 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">图片宽</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{wide}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{wide}" required  lay-verify="required" placeholder="图片宽" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">图片高</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{high}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{high}" required  lay-verify="required" placeholder="图片高" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">排序</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="排序" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
@@ -63,7 +63,7 @@
                     return false;
                 }
 
-                var resultData = core.ajax('/platform/video/saveOrUpdate',false,'POST',data.field);
+                var resultData = core.ajax('/platform/atlas/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){
                     parent.layer.msg('操作成功',core.showtime);
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

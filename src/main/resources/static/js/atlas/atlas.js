@@ -46,7 +46,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加','/platform/atlas/input?type=add',['500px', '600px'],false,initTable);
+                core.openIframeDialog('添加','/platform/atlas/input?type=add',['500px', '800px'],false,initTable);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
@@ -69,7 +69,7 @@ layui.use('core', function(){
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改','/platform/atlas/input?type=update&id='+data.id,['500px', '600px'],false,initTable);
+            core.openIframeDialog('修改','/platform/atlas/input?type=update&id='+data.id,['500px', '800px'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('详情',$('#detail').html(),['500px','900px']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);
