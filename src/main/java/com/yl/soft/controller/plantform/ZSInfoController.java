@@ -160,27 +160,29 @@ public class ZSInfoController extends BaseController {
             }
         }
         ehbExhibitor.setFirstletter(firstWord);//名称首字母设置
-        if(ehbExhibitorService.saveOrUpdate(ehbExhibitor)){
-            //查询展商
-            QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
-            ehbExhibitorQueryWrapper.orderByDesc("createtime");
+        synchronized (this){
+            if(ehbExhibitorService.saveOrUpdate(ehbExhibitor)){
+                //查询展商
+                QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+                ehbExhibitorQueryWrapper.orderByDesc("createtime");
 //            ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-            ehbExhibitorQueryWrapper.eq("enterprisename",ehbExhibitor.getEnterprisename());
-            ehbExhibitorQueryWrapper.last("limit 1");
-            EhbExhibitor one = ehbExhibitorService.getOne(ehbExhibitorQueryWrapper);
-            //添加展商用户
-            EhbAudience ehbAudience = new EhbAudience();
-            ehbAudience.setIsdel(false);
-            ehbAudience.setCreatetime(LocalDateTime.now());
-            ehbAudience.setCreateuser(1);
-            ehbAudience.setPhone(ehbExhibitor.getPhone());
-            ehbAudience.setPassword(ehbAudienceService.encryptPassword("123456"));
-            ehbAudience.setBopie(one.getId());
-            ehbAudience.setType(1);//后台创建
-            ehbAudienceService.saveOrUpdate(ehbAudience);
-            return setResultSuccess();
-        }else{
-            return setResultError("操作失败！");
+                ehbExhibitorQueryWrapper.eq("enterprisename",ehbExhibitor.getEnterprisename());
+                ehbExhibitorQueryWrapper.last("limit 1");
+                EhbExhibitor one = ehbExhibitorService.getOne(ehbExhibitorQueryWrapper);
+                //添加展商用户
+                EhbAudience ehbAudience = new EhbAudience();
+                ehbAudience.setIsdel(false);
+                ehbAudience.setCreatetime(LocalDateTime.now());
+                ehbAudience.setCreateuser(1);
+                ehbAudience.setPhone(ehbExhibitor.getPhone());
+                ehbAudience.setPassword(ehbAudienceService.encryptPassword("123456"));
+                ehbAudience.setBopie(one.getId());
+                ehbAudience.setType(1);//后台创建
+                ehbAudienceService.saveOrUpdate(ehbAudience);
+                return setResultSuccess();
+            }else{
+                return setResultError("操作失败！");
+            }
         }
     }
 
