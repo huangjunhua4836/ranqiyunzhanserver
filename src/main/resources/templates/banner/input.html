@@ -34,12 +34,6 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">链接地址</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{linkurl}" required  lay-verify="required" placeholder="请输入链接地址" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
                         <label class="layui-form-label">内容</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{content}" required  lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input">
@@ -54,16 +48,23 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">内联/外联</label>
                         <div class="layui-input-block">
-                            <select th:field="*{nw}" required  lay-verify="required">
+                            <select th:field="*{nw}" lay-filter="selectFilter" lay-verify="required">
+                                <option value="">请选择</option>
                                 <option value="1" th:selected="${ehbBanner.nw=='1'}">内联</option>
                                 <option value="2" th:selected="${ehbBanner.nw=='2'}">外联</option>
                             </select>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">内联下跳转id</label>
+                    <div class="layui-form-item" style="display: none;" id="nlid">
+                        <label class="layui-form-label">内联跳转id</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{nlid}" required  lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{nlid}" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="display: none;" id="linkurl" >
+                        <label class="layui-form-label">外联链接地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{linkurl}" placeholder="请输入链接地址" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
@@ -82,11 +83,36 @@
             upload = layui.upload,
             $ = layui.jquery;
 
+            //下拉框监听事件
+            form.on('select(selectFilter)', function(data){
+                if(data.value == 1){//审核不通过
+                    $('#nlid').show();
+                    $('#linkurl').hide();
+                }else if(data.value == 2){
+                    $('#nlid').hide();
+                    $('#linkurl').show();
+                }else{
+                    $('#nlid').hide();
+                    $('#linkurl').hide();
+                }
+            });
+
             form.on('submit(submitFrom)', function(data){
                 console.log(JSON.stringify(data.field));
                 if(core.isEmpty(data.field.imgurl)){
                     layer.msg('图片未上传！',core.showtime);
                     return false;
+                }
+                if(data.field.nw == '1'){
+                    if(core.isEmpty(data.field.nlid)){
+                        layer.msg('内联ID未填写！',core.showtime);
+                        return false;
+                    }
+                }if(data.field.nw == '2'){
+                    if(core.isEmpty(data.field.linkurl)){
+                        layer.msg('外联链接未填写！',core.showtime);
+                        return false;
+                    }
                 }
                 var resultData = core.ajax('/platform/banner/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){
