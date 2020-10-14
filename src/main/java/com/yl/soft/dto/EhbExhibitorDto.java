@@ -79,6 +79,7 @@ public class EhbExhibitorDto  implements Serializable{/**
 		ehbExhibitorDto.setFloorplan(ehbExhibitor.getZwimg());
 		ehbExhibitorDto.setLogo(user.getHeadPortrait());
 		ehbExhibitorDto.setEnglishname(ehbExhibitor.getEnglishname());
+		ehbExhibitorDto.setTel(ehbExhibitor.getTelphone());
 //		List<String> list = JSONArray.parseArray(ehbExhibitor.getImg(), String.class);
 //		ehbExhibitorDto.setBannerList(list);
 		return ehbExhibitorDto;
