@@ -168,6 +168,7 @@ public class ZSInfoController extends BaseController {
             ehbAudience.setPhone(ehbExhibitor.getPhone());
             ehbAudience.setPassword(ehbAudienceService.encryptPassword("123456"));
             ehbAudience.setBopie(one.getId());
+            ehbAudience.setType(1);//后台创建
             ehbAudienceService.saveOrUpdate(ehbAudience);
             return setResultSuccess();
         }else{
