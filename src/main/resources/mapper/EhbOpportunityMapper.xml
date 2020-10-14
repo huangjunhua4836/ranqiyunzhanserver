@@ -59,13 +59,13 @@
         </if>
         )
         <if test="paramMap.countthumbs!= null and paramMap.countthumbs!= ''">
-            and opp.countthumbs = #{paramMap.countthumbs}
+            and opp.countthumbs &gt;= #{paramMap.countthumbs}
         </if>
         <if test="paramMap.countbrowse!= null and paramMap.countbrowse!= ''">
-            and opp.countbrowse = #{paramMap.countbrowse}
+            and opp.countbrowse &gt;= #{paramMap.countbrowse}
         </if>
         <if test="paramMap.countcomment!= null and paramMap.countcomment!= ''">
-            and opp.countcomment = #{paramMap.countcomment}
+            and opp.countcomment &gt;= #{paramMap.countcomment}
         </if>
         order by opp.releasetime desc
     </select>

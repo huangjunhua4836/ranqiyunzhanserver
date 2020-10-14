@@ -40,4 +40,7 @@ public class CrmFile extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "存储地址")
     private String path;
+
+    @ApiModelProperty(value = "文件后缀")
+    private String suffix;
 }

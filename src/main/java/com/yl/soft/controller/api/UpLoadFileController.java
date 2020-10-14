@@ -108,6 +108,7 @@ public class UpLoadFileController extends BaseResponseUtil {
                     crmFile.setPath(relativePath);
                     crmFile.setIsdel(false);
                     crmFile.setCreatetime(LocalDateTime.now());
+                    crmFile.setSuffix(suffix);
                     crmFile = crmFileService.saveFile(crmFile);
                     if(crmFile == null){
 						return setResultError("保存文件失败！");
