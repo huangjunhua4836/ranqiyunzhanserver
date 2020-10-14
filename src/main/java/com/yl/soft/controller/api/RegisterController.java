@@ -13,6 +13,7 @@ import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.RegisterAudienceDto;
 import com.yl.soft.dto.RegisterExhibitorDto;
 import com.yl.soft.dto.app.LabelDto;
+import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbAboutus;
@@ -73,49 +74,49 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/perfectAudience")
-    public BaseResponse perfectAudience(RegisterAudienceDto registerAudienceDto,String token) {
+    public BaseResult perfectAudience(RegisterAudienceDto registerAudienceDto,String token) {
         String randNum = redisService.get("I"+registerAudienceDto.getMailbox());
         if(!randNum.equals(registerAudienceDto.getEmailverificationcode())){
-            return setResultError("验证码错误");
+            return error(-100,"验证码错误");
         }
         SessionUser sessionUser = sessionState.getCurrentUser(token);
 		EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
 		if(ehbAudience == null){
-            return setResultError("参展人没有注册！");
+            return error(-100,"参展人没有注册！");
         }
 		if(StringUtils.isEmpty(registerAudienceDto.getName())) {
-			 return setResultError("请输入您的姓名！");
+			 return error(-100,"请输入您的姓名！");
 		}
 		
 		if(registerAudienceDto.getName().length()>30) {
-			 return setResultError("请输入一个正确的姓名！");
+			 return error(-100,"请输入一个正确的姓名！");
 		}
 		
 		if(StringUtils.isEmpty(registerAudienceDto.getPhone())) {
-			 return setResultError("请输入手机号！");
+			 return error(-100,"请输入手机号！");
 		}
 		String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$";
         if(registerAudienceDto.getPhone().length() != 11){
-        	return setResultError("手机号应为11位数！");
+        	return error(-100,"手机号应为11位数！");
         }else{
             Pattern p = Pattern.compile(regex);
             Matcher m = p.matcher(registerAudienceDto.getPhone());
             boolean isMatch = m.matches();
             if(!isMatch){
-            	return setResultError("请输入一个正确的手机号");
+            	return error(-100,"请输入一个正确的手机号");
             }
         }
 		
         if(StringUtils.isEmpty(registerAudienceDto.getEnterprise())) {
-        	return setResultError("请输入您的企业名称！");
+        	return error(-100,"请输入您的企业名称！");
         }
         
         if(registerAudienceDto.getEnterprise().length()>50) {
-        	return setResultError("请输入一个正确的企业名称！");
+        	return error(-100,"请输入一个正确的企业名称！");
         }
         
         if(StringUtils.isEmpty(registerAudienceDto.getMailbox())) {
-        	return setResultError("请输入您的邮箱地址");
+        	return error(-100,"请输入您的邮箱地址");
         }
         
         String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
@@ -124,7 +125,7 @@ public class RegisterController extends BaseController {
         boolean isMatchmail = matcher.matches();
         
         if(!isMatchmail) {
-        	return setResultError("请输入一个正确的邮箱地址");
+        	return error(-100,"请输入一个正确的邮箱地址");
         }
         
         
@@ -145,9 +146,9 @@ public class RegisterController extends BaseController {
         ehbAudience.setLabelid(JSONArray.toJSONString(labs));
 
         if(ehbAudienceService.updateById(ehbAudience)){
-            return setResultSuccess();
+            return ok2();
         }else{
-            return setResultError("保存失败！");
+            return error(-100,"保存失败！");
         }
     }
 
