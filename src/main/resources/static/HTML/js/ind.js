@@ -88,8 +88,8 @@ function textNumFnB(obj){
 
 //手机号码验证
 function checkPhone(ph){ 
-	var phone = document.getElementById(ph).value;
-	if(!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(phone))){ 
+	//var phone = document.getElementById(ph).value;
+	if(!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(ph))){ 
 		//Yeffect.mAlert("手机号码有误，请重填");  
 		return false; 
 	}else{

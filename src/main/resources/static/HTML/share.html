@@ -130,48 +130,45 @@
 		
 		var equipment=IsAndroid();
 		
-		if(isShare){
-			var scriptUrl="<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">"+"\<\/script>";
-			$("head").append(scriptUrl);
-			setTimeout(function(){
-				if(equipment){
-					MobLink([
-					    {
-					        el: "#g_btn-download",
-					        path: "rqyz/zsDetails",
-					        params: {
-					            key1: cid,
-					        }
-					    },
-					    {
-					        el: "#g_btn-shoucang",
-					        path: "rqyz/zsDetails",
-					        params: {
-					            key1: cid,
-					        }
-					    }
-					]);
-				}else{
-					MobLink([
-					    {
-					        el: "#g_btn-download",
-					        path: "cloudExhbition",
-					        params: {
-					            key1: cid,
-					        }
-					    },
-					    {
-					        el: "#g_btn-shoucang",
-					        path: "cloudExhbition",
-					        params: {
-					            key1: cid,
-					        }
-					    }
-					]);
-				}	
-			},1000)
-			
-		}
+		var scriptUrl="<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">"+"\<\/script>";
+		$("head").append(scriptUrl);
+		setTimeout(function(){
+			if(equipment){
+				MobLink([
+				    {
+				        el: "#g_btn-download",
+				        path: "rqyz/zsDetails",
+				        params: {
+				            key1: cid,
+				        }
+				    },
+				    {
+				        el: "#g_btn-shoucang",
+				        path: "rqyz/zsDetails",
+				        params: {
+				            key1: cid,
+				        }
+				    }
+				]);
+			}else{
+				MobLink([
+				    {
+				        el: "#g_btn-download",
+				        path: "cloudExhbition",
+				        params: {
+				            key1: cid,
+				        }
+				    },
+				    {
+				        el: "#g_btn-shoucang",
+				        path: "cloudExhbition",
+				        params: {
+				            key1: cid,
+				        }
+				    }
+				]);
+			}	
+		},1000)
 		
 		
 		

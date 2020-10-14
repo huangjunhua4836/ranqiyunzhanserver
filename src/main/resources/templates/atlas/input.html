@@ -7,12 +7,6 @@
             <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
                 <form class="layui-form" th:object="${ehbWonderfulVideo}">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">标题</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{title}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
                         <label class="layui-form-label">所属直播</label>
                         <div class="layui-input-block">
                             <select name="liveId" lay-filter="selectFilter" lay-verify="required">
@@ -22,19 +16,24 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">封面图</label>
+                        <label class="layui-form-label">图片</label>
                         <div class="layui-upload">
                             <button type="button" class="layui-btn" id="test1">上传</button>
                             <div class="layui-upload-list" style="margin-left: 100px;">
-                                <img class="layui-upload-img" id="demo1" th:src="*{coverImage}">
+                                <img class="layui-upload-img" id="demo1" th:src="*{imgUrl}">
                             </div>
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">视频地址</label>
+                        <label class="layui-form-label">图片宽</label>
                         <div class="layui-input-block">
-                            <button type="button" class="layui-btn" id="test5"><i class="layui-icon"></i>上传视频</button>
-                            <input type="text" id="videoUrl" th:field="*{videoUrl}" readonly lay-verify="required" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{wide}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">图片高</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{high}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -44,7 +43,7 @@
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
-                    <input th:field="*{coverImage}" type="hidden" id="coverImage"/>
+                    <input th:field="*{imgUrl}" type="hidden" id="imgUrl"/>
                     <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
                 </form>
             </div>
@@ -59,8 +58,8 @@
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
-                if(core.isEmpty(data.field.coverImage)){
-                    layer.msg('封面图未上传！');
+                if(core.isEmpty(data.field.imgUrl)){
+                    layer.msg('精彩图未上传！');
                     return false;
                 }
 
@@ -89,20 +88,10 @@
                         return layer.msg('上传失败');
                     }
                     if (res.code == 200) {
-                        $('#coverImage').val(res.data[0].url);
+                        $('#imgUrl').val(res.data[0].url);
                         return layer.msg('上传成功！');
                     }
                     //上传成功
-                }
-            });
-
-            upload.render({
-                elem: '#test5'
-                , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
-                ,accept: 'file' //视频
-                ,done: function(res){
-                    layer.msg('上传成功');
-                    $('#videoUrl').val(res.data[0].url);
                 }
             });
         });

@@ -50,14 +50,14 @@
 			<li>
 				<p>预期展位面积</p>
 				<div class="g_form-areas">
-					<input type="text" class="g_txt-area" placeholder="9" v-model="form.min" />平米　~<input type="text" class="g_txt-area" placeholder="36" v-model="form.max" />平米
+					<input type="text" class="g_txt-area" placeholder="9" maxlength="2" v-model="form.min" />平米　~<input type="text" class="g_txt-area" maxlength="2" placeholder="36" v-model="form.max" />平米
 				</div>
 			</li>
 		</ul>
 		<p class="g_notes">注：此次登记只作为平面图规划需要</p>
 		<div class="g_remark">
 			<p>其他备注</p>
-			<textarea placeholder="50 字以内（选填） " v-model="form.remarks"></textarea>
+			<textarea placeholder="50 字以内（选填） " v-model="form.remarks" maxlength="50"></textarea>
 		</div>
 		<a href="javascript:void(0)" title="" class="g_btn-sub" @click="sendInfoFn">提 交</a>
 	</div>
@@ -95,9 +95,39 @@
 					var _this=this;
 					var sendObj=_this.form;
 					sendObj.showarea=_this.form.min+","+_this.form.max;
+					
+					sendObj.token=token;
+					if(!sendObj.compname){
+						Yeffect.mAlert("请输入公司名称");
+						return false;
+					}
+					if(!sendObj.name){
+						Yeffect.mAlert("请输入联系人");
+						return false;
+					}
+					if(!sendObj.position){
+						Yeffect.mAlert("请输入职位");
+						return false;
+					}
+					if(!sendObj.phone){
+						Yeffect.mAlert("请输入手机号码");
+						return false;
+					}
+					if(!sendObj.min){
+						Yeffect.mAlert("请输入预期展位面积最小值");
+						return false;
+					}
+					if(!sendObj.max){
+						Yeffect.mAlert("请输入预期展位面积最大值");
+						return false;
+					}
+					
+					if(!checkPhone(sendObj.phone)){
+						Yeffect.mAlert("手机号码有误");
+						return false;
+					}
 					delete sendObj.min;
 					delete sendObj.max;
-					sendObj.token=token;
 					call_net("POST", "/api/addregistration",sendObj, function(data){
 						if(data.code==200){
 							if(equipment){

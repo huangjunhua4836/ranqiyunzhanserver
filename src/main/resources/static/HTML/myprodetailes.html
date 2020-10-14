@@ -33,18 +33,18 @@
 		<div class="g_banner g_pro-banner">
 			<div class="g_big-img"><img :src="bigImg" alt="" class="g_banner-big" /></div>
 			<div class="g_banner-small">
-				<img v-for="img in detailes.picture" :src="img" alt="" :class="$index==0?'g_banner-dqys':''" @click="clickBigImgFn(img)">
+				<img v-for="img in detailes.picture" :src="img" alt="" :class="$index==bigImgInd?'g_banner-dqys':''" @click="clickBigImgFn(img,$index)">
 			</div>
 		</div>
 		<div class="g_news-functions">
 			<a href="javascript:void(0)" title="" @click="dianzanFn">
-				<img src="images/g_02.png" alt="" v-if="detailes.isSjZan==0" />
-				<img src="images/g_12.png" alt="" v-if="detailes.isSjZan==1" />
+				<img src="images/g_02.png" alt="" v-if="detailes.isSpZan==0" />
+				<img src="images/g_12.png" alt="" v-if="detailes.isSpZan==1" />
 				<span>点赞({{detailes.countthumbs}})</span>
 			</a>
 			<a href="javascript:void(0)" title="" @click="shoucangFn">
-				<img src="images/g_03.png" alt="" v-if="detailes.isSCsj==0" />
-				<img src="images/g_13.png" alt="" v-if="detailes.isSCsj==1" />
+				<img src="images/g_03.png" alt="" v-if="detailes.isSCsp==0" />
+				<img src="images/g_13.png" alt="" v-if="detailes.isSCsp==1" />
 				<span>收藏</span>
 			</a>
 			<a href="javascript:void(0)" title="" @click="shareFn">
@@ -99,6 +99,7 @@
 		productData.pageZ=1;
 		productData.commentTxt="";
 		productData.bigImg="";
+		productData.bigImgInd=0;
 		
 		//获取数据
 		getDetailesFn()
@@ -111,7 +112,7 @@
 					var jsonData=data.data;
 					if(jsonData.picture){
 						jsonData.picture=jsonData.picture.split(",");
-						productData.bigImg=jsonData.picture;
+						productData.bigImg=jsonData.picture[0];
 					}else{
 						jsonData.picture=[];
 						productData.bigImg="";
@@ -213,7 +214,8 @@
 					}
 				},
 				//切换大图
-				clickBigImgFn:function(url){
+				clickBigImgFn:function(url,ind){
+					this.bigImgInd=ind
 					this.bigImg=url;
 				},
 				//加载更多
@@ -237,7 +239,7 @@
 							}else{
 								_this.detailes.isSpZan=0;
 							}
-							
+							getDetailesFn();
 						}else if(data.code==401){
 							if(isShare){
 								_this.downloadAppFn()
@@ -265,7 +267,7 @@
 							}else{
 								_this.detailes.isSCsp=0;
 							}
-							
+							getDetailesFn();
 						}else if(data.code==401){
 							if(isShare){
 								_this.downloadAppFn()

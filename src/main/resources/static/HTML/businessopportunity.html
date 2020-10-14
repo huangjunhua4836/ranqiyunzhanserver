@@ -26,7 +26,7 @@
 	<div class="g_banner">
 		<img :src="bigImg" alt="" class="g_banner-big" />
 		<div class="g_banner-small">
-			<img v-for="img in detailes.picture" :src="img" alt="" :class="$index==0?'g_banner-dqys':''" @click="clickBigImgFn(img)">
+			<img v-for="img in detailes.picture" :src="img" alt="" :class="$index==bigImgInd?'g_banner-dqys':''" @click="clickBigImgFn(img,$index)">
 		</div>
 	</div>
 	<div class="g_niches-article">
@@ -68,7 +68,8 @@
 	</div>
 	<div class="g_niches-more">
 		<div class="g_comment-head">更多商机</div>
-		<div class="g_niches-list">
+		<p class="g_nothing" v-if="showMore">暂无推荐商机</p>
+		<div class="g_niches-list" v-if="!showMore">
 			<ul>
 				<li v-for="li in hotList" @click="linkFn(li.id)">
 					<a href="javascript:void(0)" title="">
@@ -113,6 +114,9 @@
 		shangjiData.commentTxt="";
 		shangjiData.bigImg="";
 		shangjiData.hotList=[];
+		shangjiData.showMore=false;
+		shangjiData.bigImgInd=0;
+		
 		
 		//获取数据
 		getDetailesFn()
@@ -125,7 +129,7 @@
 					var jsonData=data.data;
 					if(jsonData.picture){
 						jsonData.picture=jsonData.picture.split(",");
-						shangjiData.bigImg=jsonData.picture;
+						shangjiData.bigImg=jsonData.picture[0];
 					}else{
 						jsonData.picture=[];
 						shangjiData.bigImg="";
@@ -201,8 +205,12 @@
 							jsonData[i].picture="";
 						}
 					}
+					if(jsonData.length==0){
+						shangjiData.showMore=true;
+					}
 					shangjiData.hotList=jsonData;
 				}else{
+					shangjiData.showMore=true;
 					console.log(data.desc)
 				}
 			}, function(error){})	
@@ -262,7 +270,8 @@
 					}
 				},
 				//切换大图
-				clickBigImgFn:function(url){
+				clickBigImgFn:function(url,ind){
+					this.bigImgInd=ind;
 					this.bigImg=url;
 				},
 				//加载更多
