@@ -21,7 +21,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">类型名称</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{type}" required  lay-verify="required" placeholder="请输入副标题" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{type}" required  lay-verify="required" placeholder="类型名称" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -39,13 +39,13 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">直播时长</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{liveDuration}" required  lay-verify="required" placeholder="请输入直播时长" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{liveDuration}" placeholder="请输入直播时长" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">开始时间</label>
                         <div class="layui-input-inline">
-                            <input th:field="*{liveStartTime}" type="text" class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss">
+                            <input th:field="*{liveStartTime}" type="text" class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss" lay-verify="required">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -67,26 +67,32 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">私密口令</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{livePassword}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{livePassword}" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">直播状态</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{liveStatus}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                            <select name="liveStatus" lay-filter="selectFilter">
+                                <option value="">请选择</option>
+                                <option value="0" th:selected="${ehbLiveBroadcast.liveStatus == 0}">即将开播</option>
+                                <option value="1" th:selected="${ehbLiveBroadcast.liveStatus == 1}">直播中</option>
+                                <option value="2" th:selected="${ehbLiveBroadcast.liveStatus == 2}">直播结束</option>
+                            </select>
                         </div>
                     </div>
+
                     <div th:if="*{id != null}">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">直播下载地址</label>
+                            <label class="layui-form-label">下载地址</label>
                             <div class="layui-input-block">
-                                <input type="text" th:field="*{videoDownUrl}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                                <input type="text" th:field="*{videoDownUrl}"  placeholder="下载地址" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">直播回访地址</label>
+                            <label class="layui-form-label">回访地址</label>
                             <div class="layui-input-block">
-                                <input type="text" th:field="*{playback}" required  lay-verify="required" placeholder="请输入私密口令" autocomplete="off" class="layui-input">
+                                <input type="text" th:field="*{playback}"  placeholder="回访地址" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -104,20 +110,21 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">直播间弹幕聊天id</label>
                             <div class="layui-input-block">
-                                <input type="text" th:field="*{gropid}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
+                                <input type="text" th:field="*{gropid}" required  lay-verify="required" placeholder="弹幕聊天id" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">直播预告</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{notice}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
+                            <button type="button" class="layui-btn" id="noticeupload"><i class="layui-icon"></i>上传视频</button>
+                            <input type="text" id="notice" readonly th:field="*{notice}"  placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">全部禁言</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{forbiddenWords}" required  lay-verify="required" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{forbiddenWords}" placeholder="请输入拉流地址" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -129,7 +136,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">禁言成员</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{forbiddenMember}" required  lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{forbiddenMember}" placeholder="请输入排序" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -155,6 +162,10 @@
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
+                if(core.isEmpty(data.field.liveImageUrl)){
+                    layer.msg('直播封面为空！',core.showtime);
+                    return false;
+                }
                 var resultData = core.ajax('/platform/live/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){
                     parent.layer.msg('操作成功',core.showtime);
@@ -195,6 +206,17 @@
                         return layer.msg('上传成功！');
                     }
                     //上传成功
+                }
+            });
+
+            //免费视频下载
+            upload.render({
+                elem: '#noticeupload'
+                ,url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
+                ,accept: 'file' //视频
+                ,done: function(res){
+                    layer.msg('上传成功');
+                    $('#notice').val(res.data[0].url);
                 }
             });
         });

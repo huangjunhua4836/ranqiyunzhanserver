@@ -1,11 +1,14 @@
 package com.yl.soft.controller.plantform;
 
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.constants.BaseApiConstants;
+import com.yl.soft.common.im.ImOperator;
 import com.yl.soft.common.unified.entity.BaseResponse;
+import com.yl.soft.common.util.HWPlayFlowAuthUtil;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.po.EhbLiveBroadcast;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -35,6 +39,11 @@ import java.util.List;
 public class LiveController extends BaseController {
     @Autowired
     public EhbLiveBroadcastService ehbLiveBroadcastService;
+    @Autowired
+    public HWPlayFlowAuthUtil hwPlayFlowAuthUtil;
+
+    @Autowired
+    private ImOperator imOperator;
 
     @GetMapping("/list")
     public String list() {
@@ -100,6 +109,14 @@ public class LiveController extends BaseController {
     @ResponseBody
     public BaseResponse saveOrUpdate(EhbLiveBroadcast ehbLiveBroadcast) {
         if(StringUtils.isEmpty(ehbLiveBroadcast.getId())){
+            //直播间弹幕聊天id
+            Map<String,Object> dataMap=(Map<String, Object>) JSON.parse(imOperator.createLiveGrop(ehbLiveBroadcast.getId()+""));
+            String groupId = dataMap.get("GroupId")+"";
+            ehbLiveBroadcast.setGropid(groupId);
+            //拉流地址
+            ehbLiveBroadcast.setPullFlowUrl(hwPlayFlowAuthUtil.liveUrl(ehbLiveBroadcast.getFlowName()));
+            //推流地址
+            ehbLiveBroadcast.setPushFlowUrl(hwPlayFlowAuthUtil.tiveUrl(ehbLiveBroadcast.getFlowName()));
             ehbLiveBroadcast.setCreatetime(LocalDateTime.now());
         }else{
         }
