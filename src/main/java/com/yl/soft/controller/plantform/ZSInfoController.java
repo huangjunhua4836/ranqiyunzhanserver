@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -134,11 +135,18 @@ public class ZSInfoController extends BaseController {
             exhibitorDto.setBoothno(ehbExhibitor.getBoothno());
             exhibitorDto.setEnglishname(ehbExhibitor.getEnglishname());
             if(ehbExhibitor.getState() != null){
+                //先删除要审核的
+                Set<String> strList = redisService.sGet(firstWord);
+                for(String str:strList){
+                    ExhibitorDto eht = JSONObject.parseObject(str,ExhibitorDto.class);
+                    if(eht.getId() == ehbExhibitor.getId()){
+                        redisService.setRemove(firstWord,JSONObject.toJSONString(eht));
+                    }
+                }
                 if(ehbExhibitor.getState() == 3){//审核不通过
                     if(StringUtils.isEmpty(ehbExhibitor.getFailreason())){
                         return setResultError("审核原因不能为空！");
                     }
-                    redisService.setRemove(firstWord,JSONObject.toJSONString(exhibitorDto));
                 }else if(ehbExhibitor.getState() == 1){//已审核
                     if(StringUtils.isEmpty(ehbExhibitor.getBusinesslicense())){
                         return setResultError("营业执照未上传！");
@@ -191,7 +199,13 @@ public class ZSInfoController extends BaseController {
         ehbExhibitorQueryWrapper.eq("state",1);
         ehbExhibitorService.list(ehbExhibitorQueryWrapper).stream().forEach(i->{
             String firstWord = PinyinUtil.getPinYinHeadChar(i.getEnterprisename()).toUpperCase().charAt(0)+"";
-            redisService.sSet(firstWord, JSONObject.toJSONString(i));
+            ExhibitorDto exhibitorDto = new ExhibitorDto();
+            exhibitorDto.setId(i.getId());
+            exhibitorDto.setName(i.getEnterprisename());
+            exhibitorDto.setLogo(i.getLogo());
+            exhibitorDto.setBoothno(i.getBoothno());
+            exhibitorDto.setEnglishname(i.getEnglishname());
+            redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
         });
         return setResultSuccess();
     }
