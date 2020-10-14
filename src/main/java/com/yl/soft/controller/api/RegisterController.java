@@ -215,37 +215,37 @@ public class RegisterController extends BaseController {
             ,@ApiResponse(code = -1, message = "系统异常")
     })
     @PostMapping("/perfectExhibitor")
-    public BaseResponse perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
+    public BaseResult perfectExhibitor(RegisterExhibitorDto registerExhibitorDto,String token) {
         String randNum = redisService.get("I"+registerExhibitorDto.getMailbox());
         if(!randNum.equals(registerExhibitorDto.getEmailverificationcode())){
-            return setResultError("验证码错误");
+            return error(-100,"验证码错误");
         }
         SessionUser sessionUser = sessionState.getCurrentUser(token);
         EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
         if(ehbAudience == null){
-            return setResultError("参展商没有注册！");
+            return error(-100,"参展商没有注册！");
         }
-//        if(StringUtils.isEmpty(registerExhibitorDto.getEnterprisename())) {
-//        	return setResultError("请输入所属企业");
-//        }
-//        if(StringUtils.isEmpty(registerExhibitorDto.getName())) {
-//        	return setResultError("请输入管理员");
-//        }
-//        if(StringUtils.isEmpty(registerExhibitorDto.getIdcard())) {
-//        	return setResultError("请输入管理员身份证号");
-//        }
-//        
-//        if(!IDUtils.isIDNumber(registerExhibitorDto.getIdcard())) {
-//        	return setResultError("请输入一个正确的身份证号码");
-//        }
-//        
-//        if(!isMobile(registerExhibitorDto.getPhone())) {
-//        	return setResultError("请输入正确的手机号");
-//        }
-//        
-//        if(!isPhone(registerExhibitorDto.getTel())) {
-//        	return setResultError("请输入正确的电话号码");
-//        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getEnterprisename())) {
+        	return error(-100,"请输入所属企业");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getName())) {
+        	return error(-100,"请输入管理员");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getIdcard())) {
+        	return error(-100,"请输入管理员身份证号");
+        }
+        
+        if(!IDUtils.isIDNumber(registerExhibitorDto.getIdcard())) {
+        	return error(-100,"请输入一个正确的身份证号码");
+        }
+        
+        if(!isMobile(registerExhibitorDto.getPhone())) {
+        	return error(-100,"请输入正确的手机号");
+        }
+        
+        if(!isPhone(registerExhibitorDto.getTel())) {
+        	return error(-100,"请输入正确的电话号码");
+        }
         
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
@@ -264,9 +264,9 @@ public class RegisterController extends BaseController {
         ehbExhibitor.setLabelid(JSONArray.toJSONString(labs));
 
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
-            return setResultSuccess();
+            return ok2();
         }else{
-            return setResultError("保存失败！");
+            return error(-100,"保存失败！");
         }
     }
 
