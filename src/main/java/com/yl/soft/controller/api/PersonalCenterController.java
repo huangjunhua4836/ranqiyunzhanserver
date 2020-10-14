@@ -235,7 +235,7 @@ public class PersonalCenterController extends BaseController {
 
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(sessionUser.getBopie());
 		ehbExhibitor.setImg(img);
-		if (!isMobile(phone)) {
+		if (!isPhone(phone)) {
 			return error(-100, "请输入一个正确的联系电话");
 		}
 		ehbExhibitor.setTelphone(phone);
