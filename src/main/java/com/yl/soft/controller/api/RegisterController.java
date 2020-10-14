@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.IDUtils;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
@@ -126,6 +127,8 @@ public class RegisterController extends BaseController {
         	return setResultError("请输入一个正确的邮箱地址");
         }
         
+        
+        
 		
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
         ehbAudience.setIsdel(false);
@@ -148,6 +151,57 @@ public class RegisterController extends BaseController {
         }
     }
 
+    public static boolean isWeb(final String str) {
+		String url = "http:/klsfnklnklwnl.csfwfwn.cn?1231=sjkfjkf&sfwfw=";
+		String regex = "^([hH][tT]{2}[pP]:/*|[hH][tT]{2}[pP][sS]:/*|[fF][tT][pP]:/*)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+(\\?{0,1}(([A-Za-z0-9-~]+\\={0,1})([A-Za-z0-9-~]*)\\&{0,1})*)$";
+		Pattern pattern = Pattern.compile(regex);
+		if (pattern.matcher(url).matches()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean isMobile(final String str) {
+		Pattern p = null;
+		Matcher m = null;
+		boolean b = false;
+		p = Pattern.compile("^[1][3,4,5,7,8][0-9]{9}$"); // 验证手机号
+		m = p.matcher(str);
+		b = m.matches();
+		return b;
+	}
+
+	public static boolean isEmail(String email) {
+		if (null == email || "".equals(email)) {
+			return false;
+		}
+		String regEx1 = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+		Pattern p = Pattern.compile(regEx1);
+		Matcher m = p.matcher(email);
+		if (m.matches()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean isPhone(final String str) {
+		Pattern p1 = null, p2 = null;
+		Matcher m = null;
+		boolean b = false;
+		p1 = Pattern.compile("^[0][1-9]{2,3}-[0-9]{5,10}$"); // 验证带区号的
+		p2 = Pattern.compile("^[1-9]{1}[0-9]{5,8}$"); // 验证没有区号的
+		if (str.length() > 9) {
+			m = p1.matcher(str);
+			b = m.matches();
+		} else {
+			m = p2.matcher(str);
+			b = m.matches();
+		}
+		return b;
+	}
+    
     /**
      * 展商认证信息提交接口
      * @return
@@ -174,6 +228,28 @@ public class RegisterController extends BaseController {
         if(ehbAudience == null){
             return setResultError("参展商没有注册！");
         }
+        if(StringUtils.isEmpty(registerExhibitorDto.getEnterprisename())) {
+        	return setResultError("请输入所属企业");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getName())) {
+        	return setResultError("请输入管理员");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getIdcard())) {
+        	return setResultError("请输入管理员身份证号");
+        }
+        
+        if(!IDUtils.isIDNumber(registerExhibitorDto.getIdcard())) {
+        	return setResultError("请输入一个正确的身份证号码");
+        }
+        
+        if(!isMobile(registerExhibitorDto.getPhone())) {
+        	return setResultError("请输入正确的手机号");
+        }
+        
+        if(!isPhone(registerExhibitorDto.getTel())) {
+        	return setResultError("请输入正确的电话号码");
+        }
+        
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
         ehbExhibitor.setIsdel(false);
