@@ -201,7 +201,7 @@ public class IndexController extends BaseController {
         QueryWrapper<EhbOpportunity> ehbOpportunityQueryWrapper = new QueryWrapper<>();
         ehbOpportunityQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbOpportunityQueryWrapper.eq("exhibitorid",paramMap.get("exhibitorid"));
-        ehbOpportunityQueryWrapper.eq("type",1);//类别是商品
+        ehbOpportunityQueryWrapper.eq("type",2);//类别是商品
         ehbOpportunityQueryWrapper.orderByDesc("releasetime");
 
         Integer pageParam[] = pageValidParam(paramMap);
