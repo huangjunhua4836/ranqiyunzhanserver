@@ -76,5 +76,4 @@ public class HalljController extends BaseController{
 		}).collect(Collectors.toList());
 		return ok(dataList, pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
 	}
-	
 }
