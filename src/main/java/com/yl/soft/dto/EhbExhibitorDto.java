@@ -2,6 +2,7 @@ package com.yl.soft.dto;
 
 import java.io.Serializable;
 
+import com.yl.soft.common.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.yl.soft.po.EhbAudience;
@@ -79,7 +80,7 @@ public class EhbExhibitorDto  implements Serializable{/**
 		ehbExhibitorDto.setFloorplan(ehbExhibitor.getZwimg());
 		ehbExhibitorDto.setLogo(user.getHeadPortrait());
 		ehbExhibitorDto.setEnglishname(ehbExhibitor.getEnglishname());
-		ehbExhibitorDto.setTel(ehbExhibitor.getTelphone());
+		ehbExhibitorDto.setTel(StringUtils.isEmpty(ehbExhibitor.getTelphone())?ehbExhibitor.getTel():ehbExhibitor.getTelphone());
 //		List<String> list = JSONArray.parseArray(ehbExhibitor.getImg(), String.class);
 //		ehbExhibitorDto.setBannerList(list);
 		return ehbExhibitorDto;
