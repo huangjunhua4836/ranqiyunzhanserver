@@ -189,42 +189,11 @@ public class ZSInfoController extends BaseController {
         }
         exhibitorVo.setFirstletter(firstWord);//名称首字母设置
         exhibitorVo.setTelphone(exhibitorVo.getTel());
-        //线程安全
-        synchronized (this){
-            if(StringUtils.isEmpty(exhibitorVo.getId())){
-                if(ehbExhibitorService.save(exhibitorVo)){
-                    //查询展商
-                    QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
-                    ehbExhibitorQueryWrapper.orderByDesc("createtime");
-                    ehbExhibitorQueryWrapper.eq("enterprisename",exhibitorVo.getEnterprisename());
-                    ehbExhibitorQueryWrapper.last("limit 1");
-                    EhbExhibitor one = ehbExhibitorService.getOne(ehbExhibitorQueryWrapper);
-                    //添加展商用户
-                    EhbAudience ehbAudience = new EhbAudience();
-                    ehbAudience.setIsdel(false);
-                    ehbAudience.setCreatetime(LocalDateTime.now());
-                    ehbAudience.setCreateuser(1);
-                    ehbAudience.setPhone(exhibitorVo.getRegisterphone());
-                    ehbAudience.setLoginname(exhibitorVo.getRegisterphone());
-                    ehbAudience.setPassword(ehbAudienceService.encryptPassword("123456"));
-                    ehbAudience.setBopie(one.getId());
-                    ehbAudience.setType(1);//后台创建
-                    ehbAudience.setEnabled(1);//启用状态
-                    ehbAudienceService.save(ehbAudience);
-                    return setResultSuccess();
-                }else{
-                    return setResultError("操作失败！");
-                }
-            }else{
-                ehbExhibitorService.updateById(exhibitorVo);
-                QueryWrapper<EhbAudience> ehbAudienceQueryWrapper = new QueryWrapper<>();
-                ehbAudienceQueryWrapper.eq("bopie",exhibitorVo.getId());
-                ehbAudienceQueryWrapper.last("limit 1");
-                EhbAudience ehbAudience = ehbAudienceService.getOne(ehbAudienceQueryWrapper);
-                ehbAudience.setPhone(exhibitorVo.getRegisterphone());
-                ehbAudienceService.updateById(ehbAudience);
-                return setResultSuccess();
-            }
+
+        if(ehbExhibitorService.saveOrUpdateExhi(exhibitorVo)){
+            return setResultSuccess();
+        }else{
+            return setResultError("操作失败！");
         }
     }
 

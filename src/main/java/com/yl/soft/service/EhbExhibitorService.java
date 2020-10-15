@@ -39,4 +39,11 @@ public interface EhbExhibitorService extends IService<EhbExhibitor> {
      * @return
      */
     List<ExhibitorVo> selectExhibitorVoList(Map paramMap);
+
+    /**
+     * 后台保存或修改展商
+     * @param exhibitorVo
+     * @return
+     */
+    boolean saveOrUpdateExhi(ExhibitorVo exhibitorVo);
 }
