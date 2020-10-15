@@ -34,7 +34,10 @@
         where
             e.isdel = #{paramMap.isdel}
             and e.state = #{paramMap.state}
-            and e.id != #{paramMap.id}
+            and e.id not in
+            <foreach item="item" collection="paramMap.ids" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
             <if test="paramMap.labelid!= null and paramMap.labelid.size() > 0">
                 and
                 <foreach item="item" collection="paramMap.labelid" separator="or" open="(" close=")" index="">

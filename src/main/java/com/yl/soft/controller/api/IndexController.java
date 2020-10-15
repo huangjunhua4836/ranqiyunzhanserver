@@ -45,6 +45,8 @@ public class IndexController extends BaseController {
     @Autowired
     private EhbLabelService ehbLabelService;
     @Autowired
+    private EhbUseractionService ehbUseractionService;
+    @Autowired
     private SessionState sessionState;
     @Autowired
     private RedisService redisService;
@@ -73,11 +75,20 @@ public class IndexController extends BaseController {
 
         }
         SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
+        QueryWrapper<EhbUseraction> ehbUseractionQueryWrapper = new QueryWrapper<>();
+        ehbUseractionQueryWrapper.eq("type","1");
+        ehbUseractionQueryWrapper.eq("activetype","1");
+        ehbUseractionQueryWrapper.eq("userid",appLoginDTO.getId());
+        List<Integer> ids = ehbUseractionService.list(ehbUseractionQueryWrapper).stream().map(i->{
+           return i.getRelateid();
+        }).collect(Collectors.toList());
+        ids.add(appLoginDTO.getBopie());//全部要过滤展商
+
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
         conditionMap.put("state",1);
         conditionMap.put("labelid", JSONArray.parseArray(appLoginDTO.getLabelid(),Integer.class));
-        conditionMap.put("id",appLoginDTO.getBopie());
+        conditionMap.put("ids",ids);
 
         List<ExhibitorDto> appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
         appLoginDTOS.stream().forEach(i->{
