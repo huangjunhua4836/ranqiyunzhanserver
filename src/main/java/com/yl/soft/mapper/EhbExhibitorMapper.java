@@ -3,6 +3,7 @@ package com.yl.soft.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yl.soft.dto.app.ExhibitorDto;
 import com.yl.soft.po.EhbExhibitor;
+import com.yl.soft.vo.ExhibitorVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,4 +24,11 @@ public interface EhbExhibitorMapper extends BaseMapper<EhbExhibitor> {
      * @return
      */
      List<ExhibitorDto> exibitionList(@Param("paramMap") Map paramMap);
+
+    /**
+     * 后台展商列表查询
+     * @param paramMap
+     * @return
+     */
+     List<ExhibitorVo> selectExhibitorVoList(@Param("paramMap") Map paramMap) ;
 }

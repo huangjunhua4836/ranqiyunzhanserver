@@ -1,6 +1,7 @@
 package com.yl.soft.controller.plantform;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
@@ -17,6 +18,7 @@ import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.service.EhbAudienceService;
 import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.service.EhbHallService;
+import com.yl.soft.vo.ExhibitorVo;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -59,26 +63,39 @@ public class ZSInfoController extends BaseController {
      * 列表
      * @param page
      * @param limit
-     * @param ehbExhibitor
+     * @param exhibitorVo
      * @param startTime
      * @param endTime
      * @return
      */
     @GetMapping("/initTable")
     @ResponseBody
-    public TableVo initTable(String page, String limit, EhbExhibitor ehbExhibitor, String startTime, String endTime) {
-        QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
-        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(ehbExhibitor.getPhone()),"phone",ehbExhibitor.getPhone());
-        ehbExhibitorQueryWrapper.like(!StringUtils.isEmpty(ehbExhibitor.getName()),"name",ehbExhibitor.getName());
-        ehbExhibitorQueryWrapper.like(!StringUtils.isEmpty(ehbExhibitor.getEnterprisename()),"enterprisename",ehbExhibitor.getEnterprisename());
-        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(ehbExhibitor.getState()),"state",ehbExhibitor.getState());
-        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(ehbExhibitor.getFid()),"fid",ehbExhibitor.getFid());
-        ehbExhibitorQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"createtime",startTime,endTime);
-        ehbExhibitorQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
-        ehbExhibitorQueryWrapper.orderByDesc("createtime");
+    public TableVo initTable(String page, String limit, ExhibitorVo exhibitorVo, String startTime, String endTime) {
+//        QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+//        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(ehbExhibitor.getPhone()),"phone",ehbExhibitor.getPhone());
+//        ehbExhibitorQueryWrapper.like(!StringUtils.isEmpty(ehbExhibitor.getName()),"name",ehbExhibitor.getName());
+//        ehbExhibitorQueryWrapper.like(!StringUtils.isEmpty(ehbExhibitor.getEnterprisename()),"enterprisename",ehbExhibitor.getEnterprisename());
+//        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(ehbExhibitor.getState()),"state",ehbExhibitor.getState());
+//        ehbExhibitorQueryWrapper.eq(!StringUtils.isEmpty(ehbExhibitor.getFid()),"fid",ehbExhibitor.getFid());
+//        ehbExhibitorQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"createtime",startTime,endTime);
+//        ehbExhibitorQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
+//        ehbExhibitorQueryWrapper.orderByDesc("createtime");
+//        PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
+//        List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
+//        PageInfo pageInfo = new PageInfo<>(ehbExhibitors);
+
+        Map paramMap = new HashMap();
+        paramMap.put("registerphone",exhibitorVo.getRegisterphone());//注册手机号
+        paramMap.put("name",exhibitorVo.getName());//管理人者姓名
+        paramMap.put("enterprisename",exhibitorVo.getEnterprisename());//企业名称
+        paramMap.put("state",exhibitorVo.getState());//认证状态
+        paramMap.put("fid",exhibitorVo.getFid());//fid
+        paramMap.put("startTime",startTime);//开始时间
+        paramMap.put("endTime",endTime);//结束时间
+
         PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
-        List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
-        PageInfo pageInfo = new PageInfo<>(ehbExhibitors);
+        List<ExhibitorVo> exhibitorVos = ehbExhibitorService.selectExhibitorVoList(paramMap);
+        PageInfo pageInfo = new PageInfo<>(exhibitorVos);
 
         TableVo tableVo = new TableVo();
         tableVo.setCode(0);
@@ -95,93 +112,118 @@ public class ZSInfoController extends BaseController {
      */
     @GetMapping("/input")
     public String input(String id, String type, ModelMap modelMap) {
-        EhbExhibitor ehbExhibitor = new EhbExhibitor();
+        ExhibitorVo exhibitorVo = new ExhibitorVo();
         if("add".equals(type)){
 
         }else if("update".equals(type)){
-            ehbExhibitor = ehbExhibitorService.getById(id);
+            EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(id);
+            BeanUtil.copyProperties(ehbExhibitor,exhibitorVo);
+            QueryWrapper<EhbAudience> ehbAudienceQueryWrapper = new QueryWrapper<>();
+            ehbAudienceQueryWrapper.eq("bopie",id);
+            ehbAudienceQueryWrapper.last("limit 1");
+            EhbAudience ehbAudience = ehbAudienceService.getOne(ehbAudienceQueryWrapper);
+            exhibitorVo.setRegisterphone(ehbAudience.getPhone());
+            exhibitorVo.setIsnew(ehbAudience.getIsnew());
+            exhibitorVo.setLoginname(ehbAudience.getLoginname());
+            exhibitorVo.setPassword(ehbAudience.getPassword());
+            exhibitorVo.setType(ehbAudience.getType());
         }
-        modelMap.put("ehbExhibitor",ehbExhibitor);
+
+        modelMap.put("exhibitorVo",exhibitorVo);
 
         return "exhibitioninfo/input2";
     }
 
     /**
      * 添加或者修改
-     * @param ehbExhibitor
+     * @param exhibitorVo
      * @return
      */
     @PostMapping("/saveOrUpdate")
     @ResponseBody
-    public BaseResponse saveOrUpdate(EhbExhibitor ehbExhibitor) {
-        String firstWord = PinyinUtil.getPinYinHeadChar(ehbExhibitor.getEnterprisename()).toUpperCase().charAt(0)+"";
-        if(StringUtils.isEmpty(ehbExhibitor.getId())){
-            QueryWrapper<EhbExhibitor> zswrapper = new QueryWrapper<>();
-            zswrapper.eq("phone",ehbExhibitor.getPhone());
-            if(ehbExhibitorService.count(zswrapper)>0){
+    public BaseResponse saveOrUpdate(ExhibitorVo exhibitorVo) {
+        String firstWord = PinyinUtil.getPinYinHeadChar(exhibitorVo.getEnterprisename()).toUpperCase().charAt(0)+"";
+        if(StringUtils.isEmpty(exhibitorVo.getId())){
+            QueryWrapper<EhbAudience> zswrapper = new QueryWrapper<>();
+            zswrapper.eq("phone",exhibitorVo.getRegisterphone());
+            if(ehbAudienceService.count(zswrapper)>0){
                 return setResultError("该手机号已注册！");
             }
 
-            ehbExhibitor.setCreatetime(LocalDateTime.now());
-            ehbExhibitor.setCreateuser(1);
-            ehbExhibitor.setIsdel(false);
+            exhibitorVo.setCreatetime(LocalDateTime.now());
+            exhibitorVo.setCreateuser(1);
+            exhibitorVo.setIsdel(false);
         }else{
-            ehbExhibitor.setUpdatetime(LocalDateTime.now());
-            ehbExhibitor.setUpdateuser(1);
+            exhibitorVo.setUpdatetime(LocalDateTime.now());
+            exhibitorVo.setUpdateuser(1);
             ExhibitorDto exhibitorDto = new ExhibitorDto();
-            exhibitorDto.setId(ehbExhibitor.getId());
-            exhibitorDto.setName(ehbExhibitor.getEnterprisename());
-            exhibitorDto.setLogo(ehbExhibitor.getLogo());
-            exhibitorDto.setBoothno(ehbExhibitor.getBoothno());
-            exhibitorDto.setEnglishname(ehbExhibitor.getEnglishname());
-            if(ehbExhibitor.getState() != null){
+            exhibitorDto.setId(exhibitorVo.getId());
+            exhibitorDto.setName(exhibitorVo.getEnterprisename());
+            exhibitorDto.setLogo(exhibitorVo.getLogo());
+            exhibitorDto.setBoothno(exhibitorVo.getBoothno());
+            exhibitorDto.setEnglishname(exhibitorVo.getEnglishname());
+            if(exhibitorVo.getState() != null){
                 //先删除要审核的
                 Set<String> strList = redisService.sGet(firstWord);
                 for(String str:strList){
                     ExhibitorDto eht = JSONObject.parseObject(str,ExhibitorDto.class);
-                    if(eht.getId() == ehbExhibitor.getId()){
+                    if(eht.getId() == exhibitorVo.getId()){
                         redisService.setRemove(firstWord,JSONObject.toJSONString(eht));
                     }
                 }
-                if(ehbExhibitor.getState() == 3){//审核不通过
-                    if(StringUtils.isEmpty(ehbExhibitor.getFailreason())){
+                if(exhibitorVo.getState() == 3){//审核不通过
+                    if(StringUtils.isEmpty(exhibitorVo.getFailreason())){
                         return setResultError("审核原因不能为空！");
                     }
-                }else if(ehbExhibitor.getState() == 1){//已审核
-                    if(StringUtils.isEmpty(ehbExhibitor.getBusinesslicense())){
+                }else if(exhibitorVo.getState() == 1){//已审核
+                    if(StringUtils.isEmpty(exhibitorVo.getBusinesslicense())){
                         return setResultError("营业执照未上传！");
                     }
-                    if(StringUtils.isEmpty(ehbExhibitor.getCredentials())){
+                    if(StringUtils.isEmpty(exhibitorVo.getCredentials())){
                         return setResultError("企业授权书未上传！");
                     }
                     redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
-                    ehbExhibitor.setCertificationtime(LocalDateTime.now());//认证时间
+                    exhibitorVo.setCertificationtime(LocalDateTime.now());//认证时间
                 }
             }
         }
-        ehbExhibitor.setFirstletter(firstWord);//名称首字母设置
+        exhibitorVo.setFirstletter(firstWord);//名称首字母设置
+        exhibitorVo.setTelphone(exhibitorVo.getTel());
+        //线程安全
         synchronized (this){
-            if(ehbExhibitorService.saveOrUpdate(ehbExhibitor)){
-                //查询展商
-                QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
-                ehbExhibitorQueryWrapper.orderByDesc("createtime");
-//            ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-                ehbExhibitorQueryWrapper.eq("enterprisename",ehbExhibitor.getEnterprisename());
-                ehbExhibitorQueryWrapper.last("limit 1");
-                EhbExhibitor one = ehbExhibitorService.getOne(ehbExhibitorQueryWrapper);
-                //添加展商用户
-                EhbAudience ehbAudience = new EhbAudience();
-                ehbAudience.setIsdel(false);
-                ehbAudience.setCreatetime(LocalDateTime.now());
-                ehbAudience.setCreateuser(1);
-                ehbAudience.setPhone(ehbExhibitor.getPhone());
-                ehbAudience.setPassword(ehbAudienceService.encryptPassword("123456"));
-                ehbAudience.setBopie(one.getId());
-                ehbAudience.setType(1);//后台创建
-                ehbAudienceService.saveOrUpdate(ehbAudience);
-                return setResultSuccess();
+            if(StringUtils.isEmpty(exhibitorVo.getId())){
+                if(ehbExhibitorService.save(exhibitorVo)){
+                    //查询展商
+                    QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+                    ehbExhibitorQueryWrapper.orderByDesc("createtime");
+                    ehbExhibitorQueryWrapper.eq("enterprisename",exhibitorVo.getEnterprisename());
+                    ehbExhibitorQueryWrapper.last("limit 1");
+                    EhbExhibitor one = ehbExhibitorService.getOne(ehbExhibitorQueryWrapper);
+                    //添加展商用户
+                    EhbAudience ehbAudience = new EhbAudience();
+                    ehbAudience.setIsdel(false);
+                    ehbAudience.setCreatetime(LocalDateTime.now());
+                    ehbAudience.setCreateuser(1);
+                    ehbAudience.setPhone(exhibitorVo.getRegisterphone());
+                    ehbAudience.setLoginname(exhibitorVo.getRegisterphone());
+                    ehbAudience.setPassword(ehbAudienceService.encryptPassword("123456"));
+                    ehbAudience.setBopie(one.getId());
+                    ehbAudience.setType(1);//后台创建
+                    ehbAudience.setEnabled(1);//启用状态
+                    ehbAudienceService.save(ehbAudience);
+                    return setResultSuccess();
+                }else{
+                    return setResultError("操作失败！");
+                }
             }else{
-                return setResultError("操作失败！");
+                ehbExhibitorService.updateById(exhibitorVo);
+                QueryWrapper<EhbAudience> ehbAudienceQueryWrapper = new QueryWrapper<>();
+                ehbAudienceQueryWrapper.eq("bopie",exhibitorVo.getId());
+                ehbAudienceQueryWrapper.last("limit 1");
+                EhbAudience ehbAudience = ehbAudienceService.getOne(ehbAudienceQueryWrapper);
+                ehbAudience.setPhone(exhibitorVo.getRegisterphone());
+                ehbAudienceService.updateById(ehbAudience);
+                return setResultSuccess();
             }
         }
     }

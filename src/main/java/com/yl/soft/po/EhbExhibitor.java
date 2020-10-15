@@ -27,7 +27,7 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
     //state 0：未认证  1：审核通过 2:审核中，3审核失败
     private static final long serialVersionUID=1L;
 
-    @ApiModelProperty(value = "手机")
+    @ApiModelProperty(value = "管理人员手机")
     private String phone;
 
     @ApiModelProperty(value = "管理人员")

@@ -42,4 +42,38 @@
             </if>
             order by e.createtime desc
      </select>
+
+    <select id="selectExhibitorVoList" resultType= "com.yl.soft.vo.ExhibitorVo">
+     	SELECT
+            e.*,a.phone as registerphone,a.loginname,a.password,a.type,a.isnew
+        FROM
+            ehb_exhibitor e
+        left join
+            ehb_audience a
+        on
+            e.id = a.bopie
+            and a.isdel = 0
+            and a.enabled = 1
+        where
+            1=1
+            <if test="paramMap.registerphone!= null and paramMap.registerphone!=''">
+                and a.phone like concat('%',#{paramMap.registerphone},'%')
+            </if>
+            <if test="paramMap.name!= null and paramMap.name != ''">
+                and e.name like concat('%',#{paramMap.name},'%')
+            </if>
+            <if test="paramMap.enterprisename!= null and paramMap.enterprisename!=''">
+                and e.enterprisename like concat('%',#{paramMap.enterprisename},'%')
+            </if>
+            <if test="paramMap.state!= null and paramMap.state!=''">
+                and e.state = #{paramMap.state}
+            </if>
+            <if test="paramMap.fid!= null and paramMap.fid!=''">
+                and e.fid = #{paramMap.fid}
+            </if>
+            <if test="paramMap.startTime!= null and paramMap.startTime!='' and paramMap.endTime!= null and paramMap.endTime!=''">
+                and e.createtime BETWEEN #{paramMap.startTime} AND #{paramMap.endTime}
+            </if>
+            order by e.createtime desc
+     </select>
 </mapper>

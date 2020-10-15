@@ -26,8 +26,8 @@ layui.use('core', function(){
             ,title: '数据表'
             ,cols: [[ //表头
                 {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
-                ,{field: 'name', title: '姓名'}
-                ,{field: 'phone', title: '手机号'}
+                ,{field: 'registerphone', title: '注册手机号'}
+                ,{field: 'name', title: '管理者姓名'}
                 ,{field: 'enterprisename', title: '企业'}
                 ,{field: 'mailbox', title: '邮箱'}
                 ,{field: 'boothno', title: '展位号'}
@@ -43,6 +43,17 @@ layui.use('core', function(){
                             return '审核失败';
                         }else{
                             return '错误状态';
+                        }
+                    }
+                }
+                ,{field: 'type', title: '注册方式',
+                    templet: function(d){
+                        if(d.type == '0'){
+                            return '用户注册';
+                        }else if(d.type == '1'){
+                            return '后台创建';
+                        }else{
+                            return '未知';
                         }
                     }
                 }
@@ -96,16 +107,18 @@ layui.use('core', function(){
             // }
             core.openIframeDialog('审核','/platform/zsInfo/input?type=update&id='+data.id,['500px', '900px'],false,initTable);
         } else if(obj.event === 'detail'){
-            core.openDialog('详情',$('#detail').html(),['500px','480px']);
-            $('.layui-layer-content').find('input').eq(0).val(data.id);
-            $('.layui-layer-content').find('input').eq(1).val(data.name);
-            $('.layui-layer-content').find('input').eq(2).val(data.phone);
-            $('.layui-layer-content').find('input').eq(3).val(data.enterprisename);
-            $('.layui-layer-content').find('input').eq(4).val(data.mailbox);
-            $('.layui-layer-content').find('input').eq(5).val(data.boothno);
-            $('.layui-layer-content').find('input').eq(6).val(data.fid);
-            $('.layui-layer-content').find('input').eq(7).val(data.halurl);
-            $('.layui-layer-content').find('input').eq(8).val(util.toDateString(data.createtime, "yyyy-MM-dd HH:mm:ss"));
+            core.openDialog('详情',$('#detail').html(),['500px','900px']);
+            $('.layui-layer-content').find('input').eq(0).val(data.registerphone);
+            $('.layui-layer-content').find('input').eq(1).val(data.mailbox);
+            $('.layui-layer-content').find('input').eq(2).val(data.name);
+            $('.layui-layer-content').find('input').eq(3).val(data.phone);
+            $('.layui-layer-content').find('input').eq(4).val(data.idcard);
+            $('.layui-layer-content').find('input').eq(5).val(data.tel);
+            $('.layui-layer-content').find('input').eq(6).val(data.enterprisename);
+            $('.layui-layer-content').find('input').eq(7).val(data.boothno);
+            $('.layui-layer-content').find('input').eq(8).val(data.fid);
+            $('.layui-layer-content').find('input').eq(9).val(data.halurl);
+            $('.layui-layer-content').find('input').eq(10).val(util.toDateString(data.createtime, "yyyy-MM-dd HH:mm:ss"));
         }
     });
 

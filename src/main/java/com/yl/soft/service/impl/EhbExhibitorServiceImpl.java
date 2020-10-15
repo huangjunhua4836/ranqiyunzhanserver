@@ -9,6 +9,7 @@ import com.yl.soft.mapper.EhbExhibitorMapper;
 import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.service.EhbExhibitorService;
+import com.yl.soft.vo.ExhibitorVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +54,10 @@ public class EhbExhibitorServiceImpl extends ServiceImpl<EhbExhibitorMapper, Ehb
     @Override
     public List<ExhibitorDto> randExibitionList(Map paramMap) {
         return baseMapper.exibitionList(paramMap);
+    }
+
+    @Override
+    public List<ExhibitorVo> selectExhibitorVoList(Map paramMap) {
+        return baseMapper.selectExhibitorVoList(paramMap);
     }
 }

@@ -123,11 +123,9 @@ public class RegisterController extends BaseController {
         if(!isMatchmail) {
         	return error(-100,"请输入一个正确的邮箱地址");
         }
-        
-        
-        
-		
+
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
+        ehbAudience.setEnabled(1);
         ehbAudience.setIsdel(false);
         ehbAudience.setUpdatetime(LocalDateTime.now());
 
@@ -252,6 +250,7 @@ public class RegisterController extends BaseController {
         ehbExhibitor.setIsdel(false);
         ehbExhibitor.setUpdatetime(LocalDateTime.now());
         ehbExhibitor.setState(2);//审核中
+        ehbExhibitor.setTelphone(ehbExhibitor.getTel());
 
         //展商标签
         String str[] = registerExhibitorDto.getLabelid().split(",");
