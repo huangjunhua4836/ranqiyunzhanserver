@@ -41,7 +41,7 @@ public class HalljController extends BaseController{
 	})
 	@PostMapping("/hall")
 	public BaseResult<EhbHallDto> hall(String token) {
-		return ok2(BaseConv.copy(ehbHallService.lambdaQuery().eq(EhbHall::getIsdel, 0).eq(EhbHall::getRecommend, 0).last("LIMIT 1").one(), new EhbHallDto()));
+		return ok2(BaseConv.copy(ehbHallService.lambdaQuery().eq(EhbHall::getIsdel, 0).eq(EhbHall::getRecommend, 1).last("LIMIT 1").one(), new EhbHallDto()));
 	}
 	
 	@ApiOperation(value = "浏览", notes = "浏览")
