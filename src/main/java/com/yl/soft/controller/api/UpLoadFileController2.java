@@ -37,7 +37,7 @@ public class UpLoadFileController2 extends BaseResponseUtil {
 	@Value("${custom.ip}")
 	private String ip;
 
-	@Value("${custom.port}")
+	@Value("${custom.port2}")
 	private String port;
 
 	@Value("${server.servlet.context-path}")
