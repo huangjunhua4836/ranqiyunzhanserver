@@ -70,7 +70,7 @@
 				<li v-for="li in commentList">
 					<img :src="li.headPortrait" alt="">
 					<div class="g_comment-div">
-						<span>{{li.user.loginname}}：</span><b v-html="li.content"></b>
+						<span>{{li.user.name}}：</span><b v-html="li.content"></b>
 						<time v-html="li.createtime"></time>
 					</div>
 				</li>
@@ -143,8 +143,9 @@
 						if(jsonData[i].user.headPortrait){
 							jsonData[i].headPortrait=jsonData[i].user.headPortrait;
 						}else{
-							jsonData[i].headPortrait="";
+							jsonData[i].headPortrait="images/g_10.jpg";
 						}
+						jsonData[i].createtime=jsonData[i].createtime.substring(0,16)
 						newsData.commentList.push(jsonData[i]);
 					}
 					if(jsonData.length==3){
@@ -168,7 +169,12 @@
 			call_net("post", "/api/hotArticleList",newsObj, function(data){
 				if(data.code==200){
 					var jsonData=data.data;
-					
+					for(var i=0;i<jsonData.length;i++){
+						if(!jsonData[i].headpicture){
+							jsonData[i].headpicture="images/g_11.jpg"
+						}
+						jsonData[i].releasetime=jsonData[i].releasetime.toString().substring(5,10)
+					}
 					newsData.hotList=jsonData;
 				}else{
 					console.log(data.desc)
@@ -247,8 +253,10 @@
 					call_net("POST", "/api/addOrDelPraise",dianzanObj, function(data){
 						if(data.code==200){
 							if(_this.detailes.isZan==0){
+								Yeffect.mAlert("点赞成功");
 								_this.detailes.isZan=1;
 							}else{
+								Yeffect.mAlert("取消点赞");
 								_this.detailes.isZan=0;
 							}
 							
@@ -275,8 +283,10 @@
 					call_net("POST", "/api/addOrDelCollention",shoucangObj, function(data){
 						if(data.code==200){
 							if(_this.detailes.isSCZx==0){
+								Yeffect.mAlert("收藏成功");
 								_this.detailes.isSCZx=1;
 							}else{
+								Yeffect.mAlert("取消收藏");
 								_this.detailes.isSCZx=0;
 							}
 							
@@ -303,6 +313,7 @@
 					commentObj.type=3;
 					call_net("POST", "/api/addComment",commentObj, function(data){
 						if(data.code==200){
+							Yeffect.mAlert("评论成功");
 							_this.pageZ=1;
 							_this.commentList=[];
 							_this.commentTxt="";

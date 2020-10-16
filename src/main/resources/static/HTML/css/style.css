@@ -79,7 +79,7 @@
 .g_niches-head{height: 0.95rem; line-height: 0.95rem; font-size: 0.28rem; color: #000; padding: 0 0.3rem;}
 .g_niches-head img{ width: 0.22rem; height: 0.25rem; margin-left: 0.11rem; position: relative; top: 0.04rem;}
 .g_banner{width: 100%; overflow: hidden; padding-bottom: 0.56rem; border-bottom: 0.12rem solid #f7f7f7;}
-.g_banner-big{width: 100%; display: block;}
+.g_banner-big{width: 100%; display: block; height: 7.5rem;}
 .g_banner-small{margin-top: 0.25rem; width: 100%; box-sizing: border-box; -webkit-box-sizing: border-box; padding: 0 0.3rem; overflow-y: hidden; overflow-x: scroll; white-space: nowrap;}
 .g_banner-small img{width: 1.23rem; height: 1.23rem; border-radius: 0.05rem; margin: 0.05rem;}
 .g_banner-small img.g_banner-dqys{width: 1.29rem; border: 0.04rem solid #43bdec;}

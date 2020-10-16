@@ -97,6 +97,7 @@
 					sendObj.showarea=_this.form.min+","+_this.form.max;
 					
 					sendObj.token=token;
+					console.log(sendObj)
 					if(!sendObj.compname){
 						Yeffect.mAlert("请输入公司名称");
 						return false;
@@ -122,12 +123,11 @@
 						return false;
 					}
 					
+					
 					if(!checkPhone(sendObj.phone)){
 						Yeffect.mAlert("手机号码有误");
 						return false;
 					}
-					delete sendObj.min;
-					delete sendObj.max;
 					call_net("POST", "/api/addregistration",sendObj, function(data){
 						if(data.code==200){
 							if(equipment){

@@ -59,7 +59,7 @@
 				<li v-for="li in commentList">
 					<img :src="li.headPortrait" alt="">
 					<div class="g_comment-div">
-						<span>{{li.user.loginname}}：</span><b v-html="li.content"></b>
+						<span>{{li.user.name}}：</span><b v-html="li.content"></b>
 						<time v-html="li.createtime"></time>
 					</div>
 				</li>
@@ -109,6 +109,7 @@
 			call_net("post", "/api/goodsDes",detailesObj, function(data){
 				if(data.code==200){
 					var jsonData=data.data;
+					jsonData.releasetime=jsonData.releasetime.substring(0,10)
 					if(jsonData.picture){
 						jsonData.picture=jsonData.picture.split(",");
 						productData.bigImg=jsonData.picture[0]
@@ -140,8 +141,9 @@
 						if(jsonData[i].user.headPortrait){
 							jsonData[i].headPortrait=jsonData[i].user.headPortrait
 						}else{
-							jsonData[i].headPortrait="";
+							jsonData[i].headPortrait="images/g_10.jpg";
 						}
+						jsonData[i].createtime=jsonData[i].createtime.substring(0,16)
 						productData.commentList.push(jsonData[i]);
 					}
 					if(jsonData.length==3){
@@ -231,8 +233,10 @@
 					call_net("POST", "/api/addOrDelPraise",dianzanObj, function(data){
 						if(data.code==200){
 							if(_this.detailes.isSpZan==0){
+								Yeffect.mAlert("点赞成功");
 								_this.detailes.isSpZan=1;
 							}else{
+								Yeffect.mAlert("取消点赞");
 								_this.detailes.isSpZan=0;
 							}
 							
@@ -259,8 +263,10 @@
 					call_net("POST", "/api/addOrDelCollention",shoucangObj, function(data){
 						if(data.code==200){
 							if(_this.detailes.isSCsp==0){
+								Yeffect.mAlert("收藏成功");
 								_this.detailes.isSCsp=1;
 							}else{
+								Yeffect.mAlert("取消收藏");
 								_this.detailes.isSCsp=0;
 							}
 							
@@ -287,6 +293,7 @@
 					commentObj.type=2;
 					call_net("POST", "/api/addComment",commentObj, function(data){
 						if(data.code==200){
+							Yeffect.mAlert("评论成功");
 							_this.pageZ=1;
 							_this.commentList=[];
 							_this.commentTxt="";
