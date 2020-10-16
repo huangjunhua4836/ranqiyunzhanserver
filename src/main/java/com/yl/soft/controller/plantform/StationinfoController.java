@@ -159,7 +159,7 @@ public class StationinfoController extends BaseController {
         ehbExhibitorQueryWrapper.ne("state",1);
         List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
         List<Integer> ids = ehbExhibitors.stream().map(i->{
-           return i.getId();
+            return i.getId();
         }).collect(Collectors.toList());
 
         QueryWrapper<EhbAudience> ehbAudienceQueryWrapper = new QueryWrapper<>();
@@ -177,7 +177,6 @@ public class StationinfoController extends BaseController {
             message.setStatus(0);//未读
             message.setImgurl(stationinfo.getImgurl());
             message.setUrl(stationinfo.getUrl());
-            messages.add(message);
             message.setUsertype(0);//全部类型
             message.setIsdel(0);
             message.setStationinfoid(stationinfo.getId());

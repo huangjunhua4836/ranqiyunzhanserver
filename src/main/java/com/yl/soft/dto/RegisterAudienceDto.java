@@ -15,7 +15,7 @@ import java.util.List;
 public class RegisterAudienceDto {
     @ApiModelProperty(value = "姓名",required = true)
     private String name;
-    @ApiModelProperty(value = "电话",required = true)
+    @ApiModelProperty(value = "手机号",required = true)
     private String phone;
     @ApiModelProperty(value = "所属企业",required = true)
     private String enterprise;

@@ -31,9 +31,9 @@ public class RegisterExhibitorDto implements Serializable {
     private String labelid;
     @ApiModelProperty(value = "邮箱验证码",required = true)
     private String emailverificationcode;
-    @ApiModelProperty(value = "营业执照地址",required = true)
+    @ApiModelProperty(value = "营业执照图片地址",required = true)
     private String businesslicense;
-    @ApiModelProperty(value = "企业授权书地址",required = true)
+    @ApiModelProperty(value = "企业授权书图片地址",required = true)
     private String credentials;
     @ApiModelProperty(value = "展商英文名称")
     private String englishname;

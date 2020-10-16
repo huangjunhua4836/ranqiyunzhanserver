@@ -1,12 +1,10 @@
 package com.yl.soft.controller.api;
 
 import cn.hutool.core.bean.BeanUtil;
-
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.redis.RedisService;
-import com.yl.soft.common.util.IDUtils;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
@@ -20,11 +18,13 @@ import com.yl.soft.po.EhbAboutus;
 import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbLabel;
-import com.yl.soft.service.*;
+import com.yl.soft.service.EhbAboutusService;
+import com.yl.soft.service.EhbAudienceService;
+import com.yl.soft.service.EhbExhibitorService;
+import com.yl.soft.service.EhbLabelService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Api(tags = {"C端模块-燃气云展信息完善"})
 @RestController
@@ -87,41 +86,26 @@ public class RegisterController extends BaseController {
 		if(StringUtils.isEmpty(registerAudienceDto.getName())) {
 			 return error(-100,"请输入您的姓名！");
 		}
-		
 		if(registerAudienceDto.getName().length()>30) {
-			 return error(-100,"请输入一个正确的姓名！");
+			 return error(-100,"姓名大于30字！");
 		}
-		
-		if(StringUtils.isEmpty(registerAudienceDto.getPhone())) {
-			 return error(-100,"请输入手机号！");
-		}
-		String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$";
-        if(registerAudienceDto.getPhone().length() != 11){
-        	return error(-100,"手机号应为11位数！");
-        }else{
-            Pattern p = Pattern.compile(regex);
-            Matcher m = p.matcher(registerAudienceDto.getPhone());
-            boolean isMatch = m.matches();
-            if(!isMatch){
-            	return error(-100,"请输入一个正确的手机号");
-            }
+		if(StringUtils.isEmpty(registerAudienceDto.getPhone())){
+            return error(-100,"手机号为空！");
         }
-		
+        if(!registerAudienceDto.getPhone().matches("^1[0-9]{10}$")){
+            return error(-100,"请输入一个正确的手机号");
+        }
         if(StringUtils.isEmpty(registerAudienceDto.getEnterprise())) {
         	return error(-100,"请输入您的企业名称！");
         }
-        
         if(registerAudienceDto.getEnterprise().length()>50) {
-        	return error(-100,"请输入一个正确的企业名称！");
+        	return error(-100,"企业名称大于50字！");
         }
-        
-        String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-        Pattern regexmail = Pattern.compile(check);
-        Matcher matcher = regexmail.matcher(registerAudienceDto.getMailbox());
-        boolean isMatchmail = matcher.matches();
-        
-        if(!isMatchmail) {
-        	return error(-100,"请输入一个正确的邮箱地址");
+        if(StringUtils.isEmpty(registerAudienceDto.getMailbox())){
+            return error(-100,"邮箱为空！");
+        }
+        if(!registerAudienceDto.getMailbox().matches("^([a-zA-Z]|[0-9])(\\w|\\-)+@[a-zA-Z0-9]+\\.([a-zA-Z]{2,4})$")){
+            return error(-100,"请输入一个正确的邮箱地址");
         }
 
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
@@ -130,14 +114,16 @@ public class RegisterController extends BaseController {
         ehbAudience.setUpdatetime(LocalDateTime.now());
 
         //参展标签
-        String str[] = registerAudienceDto.getLabelid().split(",");
-        List<Integer> labs = new ArrayList<>();
-        if(str.length > 0){
-            for(String temp : str){
-                labs.add(Integer.valueOf(temp));
+        if(!StringUtils.isEmpty(registerAudienceDto.getLabelid())){
+            String str[] = registerAudienceDto.getLabelid().split(",");
+            List<Integer> labs = new ArrayList<>();
+            if(str.length > 0){
+                for(String temp : str){
+                    labs.add(Integer.valueOf(temp));
+                }
             }
+            ehbAudience.setLabelid(JSONArray.toJSONString(labs));
         }
-        ehbAudience.setLabelid(JSONArray.toJSONString(labs));
 
         if(ehbAudienceService.updateById(ehbAudience)){
             return ok2();
@@ -146,57 +132,6 @@ public class RegisterController extends BaseController {
         }
     }
 
-    public static boolean isWeb(final String str) {
-		String url = "http:/klsfnklnklwnl.csfwfwn.cn?1231=sjkfjkf&sfwfw=";
-		String regex = "^([hH][tT]{2}[pP]:/*|[hH][tT]{2}[pP][sS]:/*|[fF][tT][pP]:/*)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+(\\?{0,1}(([A-Za-z0-9-~]+\\={0,1})([A-Za-z0-9-~]*)\\&{0,1})*)$";
-		Pattern pattern = Pattern.compile(regex);
-		if (pattern.matcher(url).matches()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public static boolean isMobile(final String str) {
-		Pattern p = null;
-		Matcher m = null;
-		boolean b = false;
-		p = Pattern.compile("^[1][3,4,5,7,8][0-9]{9}$"); // 验证手机号
-		m = p.matcher(str);
-		b = m.matches();
-		return b;
-	}
-
-	public static boolean isEmail(String email) {
-		if (null == email || "".equals(email)) {
-			return false;
-		}
-		String regEx1 = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-		Pattern p = Pattern.compile(regEx1);
-		Matcher m = p.matcher(email);
-		if (m.matches()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public static boolean isPhone(final String str) {
-		Pattern p1 = null, p2 = null;
-		Matcher m = null;
-		boolean b = false;
-		p1 = Pattern.compile("^[0][1-9]{2,3}-[0-9]{5,10}$"); // 验证带区号的
-		p2 = Pattern.compile("^[1-9]{1}[0-9]{5,8}$"); // 验证没有区号的
-		if (str.length() > 9) {
-			m = p1.matcher(str);
-			b = m.matches();
-		} else {
-			m = p2.matcher(str);
-			b = m.matches();
-		}
-		return b;
-	}
-    
     /**
      * 展商认证信息提交接口
      * @return
@@ -223,8 +158,45 @@ public class RegisterController extends BaseController {
         if(ehbAudience == null){
             return error(-100,"参展商没有注册！");
         }
-
-        
+        if(StringUtils.isEmpty(registerExhibitorDto.getEnterprisename())){
+            return error(-100,"企业名称为空！");
+        }
+        if(registerExhibitorDto.getEnterprisename().length()>30){
+            return error(-100,"企业名称大于50字！");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getName())){
+            return error(-100,"企业管理人为空！");
+        }
+        if(registerExhibitorDto.getName().length()>30){
+            return error(-100,"企业名称大于30字！");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getIdcard())){
+            return error(-100,"管理人身份证不能为空！");
+        }
+        if(!registerExhibitorDto.getIdcard().matches("^[1-9]\\d{5}(18|19|20|(3\\d))\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$")){
+            return error(-100,"请输入一个正确的身份证！");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getPhone())){
+            return error(-100,"管理人手机号为空！");
+        }
+        if(!registerExhibitorDto.getPhone().matches("^1[0-9]{10}$")){
+            return error(-100,"请输入一个正确的管理人手机号！");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getTel())){
+            return error(-100,"座机号为空！");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getMailbox())){
+            return error(-100,"邮箱为空！");
+        }
+        if(!registerExhibitorDto.getMailbox().matches("^([a-zA-Z]|[0-9])(\\w|\\-)+@[a-zA-Z0-9]+\\.([a-zA-Z]{2,4})$")){
+            return error(-100,"请输入一个正确的邮箱地址");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getBusinesslicense())){
+            return error(-100,"营业执照图片地址为空！");
+        }
+        if(StringUtils.isEmpty(registerExhibitorDto.getCredentials())){
+            return error(-100,"营业执照图片地址为空！");
+        }
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
         ehbExhibitor.setIsdel(false);
@@ -243,7 +215,6 @@ public class RegisterController extends BaseController {
             }
             ehbExhibitor.setLabelid(JSONArray.toJSONString(labs));
         }
-
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return ok2();
         }else{
@@ -300,6 +271,58 @@ public class RegisterController extends BaseController {
         ehbAboutusQueryWrapper.last("limit 1");
         EhbAboutus ehbAboutus = ehbAboutusService.getOne(ehbAboutusQueryWrapper);
         return setResultSuccess(ehbAboutus.getUseragr());
+    }
+
+
+    private static boolean isWeb(final String str) {
+        String url = "http:/klsfnklnklwnl.csfwfwn.cn?1231=sjkfjkf&sfwfw=";
+        String regex = "^([hH][tT]{2}[pP]:/*|[hH][tT]{2}[pP][sS]:/*|[fF][tT][pP]:/*)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+(\\?{0,1}(([A-Za-z0-9-~]+\\={0,1})([A-Za-z0-9-~]*)\\&{0,1})*)$";
+        Pattern pattern = Pattern.compile(regex);
+        if (pattern.matcher(url).matches()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean isMobile(final String str) {
+        Pattern p = null;
+        Matcher m = null;
+        boolean b = false;
+        p = Pattern.compile("^[1][3,4,5,7,8][0-9]{9}$"); // 验证手机号
+        m = p.matcher(str);
+        b = m.matches();
+        return b;
+    }
+
+    private static boolean isEmail(String email) {
+        if (null == email || "".equals(email)) {
+            return false;
+        }
+        String regEx1 = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        Pattern p = Pattern.compile(regEx1);
+        Matcher m = p.matcher(email);
+        if (m.matches()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean isPhone(final String str) {
+        Pattern p1 = null, p2 = null;
+        Matcher m = null;
+        boolean b = false;
+        p1 = Pattern.compile("^[0][1-9]{2,3}-[0-9]{5,10}$"); // 验证带区号的
+        p2 = Pattern.compile("^[1-9]{1}[0-9]{5,8}$"); // 验证没有区号的
+        if (str.length() > 9) {
+            m = p1.matcher(str);
+            b = m.matches();
+        } else {
+            m = p2.matcher(str);
+            b = m.matches();
+        }
+        return b;
     }
 
 //    /**
