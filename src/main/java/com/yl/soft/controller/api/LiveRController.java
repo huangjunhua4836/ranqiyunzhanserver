@@ -1,11 +1,14 @@
 package com.yl.soft.controller.api;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.dto.LiveDto;
 import com.yl.soft.po.EhbLiveBroadcast;
 import com.yl.soft.po.EhbLiveRecording;
@@ -33,8 +36,38 @@ public class LiveRController {
 	@ApiOperation(value = "直播回调", notes = "直播录制回调")
 	@PostMapping("/liveN")
 	public void liveN(@RequestBody LiveDto liveDto) {
-
 		EhbLiveRecording ehbLiveRecording=new EhbLiveRecording();
+		ehbLiveRecording.setApp(liveDto.getApp());
+		ehbLiveRecording.setProjectId(liveDto.getProject_id());
+		ehbLiveRecording.setPublishDomain(liveDto.getPublish_domain());
+		ehbLiveRecording.setEventType(liveDto.getEvent_type());
+		ehbLiveRecording.setStream(liveDto.getStream());
+		ehbLiveRecording.setRecordFormat(liveDto.getRecord_format());
+		ehbLiveRecording.setDownloadUrl(liveDto.getDownload_url());
+		ehbLiveRecording.setAssetId(liveDto.getAsset_id());
+		ehbLiveRecording.setPlayUrl(liveDto.getPlay_url());
+		ehbLiveRecording.setFileSize(liveDto.getFile_size());
+		ehbLiveRecording.setRecordDuration(liveDto.getRecord_duration());
+		ehbLiveRecording.setStartTime(liveDto.getStart_time());
+		ehbLiveRecording.setEndTime(liveDto.getEnd_time());
+		ehbLiveRecording.setWidth(liveDto.getWidth());
+		ehbLiveRecording.setHeight(liveDto.getHeight());
+		ehbLiveRecording.setObsLocation(liveDto.getObs_location());
+		ehbLiveRecording.setObsBucket(liveDto.getObs_bucket());
+		ehbLiveRecording.setObsObject(liveDto.getObs_object());
+		ehbLiveRecording.setCreatetime(LocalDateTime.now());
+		
+		
+		EhbLiveBroadcast ehbLiveBroadcast=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
+		
+		if(StringUtils.isEmpty(ehbLiveBroadcast.getPlayback())) {
+			ehbLiveBroadcast.setPlayback(ehbLiveRecording.getDownloadUrl());
+			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
+			
+		}
+		ehbLiveRecording.setLiveid(ehbLiveBroadcast.getId());
+		ehbLiveRecordingService.save(ehbLiveRecording);
+		
 //		if(liveDto.getEvent_type().equals("RECORD_START")) { //开始录制
 //			//0即将直播
 //			EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 0).last("LIMIT 1").one();
@@ -63,26 +96,6 @@ public class LiveRController {
 		
 //		EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
 		
-		ehbLiveRecording.setApp(liveDto.getApp());
-		ehbLiveRecording.setProjectId(liveDto.getProject_id());
-		ehbLiveRecording.setPublishDomain(liveDto.getPublish_domain());
-		ehbLiveRecording.setEventType(liveDto.getEvent_type());
-		ehbLiveRecording.setStream(liveDto.getStream());
-		ehbLiveRecording.setRecordFormat(liveDto.getRecord_format());
-		ehbLiveRecording.setDownloadUrl(liveDto.getDownload_url());
-		ehbLiveRecording.setAssetId(liveDto.getAsset_id());
-		ehbLiveRecording.setPlayUrl(liveDto.getPlay_url());
-		ehbLiveRecording.setFileSize(liveDto.getFile_size());
-		ehbLiveRecording.setRecordDuration(liveDto.getRecord_duration());
-		ehbLiveRecording.setStartTime(liveDto.getStart_time());
-		ehbLiveRecording.setEndTime(liveDto.getEnd_time());
-		ehbLiveRecording.setWidth(liveDto.getWidth());
-		ehbLiveRecording.setHeight(liveDto.getHeight());
-		ehbLiveRecording.setObsLocation(liveDto.getObs_location());
-		ehbLiveRecording.setObsBucket(liveDto.getObs_bucket());
-		ehbLiveRecording.setObsObject(liveDto.getObs_object());
-//		ehbLiveBroadcastDto.setPlayback(liveDto.getDownload_url());
-//		ehbLiveBroadcastService.updateById(ehbLiveBroadcastDto);
-		ehbLiveRecordingService.save(ehbLiveRecording);
+		
 	}
 }
