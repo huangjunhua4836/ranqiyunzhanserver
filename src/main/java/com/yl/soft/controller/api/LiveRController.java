@@ -62,6 +62,8 @@ public class LiveRController {
 		
 		if(StringUtils.isEmpty(ehbLiveBroadcast.getPlayback())) {
 			ehbLiveBroadcast.setPlayback(ehbLiveRecording.getDownloadUrl());
+			ehbLiveBroadcast.setLiveStatus(2);
+			ehbLiveBroadcast.setVideoDownUrl(ehbLiveRecording.getDownloadUrl());
 			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
 			
 		}
