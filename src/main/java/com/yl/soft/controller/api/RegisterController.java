@@ -238,11 +238,11 @@ public class RegisterController extends BaseController {
         }
         
         if(!isMobile(registerExhibitorDto.getPhone())) {
-        	return error(-100,"请输入正确的手机号");
+//        	return error(-100,"请输入正确的手机号");
         }
         
         if(!isPhone(registerExhibitorDto.getTel())) {
-        	return error(-100,"请输入正确的电话号码");
+//        	return error(-100,"请输入正确的电话号码");
         }
         
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
