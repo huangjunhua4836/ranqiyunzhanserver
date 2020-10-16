@@ -44,7 +44,7 @@ public class SearchController extends BaseController {
      */
     @ApiOperation(value = "热门词列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+//            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
