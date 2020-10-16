@@ -236,6 +236,4 @@ public class HtmlDetails extends BaseController {
 		ehbCommentService.removeById(ehbComment.getId());
 		return ok(ehbComment.getId());
 	}
-	
-	
 }
