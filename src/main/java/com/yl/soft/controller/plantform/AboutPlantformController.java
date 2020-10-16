@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * <p>
@@ -52,7 +53,7 @@ public class AboutPlantformController extends BaseController {
     @Value("${custom.ip}")
     private String ip;
 
-    @Value("${server.port}")
+    @Value("${custom.port}")
     private String port;
 
     @Value("${server.servlet.context-path}")
@@ -177,7 +178,8 @@ public class AboutPlantformController extends BaseController {
                     jsonObject.put("message","单个文件："+multipartFile.getOriginalFilename()+"文件后缀错误！");
                     return jsonObject;
                 }
-                String relativePath = nowDateDir+File.separator+oldName;
+                String newName =System.currentTimeMillis()+new Random().nextLong()+"."+suffix;
+                String relativePath = nowDateDir+File.separator+newName;
                 //以原来的名称命名,覆盖掉旧的
                 String storagePath = uploadPath + relativePath;
                 buffer.append("上传的文件：" + multipartFile.getName()+";")
@@ -188,11 +190,12 @@ public class AboutPlantformController extends BaseController {
                 Files.write(path,multipartFile.getBytes());
                 //保存文件
                 CrmFile crmFile = new CrmFile();
-                crmFile.setName(multipartFile.getOriginalFilename());
+                crmFile.setName(newName);
                 crmFile.setType(remarks);
                 crmFile.setPath(relativePath);
                 crmFile.setIsdel(false);
                 crmFile.setCreatetime(LocalDateTime.now());
+                crmFile.setSuffix(suffix);
                 crmFile = crmFileService.saveFile(crmFile);
                 if(crmFile == null){
                     jsonObject.put("error",1);
