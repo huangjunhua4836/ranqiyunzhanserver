@@ -223,27 +223,7 @@ public class RegisterController extends BaseController {
         if(ehbAudience == null){
             return error(-100,"参展商没有注册！");
         }
-        if(StringUtils.isEmpty(registerExhibitorDto.getEnterprisename())) {
-        	return error(-100,"请输入所属企业");
-        }
-        if(StringUtils.isEmpty(registerExhibitorDto.getName())) {
-        	return error(-100,"请输入管理员");
-        }
-        if(StringUtils.isEmpty(registerExhibitorDto.getIdcard())) {
-        	return error(-100,"请输入管理员身份证号");
-        }
-        
-        if(!IDUtils.isIDNumber(registerExhibitorDto.getIdcard())) {
-        	return error(-100,"请输入一个正确的身份证号码");
-        }
-        
-        if(!isMobile(registerExhibitorDto.getPhone())) {
-//        	return error(-100,"请输入正确的手机号");
-        }
-        
-        if(!isPhone(registerExhibitorDto.getTel())) {
-//        	return error(-100,"请输入正确的电话号码");
-        }
+
         
         EhbExhibitor ehbExhibitor = new EhbExhibitor();
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
