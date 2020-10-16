@@ -176,12 +176,12 @@ public class ZSInfoController extends BaseController {
                         return setResultError("审核原因不能为空！");
                     }
                 }else if(exhibitorVo.getState() == 1){//已审核
-                    if(StringUtils.isEmpty(exhibitorVo.getBusinesslicense())){
-                        return setResultError("营业执照未上传！");
-                    }
-                    if(StringUtils.isEmpty(exhibitorVo.getCredentials())){
-                        return setResultError("企业授权书未上传！");
-                    }
+//                    if(StringUtils.isEmpty(exhibitorVo.getBusinesslicense())){
+//                        return setResultError("营业执照未上传！");
+//                    }
+//                    if(StringUtils.isEmpty(exhibitorVo.getCredentials())){
+//                        return setResultError("企业授权书未上传！");
+//                    }
                     redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
                     exhibitorVo.setCertificationtime(LocalDateTime.now());//认证时间
                 }
