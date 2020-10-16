@@ -233,14 +233,16 @@ public class RegisterController extends BaseController {
         ehbExhibitor.setTelphone(ehbExhibitor.getTel());
 
         //展商标签
-        String str[] = registerExhibitorDto.getLabelid().split(",");
-        List<Integer> labs = new ArrayList<>();
-        if(str.length > 0){
-            for(String temp : str){
-                labs.add(Integer.valueOf(temp));
+        if(!StringUtils.isEmpty(registerExhibitorDto.getLabelid())){
+            String str[] = registerExhibitorDto.getLabelid().split(",");
+            List<Integer> labs = new ArrayList<>();
+            if(str.length > 0){
+                for(String temp : str){
+                    labs.add(Integer.valueOf(temp));
+                }
             }
+            ehbExhibitor.setLabelid(JSONArray.toJSONString(labs));
         }
-        ehbExhibitor.setLabelid(JSONArray.toJSONString(labs));
 
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return ok2();
