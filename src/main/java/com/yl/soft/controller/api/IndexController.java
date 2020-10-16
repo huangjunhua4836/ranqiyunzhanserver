@@ -98,17 +98,7 @@ public class IndexController extends BaseController {
                 default:i.setState_show("未知状态");break;
             }
         });
-
-//        for(ExhibitorDto exhibitorDto : appLoginDTOS){
-//            if(exhibitorDto.getState() == 0){
-//                exhibitorDto.setState_show("未认证");
-//            }else if(exhibitorDto.getState() == 1){
-//                exhibitorDto.setState_show("已认证");
-//            }else{
-//                exhibitorDto.setState_show("未知状态");
-//            }
-//        }
-        Collections.shuffle(appLoginDTOS);
+//        Collections.shuffle(appLoginDTOS);
         int number = Integer.parseInt(paramMap.get("number")+"");
         appLoginDTOS = appLoginDTOS.subList(0,appLoginDTOS.size()>number?number:appLoginDTOS.size());
         return setResultSuccess(appLoginDTOS);
@@ -179,7 +169,7 @@ public class IndexController extends BaseController {
         for(EhbArticle ehbArticle : ehbArticles){
             articleDtos.add(ArticleDto.of(ehbArticle));
         }
-        Collections.shuffle(articleDtos);
+//        Collections.shuffle(articleDtos);
         return setResultSuccess(getBasePage(ehbArticles,articleDtos));
     }
 
@@ -232,7 +222,7 @@ public class IndexController extends BaseController {
             }
             opportunityDtos.add(opportunityDto);
         }
-        Collections.shuffle(opportunityDtos);
+//        Collections.shuffle(opportunityDtos);
         Page pageInfo = (Page) ehbOpportunities;
         return ok(opportunityDtos, pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), pageInfo.getPageSize());
     }
