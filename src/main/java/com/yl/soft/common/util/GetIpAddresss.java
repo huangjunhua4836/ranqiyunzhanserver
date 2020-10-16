@@ -37,7 +37,7 @@ public class GetIpAddresss {
 			return address.getHostAddress();
 		} catch (Exception e) {
 			// TODO: handle exception
-			res.setMsg(e.getMessage());
+			res.setDesc(e.getMessage());
 		}
 		return res.toString();
 	}

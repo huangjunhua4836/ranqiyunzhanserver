@@ -20,7 +20,7 @@ public class BaseResponse<T> {
     /**
      * 消息
      */
-    private String msg;
+    private String desc;
     /**
      * 返回值
      */
@@ -28,11 +28,11 @@ public class BaseResponse<T> {
 
     public BaseResponse(){}
 
-    public BaseResponse(Date systemTime, Integer code, String value, String msg, T data) {
+    public BaseResponse(Date systemTime, Integer code, String value, String desc, T data) {
         this.systemTime = systemTime;
         this.code = code;
         this.value = value;
-        this.msg = msg;
+        this.desc = desc;
         this.data = data;
     }
 
@@ -42,14 +42,6 @@ public class BaseResponse<T> {
 
     public void setCode(Integer code) {
         this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 
     public T getData() {
@@ -74,5 +66,13 @@ public class BaseResponse<T> {
 
     public void setSystemTime(Date systemTime) {
         this.systemTime = systemTime;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }
