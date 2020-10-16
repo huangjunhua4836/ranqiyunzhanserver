@@ -35,30 +35,33 @@ public class LiveRController {
 	public void liveN(@RequestBody LiveDto liveDto) {
 
 		EhbLiveRecording ehbLiveRecording=new EhbLiveRecording();
-		if(liveDto.getEvent_type().equals("RECORD_START")) { //开始录制
-			//0即将直播
-			EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 0).last("LIMIT 1").one();
-			ehbLiveBroadcastService.lambdaUpdate().setSql("live_status=1")
-			.eq(EhbLiveBroadcast::getId, ehbLiveBroadcastDto.getId()).update();
-			
-			ehbLiveRecording.setLiveid(ehbLiveBroadcastDto.getId());
-		}else if(liveDto.getEvent_type().equals("RECORD_FILE_COMPLETE")) { //录制文件生成完成生成新文件
-			EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
-			ehbLiveRecording.setLiveid(ehbLiveBroadcastDto.getId());
-		}else if(liveDto.getEvent_type().equals("RECORD_OVER")) { //录制结束
-			//直播结束回放
-			EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
-			
-			ehbLiveBroadcastService.lambdaUpdate().setSql("live_status=1")
-			.eq(EhbLiveBroadcast::getId, ehbLiveBroadcastDto.getId()).update();
-			
-			
-			ehbLiveBroadcastService.lambdaUpdate().setSql("live_status=2")
-			.eq(EhbLiveBroadcast::getId, ehbLiveBroadcastDto.getId()).update();
-			ehbLiveRecording.setLiveid(ehbLiveBroadcastDto.getId());
-			
-
-		}
+//		if(liveDto.getEvent_type().equals("RECORD_START")) { //开始录制
+//			//0即将直播
+//			EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 0).last("LIMIT 1").one();
+//			ehbLiveBroadcastService.lambdaUpdate().setSql("live_status=1")
+//			.eq(EhbLiveBroadcast::getId, ehbLiveBroadcastDto.getId()).update();
+//			
+//			ehbLiveRecording.setLiveid(ehbLiveBroadcastDto.getId());
+//		}else if(liveDto.getEvent_type().equals("RECORD_FILE_COMPLETE")) { //录制文件生成完成生成新文件
+//			EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
+//			ehbLiveRecording.setLiveid(ehbLiveBroadcastDto.getId());
+//		}else if(liveDto.getEvent_type().equals("RECORD_OVER")) { //录制结束
+//			//直播结束回放
+//			EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
+//			
+//			ehbLiveBroadcastService.lambdaUpdate().setSql("live_status=1")
+//			.eq(EhbLiveBroadcast::getId, ehbLiveBroadcastDto.getId()).update();
+//			
+//			
+//			ehbLiveBroadcastService.lambdaUpdate().setSql("live_status=2")
+//			.eq(EhbLiveBroadcast::getId, ehbLiveBroadcastDto.getId()).update();
+//			ehbLiveRecording.setLiveid(ehbLiveBroadcastDto.getId());
+//			
+//
+//		}
+		
+		
+		EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
 		
 		ehbLiveRecording.setApp(liveDto.getApp());
 		ehbLiveRecording.setProjectId(liveDto.getProject_id());
@@ -78,6 +81,8 @@ public class LiveRController {
 		ehbLiveRecording.setObsLocation(liveDto.getObs_location());
 		ehbLiveRecording.setObsBucket(liveDto.getObs_bucket());
 		ehbLiveRecording.setObsObject(liveDto.getObs_object());
+		ehbLiveBroadcastDto.setPlayback(liveDto.getDownload_url());
+		ehbLiveBroadcastService.updateById(ehbLiveBroadcastDto);
 		ehbLiveRecordingService.save(ehbLiveRecording);
 	}
 }
