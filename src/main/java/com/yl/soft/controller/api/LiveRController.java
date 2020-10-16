@@ -61,7 +61,7 @@ public class LiveRController {
 //		}
 		
 		
-		EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
+//		EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
 		
 		ehbLiveRecording.setApp(liveDto.getApp());
 		ehbLiveRecording.setProjectId(liveDto.getProject_id());
@@ -81,8 +81,8 @@ public class LiveRController {
 		ehbLiveRecording.setObsLocation(liveDto.getObs_location());
 		ehbLiveRecording.setObsBucket(liveDto.getObs_bucket());
 		ehbLiveRecording.setObsObject(liveDto.getObs_object());
-		ehbLiveBroadcastDto.setPlayback(liveDto.getDownload_url());
-		ehbLiveBroadcastService.updateById(ehbLiveBroadcastDto);
+//		ehbLiveBroadcastDto.setPlayback(liveDto.getDownload_url());
+//		ehbLiveBroadcastService.updateById(ehbLiveBroadcastDto);
 		ehbLiveRecordingService.save(ehbLiveRecording);
 	}
 }
