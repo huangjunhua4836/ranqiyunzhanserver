@@ -30,7 +30,8 @@
             ehb_useraction useaction
         on
             e.id = useaction.relateid
-            and useaction.type = '1' and useaction.activetype = '3' and useaction.isdel = #{paramMap.isdel}
+            and useaction.type = '1' and useaction.activetype = '1' and useaction.isdel = #{paramMap.isdel}
+            and useaction.userid = #{paramMap.id}
         where
             e.isdel = #{paramMap.isdel}
             and e.state = #{paramMap.state}
