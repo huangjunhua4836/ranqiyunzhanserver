@@ -125,6 +125,7 @@ public class PersonalCenterController extends BaseController {
 			if (StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait())) {
 				ehbAudience.setHeadPortrait(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait());
 				ehbAudienceService.updateById(ehbAudience);
+				ehbExhibitor.setLogo(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait());
 			}
 			if (StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone())) {
 				if(!isMobile(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone())) {
@@ -143,6 +144,7 @@ public class PersonalCenterController extends BaseController {
 					return error(-100, "请输入一个正确的电话号码");
 				}
 				ehbExhibitor.setTelphone(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getTelphone());
+				ehbExhibitor.setTel(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getTelphone());
 			}
 			if (StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getExname())) {
 				ehbExhibitor.setName(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getExname());

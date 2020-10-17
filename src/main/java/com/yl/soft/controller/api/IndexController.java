@@ -99,7 +99,7 @@ public class IndexController extends BaseController {
                 default:i.setState_show("未知状态");break;
             }
         });
-//        Collections.shuffle(appLoginDTOS);
+        Collections.shuffle(appLoginDTOS);
         int number = Integer.parseInt(paramMap.get("number")+"");
         appLoginDTOS = appLoginDTOS.subList(0,appLoginDTOS.size()>number?number:appLoginDTOS.size());
         return setResultSuccess(appLoginDTOS);
