@@ -625,8 +625,10 @@ var Yeffect = {
 		if(mAlertClass.length > 0) mAlertClass.remove();
 		time = time || 3e3;
 		isscroll = isscroll || false;
-		var divalert = $("<div class='mAlertClass' style='position:fixed; width:100%; height:100%; z-index:10000; left:0px; top:0px;'><div style='font-size:13px; color:#fff; background:rgba(0,0,0,0.6); line-height:40px; width:300px; text-align:center; overflow:hidden; left:50%; top:50%; margin-left:-150px; margin-top:-20px; position:absolute; border-radius:5px;'>" + text + "</div></div>");
+		var divalert = $("<div class='mAlertClass' style='position:fixed; width:100%; height:100%; z-index:10000; left:0px; top:0px;'><div id='malertbox' style='font-size:13px; color:#fff; background:rgba(0,0,0,0.6); line-height:40px; text-align:center; overflow:hidden; left:50%; top:50%; margin-left:-150px; padding:0 30px; margin-top:-20px; position:absolute; border-radius:5px;'>" + text + "</div></div>");
 		$("body").append(divalert);
+		var mbox=document.getElementById("malertbox");
+		mbox.style.marginLeft=(-divalert[0].children[0].offsetWidth*0.5)+"px";
 
 		function removets() {
 			divalert.remove();

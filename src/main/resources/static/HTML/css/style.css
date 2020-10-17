@@ -32,7 +32,8 @@
 .g_newslist-browse img{width: 0.31rem; height: 0.19rem; margin-right: 0.1rem; position: relative;}
 .g_newslist-data time{font-size: 0.24rem; color: #a6a6a6; float: left; margin-left: 0.8rem;}
 .g_comment{padding-top: 0.52rem; padding-bottom: 1.34rem;}
-
+.g_comment-head{padding-left: 0.53rem; position: relative; font-size: 0.32rem; color: #000;}
+.g_comment-head::before{display: block; width: 0.09rem; height: 0.34rem; background: #43bdec; position: absolute; left: 0.3rem; top: 0.04rem; content: '';}
 
 .g_comment-list{margin-top: 0.53rem;}
 .g_comment-list ul li{padding: 0 0.3rem 0.3rem 1.25rem; border-bottom: 1px solid #ebebeb; margin-bottom: 0.3rem; position: relative;}
@@ -224,3 +225,44 @@
 .g_invitation{width: 100%; overflow: hidden; position: relative;}
 .g_invitation img{display: block; width: 100%;}
 .g_btn-invitation{display: block; width: 4.44rem; height: 0.82rem; line-height: 0.82rem; text-align: center; border-radius: 0.82rem; font-size: 0.32rem; color: #fff; background: #4ac4f3; position: absolute; left: 50%; margin-left: -2.22rem; bottom: 1.4rem;}
+
+
+
+
+/*图片联动效果*/
+.g_banner{height: 9.18rem;}
+.swiper-container {
+  width: 100%;
+  height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.swiper-slide {
+  background-size: cover;
+  background-position: center;
+}
+
+.gallery-top {
+  height: 80%;
+  width: 100%;
+}
+
+.gallery-thumbs {
+  height: 20%;
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+
+.gallery-thumbs .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 1;
+}
+
+.gallery-thumbs .swiper-slide-thumb-active {
+ border: 3px solid #43bdec;	
+ box-sizing: border-box;
+ -webkit-box-sizing: border-box;
+  opacity: 1;
+}

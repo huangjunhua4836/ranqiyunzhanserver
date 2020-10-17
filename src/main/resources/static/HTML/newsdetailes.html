@@ -192,7 +192,7 @@
 					MobLink([
 					    {
 					        el: "",
-					        path: "rqyz/goodsDetails",
+					        path: "rqyz/zxDetails",
 					        params: {
 					            key1: nid,
 					        }
@@ -202,7 +202,7 @@
 					MobLink([
 					    {
 					        el: "",
-					        path: "cloudExhbition",
+					        path: "rqyz/zxDetails",
 					        params: {
 					            key1: nid,
 					        }
@@ -259,7 +259,7 @@
 								Yeffect.mAlert("取消点赞");
 								_this.detailes.isZan=0;
 							}
-							
+							getDetailesFn()
 						}else if(data.code==401){
 							if(isShare){
 								_this.downloadAppFn()
@@ -289,7 +289,7 @@
 								Yeffect.mAlert("取消收藏");
 								_this.detailes.isSCZx=0;
 							}
-							
+							getDetailesFn()
 						}else if(data.code==401){
 							if(isShare){
 								_this.downloadAppFn()

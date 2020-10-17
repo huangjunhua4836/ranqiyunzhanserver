@@ -11,10 +11,12 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta http-equiv="Pragma" content="no-cache">
 <link rel="stylesheet" type="text/css" href="css/base.css" media="all">
+<link rel="stylesheet" type="text/css" href="css/swiper-bundle.min.css" media="all">
 <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
 <link rel="stylesheet" type="text/css" href="css/Yform.css" media="all">
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/swiper-bundle.min.js"></script>
 <script type="text/javascript" src="js/Yeffect.js"></script>
 <script type="text/javascript" src="js/Yform.js"></script>
 <script type="text/javascript" src="js/ind.js"></script>
@@ -23,10 +25,26 @@
 
 <body id="niches">
 	<div class="g_niches-head">{{detailes.exhibitorname}}<img src="images/g_10.png" alt="" v-if="detailes.attestation==1"></div>
-	<div class="g_banner">
+	<!--<div class="g_banner">
 		<img :src="bigImg" alt="" class="g_banner-big" />
 		<div class="g_banner-small">
 			<img v-for="img in detailes.picture" :src="img" alt="" :class="$index==bigImgInd?'g_banner-dqys':''" @click="clickBigImgFn(img,$index)">
+		</div>
+	</div>-->
+	<div class="g_banner">
+		<div class="swiper-container gallery-top">
+		    <div class="swiper-wrapper">
+		    	<div v-for="img in detailes.picture" class="swiper-slide"  :style="'background-image:url('+img+')'"></div>
+		    	
+		    </div>
+		    <!-- Add Arrows -->
+		    <!--<div class="swiper-button-next swiper-button-white"></div>
+		    <div class="swiper-button-prev swiper-button-white"></div>-->
+	    </div>
+		<div class="swiper-container gallery-thumbs">
+			<div class="swiper-wrapper">
+				<div  v-for="img in detailes.picture" class="swiper-slide" :style="'background-image:url('+img+')'"></div>
+			</div>
 		</div>
 	</div>
 	<div class="g_niches-article">
@@ -50,7 +68,7 @@
 			</a>
 		</div>
 	</div>
-	<div class="g_comment g_niches-comment">
+	<div class="g_comment g_niches-comment" v-if="commentList.length>0">
 		<div class="g_comment-list">
 			<ul>
 				<li v-for="li in commentList">
@@ -137,6 +155,27 @@
 					}
 					
 					shangjiData.detailes=jsonData;
+					
+					setTimeout(function(){
+						var galleryThumbs = new Swiper('.gallery-thumbs', {
+					      spaceBetween: 10,
+					      slidesPerView: 4,
+					      freeMode: true,
+					      watchSlidesVisibility: true,
+					      watchSlidesProgress: true,
+					    });
+					    var galleryTop = new Swiper('.gallery-top', {
+					      spaceBetween: 10,
+//					      navigation: {
+//					        nextEl: '.swiper-button-next',
+//					        prevEl: '.swiper-button-prev',
+//					      },
+					      thumbs: {
+					        swiper: galleryThumbs
+					      }
+					    });	
+					},300)
+					
 				}else{
 					console.log(data.desc)
 				}
@@ -239,7 +278,7 @@
 					MobLink([
 					    {
 					        el: "",
-					        path: "cloudExhbition",
+					        path: "rqyz/sjDetails",
 					        params: {
 					            key1: sid,
 					        }
