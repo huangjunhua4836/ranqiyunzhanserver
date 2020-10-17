@@ -68,6 +68,7 @@ public class OpportunityController extends BaseController {
         conditionMap.put("boothno","%"+paramMap.get("key")+"%");
         conditionMap.put("labelid", JSONArray.parseArray(appLoginDTO.getLabelid(),Integer.class));//行为推荐
         conditionMap.put("type",1);//商机
+        conditionMap.put("exhibitorid",appLoginDTO.getBopie());//展商ID
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], 8);
@@ -125,12 +126,15 @@ public class OpportunityController extends BaseController {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
+        SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
         conditionMap.put("enterprisename","%"+paramMap.get("key")+"%");
         conditionMap.put("title","%"+paramMap.get("key")+"%");
         conditionMap.put("boothno","%"+paramMap.get("key")+"%");
         conditionMap.put("type",1);//商机
+        conditionMap.put("exhibitorid",appLoginDTO.getBopie());//展商ID
+
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], 8);
@@ -188,6 +192,7 @@ public class OpportunityController extends BaseController {
         if(StringUtils.isEmpty(paramMap.get("pageNum"))){
             return setResultError(403,"","当前页码不能为空！");
         }
+        SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
         conditionMap.put("enterprisename","%"+paramMap.get("key")+"%");
@@ -197,6 +202,7 @@ public class OpportunityController extends BaseController {
         conditionMap.put("countbrowse",20);
         conditionMap.put("countcomment",5);
         conditionMap.put("type",1);//商机
+        conditionMap.put("exhibitorid",appLoginDTO.getBopie());//展商ID
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], 8);

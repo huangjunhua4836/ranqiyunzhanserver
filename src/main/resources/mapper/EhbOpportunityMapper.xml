@@ -41,6 +41,7 @@
         where
         opp.isdel = #{paramMap.isdel}
         and opp.type = #{paramMap.type}
+        and opp.exhibitorid != #{paramMap.exhibitorid}
         <if test="paramMap.labelid!= null and paramMap.labelid.size() > 0">
             and
             <foreach item="item" collection="paramMap.labelid" separator="or" open="(" close=")" index="">
