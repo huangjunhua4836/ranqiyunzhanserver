@@ -78,29 +78,30 @@ public class OpportunityController extends BaseController {
             BeanUtil.copyProperties(i,opportunityAndAdvertisingDto2);
             return opportunityAndAdvertisingDto2;
         }).collect(Collectors.toList());
-//        Collections.shuffle(opportunityAndAdvertisingDto2s);
-        //广告
-        QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
-        ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
-        List<AdvertisingDto> advertisingDtos = new ArrayList<>();
-        for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
-            advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
-        }
-        Collections.shuffle(advertisingDtos);
+//        Collections.shuffle(opportunity1AndAdvertisingDto2s);
+        if(opportunityAndAdvertisingDto2s!=null && opportunityAndAdvertisingDto2s.size()>=5){
+            //广告
+            QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
+            ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+            List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
+            List<AdvertisingDto> advertisingDtos = new ArrayList<>();
+            for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
+                advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
+            }
+            Collections.shuffle(advertisingDtos);
 
-        if(!advertisingDtos.isEmpty()) {
-            OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
-            opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
-            opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
-            opportunityAndAdvertisingDto2.setAdvertisingposition(advertisingDtos.get(0).getPosition());
-            opportunityAndAdvertisingDto2.setAdvertisingsort(advertisingDtos.get(0).getSort());
-            opportunityAndAdvertisingDto2.setAdvertisingtitle(advertisingDtos.get(0).getTitle());
-            opportunityAndAdvertisingDto2.setAdvertisingtype(advertisingDtos.get(0).getType());
-            opportunityAndAdvertisingDto2.setAdvertisingurl(advertisingDtos.get(0).getUrl());
-            opportunityAndAdvertisingDto2s.add(opportunityAndAdvertisingDto2);
+            if(!advertisingDtos.isEmpty()) {
+                OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
+                opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
+                opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
+                opportunityAndAdvertisingDto2.setAdvertisingposition(advertisingDtos.get(0).getPosition());
+                opportunityAndAdvertisingDto2.setAdvertisingsort(advertisingDtos.get(0).getSort());
+                opportunityAndAdvertisingDto2.setAdvertisingtitle(advertisingDtos.get(0).getTitle());
+                opportunityAndAdvertisingDto2.setAdvertisingtype(advertisingDtos.get(0).getType());
+                opportunityAndAdvertisingDto2.setAdvertisingurl(advertisingDtos.get(0).getUrl());
+                opportunityAndAdvertisingDto2s.add(opportunityAndAdvertisingDto2);
+            }
         }
-
         return setResultSuccess(getBasePage(ehbOpportunities,opportunityAndAdvertisingDto2s));
     }
 
@@ -145,26 +146,28 @@ public class OpportunityController extends BaseController {
             return opportunityAndAdvertisingDto2;
         }).collect(Collectors.toList());
 //        Collections.shuffle(opportunityAndAdvertisingDto2s);
-        //广告
-        QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
-        ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
-        List<AdvertisingDto> advertisingDtos = new ArrayList<>();
-        for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
-            advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
-        }
-        Collections.shuffle(advertisingDtos);
+        if(opportunityAndAdvertisingDto2s!=null && opportunityAndAdvertisingDto2s.size()>=5){
+            //广告
+            QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
+            ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+            List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
+            List<AdvertisingDto> advertisingDtos = new ArrayList<>();
+            for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
+                advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
+            }
+            Collections.shuffle(advertisingDtos);
 
-        if(!advertisingDtos.isEmpty()) {
-            OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
-            opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
-            opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
-            opportunityAndAdvertisingDto2.setAdvertisingposition(advertisingDtos.get(0).getPosition());
-            opportunityAndAdvertisingDto2.setAdvertisingsort(advertisingDtos.get(0).getSort());
-            opportunityAndAdvertisingDto2.setAdvertisingtitle(advertisingDtos.get(0).getTitle());
-            opportunityAndAdvertisingDto2.setAdvertisingtype(advertisingDtos.get(0).getType());
-            opportunityAndAdvertisingDto2.setAdvertisingurl(advertisingDtos.get(0).getUrl());
-            opportunityAndAdvertisingDto2s.add(opportunityAndAdvertisingDto2);
+            if(!advertisingDtos.isEmpty()) {
+                OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
+                opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
+                opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
+                opportunityAndAdvertisingDto2.setAdvertisingposition(advertisingDtos.get(0).getPosition());
+                opportunityAndAdvertisingDto2.setAdvertisingsort(advertisingDtos.get(0).getSort());
+                opportunityAndAdvertisingDto2.setAdvertisingtitle(advertisingDtos.get(0).getTitle());
+                opportunityAndAdvertisingDto2.setAdvertisingtype(advertisingDtos.get(0).getType());
+                opportunityAndAdvertisingDto2.setAdvertisingurl(advertisingDtos.get(0).getUrl());
+                opportunityAndAdvertisingDto2s.add(opportunityAndAdvertisingDto2);
+            }
         }
 
         return setResultSuccess(getBasePage(ehbOpportunities,opportunityAndAdvertisingDto2s));
@@ -213,26 +216,28 @@ public class OpportunityController extends BaseController {
             return opportunityAndAdvertisingDto2;
         }).collect(Collectors.toList());
 //        Collections.shuffle(opportunityAndAdvertisingDto2s);
-        //广告
-        QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
-        ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
-        List<AdvertisingDto> advertisingDtos = new ArrayList<>();
-        for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
-            advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
-        }
-        Collections.shuffle(advertisingDtos);
+        if(opportunityAndAdvertisingDto2s!=null && opportunityAndAdvertisingDto2s.size()>=5){
+            //广告
+            QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
+            ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+            List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
+            List<AdvertisingDto> advertisingDtos = new ArrayList<>();
+            for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
+                advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
+            }
+            Collections.shuffle(advertisingDtos);
 
-        if(!advertisingDtos.isEmpty()){
-            OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
-            opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
-            opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
-            opportunityAndAdvertisingDto2.setAdvertisingposition(advertisingDtos.get(0).getPosition());
-            opportunityAndAdvertisingDto2.setAdvertisingsort(advertisingDtos.get(0).getSort());
-            opportunityAndAdvertisingDto2.setAdvertisingtitle(advertisingDtos.get(0).getTitle());
-            opportunityAndAdvertisingDto2.setAdvertisingtype(advertisingDtos.get(0).getType());
-            opportunityAndAdvertisingDto2.setAdvertisingurl(advertisingDtos.get(0).getUrl());
-            opportunityAndAdvertisingDto2s.add(opportunityAndAdvertisingDto2);
+            if(!advertisingDtos.isEmpty()) {
+                OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
+                opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
+                opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
+                opportunityAndAdvertisingDto2.setAdvertisingposition(advertisingDtos.get(0).getPosition());
+                opportunityAndAdvertisingDto2.setAdvertisingsort(advertisingDtos.get(0).getSort());
+                opportunityAndAdvertisingDto2.setAdvertisingtitle(advertisingDtos.get(0).getTitle());
+                opportunityAndAdvertisingDto2.setAdvertisingtype(advertisingDtos.get(0).getType());
+                opportunityAndAdvertisingDto2.setAdvertisingurl(advertisingDtos.get(0).getUrl());
+                opportunityAndAdvertisingDto2s.add(opportunityAndAdvertisingDto2);
+            }
         }
 
         return setResultSuccess(getBasePage(ehbOpportunities,opportunityAndAdvertisingDto2s));
