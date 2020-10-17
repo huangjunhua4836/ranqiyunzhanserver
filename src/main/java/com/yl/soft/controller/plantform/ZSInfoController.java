@@ -214,7 +214,7 @@ public class ZSInfoController extends BaseController {
             String firstWord = PinyinUtil.getPinYinHeadChar(i.getEnterprisename()).toUpperCase().charAt(0)+"";
             ExhibitorDto exhibitorDto = new ExhibitorDto();
             exhibitorDto.setId(i.getId());
-            exhibitorDto.setName(i.getEnterprisename());
+            exhibitorDto.setEnterprisename(i.getEnterprisename());
             exhibitorDto.setLogo(i.getLogo());
             exhibitorDto.setBoothno(i.getBoothno());
             exhibitorDto.setEnglishname(i.getEnglishname());
