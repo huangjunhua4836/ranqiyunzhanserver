@@ -91,6 +91,7 @@ public class EhbExhibitorServiceImpl extends ServiceImpl<EhbExhibitorMapper, Ehb
                     ehbAudience.setBopie(one.getId());
                     ehbAudience.setType(1);//后台创建
                     ehbAudience.setEnabled(1);//启用状态
+//                    ehbAudience.setName()
                     ehbAudienceService.save(ehbAudience);
                     return true;
                 }else{

@@ -35,7 +35,7 @@
         where
             e.isdel = #{paramMap.isdel}
             and e.state = #{paramMap.state}
-            and e.id != #{paramMap.id}
+            and e.id != #{paramMap.exhibitorid}
 <!--            <foreach item="item" collection="paramMap.ids" separator="," open="(" close=")" index="">-->
 <!--                #{item}-->
 <!--            </foreach>-->

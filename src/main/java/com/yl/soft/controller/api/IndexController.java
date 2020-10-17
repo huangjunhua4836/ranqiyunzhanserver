@@ -88,7 +88,8 @@ public class IndexController extends BaseController {
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
         conditionMap.put("state",1);
         conditionMap.put("labelid", JSONArray.parseArray(appLoginDTO.getLabelid(),Integer.class));
-        conditionMap.put("id",appLoginDTO.getBopie());
+        conditionMap.put("exhibitorid",appLoginDTO.getBopie());
+        conditionMap.put("id",appLoginDTO.getId());
 
         List<ExhibitorDto> appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
         appLoginDTOS.stream().forEach(i->{
