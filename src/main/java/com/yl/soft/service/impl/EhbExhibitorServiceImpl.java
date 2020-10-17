@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * <p>
@@ -91,7 +92,7 @@ public class EhbExhibitorServiceImpl extends ServiceImpl<EhbExhibitorMapper, Ehb
                     ehbAudience.setBopie(one.getId());
                     ehbAudience.setType(1);//后台创建
                     ehbAudience.setEnabled(1);//启用状态
-//                    ehbAudience.setName()
+                    ehbAudience.setName(String.valueOf(new Random().nextInt(899999) + 100000));//昵称
                     ehbAudienceService.save(ehbAudience);
                     return true;
                 }else{
