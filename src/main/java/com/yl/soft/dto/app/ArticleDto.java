@@ -49,6 +49,8 @@ public class ArticleDto implements Serializable {
     @ApiModelProperty(value = "标签id 显示标签id[1,2....]")
     private Integer labelid;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")//出参格式化
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//入参格式化
     @ApiModelProperty(value = "发布时间")
     private LocalDateTime releasetime;
 
