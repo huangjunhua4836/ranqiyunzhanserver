@@ -104,7 +104,7 @@ public class EhbExhibitorServiceImpl extends ServiceImpl<EhbExhibitorMapper, Ehb
                 ehbAudienceQueryWrapper.eq("bopie",exhibitorVo.getId());
                 ehbAudienceQueryWrapper.last("limit 1");
                 EhbAudience ehbAudience = ehbAudienceService.getOne(ehbAudienceQueryWrapper);
-                ehbAudience.setPhone(exhibitorVo.getRegisterphone());
+                ehbAudience.setPhone(exhibitorVo.getRegisterphone());//注册电话
                 ehbAudienceService.updateById(ehbAudience);
                 return true;
             }

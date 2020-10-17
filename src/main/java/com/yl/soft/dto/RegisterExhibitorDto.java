@@ -19,7 +19,7 @@ public class RegisterExhibitorDto implements Serializable {
     private String name;
     @ApiModelProperty(value = "管理员身份证",required = true)
     private String idcard;
-    @ApiModelProperty(value = "联系方式",required = true)
+    @ApiModelProperty(value = "管理人联系方式",required = true)
     private String phone;
     @ApiModelProperty(value = "座机电话",required = true)
     private String tel;

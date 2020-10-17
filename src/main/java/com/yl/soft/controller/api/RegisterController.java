@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Api(tags = {"C端模块-燃气云展信息完善"})
 @RestController
@@ -123,6 +124,11 @@ public class RegisterController extends BaseController {
                 }
             }
             ehbAudience.setLabelid(JSONArray.toJSONString(labs));
+        }else{//没有选择标签选择前5个
+            List<Integer> labs = ehbLabelService.lambdaQuery().last("limit 5").list().stream().map(i->{
+               return i.getId();
+            }).collect(Collectors.toList());
+            ehbAudience.setLabelid(JSONArray.toJSONString(labs));
         }
 
         if(ehbAudienceService.updateById(ehbAudience)){
@@ -157,6 +163,9 @@ public class RegisterController extends BaseController {
         EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
         if(ehbAudience == null){
             return error(-100,"参展商没有注册！");
+        }
+        if(!StringUtils.isEmpty(ehbAudience.getBopie())){
+            return error(-100,"展商已认证！");
         }
         if(StringUtils.isEmpty(registerExhibitorDto.getEnterprisename())){
             return error(-100,"企业名称为空！");
@@ -203,6 +212,7 @@ public class RegisterController extends BaseController {
         ehbExhibitor.setUpdatetime(LocalDateTime.now());
         ehbExhibitor.setState(2);//审核中
         ehbExhibitor.setTelphone(ehbExhibitor.getTel());
+        ehbExhibitor.setCreatetime(LocalDateTime.now());
 
         //展商标签
         if(!StringUtils.isEmpty(registerExhibitorDto.getLabelid())){
@@ -213,6 +223,11 @@ public class RegisterController extends BaseController {
                     labs.add(Integer.valueOf(temp));
                 }
             }
+            ehbExhibitor.setLabelid(JSONArray.toJSONString(labs));
+        }else{//没有选择标签选择前5个
+            List<Integer> labs = ehbLabelService.lambdaQuery().last("limit 5").list().stream().map(i->{
+                return i.getId();
+            }).collect(Collectors.toList());
             ehbExhibitor.setLabelid(JSONArray.toJSONString(labs));
         }
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
