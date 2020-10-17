@@ -507,7 +507,7 @@ public class PersonalCenterController extends BaseController {
 		EhbUseraction ehbUseraction = ehbUseractionService.lambdaQuery().eq(EhbUseraction::getUserid, sessioner.getId())
 				.eq(EhbUseraction::getRelateid, relateid).eq(EhbUseraction::getType, type)
 				.eq(EhbUseraction::getActivetype, i).one();
-		if (ehbUseraction != null) {
+		if (ehbUseraction != null) {//取消收藏/关注
 			ehbUseractionService.removeById(ehbUseraction.getId());
 			if (type == 4 || type == 2) {
 				ehbOpportunityService.lambdaUpdate().setSql("countcollection=countcollection-1")
@@ -517,7 +517,8 @@ public class PersonalCenterController extends BaseController {
 				ehbArticleService.lambdaUpdate().setSql("countcollection=countcollection-1")
 						.eq(EhbArticle::getId, relateid).update();
 			}
-		} else {
+			return ok2(0);
+		} else {//添加收藏/关注
 			ehbUseractionService.save(EhbUseractionDto.of(sessioner, type, relateid, i));
 			if (type == 4 || type == 2) {
 				ehbOpportunityService.lambdaUpdate().setSql("countcollection=countcollection+1")
@@ -527,8 +528,8 @@ public class PersonalCenterController extends BaseController {
 				ehbArticleService.lambdaUpdate().setSql("countcollection=countcollection+1")
 						.eq(EhbArticle::getId, relateid).update();
 			}
+			return ok2(1);
 		}
-		return ok2();
 	}
 
 	@ApiOperation(value = "添加/取消点赞", notes = "用户点赞行为", tags = { "C端模块-H5详情" })
