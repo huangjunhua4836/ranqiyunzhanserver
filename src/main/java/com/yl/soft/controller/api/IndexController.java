@@ -72,23 +72,23 @@ public class IndexController extends BaseController {
     public BaseResponse<List<ExhibitorDto>> randExibitionList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         if(StringUtils.isEmpty(paramMap.get("number"))){
             return setResultError("number不能为空！");
-
         }
+        //自己收藏的展商
         SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
-        QueryWrapper<EhbUseraction> ehbUseractionQueryWrapper = new QueryWrapper<>();
-        ehbUseractionQueryWrapper.eq("type","1");
-        ehbUseractionQueryWrapper.eq("activetype","1");
-        ehbUseractionQueryWrapper.eq("userid",appLoginDTO.getId());
-        List<Integer> ids = ehbUseractionService.list(ehbUseractionQueryWrapper).stream().map(i->{
-           return i.getRelateid();
-        }).collect(Collectors.toList());
-        ids.add(appLoginDTO.getBopie());//全部要过滤展商
+//        QueryWrapper<EhbUseraction> ehbUseractionQueryWrapper = new QueryWrapper<>();
+//        ehbUseractionQueryWrapper.eq("type","1");
+//        ehbUseractionQueryWrapper.eq("activetype","1");
+//        ehbUseractionQueryWrapper.eq("userid",appLoginDTO.getId());
+//        List<Integer> ids = ehbUseractionService.list(ehbUseractionQueryWrapper).stream().map(i->{
+//           return i.getRelateid();
+//        }).collect(Collectors.toList());
+//        ids.add(appLoginDTO.getBopie());//加上自己本身
 
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
         conditionMap.put("state",1);
         conditionMap.put("labelid", JSONArray.parseArray(appLoginDTO.getLabelid(),Integer.class));
-        conditionMap.put("ids",ids);
+        conditionMap.put("id",appLoginDTO.getBopie());
 
         List<ExhibitorDto> appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
         appLoginDTOS.stream().forEach(i->{
