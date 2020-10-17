@@ -158,7 +158,7 @@ public class ZSInfoController extends BaseController {
             exhibitorVo.setUpdateuser(1);
             ExhibitorDto exhibitorDto = new ExhibitorDto();
             exhibitorDto.setId(exhibitorVo.getId());
-            exhibitorDto.setName(exhibitorVo.getEnterprisename());
+            exhibitorDto.setEnterprisename(exhibitorVo.getEnterprisename());
             exhibitorDto.setLogo(exhibitorVo.getLogo());
             exhibitorDto.setBoothno(exhibitorVo.getBoothno());
             exhibitorDto.setEnglishname(exhibitorVo.getEnglishname());
