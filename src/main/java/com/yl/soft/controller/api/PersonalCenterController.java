@@ -580,8 +580,9 @@ public class PersonalCenterController extends BaseController {
 				ehbArticleService.lambdaUpdate().setSql("countthumbs=countthumbs-1").eq(EhbArticle::getId, relateid)
 						.update();
 			}
-			return ok2(ehbOpportunityService.getById(ehbUseraction.getRelateid()).getCountthumbs());
-
+			EhbOpportunity ehbOpportunity =  ehbOpportunityService.getById(ehbUseraction.getRelateid());
+			return ok2(com.yl.soft.common.util.StringUtils.isEmpty(ehbOpportunity)?0:ehbOpportunity.getCountthumbs());
+//			return ok2(ehbOpportunityService.getById(ehbUseraction.getRelateid()).getCountthumbs());
 		} else {
 			ehbUseractionService.save(EhbUseractionDto.of(sessioner, type, relateid, i));
 			if (type == 4 || type == 2) {
@@ -592,7 +593,9 @@ public class PersonalCenterController extends BaseController {
 				ehbArticleService.lambdaUpdate().setSql("countthumbs=countthumbs+1").eq(EhbArticle::getId, relateid)
 						.update();
 			}
-			return ok2(ehbOpportunityService.getById(relateid).getCountthumbs());
+			EhbOpportunity ehbOpportunity =  ehbOpportunityService.getById(relateid);
+			return ok2(com.yl.soft.common.util.StringUtils.isEmpty(ehbOpportunity)?0:ehbOpportunity.getCountthumbs());
+//			return ok2(ehbOpportunityService.getById(relateid).getCountthumbs());
 		}
 
 	}
