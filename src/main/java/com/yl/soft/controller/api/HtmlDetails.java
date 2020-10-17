@@ -77,11 +77,11 @@ public class HtmlDetails extends BaseController {
 		
 		EhbUseraction isSc=ehbUseractionService.lambdaQuery()
 				.eq(null!=sessionUser,EhbUseraction::getUserid, sessionUser.getId())
-				.eq(EhbUseraction::getRelateid, ehbArticle.getId()).eq(EhbUseraction::getActivetype, 2).eq(EhbUseraction::getType, 1).last("LIMIT 1").one();
+				.eq(EhbUseraction::getRelateid, ehbArticle.getId()).eq(EhbUseraction::getActivetype, 1).eq(EhbUseraction::getType, 3).last("LIMIT 1").one();
 
 		ArticleDto articleDto=BaseConv.copy(ehbArticle, new ArticleDto());
-		articleDto.setIsZan(isZxZan!=null?1:0);
-		articleDto.setIsSCZx(isSc!=null?1:0);
+		articleDto.setIsZan(isZxZan!=null?1:0);//是否点赞
+		articleDto.setIsSCZx(isSc!=null?1:0);//是否收藏
 		return ok(articleDto);
 	}
 	
