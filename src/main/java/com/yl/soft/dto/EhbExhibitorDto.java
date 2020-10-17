@@ -66,6 +66,12 @@ public class EhbExhibitorDto  implements Serializable{/**
 
     @ApiModelProperty(value = "展商英文名称")
     private String englishname;
+    
+    @ApiModelProperty(value="我是否关注 0：未关注， 1：已关注")
+    private Integer isColl;
+    
+    @ApiModelProperty(value="蜂鸟云地图Fid")
+    private String fid;
 	
 	
 //	@ApiModelProperty("展商图片 多张图片逗号隔开")

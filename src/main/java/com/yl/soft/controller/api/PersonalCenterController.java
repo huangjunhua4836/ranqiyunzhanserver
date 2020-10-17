@@ -235,26 +235,10 @@ public class PersonalCenterController extends BaseController {
 
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(sessionUser.getBopie());
 		ehbExhibitor.setImg(img);
-		if (!isPhone(phone)) {
-			return error(-100, "请输入一个正确的联系电话");
-		}
 		ehbExhibitor.setTelphone(phone);
-		if (!isEmail(mailbox)) {
-			return error(-100, "请输入一个正确的邮箱地址");
-		}
 		ehbExhibitor.setMailbox(mailbox);
-		if(!isWeb(website)) {
-			return error(-100, "输入一个正确的网址");
-		}
 		ehbExhibitor.setWebsite(website);
-		if(StringUtils.isEmpty(address)){
-			return error(-100, "地址不能为空");
-		}
 		ehbExhibitor.setAddress(address);
-		
-		if(StringUtils.isEmpty(describes)){
-			return error(-100, "请输入简介");
-		}
 		ehbExhibitor.setDescribes(describes);
 		ehbExhibitor.setZwimg(zwimg);
 

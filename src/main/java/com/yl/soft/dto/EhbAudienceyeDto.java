@@ -56,6 +56,9 @@ public class EhbAudienceyeDto implements Serializable{
 	@ApiModelProperty("企业电话")
 	private String telphone;
 	
+	@ApiModelProperty("登录手机号")
+	private String loginAccount;
+	
 	
     @ApiModelProperty(value = "公司地址")
     private String address;
