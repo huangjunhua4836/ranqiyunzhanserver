@@ -66,8 +66,15 @@ public class LiveRController extends BaseController{
 //			ehbLiveBroadcast.setLiveStatus(2);
 //			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
 //		}
-		BaseConv.copy(liStartEndDto, ehbLiveMsg);
+		ehbLiveMsg.setDomain(liStartEndDto.getDomain());
+		ehbLiveMsg.setApp(liStartEndDto.getApp());
+		ehbLiveMsg.setStream(liStartEndDto.getClient_ip());
+		ehbLiveMsg.setUsrArgs(liStartEndDto.getUsr_args());
+		ehbLiveMsg.setClientIp(liStartEndDto.getClient_ip());
+		ehbLiveMsg.setNodeIp(liStartEndDto.getNode_ip());
+		ehbLiveMsg.setPublishTimestamp(liStartEndDto.getPublish_timestamp());
 		ehbLiveMsg.setLiveid(ehbLiveBroadcast.getId());
+		ehbLiveMsg.setEvent(liStartEndDto.getEvent());
 		EhbLiveMsgService.save(ehbLiveMsg);
 		
 	}
