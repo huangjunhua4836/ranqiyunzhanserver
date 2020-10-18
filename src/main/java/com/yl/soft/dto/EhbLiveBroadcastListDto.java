@@ -1,6 +1,7 @@
 package com.yl.soft.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -29,5 +30,8 @@ public class EhbLiveBroadcastListDto implements Serializable{/**
     
     @ApiModelProperty(value="类型名称")
     private String type;
+    
+    @ApiModelProperty(value="直播回放/播放列表")
+    private List<String> payList;
 
 }
