@@ -127,6 +127,7 @@ public class ZSInfoController extends BaseController {
             exhibitorVo.setLoginname(ehbAudience.getLoginname());
             exhibitorVo.setPassword(ehbAudience.getPassword());
             exhibitorVo.setType(ehbAudience.getType());
+            exhibitorVo.setHeadPortrait(ehbAudience.getHeadPortrait());
         }
 
         modelMap.put("exhibitorVo",exhibitorVo);
@@ -159,7 +160,7 @@ public class ZSInfoController extends BaseController {
             ExhibitorDto exhibitorDto = new ExhibitorDto();
             exhibitorDto.setId(exhibitorVo.getId());
             exhibitorDto.setEnterprisename(exhibitorVo.getEnterprisename());
-            exhibitorDto.setLogo(exhibitorVo.getLogo());
+            exhibitorDto.setLogo(exhibitorVo.getHeadPortrait());
             exhibitorDto.setBoothno(exhibitorVo.getBoothno());
             exhibitorDto.setEnglishname(exhibitorVo.getEnglishname());
             if(exhibitorVo.getState() != null){
@@ -212,10 +213,14 @@ public class ZSInfoController extends BaseController {
         ehbExhibitorQueryWrapper.eq("state",1);
         ehbExhibitorService.list(ehbExhibitorQueryWrapper).stream().forEach(i->{
             String firstWord = PinyinUtil.getPinYinHeadChar(i.getEnterprisename()).toUpperCase().charAt(0)+"";
+            if("B".equals(firstWord)){
+                System.out.println(firstWord);
+            }
             ExhibitorDto exhibitorDto = new ExhibitorDto();
             exhibitorDto.setId(i.getId());
             exhibitorDto.setEnterprisename(i.getEnterprisename());
-            exhibitorDto.setLogo(i.getLogo());
+            EhbAudience ehbAudience = ehbAudienceService.lambdaQuery().select(EhbAudience::getHeadPortrait).eq(EhbAudience::getBopie,i.getId()).last("limit 1").one();
+            exhibitorDto.setLogo(ehbAudience!=null?ehbAudience.getHeadPortrait():null);
             exhibitorDto.setBoothno(i.getBoothno());
             exhibitorDto.setEnglishname(i.getEnglishname());
             redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));

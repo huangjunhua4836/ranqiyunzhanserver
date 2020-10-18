@@ -125,7 +125,6 @@ public class PersonalCenterController extends BaseController {
 			if (StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait())) {
 				ehbAudience.setHeadPortrait(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait());
 				ehbAudienceService.updateById(ehbAudience);
-				ehbExhibitor.setLogo(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getHeadPortrait());
 			}
 			if (StringUtils.isNoneBlank(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone())) {
 				if(!isMobile(ehbAudienceInfoDto.getEhbAudienceInfoyeDto().getPhone())) {

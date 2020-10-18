@@ -27,4 +27,7 @@ public class ExhibitorVo extends EhbExhibitor {
 
     @ApiModelProperty("首次登录:0:是，1：否")
     private Integer isnew;
+
+    @ApiModelProperty(value = "个人头像或者企业logo")
+    private String headPortrait;
 }
