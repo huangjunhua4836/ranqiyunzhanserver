@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.yl.soft.common.util.LogUtils;
 import com.yl.soft.common.util.StringUtils;
+import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.LiveDto;
 import com.yl.soft.po.EhbLiveBroadcast;
 import com.yl.soft.po.EhbLiveRecording;
@@ -23,7 +26,7 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = {"C端模块-直播回调"})
 @RestController
 @RequestMapping("/")
-public class LiveRController {
+public class LiveRController extends BaseController{
 
 	@Autowired
 	private EhbLiveBroadcastService ehbLiveBroadcastService;
@@ -36,6 +39,9 @@ public class LiveRController {
 	@ApiOperation(value = "直播回调", notes = "直播录制回调")
 	@PostMapping("/liveN")
 	public void liveN(@RequestBody LiveDto liveDto) {
+		
+		LogUtils.writeInfoLog(LiveRController.class, JSON.toJSONString(liveDto));
+		
 		EhbLiveRecording ehbLiveRecording=new EhbLiveRecording();
 		ehbLiveRecording.setApp(liveDto.getApp());
 		ehbLiveRecording.setProjectId(liveDto.getProject_id());
