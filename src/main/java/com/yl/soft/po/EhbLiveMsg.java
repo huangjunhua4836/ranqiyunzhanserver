@@ -1,6 +1,7 @@
 package com.yl.soft.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -34,12 +35,16 @@ public class EhbLiveMsg implements Serializable {
 
     private String stream;
 
+    @TableField("usr_args")
     private String usrArgs;
 
+    @TableField("client_ip")
     private String clientIp;
 
+    @TableField("node_ip")
     private String nodeIp;
 
+    @TableField("publish_timestamp")
     private String publishTimestamp;
 
     private String event;

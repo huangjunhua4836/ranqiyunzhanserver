@@ -59,13 +59,15 @@ public class LiveRController extends BaseController{
 		EhbLiveBroadcast ehbLiveBroadcast=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liStartEndDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 0).last("LIMIT 1").one();
 		if(liStartEndDto.getEvent().equals("PUBLISH")) {
 			ehbLiveBroadcast.setLiveStatus(1);
+			ehbLiveBroadcast.setLiveStartTime(LocalDateTime.now());
 			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
 		}
 		
-//		if(liStartEndDto.getEvent().equals("PUBLISH_DONE")){
+		if(liStartEndDto.getEvent().equals("PUBLISH_DONE")){
 //			ehbLiveBroadcast.setLiveStatus(2);
-//			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
-//		}
+			ehbLiveBroadcast.setLiveEndtime(LocalDateTime.now());
+			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
+		}
 		ehbLiveMsg.setDomain(liStartEndDto.getDomain());
 		ehbLiveMsg.setApp(liStartEndDto.getApp());
 		ehbLiveMsg.setStream(liStartEndDto.getClient_ip());
