@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common::headr('综合管理系统')"></head>
+<style>
+    .layui-tab-item{
+        /*height: 800px;*/
+    }
+</style>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
@@ -28,61 +33,61 @@
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;">系统管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" menuid="100" menuurl='<iframe src="/platform/crmUser/userList" width="100%" height="1080px;" frameborder="0"></iframe>'>用户管理</a></dd>
+                        <dd><a href="javascript:;" menuid="100" menuurl='<iframe src="/platform/crmUser/userList" width="100%" height="100%;" frameborder="0"></iframe>'>用户管理</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">参展信息</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" menuid="200" menuurl='<iframe src="/platform/czrInfo/list" width="100%" height="1080px;" frameborder="0"></iframe>'>专业观众</a></dd>
-                        <dd><a href="javascript:;" menuid="201" menuurl='<iframe src="/platform/zsInfo/list" width="100%" height="1080px;" frameborder="0"></iframe>'>参展商</a></dd>
-                        <dd><a href="javascript:;" menuid="202" menuurl='<iframe src="/platform/guest/list" width="100%" height="1080px;" frameborder="0"></iframe>'>专业嘉宾</a></dd>
-                        <dd><a href="javascript:;" menuid="203" menuurl='<iframe src="/platform/visitpre/list" width="100%" height="1080px;" frameborder="0"></iframe>'>参展预登记</a></dd>
+                        <dd><a href="javascript:;" menuid="200" menuurl='<iframe src="/platform/czrInfo/list" width="100%" height="100%;" frameborder="0"></iframe>'>专业观众</a></dd>
+                        <dd><a href="javascript:;" menuid="201" menuurl='<iframe src="/platform/zsInfo/list" width="100%" height="100%;" frameborder="0"></iframe>'>参展商</a></dd>
+                        <dd><a href="javascript:;" menuid="202" menuurl='<iframe src="/platform/guest/list" width="100%" height="100%;" frameborder="0"></iframe>'>专业嘉宾</a></dd>
+                        <dd><a href="javascript:;" menuid="203" menuurl='<iframe src="/platform/visitpre/list" width="100%" height="100%;" frameborder="0"></iframe>'>参展预登记</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">推荐设置</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" menuid="300" menuurl='<iframe src="/platform/label/list" width="100%" height="1080px;" frameborder="0"></iframe>'>标签管理</a></dd>
-                        <dd><a href="javascript:;" menuid="301" menuurl='<iframe src="/platform/hottitle/list" width="100%" height="1080px;" frameborder="0"></iframe>'>热搜词管理</a></dd>
-                        <dd><a href="javascript:;" menuid="302" menuurl='<iframe src="/platform/hall/list" width="100%" height="1080px;" frameborder="0"></iframe>'>虚拟展厅</a></dd>
-                        <dd><a href="javascript:;" menuid="303" menuurl='<iframe src="/platform/article/list" width="100%" height="1080px;" frameborder="0"></iframe>'>行业资讯</a></dd>
+                        <dd><a href="javascript:;" menuid="300" menuurl='<iframe src="/platform/label/list" width="100%" height="100%;" frameborder="0"></iframe>'>标签管理</a></dd>
+                        <dd><a href="javascript:;" menuid="301" menuurl='<iframe src="/platform/hottitle/list" width="100%" height="100%;" frameborder="0"></iframe>'>热搜词管理</a></dd>
+                        <dd><a href="javascript:;" menuid="302" menuurl='<iframe src="/platform/hall/list" width="100%" height="100%;" frameborder="0"></iframe>'>虚拟展厅</a></dd>
+                        <dd><a href="javascript:;" menuid="303" menuurl='<iframe src="/platform/article/list" width="100%" height="100%;" frameborder="0"></iframe>'>行业资讯</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">banner管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" menuid="400" menuurl='<iframe src="/platform/banner/list" width="100%" height="1080px;" frameborder="0"></iframe>'>首页banner管理</a></dd>
-                        <dd><a href="javascript:;" menuid="401" menuurl='<iframe src="/platform/advertising/list" width="100%" height="1080px;" frameborder="0"></iframe>'>广告位管理</a></dd>
+                        <dd><a href="javascript:;" menuid="400" menuurl='<iframe src="/platform/banner/list" width="100%" height="100%;" frameborder="0"></iframe>'>首页banner管理</a></dd>
+                        <dd><a href="javascript:;" menuid="401" menuurl='<iframe src="/platform/advertising/list" width="100%" height="100%;" frameborder="0"></iframe>'>广告位管理</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">关于</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" menuid="500" menuurl='<iframe src="/platform/about/list" width="100%" height="1080px;" frameborder="0"></iframe>'>首页关于</a></dd>
-                        <dd><a href="javascript:;" menuid="501" menuurl='<iframe src="/platform/aboutus/list" width="100%" height="1080px;" frameborder="0"></iframe>'>关于我们</a></dd>
+                        <dd><a href="javascript:;" menuid="500" menuurl='<iframe src="/platform/about/list" width="100%" height="100%;" frameborder="0"></iframe>'>首页关于</a></dd>
+                        <dd><a href="javascript:;" menuid="501" menuurl='<iframe src="/platform/aboutus/list" width="100%" height="100%;" frameborder="0"></iframe>'>关于我们</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">资料上传</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" menuid="600" menuurl='<iframe src="/platform/resourceupload/input" width="100%" height="1080px;" frameborder="0"></iframe>'>设置上传</a></dd>
+                        <dd><a href="javascript:;" menuid="600" menuurl='<iframe src="/platform/resourceupload/input" width="100%" height="100%;" frameborder="0"></iframe>'>设置上传</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">帮助与反馈</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" menuid="700" menuurl='<iframe src="/platform/feedback/list" width="100%" height="1080px;" frameborder="0"></iframe>'>意见反馈</a></dd>
-                        <dd><a href="javascript:;" menuid="701" menuurl='<iframe src="/platform/problem/list" width="100%" height="1080px;" frameborder="0"></iframe>'>常见问题</a></dd>
+                        <dd><a href="javascript:;" menuid="700" menuurl='<iframe src="/platform/feedback/list" width="100%" height="100%;" frameborder="0"></iframe>'>意见反馈</a></dd>
+                        <dd><a href="javascript:;" menuid="701" menuurl='<iframe src="/platform/problem/list" width="100%" height="100%;" frameborder="0"></iframe>'>常见问题</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">第三方设置</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" menuid="800" menuurl='<iframe src="/platform/live/list" width="100%" height="1080px;" frameborder="0"></iframe>'>直播管理</a></dd>
-                        <dd><a href="javascript:;" menuid="801" menuurl='<iframe src="/platform/stationinfo/list" width="100%" height="1080px;" frameborder="0"></iframe>'>站内信管理</a></dd>
-                        <dd><a href="javascript:;" menuid="802" menuurl='<iframe src="/platform/video/list" width="100%" height="1080px;" frameborder="0"></iframe>'>精彩视频上传</a></dd>
-                        <dd><a href="javascript:;" menuid="803" menuurl='<iframe src="/platform/atlas/list" width="100%" height="1080px;" frameborder="0"></iframe>'>精彩图集上传</a></dd>
+                        <dd><a href="javascript:;" menuid="800" menuurl='<iframe src="/platform/live/list" width="100%" height="100%;" frameborder="0"></iframe>'>直播管理</a></dd>
+                        <dd><a href="javascript:;" menuid="801" menuurl='<iframe src="/platform/stationinfo/list" width="100%" height="100%;" frameborder="0"></iframe>'>站内信管理</a></dd>
+                        <dd><a href="javascript:;" menuid="802" menuurl='<iframe src="/platform/video/list" width="100%" height="100%;" frameborder="0"></iframe>'>精彩视频上传</a></dd>
+                        <dd><a href="javascript:;" menuid="803" menuurl='<iframe src="/platform/atlas/list" width="100%" height="100%;" frameborder="0"></iframe>'>精彩图集上传</a></dd>
 
                     </dl>
                 </li>
@@ -90,7 +95,7 @@
         </div>
     </div>
 
-    <div class="layui-body" style="height: 100%;">
+    <div class="layui-body">
         <!-- 内容主体区域 -->
         <div class="layui-tab" lay-filter="tabpage" lay-allowclose="true">
             <ul class="layui-tab-title">
@@ -98,9 +103,9 @@
                     <i class="layui-icon layui-unselect layui-tab-close" style="display: none">ဆ</i><!--首页关闭标签隐藏-->
                 </li>
             </ul>
-            <div class="layui-tab-content">
+            <div class="layui-tab-content" style="width: 100%;height: 100%;">
                 <div class="layui-tab-item layui-show">
-                    <iframe src="/platform/index/list" width="100%" height="1080px;" frameborder="0"></iframe>
+                    <iframe src="/platform/crmUser/userList" width="100%" height="100%;" frameborder="0"></iframe>
                 </div>
             </div>
         </div>
@@ -141,6 +146,8 @@
             ,core = layui.core
             ,util = layui.util;
 
+        $('.layui-tab-item').attr("style","height: "+$(window).height()+"px;")
+
         $('#nickname').text(loginUserInfo.name);
         $('#detail').find("input").eq(0).attr("value",loginUserInfo.name);
         $('#detail').find("input").eq(1).attr("value",loginUserInfo.loginname);
@@ -179,6 +186,7 @@
                     ,content: content
                     ,id: id //实际使用一般是规定好的id，这里以时间戳模拟下
                 })
+                $('.layui-tab-item').attr("style","height: "+$(window).height()+"px;")
             }
             ,tabDelete: function(othis){
                 //删除指定Tab项
