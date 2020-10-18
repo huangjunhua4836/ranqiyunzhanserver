@@ -2,6 +2,9 @@ package com.yl.soft.controller.api;
 
 import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,17 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.yl.soft.common.util.BaseConv;
 import com.yl.soft.common.util.LogUtils;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.LiveDto;
+import com.yl.soft.dto.LiveStartEndDto;
 import com.yl.soft.po.EhbLiveBroadcast;
+import com.yl.soft.po.EhbLiveMsg;
 import com.yl.soft.po.EhbLiveRecording;
 import com.yl.soft.service.EhbLiveBroadcastService;
+import com.yl.soft.service.EhbLiveMsgService;
 import com.yl.soft.service.EhbLiveRecordingService;
 import com.yl.soft.service.EhbWonderfulAtlasService;
 import com.yl.soft.service.EhbWonderfulVideoService;
 
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -32,16 +40,43 @@ public class LiveRController extends BaseController{
 	private EhbLiveBroadcastService ehbLiveBroadcastService;
 	
 	
+	private static final Logger log = LoggerFactory.getLogger(LiveRController.class);
+
 	
 	@Autowired
 	private EhbLiveRecordingService ehbLiveRecordingService;
 	
-	@ApiOperation(value = "直播回调", notes = "直播录制回调")
+	@Autowired
+	private EhbLiveMsgService EhbLiveMsgService;
+	
+	
+	@ApiOperation(value = "直播通知", notes = "直播通知")
+	@PostMapping("/liveMsg")
+	public void liveMsg(@RequestBody LiveStartEndDto liStartEndDto) {
+		
+		log.info(JSON.toJSONString(liStartEndDto));
+		EhbLiveMsg ehbLiveMsg=new EhbLiveMsg();
+		EhbLiveBroadcast ehbLiveBroadcast=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liStartEndDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 0).last("LIMIT 1").one();
+		if(liStartEndDto.getEvent().equals("PUBLISH")) {
+			ehbLiveBroadcast.setLiveStatus(1);
+			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
+		}
+		
+//		if(liStartEndDto.getEvent().equals("PUBLISH_DONE")){
+//			ehbLiveBroadcast.setLiveStatus(2);
+//			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
+//		}
+		BaseConv.copy(liStartEndDto, ehbLiveMsg);
+		ehbLiveMsg.setLiveid(ehbLiveBroadcast.getId());
+		EhbLiveMsgService.save(ehbLiveMsg);
+		
+	}
+	
+	@ApiOperation(value = "直播录制回调", notes = "直播录制回调")
 	@PostMapping("/liveN")
 	public void liveN(@RequestBody LiveDto liveDto) {
-		
-		LogUtils.writeInfoLog(LiveRController.class, JSON.toJSONString(liveDto));
-		
+
+		log.info(JSON.toJSONString(liveDto));
 		EhbLiveRecording ehbLiveRecording=new EhbLiveRecording();
 		ehbLiveRecording.setApp(liveDto.getApp());
 		ehbLiveRecording.setProjectId(liveDto.getProject_id());
@@ -75,35 +110,6 @@ public class LiveRController extends BaseController{
 		}
 		ehbLiveRecording.setLiveid(ehbLiveBroadcast.getId());
 		ehbLiveRecordingService.save(ehbLiveRecording);
-		
-//		if(liveDto.getEvent_type().equals("RECORD_START")) { //开始录制
-//			//0即将直播
-//			EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 0).last("LIMIT 1").one();
-//			ehbLiveBroadcastService.lambdaUpdate().setSql("live_status=1")
-//			.eq(EhbLiveBroadcast::getId, ehbLiveBroadcastDto.getId()).update();
-//			
-//			ehbLiveRecording.setLiveid(ehbLiveBroadcastDto.getId());
-//		}else if(liveDto.getEvent_type().equals("RECORD_FILE_COMPLETE")) { //录制文件生成完成生成新文件
-//			EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
-//			ehbLiveRecording.setLiveid(ehbLiveBroadcastDto.getId());
-//		}else if(liveDto.getEvent_type().equals("RECORD_OVER")) { //录制结束
-//			//直播结束回放
-//			EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
-//			
-//			ehbLiveBroadcastService.lambdaUpdate().setSql("live_status=1")
-//			.eq(EhbLiveBroadcast::getId, ehbLiveBroadcastDto.getId()).update();
-//			
-//			
-//			ehbLiveBroadcastService.lambdaUpdate().setSql("live_status=2")
-//			.eq(EhbLiveBroadcast::getId, ehbLiveBroadcastDto.getId()).update();
-//			ehbLiveRecording.setLiveid(ehbLiveBroadcastDto.getId());
-//			
-//
-//		}
-		
-		
-//		EhbLiveBroadcast ehbLiveBroadcastDto=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
-		
 		
 	}
 }

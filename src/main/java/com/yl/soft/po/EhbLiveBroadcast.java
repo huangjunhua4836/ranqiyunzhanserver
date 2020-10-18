@@ -78,7 +78,7 @@ public class EhbLiveBroadcast implements Serializable {
     @TableField("live_password")
     private String livePassword;
 
-    @ApiModelProperty(value = "直播状态 0即将开播 1直播中 2直播结束（回放）")
+    @ApiModelProperty(value = "直播状态 0  即将开播 1 直播中 2直播结束（回放）")
     @TableField("live_status")
     private Integer liveStatus;
 
