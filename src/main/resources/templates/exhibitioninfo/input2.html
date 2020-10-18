@@ -9,7 +9,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">注册手机</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{registerphone}" lay-verify="required"  autocomplete="off" class="layui-input" maxlength="11">
+                            <input type="text" th:readonly="*{id!=null}" th:field="*{registerphone}" lay-verify="required"  autocomplete="off" class="layui-input" maxlength="11">
                         </div>
                     </div>
                     <div class="layui-form-item">

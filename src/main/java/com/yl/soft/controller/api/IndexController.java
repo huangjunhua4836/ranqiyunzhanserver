@@ -1,5 +1,6 @@
 package com.yl.soft.controller.api;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONArray;
@@ -58,7 +59,7 @@ public class IndexController extends BaseController {
      */
     @ApiOperation(value = "推荐展商列表、感兴趣的展商列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query")
             ,@ApiImplicitParam(name = "number", value = "显示数量",paramType = "query",required = true)
     })
     @ApiResponses({
@@ -73,32 +74,39 @@ public class IndexController extends BaseController {
         if(StringUtils.isEmpty(paramMap.get("number"))){
             return setResultError("number不能为空！");
         }
-        //自己收藏的展商
-        SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
-//        QueryWrapper<EhbUseraction> ehbUseractionQueryWrapper = new QueryWrapper<>();
-//        ehbUseractionQueryWrapper.eq("type","1");
-//        ehbUseractionQueryWrapper.eq("activetype","1");
-//        ehbUseractionQueryWrapper.eq("userid",appLoginDTO.getId());
-//        List<Integer> ids = ehbUseractionService.list(ehbUseractionQueryWrapper).stream().map(i->{
-//           return i.getRelateid();
-//        }).collect(Collectors.toList());
-//        ids.add(appLoginDTO.getBopie());//加上自己本身
+        List<ExhibitorDto> appLoginDTOS = new ArrayList<>();
+        if(!StringUtils.isEmpty(paramMap.get("token"))){
+            //自己收藏的展商
+            SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
+            Map conditionMap = new HashMap();
+            conditionMap.put("isdel",CommonDict.CORRECT_STATE);
+            conditionMap.put("state",1);
+            conditionMap.put("labelid", JSONArray.parseArray(appLoginDTO.getLabelid(),Integer.class));
+            conditionMap.put("exhibitorid",appLoginDTO.getBopie());
+            conditionMap.put("id",appLoginDTO.getId());
 
-        Map conditionMap = new HashMap();
-        conditionMap.put("isdel",CommonDict.CORRECT_STATE);
-        conditionMap.put("state",1);
-        conditionMap.put("labelid", JSONArray.parseArray(appLoginDTO.getLabelid(),Integer.class));
-        conditionMap.put("exhibitorid",appLoginDTO.getBopie());
-        conditionMap.put("id",appLoginDTO.getId());
+            appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
+            appLoginDTOS.stream().forEach(i->{
+                switch (i.getState()){
+                    case 0:i.setState_show("未认证");break;
+                    case 1:i.setState_show("已认证");break;
+                    default:i.setState_show("未知状态");break;
+                }
+            });
+        }else{
+            appLoginDTOS = ehbExhibitorService.lambdaQuery().eq(EhbExhibitor::getIsdel,CommonDict.CORRECT_STATE).eq(EhbExhibitor::getState,1).list()
+                    .stream().map(i->{
+                ExhibitorDto exhibitorDto = new ExhibitorDto();
+                BeanUtil.copyProperties(i,exhibitorDto);
+                switch (i.getState()){
+                    case 0:exhibitorDto.setState_show("未认证");break;
+                    case 1:exhibitorDto.setState_show("已认证");break;
+                    default:exhibitorDto.setState_show("未知状态");break;
+                }
+                return exhibitorDto;
+            }).collect(Collectors.toList());
+        }
 
-        List<ExhibitorDto> appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
-        appLoginDTOS.stream().forEach(i->{
-            switch (i.getState()){
-                case 0:i.setState_show("未认证");break;
-                case 1:i.setState_show("已认证");break;
-                default:i.setState_show("未知状态");break;
-            }
-        });
         Collections.shuffle(appLoginDTOS);
         int number = Integer.parseInt(paramMap.get("number")+"");
         appLoginDTOS = appLoginDTOS.subList(0,appLoginDTOS.size()>number?number:appLoginDTOS.size());
@@ -141,7 +149,7 @@ public class IndexController extends BaseController {
      */
     @ApiOperation(value = "行业资讯列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query")
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
             ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
             ,@ApiImplicitParam(name = "title", value = "资讯标题", paramType = "query")

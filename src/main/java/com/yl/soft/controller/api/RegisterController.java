@@ -1,6 +1,7 @@
 package com.yl.soft.controller.api;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.soft.common.unified.entity.BaseResponse;
@@ -37,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Api(tags = {"C端模块-燃气云展信息完善"})
 @RestController
@@ -90,12 +90,13 @@ public class RegisterController extends BaseController {
 		if(registerAudienceDto.getName().length()>30) {
 			 return error(-100,"姓名大于30字！");
 		}
-		if(StringUtils.isEmpty(registerAudienceDto.getPhone())){
-            return error(-100,"手机号为空！");
-        }
-        if(!registerAudienceDto.getPhone().matches("^1[0-9]{10}$")){
-            return error(-100,"请输入一个正确的手机号");
-        }
+		registerAudienceDto.setPhone(null);//注册手机号不能修改
+//		if(StringUtils.isEmpty(registerAudienceDto.getPhone())){
+//            return error(-100,"手机号为空！");
+//        }
+//        if(!registerAudienceDto.getPhone().matches("^1[0-9]{10}$")){
+//            return error(-100,"请输入一个正确的手机号");
+//        }
         if(StringUtils.isEmpty(registerAudienceDto.getEnterprise())) {
         	return error(-100,"请输入您的企业名称！");
         }
@@ -109,7 +110,7 @@ public class RegisterController extends BaseController {
             return error(-100,"请输入一个正确的邮箱地址");
         }
 
-        BeanUtil.copyProperties(registerAudienceDto,ehbAudience);
+        BeanUtil.copyProperties(registerAudienceDto,ehbAudience,new CopyOptions().ignoreNullValue());
         ehbAudience.setEnabled(1);
         ehbAudience.setIsdel(false);
         ehbAudience.setUpdatetime(LocalDateTime.now());

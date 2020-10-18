@@ -47,27 +47,27 @@ public class EhbLiveBroadcast implements Serializable {
     private String type;
 
     @ApiModelProperty(value = "直播号")
-    @TableField("room_num")
+    @TableField("room_num")//只能数字
     private String roomNum;
 
-    @ApiModelProperty(value = "流名称")//流名称
-    @TableField("flow_name")
+    @ApiModelProperty(value = "流名称")//当前直播的流正在使用。再不可再添加,一次性50个A1001
+    @TableField("flow_name")//不管
     private String flowName;
 
-    @ApiModelProperty(value = "直播时长")
+    @ApiModelProperty(value = "直播时长")//不管
     @TableField("live_duration")
     private Integer liveDuration;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
-    @ApiModelProperty(value = "直播开始时间")
+    @ApiModelProperty(value = "直播开始时间")//不管
     @TableField("live_start_time")
     private LocalDateTime liveStartTime;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//入参格式化
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//出参格式化
     @ApiModelProperty(value = "直播结束时间")//功能结束时填写
-    @TableField("live_endTime")
+    @TableField("live_endTime")//不管
     private LocalDateTime liveEndtime;
 
     @ApiModelProperty(value = "直播封面")//上传封面
@@ -75,18 +75,18 @@ public class EhbLiveBroadcast implements Serializable {
     private String liveImageUrl;
 
     @ApiModelProperty(value = "私密口令")
-    @TableField("live_password")
+    @TableField("live_password")//舍弃
     private String livePassword;
 
     @ApiModelProperty(value = "直播状态 0即将开播 1直播中 2直播结束（回放）")
     @TableField("live_status")
     private Integer liveStatus;
 
-    @ApiModelProperty(value = "直播视频下载地址")//待定
+    @ApiModelProperty(value = "直播视频下载地址")//服务器加
     @TableField("video_down_url")
     private String videoDownUrl;
 
-    @ApiModelProperty(value = "直播回放地址")//待定
+    @ApiModelProperty(value = "直播回放地址")//服务器加
     private String playback;
 
     @ApiModelProperty(value = "推流地址")//API调用
@@ -104,7 +104,7 @@ public class EhbLiveBroadcast implements Serializable {
     private String notice;
 
     @ApiModelProperty(value = "全部禁言（1：否，2：是）")
-    @TableField("forbidden_words")
+    @TableField("forbidden_words")//舍弃
     private Integer forbiddenWords;
 
     @ApiModelProperty(value = "删除时间")
@@ -123,9 +123,11 @@ public class EhbLiveBroadcast implements Serializable {
     private Integer isdel;
 
     @ApiModelProperty(value = "禁言成员（[用户id1,用户id2]）")//下拉列表系统用户
-    @TableField("forbidden_member")
+    @TableField("forbidden_member")//舍弃
     private String forbiddenMember;
     
     @ApiModelProperty(value="主播公告")
     private String announcement;
+
+    //添加、修改、查看推流地址、下载回放视频（一次直播所有回放片段）
 }
