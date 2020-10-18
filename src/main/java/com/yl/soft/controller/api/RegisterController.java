@@ -124,11 +124,6 @@ public class RegisterController extends BaseController {
                 }
             }
             ehbAudience.setLabelid(JSONArray.toJSONString(labs));
-        }else{//没有选择标签选择前5个
-//            List<Integer> labs = ehbLabelService.lambdaQuery().last("limit 5").list().stream().map(i->{
-//               return i.getId();
-//            }).collect(Collectors.toList());
-//            ehbAudience.setLabelid(JSONArray.toJSONString(labs));
         }
 
         if(ehbAudienceService.updateById(ehbAudience)){
@@ -224,11 +219,6 @@ public class RegisterController extends BaseController {
                 }
             }
             ehbExhibitor.setLabelid(JSONArray.toJSONString(labs));
-        }else{//没有选择标签选择前5个
-//            List<Integer> labs = ehbLabelService.lambdaQuery().last("limit 5").list().stream().map(i->{
-//                return i.getId();
-//            }).collect(Collectors.toList());
-//            ehbExhibitor.setLabelid(JSONArray.toJSONString(labs));
         }
         if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
             return ok2();

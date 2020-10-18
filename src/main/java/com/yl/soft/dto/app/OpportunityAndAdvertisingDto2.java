@@ -1,12 +1,10 @@
 package com.yl.soft.dto.app;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -39,8 +37,6 @@ public class OpportunityAndAdvertisingDto2 implements Serializable {
     @ApiModelProperty(value = "图片")
     private String picture;
 
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")//出参格式化
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//入参格式化
     @ApiModelProperty(value = "发布时间")
     private LocalDateTime releasetime;
 
