@@ -68,7 +68,7 @@ public class OpportunityController extends BaseController {
         conditionMap.put("boothno","%"+paramMap.get("key")+"%");
         conditionMap.put("labelid", JSONArray.parseArray(appLoginDTO.getLabelid(),Integer.class));//行为推荐
         conditionMap.put("type",1);//商机
-        conditionMap.put("exhibitorid",appLoginDTO.getBopie());//展商ID
+//        conditionMap.put("exhibitorid",appLoginDTO.getBopie());//展商ID
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], 5);
@@ -134,7 +134,7 @@ public class OpportunityController extends BaseController {
         conditionMap.put("title","%"+paramMap.get("key")+"%");
         conditionMap.put("boothno","%"+paramMap.get("key")+"%");
         conditionMap.put("type",1);//商机
-        conditionMap.put("exhibitorid",appLoginDTO.getBopie());//展商ID
+//        conditionMap.put("exhibitorid",appLoginDTO.getBopie());//展商ID
 
 
         Integer pageParam[] = pageValidParam(paramMap);
@@ -205,7 +205,7 @@ public class OpportunityController extends BaseController {
         conditionMap.put("countbrowse",20);
         conditionMap.put("countcomment",5);
         conditionMap.put("type",1);//商机
-        conditionMap.put("exhibitorid",appLoginDTO.getBopie());//展商ID
+//        conditionMap.put("exhibitorid",appLoginDTO.getBopie());//展商ID
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], 5);
