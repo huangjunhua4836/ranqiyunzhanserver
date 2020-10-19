@@ -109,8 +109,8 @@ public class SendMsgCodeController extends BaseController {
 			return error();
 		}
 		List<Integer> ids = Arrays.asList(id.split(",")).stream().map(Integer::parseInt).collect(Collectors.toList());
-		ids.forEach(i->{
-			EhbDataUpload ed=ehbDataUploadService.getById(i);
+		for (Integer integer : ids) {
+			EhbDataUpload ed=ehbDataUploadService.getById(integer);
 		    String subject ="【燃气云展】资料";
 		    String msg ="【燃气云展】资料详情请查看附件";
 		    try {
@@ -119,7 +119,7 @@ public class SendMsgCodeController extends BaseController {
 		    } catch (Exception e) {
 		        e.printStackTrace();
 		    }
-		});
+		}
 		return ok2();
 	}
 
