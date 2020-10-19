@@ -6,6 +6,8 @@ package com.yl.soft.common.interceptor;
 
 import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,10 +22,10 @@ import java.io.PrintWriter;
  * @version $Id: TracebacktoLoginInterceptor.java, v 0.1 2016年2月22日 下午4:00:42 Administrator Exp $
  */
 public class PlatformInterceptor implements HandlerInterceptor {
-
+    Logger logger = LoggerFactory.getLogger(PlatformInterceptor.class);
     RedisService redisService;
 
-    public PlatformInterceptor(RedisService redisService){
+    public PlatformInterceptor(RedisService redisService) {
         this.redisService = redisService;
     }
 
@@ -44,8 +46,9 @@ public class PlatformInterceptor implements HandlerInterceptor {
         response.setCharacterEncoding("utf-8");
 //        String token = request.getSession().getAttribute("loginUserInfo")+"";
         String token = redisService.get("loginUserInfo");
-        System.out.println(token);
-        if(StringUtils.isEmpty(token)){
+     //   System.out.println(token);
+        //logger.info(token);
+        if (StringUtils.isEmpty(token)) {
             //转发到登陆页面
             PrintWriter out = response.getWriter();
             out.println("<html>");
