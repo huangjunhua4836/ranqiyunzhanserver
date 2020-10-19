@@ -354,6 +354,43 @@ public class UserLoginController extends BaseController {
 		return r;
 	}
 
+	@ApiOperation(value = "更换苹果注册更换手机号", notes = "更换苹果注册更换手机号")
+	@ApiImplicitParams({ 
+			@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"), })
+	@ApiResponses({ @ApiResponse(code = -101, message = "请输入新手机号"),
+			@ApiResponse(code = -103, message = "请输入新手机验证码"),
+			@ApiResponse(code = -201, message = "新手机号已被其他账号绑定，请更换其他手机号"),
+			@ApiResponse(code = -202, message = "原手机验证码错误"), @ApiResponse(code = -203, message = "新手机验证码错误"),
+			@ApiResponse(code = 0, message = "更换手机号成功"), @ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
+	@PutMapping("/change_iphone")
+	public BaseResult<Void> changeIPhone(
+			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
+			@NotBlank(message = "-103-请输入新手机验证码") String code, String token) {
+		BaseResult r = new BaseResult();
+		SessionUser sessionUser = sessionState.getCurrentUser(token);
+		String sms = redisUtil.get("I" + phone.trim());
+		if (!code.equals(sms)) {
+			return error(-203, "手机验证码错误");
+		}
+		if(StringUtils.isBlank(ehbAudienceService.getById(sessionUser.getId()).getPgOpenid())) {
+			return error(-203, "不能更换手机号");
+		}
+		if (ehbAudienceService.lambdaQuery().eq(EhbAudience::getPhone, phone).count() > 0) {
+			return error(-201, "手机号已被其他账号绑定，请更换其他手机号");
+		}
+		sessionUser.setPhone(phone);
+		if (!ehbAudienceService.lambdaUpdate().set(EhbAudience::getPhone, phone)
+				.eq(EhbAudience::getId, sessionUser.getId()).update()) {
+			return error();
+		}
+		r.setCode(200);
+		r.setDesc("更换成功");
+		r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
+		return r;
+	}
+	
 	@ApiOperation(value = "更换手机号", notes = "更换手机号码")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "oldCode", value = "原手机验证码", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
