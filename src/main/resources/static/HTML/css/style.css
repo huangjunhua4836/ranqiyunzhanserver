@@ -165,7 +165,7 @@
 
 /*我的商机详情*/
 .g_labs{margin-top: 0.6rem;}
-.g_labs span{display: inline-block; height: 0.6rem; border: 1px solid #43bdec; border-radius: 0.6rem; line-height: 0.56rem; box-sizing: border-box; -webkit-box-sizing: border-box; font-size: 0.26rem; color: #43bdec; padding: 0 0.35rem; margin-right: 0.1rem;}
+.g_labs span{display: inline-block; margin-bottom: 0.1rem; height: 0.6rem; border: 1px solid #43bdec; border-radius: 0.6rem; line-height: 0.56rem; box-sizing: border-box; -webkit-box-sizing: border-box; font-size: 0.26rem; color: #43bdec; padding: 0 0.35rem; margin-right: 0.1rem;}
 
 
 

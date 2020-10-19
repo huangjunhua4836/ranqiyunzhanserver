@@ -173,7 +173,11 @@
 						if(!jsonData[i].headpicture){
 							jsonData[i].headpicture="images/g_11.jpg"
 						}
-						jsonData[i].releasetime=jsonData[i].releasetime.toString().substring(5,10)
+						if(jsonData[i].releasetime){
+							jsonData[i].releasetime=jsonData[i].releasetime.toString().substring(0,10)
+						}else{
+							jsonData[i].releasetime=""
+						}
 					}
 					newsData.hotList=jsonData;
 				}else{
