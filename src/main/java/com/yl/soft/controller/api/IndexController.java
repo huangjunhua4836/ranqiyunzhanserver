@@ -270,7 +270,7 @@ public class IndexController extends BaseController {
      */
     @ApiOperation(value = "首页banner图列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query")
             ,@ApiImplicitParam(name = "type", value = "banner位置类型（1：首页顶部，2：首页大会预告）",paramType = "query",required = true)
     })
     @ApiResponses({
@@ -300,7 +300,7 @@ public class IndexController extends BaseController {
      */
     @ApiOperation(value = "首页嘉宾列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query")
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
             ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
     })
