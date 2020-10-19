@@ -100,6 +100,7 @@ public class ArticleListController extends BaseController {
             ehbarticle.setCreatetime(LocalDateTime.now());
             ehbarticle.setCreateuser(1);
             ehbarticle.setIsdel(false);
+            ehbarticle.setReleasetime(LocalDateTime.now());
         } else {
             ehbarticle.setUpdatetime(LocalDateTime.now());
             ehbarticle.setUpdateuser(1);

@@ -46,7 +46,7 @@ public class IndexController extends BaseController {
     @Autowired
     private EhbLabelService ehbLabelService;
     @Autowired
-    private EhbUseractionService ehbUseractionService;
+    private EhbAudienceService ehbAudienceService;
     @Autowired
     private SessionState sessionState;
     @Autowired
@@ -87,6 +87,8 @@ public class IndexController extends BaseController {
 
             appLoginDTOS = ehbExhibitorService.randExibitionList(conditionMap);
             appLoginDTOS.stream().forEach(i->{
+                EhbAudience ehbAudience = ehbAudienceService.lambdaQuery().select(EhbAudience::getHeadPortrait).eq(EhbAudience::getBopie,i.getId()).last("limit 1").one();
+                i.setLogo(ehbAudience!=null?ehbAudience.getHeadPortrait():null);
                 switch (i.getState()){
                     case 0:i.setState_show("未认证");break;
                     case 1:i.setState_show("已认证");break;
@@ -98,6 +100,9 @@ public class IndexController extends BaseController {
                     .stream().map(i->{
                 ExhibitorDto exhibitorDto = new ExhibitorDto();
                 BeanUtil.copyProperties(i,exhibitorDto);
+
+                EhbAudience ehbAudience = ehbAudienceService.lambdaQuery().select(EhbAudience::getHeadPortrait).eq(EhbAudience::getBopie,i.getId()).last("limit 1").one();
+                i.setLogo(ehbAudience!=null?ehbAudience.getHeadPortrait():null);
                 switch (i.getState()){
                     case 0:exhibitorDto.setState_show("未认证");break;
                     case 1:exhibitorDto.setState_show("已认证");break;
