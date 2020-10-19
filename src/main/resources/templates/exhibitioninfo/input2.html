@@ -34,13 +34,13 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">身份证</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{idcard}" lay-verify="required"  autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{idcard}" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">座机</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{tel}" lay-verify="required"  autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{tel}" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -53,6 +53,18 @@
                         <label class="layui-form-label">英文名称</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{englishname}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{address}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">网址</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{website}" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div th:if="${exhibitorVo.id != null}">
@@ -78,13 +90,13 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">展位号</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{boothno}" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{boothno}" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">蜂鸟云Fid</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{fid}" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{fid}" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -126,15 +138,15 @@
                     return false;
                 }
                 //邮箱
-                var mailbox = data.field.mailbox;
-                var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-                if(!reg.test(mailbox)){
-                    layer.msg('邮箱有误，请重填！',core.showtime);
-                    return false;
-                }
+                // var mailbox = data.field.mailbox;
+                // var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+                // if(!reg.test(mailbox)){
+                //     layer.msg('邮箱有误，请重填！',core.showtime);
+                //     return false;
+                // }
                 //管理者电话
                 var phone = data.field.phone;
-                if(!(/^[1][3,4,5,7,8][0-9]{9}$/.test(phone))){
+                if(!(/^1[0-9]{10}$/.test(phone))){
                     layer.msg('管理者手机号码有误，请重填！',core.showtime);
                     return false;
                 }
@@ -142,13 +154,6 @@
                 // var idcard = data.field.idcard;
                 // if(!(/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(idcard))){
                 //     layer.msg('身份证有误，请重填！',core.showtime);
-                //     return false;
-                // }
-
-                //座机
-                // var tel = data.field.tel;
-                // if(!(/^[0][1-9]{2,3}-[0-9]{5,10}$/.test(tel))){
-                //     layer.msg('座机有误，请重填！',core.showtime);
                 //     return false;
                 // }
 
