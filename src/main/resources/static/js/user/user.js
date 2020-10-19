@@ -50,7 +50,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加用户','/platform/crmUser/userInput?type=add',['500px', '900px'],false,getUserTable);
+                core.openIframeDialog('添加用户','/platform/crmUser/userInput?type=add',['100%', '90%'],false,getUserTable);
                 break;
             case 'restPassword':
                 var checkStatus = table.checkStatus('table'); //table 即为基础参数 id 对应的值
@@ -73,7 +73,7 @@ layui.use('core', function(){
                 if(checkStatus.data.length == 0){
                     layer.msg('必须选择一个用户！',core.showtime);
                 }else{
-                    core.openIframeDialog('授权复制','/manager/auzCopyInput?userId='+checkStatus.data[0].id,['550px', '900px'],false,null);
+                    core.openIframeDialog('授权复制','/manager/auzCopyInput?userId='+checkStatus.data[0].id,['100%', '90%'],false,null);
                 }
                 break;
             //自定义头工具栏右侧图标 - 提示
@@ -97,9 +97,9 @@ layui.use('core', function(){
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改用户','/platform/crmUser/userInput?type=update&id='+data.id,['500px', '900px'],false,getUserTable);
+            core.openIframeDialog('修改用户','/platform/crmUser/userInput?type=update&id='+data.id,['100%', '90%'],false,getUserTable);
         } else if(obj.event === 'detail'){
-            core.openDialog('用户详情',$('#detail').html(),['500px','440px']);
+            core.openDialog('用户详情',$('#detail').html(),['100%', '90%']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);
             $('.layui-layer-content').find('input').eq(1).val(data.nickname);
             $('.layui-layer-content').find('input').eq(2).val(data.userCode);

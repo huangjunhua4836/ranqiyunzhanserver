@@ -72,7 +72,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加','/platform/zsInfo/input?type=add',['500px', '900px'],false,initTable);
+                core.openIframeDialog('添加','/platform/zsInfo/input?type=add',['100%', '90%'],false,initTable);
                 break;
             case 'refreshCloudWindows':
                 var resultData = core.ajax('/platform/zsInfo/refreshCloudWindows',false,'POST',null);
@@ -105,9 +105,9 @@ layui.use('core', function(){
             //     layer.msg('已经审核过了！',core.showtime);
             //     return;
             // }
-            core.openIframeDialog('审核','/platform/zsInfo/input?type=update&id='+data.id,['500px', '900px'],false,initTable);
+            core.openIframeDialog('审核','/platform/zsInfo/input?type=update&id='+data.id,['100%', '90%'],false,initTable);
         } else if(obj.event === 'detail'){
-            core.openDialog('详情',$('#detail').html(),['500px','900px']);
+            core.openDialog('详情',$('#detail').html(),['100%', '90%']);
             $('.layui-layer-content').find('input').eq(0).val(data.registerphone);
             $('.layui-layer-content').find('input').eq(1).val(data.mailbox);
             $('.layui-layer-content').find('input').eq(2).val(data.name);

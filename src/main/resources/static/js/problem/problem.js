@@ -42,7 +42,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加','/platform/problem/input?type=add',['100%', '900px'],false,initTable);
+                core.openIframeDialog('添加','/platform/problem/input?type=add',['100%', '90%'],false,initTable);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
@@ -65,9 +65,9 @@ layui.use('core', function(){
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改','/platform/problem/input?type=update&id='+data.id,['100%', '900px'],false,initTable);
+            core.openIframeDialog('修改','/platform/problem/input?type=update&id='+data.id,['100%', '90%'],false,initTable);
         } else if(obj.event === 'detail'){
-            core.openDialog('详情',$('#detail').html(),['500px','480px']);
+            core.openDialog('详情',$('#detail').html(),['100%', '90%']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);
             $('.layui-layer-content').find('input').eq(1).val(data.name);
             $('.layui-layer-content').find('input').eq(2).val(data.createUser);

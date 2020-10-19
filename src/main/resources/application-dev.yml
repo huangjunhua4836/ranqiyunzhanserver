@@ -93,7 +93,7 @@ pagehelper:
 
 # 上传文件统一后缀名称配置
 custom:
-  flowNamelist: A001,A002,A003
+  flowNamelist: A001,A002,A003 #配置直播流名称
   yj:
     from: 1536466648@qq.com #发邮件人邮箱
     username: 1536466648 #发邮件人邮箱账号

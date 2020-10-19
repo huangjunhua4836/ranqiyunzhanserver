@@ -50,7 +50,7 @@ public class EhbLiveBroadcast implements Serializable {
     @TableField("room_num")//只能数字
     private String roomNum;
 
-    @ApiModelProperty(value = "流名称")//当前直播的流正在使用。再不可再添加,一次性50个A0001
+    @ApiModelProperty(value = "流名称")//当前直播的流正在使用。再不可再添加,一次性50个A001
     @TableField("flow_name")//不管
     private String flowName;
 

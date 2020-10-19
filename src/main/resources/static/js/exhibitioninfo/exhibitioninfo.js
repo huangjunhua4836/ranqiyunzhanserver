@@ -70,7 +70,7 @@ layui.use('core', function(){
         } else if(obj.event === 'edit'){
             core.openIframeDialog('修改','/crmRole/input?type=update&id='+data.id,['500px', '200px'],false,initTable);
         } else if(obj.event === 'detail'){
-            core.openDialog('详情',$('#detail').html(),['500px','480px']);
+            core.openDialog('详情',$('#detail').html(),['100%', '90%']);
             $('.layui-layer-content').find('input').eq(0).val(data.id);
             $('.layui-layer-content').find('input').eq(1).val(data.name);
             $('.layui-layer-content').find('input').eq(2).val(data.phone);

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="common::headr('关于我们')"></head>
     <body>
-            <div style="margin-top: 200px;margin-left: 300px;">
+            <div style="margin-top: 200px;margin-left: 300px; width: 100%">
                 <button type="button" class="layui-btn layui-btn-primary layui-btn-lg" lay-event="communitynorms">社区规范</button>
                 <button type="button" class="layui-btn layui-btn-lg" lay-event="privacyclause">隐私条款</button>
                 <button type="button" class="layui-btn layui-btn-lg layui-btn-normal" lay-event="useragr">用户协议</button>
@@ -25,13 +25,13 @@
         //处理属性 为 lay-active 的所有元素事件
         util.event('lay-event', {
             communitynorms: function(){
-                core.openIframeDialog('社区规范设置','/platform/aboutus/input?type=communitynorms',['100%', '440px'],false,null);
+                core.openIframeDialog('社区规范设置','/platform/aboutus/input?type=communitynorms',['100%', '90%'],false,null);
             }
             ,privacyclause: function(){
-                core.openIframeDialog('隐私条款设置','/platform/aboutus/input?type=privacyclause',['100%', '440px'],false,null);
+                core.openIframeDialog('隐私条款设置','/platform/aboutus/input?type=privacyclause',['100%', '90%'],false,null);
             }
             ,useragr: function(){
-                core.openIframeDialog('用户协议设置','/platform/aboutus/input?type=useragr',['100%', '440px'],false,null);
+                core.openIframeDialog('用户协议设置','/platform/aboutus/input?type=useragr',['100%', '90%'],false,null);
             }
         });
     });
