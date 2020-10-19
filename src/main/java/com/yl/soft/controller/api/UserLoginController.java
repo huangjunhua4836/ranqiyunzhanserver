@@ -113,7 +113,6 @@ public class UserLoginController extends BaseController {
 		user.setState(UserEnum.Qualification.未认证.getValue());
 		user.setEnabled(UserEnum.State.启用.getValue());			
 		user.setType(0);
-		user.setIsnew(0);
 		return user;
 	}
 
