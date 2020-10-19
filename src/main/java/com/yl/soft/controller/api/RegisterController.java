@@ -193,9 +193,9 @@ public class RegisterController extends BaseController {
         if(StringUtils.isEmpty(registerExhibitorDto.getMailbox())){
             return error(-100,"邮箱为空！");
         }
-        if(!registerExhibitorDto.getMailbox().matches("^([a-zA-Z]|[0-9])(\\w|\\-)+@[a-zA-Z0-9]+\\.([a-zA-Z]{2,4})$")){
-            return error(-100,"请输入一个正确的邮箱地址");
-        }
+//        if(!registerExhibitorDto.getMailbox().matches("^([a-zA-Z]|[0-9])(\\w|\\-)+@[a-zA-Z0-9]+\\.([a-zA-Z]{2,4})$")){
+//            return error(-100,"请输入一个正确的邮箱地址");
+//        }
         if(StringUtils.isEmpty(registerExhibitorDto.getBusinesslicense())){
             return error(-100,"营业执照图片地址为空！");
         }
