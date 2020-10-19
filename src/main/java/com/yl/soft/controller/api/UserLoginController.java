@@ -61,27 +61,24 @@ public class UserLoginController extends BaseController {
 
 	@Autowired
 	private RedisService redisUtil;
-	
+
 	@Autowired
 	private EhbExhibitorService ehbExhibitorService;
 
 	@Autowired
 	private SessionState sessionState;
-	
 
-	
-	
 	private BaseResult<EhbAudiencedlDto> setSessionUser(EhbAudience user) {
 		if (UserEnum.State.of(user.getEnabled()) == UserEnum.State.禁用) {
 			return error(-203, "账号已被冻结");
 		}
 		String token = UUID.randomUUID().toString();
-		String pass=UUID.randomUUID().toString();
+		String pass = UUID.randomUUID().toString();
 		SessionUser sessionUser = new SessionUser();
 		sessionUser.setCode(200);
 		sessionUser.setId(user.getId());
 		BeanUtils.copyProperties(user, sessionUser);
-		if(sessionUser.getBopie() != null) {
+		if (sessionUser.getBopie() != null) {
 			sessionUser.setLabelid(ehbExhibitorService.getById(sessionUser.getBopie()).getLabelid());
 		}
 		sessionState.setSessionUser(token, sessionUser);
@@ -90,16 +87,16 @@ public class UserLoginController extends BaseController {
 		userDto.setToken(token);
 		userDto.setType(user.getType());
 		userDto.setIsnew(user.getIsnew());
-		userDto.setIszs(user.getBopie()==null?0:1);
-		if(user.getBopie()!=null) {
-			EhbExhibitor e=ehbExhibitorService.getById(user.getBopie());
-			userDto.setIsrz(e==null?-1:e.getState());
+		userDto.setIszs(user.getBopie() == null ? 0 : 1);
+		if (user.getBopie() != null) {
+			EhbExhibitor e = ehbExhibitorService.getById(user.getBopie());
+			userDto.setIsrz(e == null ? -1 : e.getState());
 		}
 		BaseResult<EhbAudiencedlDto> result = new BaseResult<>();
 		user.setTempass(pass);
 		user.setIsnew(1);
 		ehbAudienceService.updateById(user);
-		
+
 		result.setData(userDto);
 		result.setCode(200);
 		result.setDesc("登录成功");
@@ -114,7 +111,9 @@ public class UserLoginController extends BaseController {
 		user.setPhone(phone);
 		user.setName(String.valueOf(new Random().nextInt(899999) + 100000));
 		user.setState(UserEnum.Qualification.未认证.getValue());
-		user.setEnabled(UserEnum.State.启用.getValue());
+		user.setEnabled(UserEnum.State.启用.getValue());			
+		user.setType(0);
+		user.setIsnew(0);
 		return user;
 	}
 
@@ -137,7 +136,6 @@ public class UserLoginController extends BaseController {
 		return setSessionUser(user);
 	}
 
-
 	@ApiOperation(value = "手机验证码登录", notes = "使用手机验证码登录")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query"), })
@@ -149,7 +147,7 @@ public class UserLoginController extends BaseController {
 			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
 			@NotBlank(message = "-101-验证码错误") String code) {
 		EhbAudience user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getPhone, phone).one();
-		
+
 		String sms = redisUtil.get("I" + phone.trim());
 		if (!code.equals(sms)) {
 			return error(-202, "验证码错误");
@@ -160,60 +158,57 @@ public class UserLoginController extends BaseController {
 		return setSessionUser(user);
 	}
 
-	
 	@ApiOperation(value = "手机验证码注册", notes = "使用手机验证码注册")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "password", value = "密码", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "type", value = "用户类型（0：观展用户，1参展用户）", required = true, paramType = "query"),
-			})
+			@ApiImplicitParam(name = "type", value = "用户类型（0：观展用户，1参展用户）", required = true, paramType = "query"), })
 	@ApiResponses({ @ApiResponse(code = -101, message = "请输入手机号"), @ApiResponse(code = -102, message = "请输入验证码"),
 			@ApiResponse(code = -202, message = "验证码错误"), @ApiResponse(code = -203, message = "账号已被冻结"),
 			@ApiResponse(code = 200, message = "登录成功"), @ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
 	@PostMapping("/signinWithSmsr")
 	public BaseResult<EhbAudiencedlDto> signinWithSmsr(
 			@NotBlank(message = "-101-请输入正确的手机号") @Pattern(regexp = Constants.PHONE_REG, message = "-101-请输入正确的手机号") String phone,
-			@NotBlank(message = "-101-验证码错误") String code,Integer type,String password) {
+			@NotBlank(message = "-101-验证码错误") String code, Integer type, String password) {
 		EhbAudience user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getPhone, phone).one();
-		
-		if(user!=null) {
+
+		if (user != null) {
 			return error(-302, "当前手机号已被注册");
 		}
 		String sms = redisUtil.get("I" + phone.trim());
 		if (!code.equals(sms)) {
 			return error(-202, "验证码错误");
 		}
-		EhbAudience ehbAudience=new EhbAudience();
+		EhbAudience ehbAudience = new EhbAudience();
 		ehbAudience.setPhone(phone);
 		ehbAudience.setLoginname(phone);
 		ehbAudience.setName(String.valueOf(new Random().nextInt(899999) + 100000));
 		ehbAudience.setPassword(ehbAudienceService.encryptPassword(password));
 		ehbAudience.setIsdel(false);
-		if(type==1) {
-			EhbExhibitor ehbExhibitor=new EhbExhibitor();
+		if (type == 1) {
+			EhbExhibitor ehbExhibitor = new EhbExhibitor();
 			ehbExhibitor.setCreatetime(LocalDateTime.now());
 			ehbExhibitor.setIsdel(false);
 			ehbAudience.setBopie(ehbExhibitor.getId());
 		}
-		
+
 		ehbAudience.setType(0);
 		ehbAudience.setIsnew(0);
-		if(type==1) { //普通用户
-			EhbExhibitor entity=new EhbExhibitor();
+		if (type == 1) { // 普通用户
+			EhbExhibitor entity = new EhbExhibitor();
 			entity.setIsdel(false);
 			ehbExhibitorService.save(entity);
 			ehbAudience.setBopie(entity.getId());
 		}
 		ehbAudienceService.save(ehbAudience);
-		
+
 		return setSessionUser(ehbAudience);
 	}
 
 	@ApiOperation(value = "第三方登录", notes = "第三方登录返回-301弹出绑定手机号进行注册")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "type", value = "第三方类型：1=微信，2=QQ", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "reqcode", value = "三方openId", required = true, paramType = "query")
-			})
+			@ApiImplicitParam(name = "type", value = "第三方类型：1=微信，2=QQ , 3=苹果登录", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "reqcode", value = "三方openId", required = true, paramType = "query") })
 	@ApiResponses({ @ApiResponse(code = -101, message = "请输入正确的第三方类型"), @ApiResponse(code = -102, message = "请输入请求码"),
 			@ApiResponse(code = -202, message = "请求码无效"), @ApiResponse(code = -203, message = "账号已被冻结"),
 			@ApiResponse(code = -301, message = "未注册，请先注册"), @ApiResponse(code = 0, message = "登录成功"),
@@ -223,8 +218,10 @@ public class UserLoginController extends BaseController {
 			@NotNull(message = "-101-无效的第三方类型") @Positive(message = "-101-无效的第三方类型") Integer type,
 			@NotBlank(message = "-102-三方oppenId错误") String reqcode) {
 		LoginType loginType = LoginType.of(type);
-		if (loginType == null) {
-			return error(-101, "请输入正确的第三方类型");
+		if (loginType != LoginType.苹果) {
+			if (loginType == null) {
+				return error(-101, "请输入正确的第三方类型");
+			}
 		}
 		String openId = reqcode;
 		if (StringUtils.isBlank(openId)) {
@@ -237,6 +234,9 @@ public class UserLoginController extends BaseController {
 			break;
 		case QQ:
 			user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getQqOpenid, openId).one();
+			break;
+		case 苹果:
+			user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getPgOpenid, openId).one();
 			break;
 		}
 		if (user == null) {
@@ -255,7 +255,7 @@ public class UserLoginController extends BaseController {
 			@ApiResponse(code = -202, message = "请求码无效"), @ApiResponse(code = -101, message = "请输入手机号"),
 			@ApiResponse(code = -102, message = "请输入验证码"), @ApiResponse(code = -202, message = "验证码错误"),
 			@ApiResponse(code = -301, message = "已注册，请登陆"), @ApiResponse(code = 0, message = "登录成功"),
-			@ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
+			@ApiResponse(code = 500, message = "未知异常,请联系管理员") })
 	@PostMapping("/signup_openid")
 	public BaseResult<EhbAudiencedlDto> signupWithOpenid(
 			@NotNull(message = "-101-无效的第三方类型") @Positive(message = "-101-无效的第三方类型") Integer type,
@@ -323,8 +323,6 @@ public class UserLoginController extends BaseController {
 		}
 		return setSessionUser(user);
 	}
-	
-	
 
 	@ApiOperation(value = "修改密码", notes = "修改密码")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
@@ -347,7 +345,7 @@ public class UserLoginController extends BaseController {
 		if (!ehbAudienceService.lambdaUpdate()
 				.set(EhbAudience::getPassword, ehbAudienceService.encryptPassword(password))
 				.eq(EhbAudience::getPhone, phone).update()) {
-			return error(199,"手机号错误");
+			return error(199, "手机号错误");
 		}
 		BaseResult r = new BaseResult();
 		r.setCode(200);
@@ -355,8 +353,6 @@ public class UserLoginController extends BaseController {
 		r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
 		return r;
 	}
-	
-	
 
 	@ApiOperation(value = "更换手机号", notes = "更换手机号码")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "oldCode", value = "原手机验证码", required = true, paramType = "query"),
@@ -395,61 +391,108 @@ public class UserLoginController extends BaseController {
 		r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
 		return r;
 	}
-	
+
 	@ApiOperation(value = "注销登录", notes = "注销登录", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query")
-    })
-	@ApiResponses({ 
-		@ApiResponse(code = 200, message = "注销成功")
-	})
-    @PostMapping(value = "/log_out")
-    public BaseResult log_out(@NotBlank(message = "-501-TOKEN为空！") String token) {
+	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query") })
+	@ApiResponses({ @ApiResponse(code = 200, message = "注销成功") })
+	@PostMapping(value = "/log_out")
+	public BaseResult log_out(@NotBlank(message = "-501-TOKEN为空！") String token) {
 		BaseResult r = new BaseResult();
-        sessionState.delSessionUser(token);
-        r.setCode(200);
-        r.setDesc("注销登录");
-        r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
-        return r;
-    }
-	
-	 @ApiOperation(value = "临时密码授权登录", notes = "临时密码生成token", httpMethod = "POST")
-	    @ApiImplicitParams({
-	            @ApiImplicitParam(name = "temppass", value = "临时密码", required = true, paramType = "query")
-	    })
-		@ApiResponses({ 
-			@ApiResponse(code = 200, message = "授权成功"),
-			@ApiResponse(code = -501, message = "授权失败临时密码为空"),
+		sessionState.delSessionUser(token);
+		r.setCode(200);
+		r.setDesc("注销登录");
+		r.setStartTime(DateUtils.DateToString(new Date(), DateUtils.DATE_TO_STRING_DETAIAL_PATTERN));
+		return r;
+	}
+
+	@ApiOperation(value = "临时密码授权登录", notes = "临时密码生成token", httpMethod = "POST")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "temppass", value = "临时密码", required = true, paramType = "query") })
+	@ApiResponses({ @ApiResponse(code = 200, message = "授权成功"), @ApiResponse(code = -501, message = "授权失败临时密码为空"),
 			@ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
-	    @PostMapping(value = "/tempPass")
-	    public BaseResult tempPass(String temppass) {
-	        if (StringUtil.isEmpty(temppass)) {
-	            return error(501,"临时密码为空");
-	        }
-	       EhbAudience user=  ehbAudienceService.lambdaQuery().eq(EhbAudience::getTempass, temppass).one();
-	       return setSessionUser(user);
-	    }
-	
-    @ApiOperation(value = "TOKEN续命", notes = "续命为延迟5分钟", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "登录手机号", required = true, paramType = "query")
-    })
-	@ApiResponses({ 
-		@ApiResponse(code = 200, message = "续命成功"),
-		@ApiResponse(code = -501, message = "TOKEN为空"),
-		@ApiResponse(code = -601, message = "续命失败！"),
-		@ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
-    @PostMapping(value = "/heartbeat")
-    public BaseResult heartbeat(String token) {
-        if (StringUtil.isEmpty(token)) {
-            return error(-501,"token为空！");
-        }
-        boolean timeout = sessionState.DelayTokenTimeOut(token);
-        if (timeout) {
-            return ok2("续命成功！");
-        } else {
-            return error(-601,"续命失败！");
-        }
-    }
-    
+	@PostMapping(value = "/tempPass")
+	public BaseResult tempPass(String temppass) {
+		if (StringUtil.isEmpty(temppass)) {
+			return error(501, "临时密码为空");
+		}
+		EhbAudience user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getTempass, temppass).one();
+		return setSessionUser(user);
+	}
+
+	@ApiOperation(value = "TOKEN续命", notes = "续命为延迟5分钟", httpMethod = "POST")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登录手机号", required = true, paramType = "query") })
+	@ApiResponses({ @ApiResponse(code = 200, message = "续命成功"), @ApiResponse(code = -501, message = "TOKEN为空"),
+			@ApiResponse(code = -601, message = "续命失败！"), @ApiResponse(code = 500, message = "未知异常,请联系管理员"), })
+	@PostMapping(value = "/heartbeat")
+	public BaseResult heartbeat(String token) {
+		if (StringUtil.isEmpty(token)) {
+			return error(-501, "token为空！");
+		}
+		boolean timeout = sessionState.DelayTokenTimeOut(token);
+		if (timeout) {
+			return ok2("续命成功！");
+		} else {
+			return error(-601, "续命失败！");
+		}
+	}
+
+	@ApiOperation(value = "第三方苹果注册绑定手机号", notes = "第三方苹果注册绑定手机号")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "type", value = "第三方类型：3=苹果Iphone", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "reqcode", value = "三方openId", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "phone", value = "手机号", required = false, paramType = "query"),
+			@ApiImplicitParam(name = "code", value = "验证码", required = false, paramType = "query"), })
+	@PostMapping("/signup_iphone_openid")
+	public BaseResult<EhbAudiencedlDto> signupWithIphoneOpenid(
+			@NotNull(message = "-101-无效的第三方类型") @Positive(message = "-101-无效的第三方类型") Integer type,
+			@NotBlank(message = "-102-请输入三方openId") String reqcode,
+			@Pattern(regexp = Constants.PHONE_REG, message = "-103-请输入正确的手机号") String phone, String code) {
+		LoginType loginType = LoginType.of(type);
+
+		if (!StringUtils.isBlank(phone)) {
+			String sms = redisUtil.get("I" + phone.trim());
+			if (!code.equals(sms)) {
+				return error(-202, "验证码错误");
+			}
+		}
+
+		if (loginType != LoginType.苹果) {
+			return error(-101, "请输入正确的第三方类型");
+		}
+		String openId = reqcode;
+		if (StringUtils.isBlank(openId)) {
+			return error(-102, "请求码无效");
+		}
+		EhbAudience user = null;
+		switch (loginType) {
+		case 苹果:
+			user = ehbAudienceService.lambdaQuery().eq(EhbAudience::getPgOpenid, openId).one();
+			break;
+		}
+		if (user != null) {
+			return error(-301, "已注册，请登陆");
+		}
+		if(!StringUtils.isBlank(phone)) {
+			// 新手机 且 新qqwx号
+			user = generateNewUserWithPhone(phone);
+		}else {
+			user = new EhbAudience();
+			user.setCreatetime(LocalDateTime.now());
+			user.setUpdatetime(LocalDateTime.now());
+			user.setIsdel(Boolean.FALSE);
+			user.setName(String.valueOf(new Random().nextInt(899999) + 100000));
+			user.setState(UserEnum.Qualification.未认证.getValue());
+			user.setEnabled(UserEnum.State.启用.getValue());
+			user.setType(0);
+			user.setIsnew(0);
+		}
+		switch (loginType) {
+		case 苹果:
+			user.setPgOpenid(openId);
+			break;
+		}
+		if (!ehbAudienceService.save(user)) {
+			return error();
+		}
+		return setSessionUser(user);
+	}
 }
