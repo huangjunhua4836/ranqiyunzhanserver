@@ -38,14 +38,6 @@
                                         </div>
                                         <div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
                                             <div class="layui-form-item">
-                                                <label class="layui-form-label">流名称</label>
-                                                <div class="layui-input-block">
-                                                    <input type="text" name="flowName" placeholder="请输入流名称" autocomplete="off" class="layui-input">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
-                                            <div class="layui-form-item">
                                                 <label class="layui-form-label">创建时间段</label>
                                                 <div class="layui-input-block">
                                                     <input type="text" name = "startTime" placeholder="开始时间" autocomplete="off" class="layui-input" id="startTime">
@@ -83,61 +75,19 @@
         <div id="detail" style="display: none;">
             <form class="layui-form layui-form-pane">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">id</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">主标题</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">副标题</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">直播号</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
                     <label class="layui-form-label">流名称</label>
                     <div class="layui-input-block">
                         <input type="text" class="layui-input" readonly>
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">直播时长</label>
+                    <label class="layui-form-label">下载地址</label>
                     <div class="layui-input-block">
                         <input type="text" class="layui-input" readonly>
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">私密口令</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">直播开始时间</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">直播结束时间</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">直播视频下载地址</label>
+                    <label class="layui-form-label">回放地址</label>
                     <div class="layui-input-block">
                         <input type="text" class="layui-input" readonly>
                     </div>
@@ -154,36 +104,6 @@
                         <input type="text" class="layui-input" readonly>
                     </div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">直播预告</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">直播回放地址</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">排序</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">主播公告</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">创建时间</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" readonly>
-                    </div>
-                </div>
             </form>
         </div>
 
@@ -194,9 +114,9 @@
         </script>
 
         <script type="text/html" id="rowToolBar">
-            <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-form" title="查看"></i></a>
-            <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit" title="编辑"></i></a>
-            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete" title="删除"></i></a>
+            <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-form" title="查看"></i>查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit" title="编辑"></i>编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete" title="删除">删除</i></a>
         </script>
         <script type="text/javascript" th:src="@{/static/js/live/live.js}"></script>
     </body>

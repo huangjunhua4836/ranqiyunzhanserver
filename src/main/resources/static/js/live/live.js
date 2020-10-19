@@ -28,17 +28,32 @@ layui.use('core', function(){
                 {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field: 'mainTitle', title: '主标题'}
                 ,{field: 'subTitle', title: '副标题'}
+                // ,{field: 'announcement', title: '主播公告'}
                 ,{field: 'roomNum', title: '直播号'}
-                ,{field: 'flowName', title: '流名称'}
-                ,{field: 'liveDuration', title: '直播时长'}
                 ,{field: 'liveStartTime', title: '直播开始时间'}
-                ,{field: 'liveEndtime', title: '直播结束时间'}
+                ,{field: 'liveDuration', title: '直播时长'}
+                ,{field: 'liveStatus', title: '直播状态',
+                    templet: function(d){
+                        if(d.liveStatus == '0'){
+                            return '即将开播';
+                        }if(d.liveStatus == '1'){
+                            return '直播中';
+                        }if(d.liveStatus == '2'){
+                            return '直播结束';
+                        }else{
+                            return '未知状态';
+                        }
+                    }
+                }
+                // ,{field: 'videoDownUrl', title: '下载地址'}
+                // ,{field: 'playback', title: '回访地址'}
+                ,{field: 'sort', title: '排序'}
                 ,{field: 'createtime', title: '创建时间',sort: true,
                     templet: function(d){
                         return util.toDateString(d.createtime, "yyyy-MM-dd HH:mm:ss");
                     }
                 }
-                ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:150,unresize: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:230,unresize: true}
             ]]
             ,page: true //开启分页
         });
@@ -48,7 +63,7 @@ layui.use('core', function(){
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
-                core.openIframeDialog('添加','/platform/live/input?type=add',['500px', '95%'],false,initTable);
+                core.openIframeDialog('添加','/platform/live/input?type=add',['100%', '90%'],false,initTable);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
@@ -71,26 +86,14 @@ layui.use('core', function(){
                 }
             });
         } else if(obj.event === 'edit'){
-            core.openIframeDialog('修改','/platform/live/input?type=update&id='+data.id,['500px', '900px'],false,initTable);
+            core.openIframeDialog('修改','/platform/live/input?type=update&id='+data.id,['100%', '90%'],false,initTable);
         } else if(obj.event === 'detail'){
-            core.openDialog('详情',$('#detail').html(),['500px','480px']);
-            $('.layui-layer-content').find('input').eq(0).val(data.id);
-            $('.layui-layer-content').find('input').eq(1).val(data.mainTitle);
-            $('.layui-layer-content').find('input').eq(2).val(data.subTitle);
-            $('.layui-layer-content').find('input').eq(3).val(data.roomNum);
-            $('.layui-layer-content').find('input').eq(4).val(data.flowName);
-            $('.layui-layer-content').find('input').eq(5).val(data.liveDuration);
-            $('.layui-layer-content').find('input').eq(6).val(data.livePassword);
-            $('.layui-layer-content').find('input').eq(7).val(data.liveStartTime);
-            $('.layui-layer-content').find('input').eq(8).val(data.liveEndtime);
-            $('.layui-layer-content').find('input').eq(9).val(data.videoDownUrl);
-            $('.layui-layer-content').find('input').eq(10).val(data.pushFlowUrl);
-            $('.layui-layer-content').find('input').eq(11).val(data.pullFlowUrl);
-            $('.layui-layer-content').find('input').eq(12).val(data.notice);
-            $('.layui-layer-content').find('input').eq(13).val(data.playback);
-            $('.layui-layer-content').find('input').eq(14).val(data.sort);
-            $('.layui-layer-content').find('input').eq(15).val(data.announcement);
-            $('.layui-layer-content').find('input').eq(16).val(data.createtime);
+            core.openDialog('详情',$('#detail').html(),['100%', '90%']);
+            $('.layui-layer-content').find('input').eq(0).val(data.flowName);
+            $('.layui-layer-content').find('input').eq(1).val(data.videoDownUrl);
+            $('.layui-layer-content').find('input').eq(2).val(data.playback);
+            $('.layui-layer-content').find('input').eq(3).val(data.pushFlowUrl);
+            $('.layui-layer-content').find('input').eq(4).val(data.pullFlowUrl);
         }
     });
 

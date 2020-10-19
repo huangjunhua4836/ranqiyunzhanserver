@@ -15,6 +15,7 @@ import com.yl.soft.po.EhbLiveBroadcast;
 import com.yl.soft.service.EhbLiveBroadcastService;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * <p>
@@ -41,9 +46,10 @@ public class LiveController extends BaseController {
     public EhbLiveBroadcastService ehbLiveBroadcastService;
     @Autowired
     public HWPlayFlowAuthUtil hwPlayFlowAuthUtil;
-
     @Autowired
     private ImOperator imOperator;
+    @Value("${custom.flowNamelist}")
+    private String flowNamelist;
 
     @GetMapping("/list")
     public String list() {
@@ -118,6 +124,17 @@ public class LiveController extends BaseController {
             //推流地址
             ehbLiveBroadcast.setPushFlowUrl(hwPlayFlowAuthUtil.tiveUrl(ehbLiveBroadcast.getFlowName()));
             ehbLiveBroadcast.setCreatetime(LocalDateTime.now());
+            List<String> userFlowNames = ehbLiveBroadcastService.lambdaQuery().select(EhbLiveBroadcast::getFlowName).eq(EhbLiveBroadcast::getIsdel,1).in(EhbLiveBroadcast::getLiveStatus,0,1)
+                    .list().stream().map(i->{
+                        return i.getFlowName();
+            }).collect(toList());
+            List<String> zongflowList = Arrays.asList(flowNamelist.split(","));
+            //去除已用的元素
+            zongflowList = zongflowList.stream().filter(i -> !userFlowNames.contains(i)).collect(toList());
+            if(zongflowList.isEmpty()){
+                return setResultError("流名称已用尽！");
+            }
+            ehbLiveBroadcast.setFlowName(zongflowList.get(0));
         }else{
         }
         if(ehbLiveBroadcastService.saveOrUpdate(ehbLiveBroadcast)){
