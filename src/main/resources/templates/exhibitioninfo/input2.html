@@ -78,13 +78,13 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">展位号</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{boothno}" lay-verify="required"  autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{boothno}" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">蜂鸟云Fid</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{fid}" lay-verify="required"  autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{fid}" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -99,22 +99,6 @@
                             <textarea placeholder="请输入内容" class="layui-textarea" th:field="*{describes}"></textarea>
                         </div>
                     </div>
-<!--                    <div class="layui-form-item" th:if="*{id != null}">-->
-<!--                        <label class="layui-form-label">审核操作</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="state" lay-filter="selectFilter">-->
-<!--                                <option value="">请选择</option>-->
-<!--                                <option value="3">审核不通过</option>-->
-<!--                                <option value="1">审核通过</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item" style="display: none;" id="failreason">-->
-<!--                        <label class="layui-form-label">审核失败原因（审核通过不填写）</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input type="text" th:field="*{failreason}" autocomplete="off" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
                     <input th:field="*{id}" type="hidden"/>
                     <input th:field="*{businesslicense}" type="hidden"/>
                     <input th:field="*{credentials}" type="hidden"/>
@@ -155,11 +139,11 @@
                     return false;
                 }
                 //身份证
-                var idcard = data.field.idcard;
-                if(!(/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(idcard))){
-                    layer.msg('身份证有误，请重填！',core.showtime);
-                    return false;
-                }
+                // var idcard = data.field.idcard;
+                // if(!(/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(idcard))){
+                //     layer.msg('身份证有误，请重填！',core.showtime);
+                //     return false;
+                // }
 
                 //座机
                 // var tel = data.field.tel;

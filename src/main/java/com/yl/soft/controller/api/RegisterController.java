@@ -160,9 +160,6 @@ public class RegisterController extends BaseController {
         if(ehbAudience == null){
             return error(-100,"参展商没有注册！");
         }
-        if(!StringUtils.isEmpty(ehbAudience.getBopie())){
-//            return error(-100,"展商已认证！");
-        }
         if(StringUtils.isEmpty(registerExhibitorDto.getEnterprisename())){
             return error(-100,"企业名称为空！");
         }
@@ -202,7 +199,7 @@ public class RegisterController extends BaseController {
         if(StringUtils.isEmpty(registerExhibitorDto.getCredentials())){
             return error(-100,"营业执照图片地址为空！");
         }
-        EhbExhibitor ehbExhibitor = new EhbExhibitor();
+        EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(ehbAudience.getBopie());
         BeanUtil.copyProperties(registerExhibitorDto,ehbExhibitor);
         ehbExhibitor.setIsdel(false);
         ehbExhibitor.setUpdatetime(LocalDateTime.now());
@@ -221,7 +218,7 @@ public class RegisterController extends BaseController {
             }
             ehbExhibitor.setLabelid(JSONArray.toJSONString(labs));
         }
-        if(ehbExhibitorService.saveExhibitor(ehbAudience,ehbExhibitor)){
+        if(ehbExhibitorService.updateById(ehbExhibitor)){
             return ok2();
         }else{
             return error(-100,"保存失败！");

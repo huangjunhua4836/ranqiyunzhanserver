@@ -32,31 +32,7 @@ import java.util.Random;
 @Service
 public class EhbExhibitorServiceImpl extends ServiceImpl<EhbExhibitorMapper, EhbExhibitor> implements EhbExhibitorService {
     @Autowired
-    private EhbAudienceMapper ehbAudienceMapper;
-
-    @Autowired
     public EhbAudienceService ehbAudienceService;
-
-    @Transactional
-    @Override
-    public boolean saveExhibitor(EhbAudience ehbAudience, EhbExhibitor ehbExhibitor) {
-        int i = baseMapper.insert(ehbExhibitor);
-        if(i<=0){
-            return false;
-        }
-        QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
-        ehbExhibitorQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
-        ehbExhibitorQueryWrapper.eq("enterprisename", ehbExhibitor.getEnterprisename());
-        ehbExhibitorQueryWrapper.last("limit 1");
-        ehbExhibitorQueryWrapper.orderByDesc("createtime");
-        ehbAudience.setBopie(baseMapper.selectOne(ehbExhibitorQueryWrapper).getId());
-         i = ehbAudienceMapper.updateById(ehbAudience);
-        if(i>0){
-            return true;
-        }else{
-            return false;
-        }
-    }
 
     @Override
     public List<ExhibitorDto> randExibitionList(Map paramMap) {
