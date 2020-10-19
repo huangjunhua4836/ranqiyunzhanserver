@@ -457,7 +457,9 @@ public class PersonalCenterController extends BaseController {
 	@PostMapping("/api/addOrDelCollention")
 	public BaseResult addOrDelCollention(String token, Integer relateid, Integer type) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
-
+		if(sessioner.getCode()==-1) {
+			return error(-401,"token失效");
+		}
 		Integer i = 1;// （1：收藏 2：点赞 3：关注 4：浏览）
 
 		switch (type) {
@@ -524,6 +526,9 @@ public class PersonalCenterController extends BaseController {
 	@PostMapping("/api/addOrDelPraise")
 	public BaseResult addOrDelPraise(String token, Integer relateid, Integer type) {
 		SessionUser sessioner = sessionState.getCurrentUser(token);
+		if(sessioner.getCode()==-1) {
+			return error(-401,"token失效");
+		}
 		Integer i = 2;// （1：收藏 2：点赞 3：关注 4：浏览）
 		switch (type) {
 		case 1: // 展商
