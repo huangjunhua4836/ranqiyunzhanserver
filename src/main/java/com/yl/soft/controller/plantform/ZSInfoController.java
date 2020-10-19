@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.PhoneUtils;
 import com.yl.soft.common.util.PinyinUtil;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
@@ -115,7 +116,7 @@ public class ZSInfoController extends BaseController {
         ExhibitorVo exhibitorVo = new ExhibitorVo();
         if("add".equals(type)){
 
-        }else if("update".equals(type)){
+        }else{
             EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(id);
             BeanUtil.copyProperties(ehbExhibitor,exhibitorVo);
             QueryWrapper<EhbAudience> ehbAudienceQueryWrapper = new QueryWrapper<>();
@@ -129,9 +130,11 @@ public class ZSInfoController extends BaseController {
             exhibitorVo.setType(ehbAudience.getType());
             exhibitorVo.setHeadPortrait(ehbAudience.getHeadPortrait());
         }
-
         modelMap.put("exhibitorVo",exhibitorVo);
 
+        if("shenhe".equals(type)){
+            return "exhibitioninfo/shenhe";
+        }
         return "exhibitioninfo/input2";
     }
 
@@ -150,13 +153,14 @@ public class ZSInfoController extends BaseController {
             if(ehbAudienceService.count(zswrapper)>0){
                 return setResultError("该手机号已注册！");
             }
-
             exhibitorVo.setCreatetime(LocalDateTime.now());
             exhibitorVo.setCreateuser(1);
             exhibitorVo.setIsdel(false);
+            exhibitorVo.setState(0);//待认证
         }else{
             exhibitorVo.setUpdatetime(LocalDateTime.now());
             exhibitorVo.setUpdateuser(1);
+            //保存云端橱窗内存
             ExhibitorDto exhibitorDto = new ExhibitorDto();
             exhibitorDto.setId(exhibitorVo.getId());
             exhibitorDto.setEnterprisename(exhibitorVo.getEnterprisename());
@@ -164,14 +168,6 @@ public class ZSInfoController extends BaseController {
             exhibitorDto.setBoothno(exhibitorVo.getBoothno());
             exhibitorDto.setEnglishname(exhibitorVo.getEnglishname());
             if(exhibitorVo.getState() != null){
-                //先删除要审核的
-                Set<String> strList = redisService.sGet(firstWord);
-                for(String str:strList){
-                    ExhibitorDto eht = JSONObject.parseObject(str,ExhibitorDto.class);
-                    if(eht.getId() == exhibitorVo.getId()){
-                        redisService.setRemove(firstWord,JSONObject.toJSONString(eht));
-                    }
-                }
                 if(exhibitorVo.getState() == 3){//审核不通过
                     if(StringUtils.isEmpty(exhibitorVo.getFailreason())){
                         return setResultError("审核原因不能为空！");
@@ -182,6 +178,14 @@ public class ZSInfoController extends BaseController {
                     }
                     if(StringUtils.isEmpty(exhibitorVo.getCredentials())){
                         return setResultError("企业授权书未上传！");
+                    }
+                    //先删除要审核的
+                    Set<String> strList = redisService.sGet(firstWord);
+                    for(String str:strList){
+                        ExhibitorDto eht = JSONObject.parseObject(str,ExhibitorDto.class);
+                        if(eht.getId() == exhibitorVo.getId()){
+                            redisService.setRemove(firstWord,JSONObject.toJSONString(eht));
+                        }
                     }
                     redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
                     exhibitorVo.setCertificationtime(LocalDateTime.now());//认证时间
@@ -226,5 +230,15 @@ public class ZSInfoController extends BaseController {
             redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
         });
         return setResultSuccess();
+    }
+
+    /**
+     * 获取虚拟手机号码
+     * @return
+     */
+    @PostMapping("/getVmwarePhone")
+    @ResponseBody
+    public BaseResponse getVmwarePhone() {
+        return setResultSuccess(PhoneUtils.getVmwarePhone());
     }
 }

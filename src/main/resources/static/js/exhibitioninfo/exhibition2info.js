@@ -91,21 +91,16 @@ layui.use('core', function(){
     table.on('tool(tableFilter)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
-            layer.confirm('真的删除么？', function(index){
+            if(data.state == '1'){
+                layer.msg('已经认证过啦',core.showtime);
+                return;
+            }
+            layer.confirm('确定审核么？', function(index){
                 layer.close(index);
-                //向服务端发送删除指令
-                var resultData = core.ajax('/crmRole/delete',false,'POST','id='+data.id);
-                if(resultData!=false){
-                    layer.msg('操作成功！',core.showtime);
-                    initTable({});
-                }
+                core.openIframeDialog('审核','/platform/zsInfo/input?type=shenhe&id='+data.id,['60%', '50%'],false,initTable);
             });
         } else if(obj.event === 'edit'){
-            // if(data.state == '1'){
-            //     layer.msg('已经审核过了！',core.showtime);
-            //     return;
-            // }
-            core.openIframeDialog('审核','/platform/zsInfo/input?type=update&id='+data.id,['100%', '90%'],false,initTable);
+            core.openIframeDialog('修改','/platform/zsInfo/input?type=update&id='+data.id,['100%', '90%'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('详情',$('#detail').html(),['100%', '90%']);
             $('.layui-layer-content').find('input').eq(0).val(data.registerphone);

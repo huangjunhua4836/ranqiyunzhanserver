@@ -10,6 +10,7 @@
                         <label class="layui-form-label">注册手机</label>
                         <div class="layui-input-block">
                             <input type="text" th:readonly="*{id!=null}" th:field="*{registerphone}" lay-verify="required"  autocomplete="off" class="layui-input" maxlength="11">
+                            <button type="button" class="layui-btn layui-btn-normal" lay-active="e3">生成虚拟手机号</button>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -86,22 +87,22 @@
                             <input type="text" th:field="*{halurl}" autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                    <div class="layui-form-item" th:if="*{id != null}">
-                        <label class="layui-form-label">审核操作</label>
-                        <div class="layui-input-block">
-                            <select name="state" lay-filter="selectFilter">
-                                <option value="">请选择</option>
-                                <option value="3">审核不通过</option>
-                                <option value="1">审核通过</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-form-item" style="display: none;" id="failreason">
-                        <label class="layui-form-label">审核失败原因（审核通过不填写）</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{failreason}" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
+<!--                    <div class="layui-form-item" th:if="*{id != null}">-->
+<!--                        <label class="layui-form-label">审核操作</label>-->
+<!--                        <div class="layui-input-block">-->
+<!--                            <select name="state" lay-filter="selectFilter">-->
+<!--                                <option value="">请选择</option>-->
+<!--                                <option value="3">审核不通过</option>-->
+<!--                                <option value="1">审核通过</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="layui-form-item" style="display: none;" id="failreason">-->
+<!--                        <label class="layui-form-label">审核失败原因（审核通过不填写）</label>-->
+<!--                        <div class="layui-input-block">-->
+<!--                            <input type="text" th:field="*{failreason}" autocomplete="off" class="layui-input">-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <input th:field="*{id}" type="hidden"/>
                     <input th:field="*{businesslicense}" type="hidden"/>
                     <input th:field="*{credentials}" type="hidden"/>
@@ -116,6 +117,7 @@
         layui.use('core', function(){
             var form = layui.form,
             core = layui.core,
+                util = layui.util,
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
@@ -170,6 +172,18 @@
                 }else{
                     $('#failreason').hide();
                     $('#failreason').val("");
+                }
+            });
+
+            //处理属性 为 lay-active 的所有元素事件
+            util.event('lay-active', {
+                e3: function(){
+                    var resultData = core.ajax('/platform/zsInfo/getVmwarePhone',false,'POST');
+                    if(resultData!=false){
+                        console.log(resultData);
+                        $("input[name=registerphone]").val(resultData);
+                        layer.msg('操作成功',core.showtime);
+                    }
                 }
             });
         });
