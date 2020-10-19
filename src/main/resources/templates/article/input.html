@@ -23,6 +23,27 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <label class="layui-form-label">总收藏量</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{countcollection}" required lay-verify="required" placeholder="请输入总收藏量"
+                               autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">总点赞量</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{countthumbs}" required lay-verify="required" placeholder="请输入总点赞量"
+                               autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">总浏览量</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{countbrowse}" required lay-verify="required" placeholder="请输入总浏览量"
+                               autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">内容</label>
                     <div class="layui-input-block">
                         <textarea id="editor_id" required  lay-verify="required" th:field="*{content}" style="width:700px;height:300px;" class="layui-textarea" >
@@ -102,6 +123,22 @@
             upload = layui.upload;
 
         form.on('submit(submitFrom)', function (data) {
+            //总收藏量
+            if(!/^[0-9]+?$/.test(data.field.countcollection)){
+                layer.msg('总收藏量必须为数字，请重填！',core.showtime);
+                return false;
+            }
+            //总点赞量
+            if(!/^[0-9]+?$/.test(data.field.countthumbs)){
+                layer.msg('总点赞量必须为数字，请重填！',core.showtime);
+                return false;
+            }
+            //总浏览量
+            if(!/^[0-9]+?$/.test(data.field.countbrowse)){
+                layer.msg('总浏览量必须为数字，请重填！',core.showtime);
+                return false;
+            }
+
             var resultData = core.ajax('/platform/article/saveOrUpdate', false, 'POST', data.field);
             if (resultData != false) {
                 parent.layer.msg('操作成功', core.showtime);

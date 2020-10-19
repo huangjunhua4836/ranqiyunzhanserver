@@ -4,6 +4,7 @@
  */
 package com.yl.soft.common.interceptor;
 
+import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +21,12 @@ import java.io.PrintWriter;
  */
 public class PlatformInterceptor implements HandlerInterceptor {
 
+    RedisService redisService;
+
+    public PlatformInterceptor(RedisService redisService){
+        this.redisService = redisService;
+    }
+
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         System.out.println("***********拦截器开始*******************");
@@ -35,7 +42,8 @@ public class PlatformInterceptor implements HandlerInterceptor {
         //后台登录拦截器
         System.out.println("***********拦截器执行*******************");
         response.setCharacterEncoding("utf-8");
-        String token = request.getSession().getAttribute("loginUserInfo")+"";
+//        String token = request.getSession().getAttribute("loginUserInfo")+"";
+        String token = redisService.get("loginUserInfo");
         System.out.println(token);
         if(StringUtils.isEmpty(token)){
             //转发到登陆页面

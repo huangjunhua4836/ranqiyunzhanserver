@@ -29,7 +29,6 @@ layui.use('core', function () {
                     , {field: 'title', title: '标题'}
                     , {field: 'countcollection', title: '总收藏量'}
                     , {field: 'countthumbs', title: '总点赞量'}
-                    , {field: 'countfollow', title: '总关注量'}
                     , {field: 'countbrowse', title: '总浏览量'}
                     , {field: 'countcomment', title: '总评论量'}
                     // , {field: 'headpicture', title: '头图', width: 100,

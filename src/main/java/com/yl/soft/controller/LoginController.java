@@ -1,5 +1,6 @@
 package com.yl.soft.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.MD5Util;
@@ -23,12 +24,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/platform")
 public class LoginController extends BaseController {
-
     @Autowired
     private CrmUserService crmUserService;
-
     @Autowired
     private CrmRoleService crmRoleService;
+    @Autowired
+    private RedisService redisService;
 
     @RequestMapping("/index")
     public String index(HttpServletRequest request) {
@@ -99,6 +100,7 @@ public class LoginController extends BaseController {
             sessionUser.setCrmMenus(crmMenus);//登录用户权限
         }
         HttpSession session = request.getSession();
+        redisService.set("loginUserInfo",JSON.toJSONString(sessionUser),1800);
         session.setAttribute("loginUserInfo",sessionUser);//利用session保存登陆者信息
         return setResultSuccess();
     }
