@@ -23,12 +23,6 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">url</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{url}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
                         <label class="layui-form-label">排序</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
@@ -37,7 +31,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">内联/外联</label>
                         <div class="layui-input-block">
-                            <select th:field="*{type}" required  lay-verify="required">
+                            <select th:field="*{type}" lay-filter="selectFilter"  lay-verify="required">
                                 <option value="1" th:selected="${ehbAdvertising.type=='1'}">站内</option>
                                 <option value="2" th:selected="${ehbAdvertising.type=='2'}">站外</option>
                             </select>
@@ -47,6 +41,12 @@
                         <label class="layui-form-label">站内跳转位置</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{position}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">站外url</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{url}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>

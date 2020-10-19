@@ -158,10 +158,10 @@ public class RegisterController extends BaseController {
         SessionUser sessionUser = sessionState.getCurrentUser(token);
         EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
         if(ehbAudience == null){
-//            return error(-100,"参展商没有注册！");
+            return error(-100,"参展商没有注册！");
         }
         if(!StringUtils.isEmpty(ehbAudience.getBopie())){
-            return error(-100,"展商已认证！");
+//            return error(-100,"展商已认证！");
         }
         if(StringUtils.isEmpty(registerExhibitorDto.getEnterprisename())){
             return error(-100,"企业名称为空！");
