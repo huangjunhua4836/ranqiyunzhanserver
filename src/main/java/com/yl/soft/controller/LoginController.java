@@ -35,7 +35,7 @@ public class LoginController extends BaseController {
     public String index(HttpServletRequest request) {
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
         System.out.println(basePath);
-        request.getSession().setAttribute("basePath",basePath);
+//        request.getSession().setAttribute("basePath",basePath);
         return "index2";
     }
 
@@ -56,7 +56,7 @@ public class LoginController extends BaseController {
     @ResponseBody
     public BaseResponse logout(HttpServletRequest request) {
         //注销
-        request.getSession(false).invalidate();
+//        request.getSession(false).invalidate();
         return setResultSuccess("成功注销！");
     }
 
@@ -99,9 +99,10 @@ public class LoginController extends BaseController {
             List<CrmMenu> crmMenus = crmRoleService.getMenusByRoleId(sessionUser.getRoleId());
             sessionUser.setCrmMenus(crmMenus);//登录用户权限
         }
-        HttpSession session = request.getSession();
+//        HttpSession session = request.getSession();
+//        session.setAttribute("loginUserInfo",sessionUser);//利用session保存登陆者信息
+
         redisService.set("loginUserInfo",JSON.toJSONString(sessionUser),1800);
-        session.setAttribute("loginUserInfo",sessionUser);//利用session保存登陆者信息
         return setResultSuccess();
     }
 }
