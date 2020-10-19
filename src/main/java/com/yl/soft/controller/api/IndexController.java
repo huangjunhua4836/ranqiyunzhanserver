@@ -167,9 +167,11 @@ public class IndexController extends BaseController {
             return setResultError(403,"","当前页码不能为空！");
         }
         QueryWrapper<EhbArticle> ehbArticleQueryWrapper = new QueryWrapper<>();
+        ehbArticleQueryWrapper.select("id","title");
         ehbArticleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
-        ehbArticleQueryWrapper.eq(!StringUtils.isEmpty(paramMap.get("title")),"title",paramMap.get("title"));
-        ehbArticleQueryWrapper.orderByDesc("releasetime");
+        ehbArticleQueryWrapper.like(!StringUtils.isEmpty(paramMap.get("title")),"title",paramMap.get("title"));
+//        ehbArticleQueryWrapper.orderByDesc("releasetime");
+        ehbArticleQueryWrapper.orderByDesc("id");//防止分页数据重复用永远不重复的数据排序
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);

@@ -63,6 +63,13 @@
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
+                //排序
+                var sort = data.field.sort;
+                if(!/^[0-9]+?$/.test(sort)){
+                    layer.msg('排序必须为数字，请重填！',core.showtime);
+                    return false;
+                }
+
                 var resultData = core.ajax('/platform/hall/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){
                     parent.layer.msg('操作成功',core.showtime);
