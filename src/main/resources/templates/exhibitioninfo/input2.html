@@ -49,6 +49,12 @@
                             <input type="text" th:field="*{enterprisename}" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
                     </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">英文名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{englishname}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
                     <div th:if="${exhibitorVo.id != null}">
                         <div class="layui-form-item">
                             <label class="layui-form-label">企业logo</label>
@@ -85,6 +91,12 @@
                         <label class="layui-form-label">虚拟展厅html地址</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{halurl}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">简介</label>
+                        <div class="layui-input-block">
+                            <textarea placeholder="请输入内容" class="layui-textarea" th:field="*{describes}"></textarea>
                         </div>
                     </div>
 <!--                    <div class="layui-form-item" th:if="*{id != null}">-->
