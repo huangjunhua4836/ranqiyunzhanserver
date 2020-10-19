@@ -215,10 +215,8 @@ public class PersonalCenterController extends BaseController {
 			return error(-502, "服务器繁忙请稍后再试！");
 		}
 		EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(sessionUser.getBopie());
-		EhbAudience user=ehbAudienceService.lambdaQuery().eq(EhbAudience::getBopie, ehbExhibitor.getId()).last("LIMIT 1").one();
-		EhbExhibitorDto ed= EhbExhibitorDto.of(ehbExhibitor,user);
-		
-		return ok(ed);
+		EhbAudience user = ehbAudienceService.getById(sessionUser.getId());
+		return ok(EhbExhibitorDto.of(ehbExhibitor, user));
 	}
 
 	@ApiOperation(value = "我的企业编辑", notes = "我的企业编辑")
