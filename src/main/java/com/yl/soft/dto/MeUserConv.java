@@ -26,6 +26,7 @@ public interface MeUserConv {
 		ehbAudienceDto.setIdcard(ehbExhibitor.getIdcard());
 		ehbAudienceDto.setEnglishname(ehbExhibitor.getEnglishname());
 		ehbAudienceDto.setCertificationtime(ehbExhibitor.getCertificationtime());
+		ehbAudienceDto.setLabelid(ehbExhibitor.getLabelid());
 		return ehbAudienceDto;
 	}
 	
