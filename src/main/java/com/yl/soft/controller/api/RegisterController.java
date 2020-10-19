@@ -106,9 +106,9 @@ public class RegisterController extends BaseController {
         if(StringUtils.isEmpty(registerAudienceDto.getMailbox())){
             return error(-100,"邮箱为空！");
         }
-        if(!registerAudienceDto.getMailbox().matches("^([a-zA-Z]|[0-9])(\\w|\\-)+@[a-zA-Z0-9]+\\.([a-zA-Z]{2,4})$")){
-            return error(-100,"请输入一个正确的邮箱地址");
-        }
+//        if(!registerAudienceDto.getMailbox().matches("^([a-zA-Z]|[0-9])(\\w|\\-)+@[a-zA-Z0-9]+\\.([a-zA-Z]{2,4})$")){
+//            return error(-100,"请输入一个正确的邮箱地址");
+//        }
 
         BeanUtil.copyProperties(registerAudienceDto,ehbAudience,new CopyOptions().ignoreNullValue());
         ehbAudience.setEnabled(1);
