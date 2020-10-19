@@ -17,7 +17,7 @@
                         <div class="layui-upload">
                             <button type="button" class="layui-btn" id="test2">上传图片</button>
                             <div class="layui-upload-list">
-                                <img class="layui-upload-img" id="demo1" th:src="*{picture}">
+                                <img class="layui-upload-img" id="demo1" th:src="*{picture}" width="200">
                                 <p id="demoText"></p>
                             </div>
                         </div>
@@ -37,16 +37,19 @@
                             </select>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">站内跳转位置</label>
+                    <div class="layui-form-item" id="nlid">
+                        <label class="layui-form-label">站内跳转展商</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{position}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                            <select name="position" lay-search="">
+                                <option value="">直接选择或搜索选择</option>
+                                <option th:each="ehbExhibitor,memberStat:${ehbExhibitors}" th:value="${ehbExhibitor.id}" th:text="${ehbExhibitor.enterprisename}" th:selected="${ehbExhibitor.id == ehbAdvertising.position}"></option>
+                            </select>
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-form-item" id="linkurl">
                         <label class="layui-form-label">站外url</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{url}" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                            <input type="text" th:field="*{url}" placeholder="请输入名称" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
@@ -63,6 +66,31 @@
             core = layui.core,
                 upload = layui.upload,
             $ = layui.jquery;
+
+            $('#nlid').hide();
+            $('#linkurl').hide();
+
+            if($("select[name=type]").val() == '1'){
+                $('#nlid').show();
+                $('#linkurl').hide();
+            }else if($("select[name=type]").val() == '2'){
+                $('#nlid').hide();
+                $('#linkurl').show();
+            }
+
+            //下拉框监听事件
+            form.on('select(selectFilter)', function(data){
+                if(data.value == 1){
+                    $('#nlid').show();
+                    $('#linkurl').hide();
+                }else if(data.value == 2){
+                    $('#nlid').hide();
+                    $('#linkurl').show();
+                }else{
+                    $('#nlid').hide();
+                    $('#linkurl').hide();
+                }
+            });
 
             form.on('submit(submitFrom)', function(data){
                 var resultData = core.ajax('/platform/advertising/saveOrUpdate',false,'POST',data.field);

@@ -10,7 +10,9 @@ import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.po.EhbAdvertising;
+import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.service.EhbAdvertisingService;
+import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,6 +38,8 @@ import java.util.List;
 public class AdvertisingController extends BaseController {
     @Autowired
     public EhbAdvertisingService ehbAdvertisingService;
+    @Autowired
+    public EhbExhibitorService ehbExhibitorService;
 
     @GetMapping("/list")
     public String list() {
@@ -85,6 +89,9 @@ public class AdvertisingController extends BaseController {
             ehbAdvertising = ehbAdvertisingService.getById(id);
         }
         modelMap.put("ehbAdvertising",ehbAdvertising);
+
+        List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.lambdaQuery().select(EhbExhibitor::getId,EhbExhibitor::getEnterprisename).eq(EhbExhibitor::getState,1).eq(EhbExhibitor::getIsdel,0).list();
+        modelMap.put("ehbExhibitors",ehbExhibitors);
 
         return "advertising/input";
     }
