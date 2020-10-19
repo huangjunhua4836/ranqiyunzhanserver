@@ -172,7 +172,7 @@ public class IndexController extends BaseController {
             return setResultError(403,"","当前页码不能为空！");
         }
         QueryWrapper<EhbArticle> ehbArticleQueryWrapper = new QueryWrapper<>();
-        ehbArticleQueryWrapper.select("id","title");
+//        ehbArticleQueryWrapper.select("id","title","headpicture");
         ehbArticleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbArticleQueryWrapper.like(!StringUtils.isEmpty(paramMap.get("title")),"title",paramMap.get("title"));
 //        ehbArticleQueryWrapper.orderByDesc("releasetime");
