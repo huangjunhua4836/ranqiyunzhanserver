@@ -285,6 +285,7 @@ public class IndexController extends BaseController {
         QueryWrapper<EhbBanner>  ehbBannerQueryWrapper= new QueryWrapper<>();
         ehbBannerQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbBannerQueryWrapper.eq("type",paramMap.get("type"));
+        ehbBannerQueryWrapper.orderByDesc("sort");
 
         List<EhbBanner> ehbBanners = ehbBannerService.list(ehbBannerQueryWrapper);
         List<BannerDto> bannerDtos = new ArrayList<>();

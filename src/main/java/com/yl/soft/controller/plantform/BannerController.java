@@ -11,8 +11,10 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.po.CrmRole;
 import com.yl.soft.po.EhbBanner;
+import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.service.CrmRoleService;
 import com.yl.soft.service.EhbBannerService;
+import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,8 @@ import java.util.List;
 public class BannerController extends BaseController {
     @Autowired
     public EhbBannerService ehbBannerService;
+    @Autowired
+    public EhbExhibitorService ehbExhibitorService;
 
     @GetMapping("/list")
     public String list() {
@@ -87,6 +91,9 @@ public class BannerController extends BaseController {
             ehbBanner = ehbBannerService.getById(id);
         }
         modelMap.put("ehbBanner",ehbBanner);
+
+        List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.lambdaQuery().select(EhbExhibitor::getId,EhbExhibitor::getEnterprisename).eq(EhbExhibitor::getState,1).eq(EhbExhibitor::getIsdel,0).list();
+        modelMap.put("ehbExhibitors",ehbExhibitors);
 
         return "banner/input";
     }

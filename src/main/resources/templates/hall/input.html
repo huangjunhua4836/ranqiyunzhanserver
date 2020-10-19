@@ -16,6 +16,15 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">头图</label>
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn" id="test1">上传</button>
+                            <div class="layui-upload-list" style="margin-left: 100px;">
+                                <img class="layui-upload-img" id="demo1" th:src="*{coverimage}" width="200">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">html地址</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{hallurl}" required  lay-verify="required" placeholder="请输入虚拟html地址" autocomplete="off" class="layui-input">
@@ -39,6 +48,7 @@
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
+                    <input th:field="*{coverimage}" type="hidden" id="im"/>
                     <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
                 </form>
             </div>
@@ -49,6 +59,7 @@
         layui.use('core', function(){
             var form = layui.form,
             core = layui.core,
+                upload = layui.upload,
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
@@ -59,6 +70,29 @@
                     parent.layer.close(index); //再执行关闭
                 }
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test1'
+                , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
+                , before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    if (res.code != 200) {
+                        return layer.msg('上传失败');
+                    }
+                    if (res.code == 200) {
+                        $('#im').val(res.data[0].url);
+                        return layer.msg('上传成功！');
+                    }
+                    //上传成功
+                }
             });
         });
     </script>

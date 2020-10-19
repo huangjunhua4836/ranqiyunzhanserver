@@ -27,7 +27,7 @@ layui.use('core', function(){
             ,cols: [[ //表头
                 {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field: 'name', title: '标签名'}
-                ,{field: 'createUser', title: '创建者'}
+                // ,{field: 'createUser', title: '创建者'}
                 ,{field: 'createTime', title: '创建时间',sort: true,
                     templet: function(d){
                         return util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss");
