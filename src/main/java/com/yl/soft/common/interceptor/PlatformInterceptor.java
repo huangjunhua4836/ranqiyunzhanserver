@@ -22,7 +22,6 @@ import java.io.PrintWriter;
  * @version $Id: TracebacktoLoginInterceptor.java, v 0.1 2016年2月22日 下午4:00:42 Administrator Exp $
  */
 public class PlatformInterceptor implements HandlerInterceptor {
-    Logger logger = LoggerFactory.getLogger(PlatformInterceptor.class);
     RedisService redisService;
 
     public PlatformInterceptor(RedisService redisService) {
@@ -44,10 +43,7 @@ public class PlatformInterceptor implements HandlerInterceptor {
         //后台登录拦截器
         System.out.println("***********拦截器执行*******************");
         response.setCharacterEncoding("utf-8");
-//        String token = request.getSession().getAttribute("loginUserInfo")+"";
         String token = redisService.get("loginUserInfo");
-     //   System.out.println(token);
-        //logger.info(token);
         if (StringUtils.isEmpty(token)) {
             //转发到登陆页面
             PrintWriter out = response.getWriter();

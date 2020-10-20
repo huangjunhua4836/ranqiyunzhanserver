@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::headr('添加或修改')"></head>
+<body>
+<div class="layui-container">
+    <div class="layui-row" style="margin-top: 10px;">
+        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+            <form class="layui-form" th:object="${ehbOpportunity}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">名称</label>
+                    <div class="layui-input-block">
+                        <input readonly type="text" th:field="*{title}" required lay-verify="required" placeholder="请输入名称"
+                               autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">内容</label>
+                    <div class="layui-input-block">
+                        <textarea readonly id="editor_id" required  lay-verify="required" th:field="*{content}" style="width:700px;height:300px;" class="layui-textarea" >
+                        </textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">总收藏量</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{countcollection}" required lay-verify="required" placeholder="请输入总收藏量"
+                               autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">总点赞量</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{countthumbs}" required lay-verify="required" placeholder="请输入总点赞量"
+                               autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">总浏览量</label>
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{countbrowse}" required lay-verify="required" placeholder="请输入总浏览量"
+                               autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+                <input th:field="*{id}" type="hidden"/>
+                <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use('core', function () {
+        var form = layui.form,
+            core = layui.core,
+            $ = layui.jquery,
+            upload = layui.upload;
+
+        form.on('submit(submitFrom)', function (data) {
+            //总收藏量
+            if(!/^[0-9]+?$/.test(data.field.countcollection)){
+                layer.msg('总收藏量必须为数字，请重填！',core.showtime);
+                return false;
+            }
+            //总点赞量
+            if(!/^[0-9]+?$/.test(data.field.countthumbs)){
+                layer.msg('总点赞量必须为数字，请重填！',core.showtime);
+                return false;
+            }
+            //总浏览量
+            if(!/^[0-9]+?$/.test(data.field.countbrowse)){
+                layer.msg('总浏览量必须为数字，请重填！',core.showtime);
+                return false;
+            }
+
+            var resultData = core.ajax('/platform/opportunity/saveOrUpdate', false, 'POST', data.field);
+            if (resultData != false) {
+                parent.layer.msg('操作成功', core.showtime);
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            }
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+</script>
+</body>
+</html>
