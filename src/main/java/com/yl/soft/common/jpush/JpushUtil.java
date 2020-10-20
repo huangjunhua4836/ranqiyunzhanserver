@@ -14,9 +14,9 @@ import cn.jpush.api.push.model.notification.*;
 
 public class JpushUtil {
 
-	private final static String APPKEY = "d5510e3c70429c94714b685f";
+	private final static String APPKEY = "264fc4cb49e2a0871ebc46ed";
 
-	private final static String MASTERSECRET = "03cc4590b59bb4ff70f8dc32";
+	private final static String MASTERSECRET = "79986e07b6ca7abdd80808fd";
 
 	private static JPushClient jPushClient = new JPushClient(MASTERSECRET, APPKEY);
 
