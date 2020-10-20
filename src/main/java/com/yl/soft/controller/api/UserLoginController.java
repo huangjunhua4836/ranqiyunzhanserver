@@ -84,7 +84,7 @@ public class UserLoginController extends BaseController {
 		}
 		sessionState.setSessionUser(token, sessionUser);
 		EhbAudiencedlDto userDto = UserConv.do2dto(user);
-		userDto.setPassword(pass);
+		
 		userDto.setToken(token);
 		userDto.setType(user.getType());
 		userDto.setIsnew(user.getIsnew());
@@ -95,7 +95,7 @@ public class UserLoginController extends BaseController {
 		}
 		BaseResult<EhbAudiencedlDto> result = new BaseResult<>();
 		user.setTempass(StringUtils.isBlank(user.getTempass()) ? pass : user.getTempass());
-		
+		userDto.setPassword(user.getTempass());
 		user.setIsnew(1);
 		ehbAudienceService.updateById(user);
 
