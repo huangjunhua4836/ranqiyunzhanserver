@@ -93,7 +93,8 @@ public class UserLoginController extends BaseController {
 			userDto.setIsrz(e == null ? -1 : e.getState());
 		}
 		BaseResult<EhbAudiencedlDto> result = new BaseResult<>();
-		user.setTempass(pass);
+		user.setTempass(StringUtils.isBlank(user.getTempass()) ? pass : user.getTempass());
+		
 		user.setIsnew(1);
 		ehbAudienceService.updateById(user);
 
