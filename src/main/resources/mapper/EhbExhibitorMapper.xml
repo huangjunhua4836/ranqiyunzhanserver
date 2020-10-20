@@ -75,8 +75,8 @@
             <if test="paramMap.state!= null and paramMap.state!=''">
                 and e.state = #{paramMap.state}
             </if>
-            <if test="paramMap.fid!= null and paramMap.fid!=''">
-                and e.fid = #{paramMap.fid}
+            <if test="paramMap.boothno!= null and paramMap.boothno!=''">
+                and e.boothno = #{paramMap.boothno}
             </if>
             <if test="paramMap.startTime!= null and paramMap.startTime!='' and paramMap.endTime!= null and paramMap.endTime!=''">
                 and e.createtime BETWEEN #{paramMap.startTime} AND #{paramMap.endTime}

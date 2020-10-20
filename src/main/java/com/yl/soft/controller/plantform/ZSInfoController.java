@@ -90,7 +90,7 @@ public class ZSInfoController extends BaseController {
         paramMap.put("name",exhibitorVo.getName());//管理人者姓名
         paramMap.put("enterprisename",exhibitorVo.getEnterprisename());//企业名称
         paramMap.put("state",exhibitorVo.getState());//认证状态
-        paramMap.put("fid",exhibitorVo.getFid());//fid
+        paramMap.put("boothno",exhibitorVo.getBoothno());//展位号
         paramMap.put("startTime",startTime);//开始时间
         paramMap.put("endTime",endTime);//结束时间
 
