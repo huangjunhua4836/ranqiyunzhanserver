@@ -77,6 +77,7 @@ public class UserLoginController extends BaseController {
 		SessionUser sessionUser = new SessionUser();
 		sessionUser.setCode(200);
 		sessionUser.setId(user.getId());
+		sessionUser.setPhone(user.getPhone());
 		BeanUtils.copyProperties(user, sessionUser);
 		if (sessionUser.getBopie() != null) {
 			sessionUser.setLabelid(ehbExhibitorService.getById(sessionUser.getBopie()).getLabelid());
