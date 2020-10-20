@@ -414,7 +414,7 @@ public class UserLoginController extends BaseController {
 		}
 		String old = redisUtil.get("I" + sessionUser.getPhone().trim());
 		if (!code.equals(old)) {
-			return error(-202, "新手机验证码错误");
+			return error(-202, "当前手机验证码错误");
 		}
 		if (ehbAudienceService.lambdaQuery().eq(EhbAudience::getPhone, phone).count() > 0) {
 			return error(-201, "新手机号已被其他账号绑定，请更换其他手机号");
