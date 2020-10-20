@@ -284,10 +284,10 @@
 					call_net("POST", "/api/addOrDelPraise",dianzanObj, function(data){
 						if(data.code==200){
 							if(_this.detailes.isSpZan==0){
-								Yeffect.mAlert("点赞成功");
+								Yeffect.mAlert("点赞成功",1000);
 								_this.detailes.isSpZan=1;
 							}else{
-								Yeffect.mAlert("取消点赞");
+								Yeffect.mAlert("取消点赞",1000);
 								_this.detailes.isSpZan=0;
 							}
 							getDetailesFn();
@@ -314,10 +314,10 @@
 					call_net("POST", "/api/addOrDelCollention",shoucangObj, function(data){
 						if(data.code==200){
 							if(_this.detailes.isSCsp==0){
-								Yeffect.mAlert("收藏成功");
+								Yeffect.mAlert("收藏成功",1000);
 								_this.detailes.isSCsp=1;
 							}else{
-								Yeffect.mAlert("取消收藏");
+								Yeffect.mAlert("取消收藏",1000);
 								_this.detailes.isSCsp=0;
 							}
 							getDetailesFn();
@@ -344,7 +344,7 @@
 					commentObj.type=2;
 					call_net("POST", "/api/addComment",commentObj, function(data){
 						if(data.code==200){
-							Yeffect.mAlert("评论成功");
+							Yeffect.mAlert("评论成功",1000);
 							_this.pageZ=1;
 							_this.commentList=[];
 							_this.commentTxt="";

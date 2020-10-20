@@ -18,13 +18,13 @@
 .g_news-list ul li{width: 3.3rem; display: inline-block; height: 4.9rem; margin-bottom: 0.38rem;}
 .g_news-list ul li a{display: block; height: 4.9rem;}
 .g_news-list ul li a>img{display: block; width: 3.3rem; height: 3.3rem;}
-.g_news-list ul li a p{font-size: 0.28rem; color: #333; height: 0.8rem; margin-bottom: 0.2rem; margin-top: 0.2rem;
+.g_news-list ul li a p{font-size: 0.28rem; color: #333; margin-bottom: 0.5rem; margin-top: 0.2rem;
 	text-overflow: -o-ellipsis-lastline;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	line-clamp: 2;
+	-webkit-line-clamp: 1;
+	line-clamp: 1;
 	-webkit-box-orient: vertical;
 }
 .g_newslist-data{overflow: hidden;}
