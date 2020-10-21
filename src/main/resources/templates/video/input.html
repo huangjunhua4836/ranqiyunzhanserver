@@ -100,6 +100,7 @@
                 elem: '#test5'
                 , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
                 ,accept: 'file' //视频
+                ,size: 2000*1024
                 ,done: function(res){
                     layer.msg('上传成功');
                     $('#videoUrl').val(res.data[0].url);

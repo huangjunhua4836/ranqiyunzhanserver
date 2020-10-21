@@ -72,7 +72,7 @@
             <if test="paramMap.enterprisename!= null and paramMap.enterprisename!=''">
                 and e.enterprisename like concat('%',#{paramMap.enterprisename},'%')
             </if>
-            <if test="paramMap.state!= null and paramMap.state!=''">
+            <if test="paramMap.state!= null">
                 and e.state = #{paramMap.state}
             </if>
             <if test="paramMap.boothno!= null and paramMap.boothno!=''">

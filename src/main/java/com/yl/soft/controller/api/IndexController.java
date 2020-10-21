@@ -195,7 +195,7 @@ public class IndexController extends BaseController {
      */
     @ApiOperation(value = "商品橱窗列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query")
             ,@ApiImplicitParam(name = "pageNum", value = "当前页数", required = true, paramType = "query")
             ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
             ,@ApiImplicitParam(name = "exhibitorid", value = "展商ID",  paramType = "query",required = true)
