@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/platform")
@@ -72,7 +75,7 @@ public class LoginController extends BaseController {
      */
     @PostMapping(value = "/login")
     @ResponseBody
-    public BaseResponse login(String username, String password,HttpServletRequest request) {
+    public BaseResponse login(String username, String password,HttpServletResponse response) {
         if(StringUtils.isEmpty(username)){
             return setResultError("用户名为空！");
         }
@@ -95,7 +98,13 @@ public class LoginController extends BaseController {
             List<CrmMenu> crmMenus = crmRoleService.getMenusByRoleId(sessionUser.getRoleId());
             sessionUser.setCrmMenus(crmMenus);//登录用户权限
         }
-        redisService.set("loginUserInfo",JSON.toJSONString(sessionUser),1800);
+
+        String loginCookieKey = UUID.randomUUID().toString();
+        Cookie cookie = new Cookie("loginCookieKey",loginCookieKey);
+        cookie.setMaxAge(60*60*24);
+        response.addCookie(cookie);
+
+        redisService.set(loginCookieKey,JSON.toJSONString(sessionUser),60*60*24);
         return setResultSuccess();
     }
 }

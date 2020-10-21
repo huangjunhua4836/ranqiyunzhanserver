@@ -5,9 +5,8 @@
 package com.yl.soft.common.interceptor;
 
 import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.CookieUtils;
 import com.yl.soft.common.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,7 +42,9 @@ public class PlatformInterceptor implements HandlerInterceptor {
         //后台登录拦截器
         System.out.println("***********拦截器执行*******************");
         response.setCharacterEncoding("utf-8");
-        String token = redisService.get("loginUserInfo");
+        String loginCookieKey = CookieUtils.getCookie(request,"loginCookieKey");
+//        loginCookieKey = null;
+        String token = redisService.get(loginCookieKey);
         if (StringUtils.isEmpty(token)) {
             //转发到登陆页面
             PrintWriter out = response.getWriter();
@@ -53,7 +54,6 @@ public class PlatformInterceptor implements HandlerInterceptor {
             out.println("</script>");
             out.println("</html>");
             return false;
-
         }
         return true;
     }
