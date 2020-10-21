@@ -31,6 +31,7 @@ layui.use('core', function(){
                 ,{field: 'enterprisename', title: '企业'}
                 ,{field: 'mailbox', title: '邮箱'}
                 ,{field: 'boothno', title: '展位号'}
+                ,{field: 'fid', title: 'fid'}
                 ,{field: 'state', title: '审核状态',
                     templet: function(d){
                         if(d.state == '0'){

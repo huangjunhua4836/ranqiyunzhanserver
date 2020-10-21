@@ -95,8 +95,15 @@
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">蜂鸟云Fid</label>
+<!--                        <div class="layui-input-block">-->
+<!--                            <input type="text" th:field="*{fid}" lay-verify="required" autocomplete="off" class="layui-input">-->
+<!--                        </div>-->
+
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{fid}" lay-verify="required" autocomplete="off" class="layui-input">
+                            <select name="fid" required  lay-verify="required" lay-search="">
+                                <option value="">请选择</option>
+                                <option th:each="fn,memberStat:${fengniaoboothnos}" th:value="${fn.fid}" th:text="${fn.boothnoname}" th:selected="${fn.fid == exhibitorVo.fid}"></option>
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item">

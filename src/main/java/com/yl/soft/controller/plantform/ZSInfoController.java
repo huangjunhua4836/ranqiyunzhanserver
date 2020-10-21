@@ -16,9 +16,11 @@ import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.app.ExhibitorDto;
 import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
+import com.yl.soft.po.Fengniaoboothno;
 import com.yl.soft.service.EhbAudienceService;
 import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.service.EhbHallService;
+import com.yl.soft.service.FengniaoboothnoService;
 import com.yl.soft.vo.ExhibitorVo;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,8 @@ public class ZSInfoController extends BaseController {
     public EhbHallService ehbHallService;
     @Autowired
     public RedisService redisService;
+    @Autowired
+    public FengniaoboothnoService fengniaoboothnoService;
 
     @GetMapping("/list")
     public String list() {
@@ -131,6 +135,9 @@ public class ZSInfoController extends BaseController {
             exhibitorVo.setHeadPortrait(ehbAudience.getHeadPortrait());
         }
         modelMap.put("exhibitorVo",exhibitorVo);
+
+        List<Fengniaoboothno> fengniaoboothnos = fengniaoboothnoService.list();
+        modelMap.put("fengniaoboothnos",fengniaoboothnos);
 
         if("shenhe".equals(type)){
             return "exhibitioninfo/shenhe";
