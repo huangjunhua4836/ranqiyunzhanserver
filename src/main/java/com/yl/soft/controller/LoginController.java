@@ -53,9 +53,11 @@ public class LoginController extends BaseController {
      */
     @GetMapping(value = "/logout")
     @ResponseBody
-    public BaseResponse logout(HttpServletRequest request) {
+    public BaseResponse logout(HttpServletResponse response) {
         //注销
-        redisService.delete("loginUserInfo");
+        Cookie cookie = new Cookie("loginCookieKey",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return setResultSuccess("成功注销！");
     }
 
