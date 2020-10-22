@@ -46,7 +46,9 @@ public class ResourceUpLoadController extends BaseController {
         ehbDataUploadQueryWrapper.last("limit 1");
         List<EhbDataUpload> qysqsmbs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
         if(qysqsmbs!=null && !qysqsmbs.isEmpty()){
-            modelMap.put("qysqsmb",qysqsmbs.get(0)==null?new EhbDataUpload():qysqsmbs.get(0));
+            modelMap.put("qysqsmb",qysqsmbs.get(0));
+        }else{
+            modelMap.put("qysqsmb",new EhbDataUpload());
         }
 
         //展会中英文邀请函
@@ -56,7 +58,9 @@ public class ResourceUpLoadController extends BaseController {
         ehbDataUploadQueryWrapper.last("limit 1");
         List<EhbDataUpload> zhzywyqhs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
         if(zhzywyqhs!=null && !zhzywyqhs.isEmpty()){
-            modelMap.put("zhzywyqh",zhzywyqhs.get(0)==null?new EhbDataUpload():zhzywyqhs.get(0));
+            modelMap.put("zhzywyqh",zhzywyqhs.get(0));
+        }else{
+            modelMap.put("zhzywyqh",new EhbDataUpload());
         }
 
         //展商合约
@@ -66,7 +70,9 @@ public class ResourceUpLoadController extends BaseController {
         ehbDataUploadQueryWrapper.last("limit 1");
         List<EhbDataUpload> zshys = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
         if(zshys!=null && !zshys.isEmpty()){
-            modelMap.put("zshy",zshys.get(0)==null?new EhbDataUpload():zshys.get(0));
+            modelMap.put("zshy",zshys.get(0));
+        }else{
+            modelMap.put("zshy",new EhbDataUpload());
         }
 
         //参展商手册
@@ -76,7 +82,9 @@ public class ResourceUpLoadController extends BaseController {
         ehbDataUploadQueryWrapper.last("limit 1");
         List<EhbDataUpload> czsscs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
         if(czsscs!=null && !czsscs.isEmpty()){
-            modelMap.put("czssc",czsscs.get(0)==null?new EhbDataUpload():czsscs.get(0));
+            modelMap.put("czssc",czsscs.get(0));
+        }else{
+            modelMap.put("czssc",new EhbDataUpload());
         }
 
         //搭建商手册
@@ -86,7 +94,9 @@ public class ResourceUpLoadController extends BaseController {
         ehbDataUploadQueryWrapper.last("limit 1");
         List<EhbDataUpload> djsscs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
         if(djsscs!=null && !djsscs.isEmpty()){
-            modelMap.put("djssc",djsscs.get(0)==null?new EhbDataUpload():djsscs.get(0));
+            modelMap.put("djssc",djsscs.get(0));
+        }else{
+            modelMap.put("djssc",new EhbDataUpload());
         }
 
         //团体观众登记表
@@ -96,7 +106,9 @@ public class ResourceUpLoadController extends BaseController {
         ehbDataUploadQueryWrapper.last("limit 1");
         List<EhbDataUpload> ttgzdjbs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
         if(ttgzdjbs!=null && !ttgzdjbs.isEmpty()){
-            modelMap.put("ttgzdjb",ttgzdjbs.get(0)==null?new EhbDataUpload():ttgzdjbs.get(0));
+            modelMap.put("ttgzdjb",ttgzdjbs.get(0));
+        }else{
+            modelMap.put("ttgzdjb",new EhbDataUpload());
         }
 
         //观众邀请券
@@ -106,7 +118,9 @@ public class ResourceUpLoadController extends BaseController {
         ehbDataUploadQueryWrapper.last("limit 1");
         List<EhbDataUpload> gzyqqs = ehbDataUploadService.list(ehbDataUploadQueryWrapper);
         if(gzyqqs!=null && !gzyqqs.isEmpty()){
-            modelMap.put("gzyqq",gzyqqs.get(0)==null?new EhbDataUpload():gzyqqs.get(0));
+            modelMap.put("gzyqq",gzyqqs.get(0));
+        }else{
+            modelMap.put("gzyqq",new EhbDataUpload());
         }
         return "resourceupload/input";
     }
