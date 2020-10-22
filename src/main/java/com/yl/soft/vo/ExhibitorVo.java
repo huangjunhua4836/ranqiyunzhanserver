@@ -30,4 +30,7 @@ public class ExhibitorVo extends EhbExhibitor {
 
     @ApiModelProperty(value = "个人头像或者企业logo")
     private String headPortrait;
+
+    private String startTime;
+    private String endTime;
 }

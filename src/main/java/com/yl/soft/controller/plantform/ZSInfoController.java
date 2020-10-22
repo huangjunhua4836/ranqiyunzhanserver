@@ -2,6 +2,10 @@ package com.yl.soft.controller.plantform;
 
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
@@ -21,6 +25,7 @@ import com.yl.soft.service.EhbAudienceService;
 import com.yl.soft.service.EhbExhibitorService;
 import com.yl.soft.service.EhbHallService;
 import com.yl.soft.service.FengniaoboothnoService;
+import com.yl.soft.vo.ExhibitorExcelVo;
 import com.yl.soft.vo.ExhibitorVo;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +36,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -247,5 +258,77 @@ public class ZSInfoController extends BaseController {
     @ResponseBody
     public BaseResponse getVmwarePhone() {
         return setResultSuccess(PhoneUtils.getVmwarePhone());
+    }
+
+    /**
+     * 展商导出Excel
+     * @param response
+     */
+    @RequestMapping("/export")
+    @ResponseBody
+    public void export(HttpServletResponse response,String str) {
+        ExhibitorVo exhibitorVo = JSON.parseObject(str,ExhibitorVo.class);
+        Map paramMap = new HashMap();
+        paramMap.put("registerphone",exhibitorVo.getRegisterphone());//注册手机号
+        paramMap.put("name",exhibitorVo.getName());//管理人者姓名
+        paramMap.put("enterprisename",exhibitorVo.getEnterprisename());//企业名称
+        paramMap.put("state",exhibitorVo.getState());//认证状态
+        paramMap.put("boothno",exhibitorVo.getBoothno());//展位号
+        paramMap.put("startTime",exhibitorVo.getStartTime());//开始时间
+        paramMap.put("endTime",exhibitorVo.getEndTime());//结束时间
+        List<ExhibitorVo> exhibitorVos = ehbExhibitorService.selectExhibitorVoList(paramMap);
+
+        List<ExhibitorExcelVo> exhibitorExcelVos = exhibitorVos.stream().map(i->{
+            ExhibitorExcelVo exhibitorExcelVo = new ExhibitorExcelVo();
+            BeanUtil.copyProperties(i,exhibitorExcelVo);
+            if(!StringUtils.isEmpty(i.getCertificationtime())){
+                DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String strDate2 = dtf2.format(i.getCertificationtime());
+                exhibitorExcelVo.setCertificationtime(strDate2);
+            }
+            if(!StringUtils.isEmpty(i.getType())){
+                exhibitorExcelVo.setType(i.getType()==1?"后台创建":"用户注册");
+            }
+            return exhibitorExcelVo;
+        }).collect(Collectors.toList());
+
+        // 通过工具类创建writer，默认创建xls格式
+        ExcelWriter writer = ExcelUtil.getWriter();
+        //自定义标题别名
+        writer.addHeaderAlias("registerphone", "注册电话");
+        writer.addHeaderAlias("phone", "管理人员手机");
+        writer.addHeaderAlias("name", "管理人员");
+        writer.addHeaderAlias("idcard", "身份证");
+        writer.addHeaderAlias("enterprisename", "企业名称");
+        writer.addHeaderAlias("englishname", "展商英文名称");
+        writer.addHeaderAlias("tel", "座机");
+        writer.addHeaderAlias("boothno", "展位号");
+        writer.addHeaderAlias("address", "地址");
+        writer.addHeaderAlias("website", "公司网址");
+        writer.addHeaderAlias("mailbox", "绑定邮箱");
+        writer.addHeaderAlias("certificationtime", "认证时间");
+        writer.addHeaderAlias("type", "类型");
+        // 合并单元格后的标题行，使用默认标题样式
+        writer.merge(12, "参展商信息");
+        // 一次性写出内容，使用默认样式，强制输出标题
+        writer.write(exhibitorExcelVos, true);
+        //out为OutputStream，需要写出到的目标流
+        //response为HttpServletResponse对象
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        //test.xls是弹出下载对话框的文件名，不能为中文，中文请自行编码
+        ServletOutputStream out = null;
+        try {
+            String name = URLEncoder.encode("中文名称", "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + name + ".xls");
+            out = response.getOutputStream();
+            writer.flush(out, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // 关闭writer，释放内存
+            writer.close();
+        }
+        //此处记得关闭输出Servlet流
+        IoUtil.close(out);
     }
 }

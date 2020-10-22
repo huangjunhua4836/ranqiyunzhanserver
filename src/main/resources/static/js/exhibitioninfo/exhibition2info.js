@@ -69,11 +69,16 @@ layui.use('core', function(){
         });
     }
 
+    var exportcondit;
     //头工具栏事件
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
             case 'add':
                 core.openIframeDialog('添加','/platform/zsInfo/input?type=add',['100%', '90%'],false,initTable);
+                break;
+            case 'export':
+                location.href = "/platform/zsInfo/export?str="+encodeURIComponent(JSON.stringify(exportcondit));
+                layer.msg('操作成功！',core.showtime);
                 break;
             case 'refreshCloudWindows':
                 var resultData = core.ajax('/platform/zsInfo/refreshCloudWindows',false,'POST',null);
@@ -129,6 +134,7 @@ layui.use('core', function(){
 
     //按条件检索机构数据
     form.on('submit(searchFrom)', function(data){
+        exportcondit = data.field;
         initTable(data.field);
         layer.msg('操作成功',core.showtime)
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。

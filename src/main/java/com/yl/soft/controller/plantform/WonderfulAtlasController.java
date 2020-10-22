@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -181,8 +182,12 @@ public class WonderfulAtlasController extends BaseController {
         //response为HttpServletResponse对象
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
         //test.xls是弹出下载对话框的文件名，不能为中文，中文请自行编码
-        String name = "abcdefg";
-        response.setHeader("Content-Disposition", "attachment;filename=" + name + ".xls");
+        try {
+            String name = URLEncoder.encode("中文名称", "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + name + ".xls");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         ServletOutputStream out = null;
         try {
             out = response.getOutputStream();
