@@ -139,7 +139,7 @@ custom:
       audio: mp4,flv,swf,mkv,avi,rm,rmvb,mpeg,mpg,ogg,ogv,mov,wmv,webm,mp3,wav,mid
   #文件上传目录（注意Linux和Windows上的目录结构不同）
   uploadPath: D://uploadFiles/rqyz/
-  image_upload_ext: jpg,png,gif,ico,jpeg,webp,pdf
+  image_upload_ext: jpg,png,gif,ico,doc,docx,jpeg,apk,xls,xlsx,mp4,flv,swf,avi,mp3,pdf,txt,rar,zip,7z,tar,mkv,avi,rm,rmvb,mpeg,mpg,ogg,ogv,mov,wmv,webm,wav,mid
   #外网可以访问上传图片ip地址
   ip: 127.0.0.1
   port: 80

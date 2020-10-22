@@ -3,6 +3,7 @@ package com.yl.soft.controller;
 import com.alibaba.fastjson.JSON;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.CookieUtils;
 import com.yl.soft.common.util.MD5Util;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
@@ -35,6 +36,12 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/index")
     public String index(HttpServletRequest request) {
+        String rediskey = CookieUtils.getCookie(request,"loginCookieKey");
+        PlatformSessionUser sessionUser = JSON.parseObject(redisService.get(rediskey),PlatformSessionUser.class);
+        request.getSession().setAttribute("loginUserInfo",sessionUser);
+        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
+        System.out.println(basePath);
+        request.getSession().setAttribute("basePath",basePath);
         return "index2";
     }
 

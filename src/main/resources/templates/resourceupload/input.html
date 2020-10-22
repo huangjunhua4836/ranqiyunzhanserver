@@ -65,7 +65,7 @@
                     if(res.code == 200){
                         $('#qysqsmb_msg').text(res.data[0].url);
                         var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
-                            ,"title=企业授权书模板&upadd="+res.data[0].url);
+                            ,"title=企业授权书模板&upadd="+res.data[0].url+"&relationfileid="+res.data[0].id);
                         if(resultData!=false){
                             layer.msg('上传成功！');
                         }else{
@@ -86,7 +86,7 @@
                     if(res.code == 200){
                         $('#zhzywyqh_msg').text(res.data[0].url);
                         var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
-                            ,"title=展会中英文邀请函&upadd="+res.data[0].url);
+                            ,"title=展会中英文邀请函&upadd="+res.data[0].url+"&relationfileid="+res.data[0].id);
                         if(resultData!=false){
                             layer.msg('上传成功！');
                         }else{
@@ -107,7 +107,7 @@
                     if(res.code == 200){
                         $('#zshy_msg').text(res.data[0].url);
                         var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
-                            ,"title=展商合约&upadd="+res.data[0].url);
+                            ,"title=展商合约&upadd="+res.data[0].url+"&relationfileid="+res.data[0].id);
                         if(resultData!=false){
                             layer.msg('上传成功！');
                         }else{
@@ -128,7 +128,7 @@
                     if(res.code == 200){
                         $('#czssc_msg').text(res.data[0].url);
                         var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
-                            ,"title=参展商手册&upadd="+res.data[0].url);
+                            ,"title=参展商手册&upadd="+res.data[0].url+"&relationfileid="+res.data[0].id);
                         if(resultData!=false){
                             layer.msg('上传成功！');
                         }else{
@@ -149,7 +149,7 @@
                     if(res.code == 200){
                         $('#djssc_msg').text(res.data[0].url);
                         var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
-                            ,"title=搭建商手册&upadd="+res.data[0].url);
+                            ,"title=搭建商手册&upadd="+res.data[0].url+"&relationfileid="+res.data[0].id);
                         if(resultData!=false){
                             layer.msg('上传成功！');
                         }else{
@@ -170,7 +170,7 @@
                     if(res.code == 200){
                         $('#ttgzdjb_msg').text(res.data[0].url);
                         var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
-                            ,"title=团体观众登记表&upadd="+res.data[0].url);
+                            ,"title=团体观众登记表&upadd="+res.data[0].url+"&relationfileid="+res.data[0].id);
                         if(resultData!=false){
                             layer.msg('上传成功！');
                         }else{
@@ -191,7 +191,7 @@
                     if(res.code == 200){
                         $('#gzyqq_msg').text(res.data[0].url);
                         var resultData = core.ajax('/platform/resourceupload/saveOrUpdate',false,'POST'
-                            ,"title=观众邀请券&upadd="+res.data[0].url);
+                            ,"title=观众邀请券&upadd="+res.data[0].url+"&relationfileid="+res.data[0].id);
                         if(resultData!=false){
                             layer.msg('上传成功！');
                         }else{

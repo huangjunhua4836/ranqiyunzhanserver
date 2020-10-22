@@ -158,8 +158,8 @@ public class UpLoadFileController extends BaseResponseUtil {
 				contentType = "image/jpeg";
 			}else if("rar".equals(contentType)){
 				contentType = "application/x-rar-compressed";
-			}else {
-				contentType = "application/pdf";
+			}else if("mp4".equals(contentType)){
+				contentType = "audio/mp4";
 			}
 			IOUtil.browseOnline(response,filePath,null,contentType);
 		} catch (Exception e) {

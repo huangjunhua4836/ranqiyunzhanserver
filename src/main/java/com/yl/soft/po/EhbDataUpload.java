@@ -37,6 +37,9 @@ public class EhbDataUpload implements Serializable {
     @ApiModelProperty(value = "资料上传地址")
     private String upadd;
 
+    @ApiModelProperty(value = "关联文件id")
+    private Integer relationfileid;
+
     @ApiModelProperty(hidden = true)
     @TableField("createtime")
     private LocalDateTime createtime;
