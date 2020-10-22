@@ -25,24 +25,14 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">图片宽</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{wide}" required  lay-verify="required" placeholder="图片宽" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">图片高</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{high}" required  lay-verify="required" placeholder="图片高" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
                         <label class="layui-form-label">排序</label>
                         <div class="layui-input-block">
                             <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="排序" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <input th:field="*{id}" type="hidden"/>
+                    <input th:field="*{wide}" type="hidden" id="wide"/>
+                    <input th:field="*{high}" type="hidden" id="high"/>
                     <input th:field="*{imgUrl}" type="hidden" id="imgUrl"/>
                     <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
                 </form>
@@ -80,6 +70,21 @@
                     //预读本地文件示例，不支持ie8
                     obj.preview(function (index, file, result) {
                         $('#demo1').attr('src', result); //图片链接（base64）
+                        var img = new Image();
+                        img.src = result;
+                        img.onload = function () { //初始化夹在完成后获取上传图片宽高，判断限制上传图片的大小。
+                            var chang = 0;
+                            var kuan = 0;
+                            if (img.width > img.height) {  // 判断出最长边和最短边
+                                var chang = img.width;
+                                var kuan = img.height;
+                            } else {
+                                var chang = img.height;
+                                var kuan = img.width;
+                            }
+                            $('#wide').val(chang);
+                            $('#high').val(kuan);
+                        }
                     });
                 }
                 , done: function (res) {
