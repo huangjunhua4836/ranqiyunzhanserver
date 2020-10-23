@@ -5,6 +5,7 @@ import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.service.BaseResponseUtil;
 import com.yl.soft.common.util.DateUtils;
 import com.yl.soft.common.util.IOUtil;
+import com.yl.soft.common.util.MinioUtil;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.dto.AttachmentDTO;
 import com.yl.soft.dto.app.FileDto;
@@ -84,49 +85,46 @@ public class UpLoadFileController extends BaseResponseUtil {
 		List<AttachmentDTO> attachments = new ArrayList<>();
         if (multipartFiles != null && multipartFiles.length > 0) {
             for(int i = 0;i<multipartFiles.length;i++){
-                try {
-                    String oldName = multipartFiles[i].getOriginalFilename();
-					String suffix = oldName.substring(oldName.lastIndexOf(".")+1);
-					if(!image_upload_ext.contains(suffix)){
-						return setResultError("单个文件："+multipartFiles[i].getOriginalFilename()+"文件后缀错误！");
-					}
-					String newName =System.currentTimeMillis()+new Random().nextLong()+"."+suffix;
-                    String relativePath = nowDateDir+File.separator+newName;
-                    //以原来的名称命名,覆盖掉旧的
-                    String storagePath = uploadPath + relativePath;
-                    buffer.append("上传的文件：" + multipartFiles[i].getName()+";")
-                            .append("上传文件类型：" + multipartFiles[i].getContentType()+";")
-                            .append("老文件名称：" + multipartFiles[i].getOriginalFilename()+";")
-                            .append("保存的路径为：" + storagePath+";\n");
-                    Path path = Paths.get(storagePath);
-                    Files.write(path,multipartFiles[i].getBytes());
-                    //保存文件
-                    CrmFile crmFile = new CrmFile();
-                    crmFile.setTitle(title);
-                    crmFile.setName(newName);
-                    crmFile.setType(Integer.parseInt(remarks));
-                    crmFile.setPath(relativePath);
-                    crmFile.setIsdel(false);
-                    crmFile.setCreatetime(LocalDateTime.now());
-                    crmFile.setSuffix(suffix);
-                    crmFile = crmFileService.saveFile(crmFile);
-                    if(crmFile == null){
-						return setResultError("保存文件失败！");
-					}
-                    //返回文件列表
-                    AttachmentDTO attachmentDTO = new AttachmentDTO();
-                    attachmentDTO.setId(crmFile.getId());
-                    attachmentDTO.setName(oldName);
-                    if(StringUtils.isEmpty(title)){//图片预览
-						attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/showFile?id="+crmFile.getId());
-					}else{//文件下载
-						attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/down?id="+crmFile.getId());
-					}
-                    attachments.add(attachmentDTO);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return setResultError("单个文件："+multipartFiles[i].getOriginalFilename()+"上传失败！");
-                }
+				String oldName = multipartFiles[i].getOriginalFilename();
+				String suffix = oldName.substring(oldName.lastIndexOf(".")+1);
+				if(!image_upload_ext.contains(suffix)){
+					return setResultError("单个文件："+multipartFiles[i].getOriginalFilename()+"文件后缀错误！");
+				}
+				String newName =System.currentTimeMillis()+new Random().nextInt()+"."+suffix;
+				String relativePath = nowDateDir+File.separator+newName;
+				//以原来的名称命名,覆盖掉旧的
+				String storagePath = uploadPath + relativePath;
+				buffer.append("上传的文件：" + multipartFiles[i].getName()+";")
+						.append("上传文件类型：" + multipartFiles[i].getContentType()+";")
+						.append("老文件名称：" + multipartFiles[i].getOriginalFilename()+";")
+						.append("保存的路径为：" + storagePath+";\n");
+//                    Path path = Paths.get(storagePath);
+//                    Files.write(path,multipartFiles[i].getBytes());
+				String url = MinioUtil.upload(multipartFiles[i], relativePath);
+				//保存文件
+				CrmFile crmFile = new CrmFile();
+				crmFile.setTitle(title);
+				crmFile.setName(newName);
+				crmFile.setType(Integer.parseInt(remarks));
+				crmFile.setPath(relativePath);
+				crmFile.setIsdel(false);
+				crmFile.setCreatetime(LocalDateTime.now());
+				crmFile.setSuffix(suffix);
+				crmFile = crmFileService.saveFile(crmFile);
+				if(crmFile == null){
+					return setResultError("保存文件失败！");
+				}
+				//返回文件列表
+				AttachmentDTO attachmentDTO = new AttachmentDTO();
+				attachmentDTO.setId(crmFile.getId());
+				attachmentDTO.setName(oldName);
+//                    if(StringUtils.isEmpty(title)){//图片预览
+//						attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/showFile?id="+crmFile.getId());
+//					}else{//文件下载
+//						attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/down?id="+crmFile.getId());
+//					}
+				attachmentDTO.setUrl(url);
+				attachments.add(attachmentDTO);
 				System.out.println(buffer.toString());
             }
         }else{

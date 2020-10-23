@@ -3,6 +3,7 @@ package com.yl.soft.controller.api;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.service.BaseResponseUtil;
 import com.yl.soft.common.util.DateUtils;
+import com.yl.soft.common.util.MinioUtil;
 import com.yl.soft.dto.AttachmentDTO;
 import com.yl.soft.po.CrmFile;
 import com.yl.soft.service.CrmFileService;
@@ -90,15 +91,16 @@ public class UpLoadFileController2 extends BaseResponseUtil {
 						if(!image_upload_ext.contains(suffix)){
 							return setResultError("单个文件："+multipartFiles.get(i).getOriginalFilename()+"文件后缀错误！");
 						}
-						String newName =System.currentTimeMillis()+new Random().nextLong()+"."+suffix;
+						String newName =System.currentTimeMillis()+new Random().nextInt()+"."+suffix;
 						String relativePath = nowDateDir+File.separator+newName;						//以原来的名称命名,覆盖掉旧的
 						String storagePath = uploadPath + relativePath;
 						buffer.append("上传的文件：" + multipartFiles.get(i).getName()+";")
 								.append("上传文件类型：" + multipartFiles.get(i).getContentType()+";")
 								.append("老文件名称：" + multipartFiles.get(i).getOriginalFilename()+";")
 								.append("保存的路径为：" + storagePath+";\n");
-						Path path = Paths.get(storagePath);
-						Files.write(path,multipartFiles.get(i).getBytes());
+//						Path path = Paths.get(storagePath);
+//						Files.write(path,multipartFiles.get(i).getBytes());
+						String url = MinioUtil.upload(multipartFiles.get(i), relativePath);
 						//保存文件
 						CrmFile crmFile = new CrmFile();
 						crmFile.setTitle(title);
@@ -116,9 +118,10 @@ public class UpLoadFileController2 extends BaseResponseUtil {
 						AttachmentDTO attachmentDTO = new AttachmentDTO();
 						attachmentDTO.setId(crmFile.getId());
 						attachmentDTO.setName(oldName);
-						attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/showFile?id="+crmFile.getId());
+//						attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/showFile?id="+crmFile.getId());
+						attachmentDTO.setUrl(url);
 						attachments.add(attachmentDTO);
-					} catch (IOException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 						return setResultError("单个文件："+multipartFiles.get(i).getOriginalFilename()+"上传失败！");
 					}

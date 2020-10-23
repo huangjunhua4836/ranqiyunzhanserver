@@ -222,7 +222,7 @@
 
 
 /*邀请好友*/
-.g_invitation{width: 100%; overflow: hidden; position: absolute; height: 100%; box-sizing: border-box; -webkit-box-sizing: border-box; padding: 0 0.3rem;}
+.g_invitation{width: 100%; overflow: hidden; position: relative; box-sizing: border-box; -webkit-box-sizing: border-box; padding: 0 0.3rem;}
 .g_invitation>img{display: block; width:100%; margin: 0 auto;}
 .g_btn-invitation{display: block; width: 2.38rem; height: 2.37rem; border-radius: 2.38rem; position: absolute; left: 50%; margin-left: -1.19rem; top: 9.9rem;}
 .g_btn-invitation img{display: block; width: 2.38rem; height: 2.37rem; border-radius: 2.38rem;}

@@ -2,9 +2,10 @@ document.documentElement.style.fontSize = document.documentElement.clientWidth /
 
 
 
-var hUrl="http://rqyz.plf.yl-mall.cn";//接口域名
-//var hUrl="http://dysm.yl-mall.cn";//接口域名
-//var hUrl="http://bjgzh.yl-mall.cn";
+
+var hUrl="http://app.zhiboexpo.com";//接口域名
+//var hUrl="http://rqyz.plf.yl-mall.cn";//接口域名
+
 
 var de=decodeURIComponent;//解码////
 var en=encodeURIComponent; ///编码///

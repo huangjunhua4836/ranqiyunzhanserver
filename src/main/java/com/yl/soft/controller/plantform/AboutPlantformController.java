@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.constants.BaseApiConstants;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.DateUtils;
+import com.yl.soft.common.util.MinioUtil;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.AttachmentDTO;
@@ -178,7 +179,7 @@ public class AboutPlantformController extends BaseController {
                     jsonObject.put("message","单个文件："+multipartFile.getOriginalFilename()+"文件后缀错误！");
                     return jsonObject;
                 }
-                String newName =System.currentTimeMillis()+new Random().nextLong()+"."+suffix;
+                String newName =System.currentTimeMillis()+new Random().nextInt()+"."+suffix;
                 String relativePath = nowDateDir+File.separator+newName;
                 //以原来的名称命名,覆盖掉旧的
                 String storagePath = uploadPath + relativePath;
@@ -186,8 +187,9 @@ public class AboutPlantformController extends BaseController {
                         .append("上传文件类型：" + multipartFile.getContentType()+";")
                         .append("老文件名称：" + multipartFile.getOriginalFilename()+";")
                         .append("保存的路径为：" + storagePath+";\n");
-                Path path = Paths.get(storagePath);
-                Files.write(path,multipartFile.getBytes());
+//                Path path = Paths.get(storagePath);
+//                Files.write(path,multipartFile.getBytes());
+                String url = MinioUtil.upload(multipartFile, relativePath);
                 //保存文件
                 CrmFile crmFile = new CrmFile();
                 crmFile.setName(newName);
@@ -205,8 +207,9 @@ public class AboutPlantformController extends BaseController {
                 //返回文件列表
                 attachmentDTO.setId(crmFile.getId());
                 attachmentDTO.setName(oldName);
-                attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/showFile?id="+crmFile.getId());
-            } catch (IOException e) {
+//                attachmentDTO.setUrl("http://"+ip+":"+port+contextPath+"/api/showFile?id="+crmFile.getId());
+                attachmentDTO.setUrl(url);
+            } catch (Exception e) {
                 e.printStackTrace();
                 jsonObject.put("error",1);
                 jsonObject.put("message","单个文件："+multipartFile.getOriginalFilename()+"上传失败！");

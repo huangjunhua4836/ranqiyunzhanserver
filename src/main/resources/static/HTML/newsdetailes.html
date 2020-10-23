@@ -119,6 +119,7 @@
 			call_net("get", "/zxDetails",detailesObj, function(data){
 				if(data.code==200){
 					var jsonData=data.data;
+					jsonData.releasetime=jsonData.releasetime.substring(0,10);
 					newsData.detailes=jsonData;
 				}else{
 					console.log(data.desc)

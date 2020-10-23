@@ -91,6 +91,15 @@ pagehelper:
   auto-runtime-dialect: true
   default-count: true
 
+# MinIO对象存储相关配置
+minio:
+  miniourl: http://119.3.222.171:9000 #M预览服务
+  uploadurl: http://192.168.0.7:9000 #上传服务
+  bucketName: mall #存储桶名称
+  accessKey: minioadmin #访问的key
+  secretKey: minioadmin #访问的秘钥
+  expires: 60 #下载链有效期(s)
+
 # 上传文件统一后缀名称配置
 custom:
   flowNamelist: A001,A002,A003 #配置直播流名称

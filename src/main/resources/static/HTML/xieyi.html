@@ -18,56 +18,43 @@
 <script type="text/javascript" src="js/Yeffect.js"></script>
 <script type="text/javascript" src="js/Yform.js"></script>
 <script type="text/javascript" src="js/ind.js"></script>
-<title>邀请好友</title>
+<title>隐私政策</title>
 </head>
 
-<body>
-	<div class="g_invitation">
-		<img src="images/g_18.png" alt="">
-		<a href="javascript:void(0)" title="" class="g_btn-invitation" id="g_btn-download"><img src="images/g_19.png" alt=""></a>
+<body id="agreement">
+	<div class="g_answer-container">
+		<div class="g_answer-content" v-html="detailes.privacyclause"></div>
 	</div>
-	<script>
-		var isShare="";
+	<script type="text/javascript">
 		
 		
-		if(getUrlParamURLys("isShare")){
-			isShare=getUrlParamURLys("isShare");
+		var quesstionData={};
+		quesstionData.detailes={};
+		
+		//获取数据
+		getDetailesFn()
+		function getDetailesFn(){
+			call_net("POST", "/aboutus",{}, function(data){
+				if(data.code==200){
+					var jsonData=data.data;
+					quesstionData.detailes=jsonData;
+				}else{
+					console.log(data.desc)
+				}
+			}, function(error){})	
 		}
 		
 		
-		var equipment=IsAndroid();
-		
-		
-		
-		if(isShare){
-			var scriptUrl="<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">"+"\<\/script>";
-			$("head").append(scriptUrl)
-			$(".g_btn-invitation").html("<img src=\"images/g_20.png\" alt=\"\">");
-		}else{
-			$(".g_btn-invitation").html("<img src=\"images/g_19.png\" alt=\"\">");
-		}
-		
-		
-		
-		
-		
-		
-		$(".g_btn-invitation").click(function(){
-			if(isShare){
-				if(equipment){
-					window.location.href="https://www.pgyer.com/OlYC";
-				}else{
-					window.location.href="https://www.pgyer.com/l36o";
-				}
-			}else{
-				if(equipment){
-					window.location.href="invitationFn()";
-				}else{
-					window.webkit.messageHandlers.invitationFn.postMessage("");
-				}
+		//控制器
+		new Vue({
+			el:'#agreement',
+			data:quesstionData,
+			methods:{
+			},
+			filters:{
 				
 			}
-		})
+		});
 	</script>
 </body>
 </html>
