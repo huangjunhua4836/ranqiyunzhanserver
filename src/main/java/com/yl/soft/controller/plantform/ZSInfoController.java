@@ -331,4 +331,32 @@ public class ZSInfoController extends BaseController {
         //此处记得关闭输出Servlet流
         IoUtil.close(out);
     }
+
+    /**
+     * 推荐和排序
+     * @param id
+     * @return
+     */
+    @GetMapping("/isrecommend")
+    public String isrecommend(String id, String type, ModelMap modelMap) {
+        EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(id);
+        modelMap.put("ehbExhibitor",ehbExhibitor);
+
+        return "exhibitioninfo/isrecommend";
+    }
+
+    /**
+     * 修改推荐与排序
+     * @param ehbExhibitor
+     * @return
+     */
+    @PostMapping("/saveRecommend")
+    @ResponseBody
+    public BaseResponse saveRecommend(EhbExhibitor ehbExhibitor) {
+        if(!ehbExhibitor.getIsrecommend()){
+            ehbExhibitor.setSort(null);
+        }
+        ehbExhibitorService.updateById(ehbExhibitor);
+        return setResultSuccess();
+    }
 }

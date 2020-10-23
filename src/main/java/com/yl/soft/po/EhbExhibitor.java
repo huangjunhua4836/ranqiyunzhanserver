@@ -1,5 +1,7 @@
 package com.yl.soft.po;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.yl.soft.po.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -71,8 +73,7 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "标签")
     private String labelid;
-    
-    
+
     @ApiModelProperty(value="展位效果图")
     private String zwimg;
     
@@ -101,4 +102,11 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "展商英文名称")
     private String englishname;
+
+    @ApiModelProperty(value = "排序")
+    private Integer sort;
+
+    @TableField(updateStrategy=FieldStrategy.IGNORED)
+    @ApiModelProperty(value = "是否推荐 1-推荐  0-不推荐")
+    private Boolean isrecommend;
 }

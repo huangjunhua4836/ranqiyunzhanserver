@@ -25,13 +25,23 @@ layui.use('core', function(){
             ,defaultToolbar: ['filter']
             ,title: '数据表'
             ,cols: [[ //表头
-                {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
+                {field:'id', title:'ID', width:55, fixed: 'left', unresize: true, sort: true}
                 ,{field: 'registerphone', title: '注册手机号'}
                 ,{field: 'name', title: '管理者姓名'}
                 ,{field: 'enterprisename', title: '企业'}
                 ,{field: 'mailbox', title: '邮箱'}
                 ,{field: 'boothno', title: '展位号'}
                 ,{field: 'fid', title: 'fid'}
+                ,{field: 'sort', title: '排序',sort: true}
+                ,{field: 'isrecommend', title: '推荐',sort: true,
+                    templet: function(d){
+                        if(d.isrecommend == true){
+                            return '<b style="color: red;">推荐</b>';
+                        }else {
+                            return '';
+                        }
+                    }
+                }
                 ,{field: 'state', title: '审核状态',
                     templet: function(d){
                         if(d.state == '0'){
@@ -63,7 +73,7 @@ layui.use('core', function(){
                         return util.toDateString(d.createtime, "yyyy-MM-dd HH:mm:ss");
                     }
                 }
-                ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:150,unresize: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:210,unresize: true}
             ]]
             ,page: true //开启分页
         });
@@ -107,6 +117,8 @@ layui.use('core', function(){
             });
         } else if(obj.event === 'edit'){
             core.openIframeDialog('修改','/platform/zsInfo/input?type=update&id='+data.id,['100%', '90%'],false,initTable);
+        } else if(obj.event === 'isrecommend'){
+            core.openIframeDialog('推荐','/platform/zsInfo/isrecommend?id='+data.id,['50%', '40%'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('详情',$('#detail').html(),['100%', '90%']);
             $('.layui-layer-content').find('input').eq(0).val(data.registerphone);

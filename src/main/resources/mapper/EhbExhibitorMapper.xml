@@ -81,6 +81,6 @@
             <if test="paramMap.startTime!= null and paramMap.startTime!='' and paramMap.endTime!= null and paramMap.endTime!=''">
                 and e.createtime BETWEEN #{paramMap.startTime} AND #{paramMap.endTime}
             </if>
-            order by e.createtime desc
+            order by e.sort desc
      </select>
 </mapper>

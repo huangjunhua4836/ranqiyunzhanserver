@@ -54,7 +54,53 @@ public class IndexController extends BaseController {
 
 
     /**
-     * 推荐展商列表（包含行为）
+     * 后台推荐展商列表（首页推荐展商后台直接推荐）
+     * @return
+     */
+    @ApiOperation(value = "首页推荐展商后台直接推荐")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "当前页码", required = true, paramType = "query")
+            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @PostMapping("/backstageRecommendExibitionList")
+    public BaseResponse<BasePage<ExhibitorDto>> backstageRecommendExibitionList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
+            return setResultError(403,"","当前页码不能为空！");
+        }
+        if(StringUtils.isEmpty(paramMap.get("pageSize"))){
+            return setResultError(403,"","每页数量不能为空！");
+        }
+        QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+        ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        ehbExhibitorQueryWrapper.eq("state",1);
+        ehbExhibitorQueryWrapper.eq("isrecommend",true);
+        ehbExhibitorQueryWrapper.orderByDesc("sort");
+        Integer pageParam[] = pageValidParam(paramMap);
+        PageHelper.startPage(pageParam[0], pageParam[1]);
+        List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
+        List<ExhibitorDto> exhibitorDtos = ehbExhibitors.stream().map(i->{
+            ExhibitorDto exhibitorDto = new ExhibitorDto();
+            BeanUtil.copyProperties(i,exhibitorDto);
+            EhbAudience ehbAudience = ehbAudienceService.lambdaQuery().select(EhbAudience::getHeadPortrait).eq(EhbAudience::getBopie,i.getId()).last("limit 1").one();
+            exhibitorDto.setLogo(ehbAudience!=null?ehbAudience.getHeadPortrait():null);
+            switch (i.getState()){
+                case 0:exhibitorDto.setState_show("未认证");break;
+                case 1:exhibitorDto.setState_show("已认证");break;
+                default:exhibitorDto.setState_show("未知状态");break;
+            }
+            return exhibitorDto;
+        }).collect(Collectors.toList());
+        return setResultSuccess(getBasePage(ehbExhibitors,exhibitorDtos));
+    }
+
+    /**
+     * 推荐展商列表（云端橱窗感兴趣的展商-包含行为）
      * @return
      */
     @ApiOperation(value = "推荐展商列表、感兴趣的展商列表")
