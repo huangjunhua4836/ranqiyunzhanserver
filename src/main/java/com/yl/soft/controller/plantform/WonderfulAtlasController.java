@@ -82,7 +82,7 @@ public class WonderfulAtlasController extends BaseController {
         ehbWonderfulAtlasQueryWrapper.eq(!StringUtils.isEmpty(ehbWonderfulAtlas.getLiveId()), "live_id", ehbWonderfulAtlas.getLiveId());
         ehbWonderfulAtlasQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime), "createtime", startTime, endTime);
         ehbWonderfulAtlasQueryWrapper.eq("isdel", 1);
-        ehbWonderfulAtlasQueryWrapper.orderByDesc("createtime");
+        ehbWonderfulAtlasQueryWrapper.orderByAsc("sort");
         PageHelper.startPage(Integer.valueOf(page), Integer.valueOf(limit));
         List<EhbWonderfulAtlas> ehbWonderfulAtlases = ehbWonderfulAtlasService.list(ehbWonderfulAtlasQueryWrapper);
         PageInfo pageInfo = new PageInfo<>(ehbWonderfulAtlases);

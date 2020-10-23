@@ -69,7 +69,7 @@ public class WonderfulVideoController extends BaseController {
         ehbWonderfulVideoQueryWrapper.eq(!StringUtils.isEmpty(ehbWonderfulVideo.getLiveId()),"live_id",ehbWonderfulVideo.getLiveId());
         ehbWonderfulVideoQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"createtime",startTime,endTime);
         ehbWonderfulVideoQueryWrapper.eq("isdel", 1);
-        ehbWonderfulVideoQueryWrapper.orderByDesc("createtime");
+        ehbWonderfulVideoQueryWrapper.orderByAsc("sort");
         PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
         List<EhbWonderfulVideo> ehbWonderfulVideos = ehbWonderfulVideoService.list(ehbWonderfulVideoQueryWrapper);
         PageInfo pageInfo = new PageInfo<>(ehbWonderfulVideos);

@@ -88,7 +88,7 @@ public class ShowYouAroundController extends BaseController {
 	@PostMapping("/wonderful_video")
 	public ResultItem<List<EhbWonderfulVideoDto>> wonderful_video(@NotBlank(message = "token不能为空") String token, Integer page,
 			Integer size) {
-		PageHelper.startPage(page, size, "sort DESC");
+		PageHelper.startPage(page, size, "sort ASC");
 		PageInfo<EhbWonderfulVideoDto> pageInfo = new PageInfo<>(
 				ehbWonderfulVideoService.lambdaQuery().eq(EhbWonderfulVideo::getIsdel, 1).list().stream().map(i->{
 					EhbWonderfulVideoDto ehbWonderfulVideoDto=new EhbWonderfulVideoDto();
@@ -106,7 +106,7 @@ public class ShowYouAroundController extends BaseController {
 	@PostMapping("/wonderful_tlas")
 	public ResultItem<List<EhbWonderfulAtlasDto>> wonderful_tlas(@NotBlank(message = "token不能为空") String token, Integer page,
 			Integer size) {
-		PageHelper.startPage(page, size, "sort DESC");
+		PageHelper.startPage(page, size, "sort ASC");
 		PageInfo<EhbWonderfulAtlasDto> pageInfo = new PageInfo<>(
 				ehbWonderfulAtlasService.lambdaQuery().eq(EhbWonderfulAtlas::getIsdel, 1).list().stream().map(i->{
 					EhbWonderfulAtlasDto ehbWonderfulAtlasDto=new EhbWonderfulAtlasDto();
