@@ -353,9 +353,6 @@ public class ZSInfoController extends BaseController {
     @PostMapping("/saveRecommend")
     @ResponseBody
     public BaseResponse saveRecommend(EhbExhibitor ehbExhibitor) {
-        if(!ehbExhibitor.getIsrecommend()){
-            ehbExhibitor.setSort(null);
-        }
         ehbExhibitorService.updateById(ehbExhibitor);
         return setResultSuccess();
     }

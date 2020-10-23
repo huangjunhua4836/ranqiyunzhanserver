@@ -15,7 +15,7 @@ layui.define(['tree','layer','util','jquery','form','table','element','laydate',
                 // contentType:'application/json',
                 data:data,
                 dataType:'json',
-                timeout:'5000',
+                timeout:'60000',
                 beforeSend:function(xhr){
                     index = layer.load(1); //风格1的加载
                 },

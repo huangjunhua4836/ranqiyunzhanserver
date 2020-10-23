@@ -35,34 +35,34 @@
                             <input type="text" th:field="*{msgContent}" required  lay-verify="required" placeholder="通知内容" autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">设备标识</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{registrationId}" required  lay-verify="required" placeholder="设备标识" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">别名</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{bieming}" required  lay-verify="required" placeholder="别名" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">图片地址</label>
-                        <div class="layui-upload">
-                            <button type="button" class="layui-btn" id="test2">上传图片</button>
-                            <div class="layui-upload-list">
-                                <img class="layui-upload-img" id="demo1" th:src="*{imgurl}">
-                                <p id="demoText"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">消息url</label>
-                        <div class="layui-input-block">
-                            <input type="text" th:field="*{url}" required  lay-verify="required" placeholder="消息url" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
+<!--                    <div class="layui-form-item">-->
+<!--                        <label class="layui-form-label">设备标识</label>-->
+<!--                        <div class="layui-input-block">-->
+<!--                            <input type="text" th:field="*{registrationId}" required  lay-verify="required" placeholder="设备标识" autocomplete="off" class="layui-input">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="layui-form-item">-->
+<!--                        <label class="layui-form-label">别名</label>-->
+<!--                        <div class="layui-input-block">-->
+<!--                            <input type="text" th:field="*{bieming}" required  lay-verify="required" placeholder="别名" autocomplete="off" class="layui-input">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="layui-form-item">-->
+<!--                        <label class="layui-form-label">图片地址</label>-->
+<!--                        <div class="layui-upload">-->
+<!--                            <button type="button" class="layui-btn" id="test2">上传图片</button>-->
+<!--                            <div class="layui-upload-list">-->
+<!--                                <img class="layui-upload-img" id="demo1" th:src="*{imgurl}">-->
+<!--                                <p id="demoText"></p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="layui-form-item">-->
+<!--                        <label class="layui-form-label">消息url</label>-->
+<!--                        <div class="layui-input-block">-->
+<!--                            <input type="text" th:field="*{url}" required  lay-verify="required" placeholder="消息url" autocomplete="off" class="layui-input">-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <input th:field="*{id}" type="hidden"/>
                     <input th:field="*{imgurl}" type="hidden" id="imgurl"/>
                     <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>

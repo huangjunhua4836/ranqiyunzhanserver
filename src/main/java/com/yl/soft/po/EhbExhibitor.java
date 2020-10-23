@@ -103,10 +103,10 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "展商英文名称")
     private String englishname;
 
+    @TableField(updateStrategy=FieldStrategy.IGNORED)
     @ApiModelProperty(value = "排序")
     private Integer sort;
 
-    @TableField(updateStrategy=FieldStrategy.IGNORED)
     @ApiModelProperty(value = "是否推荐 1-推荐  0-不推荐")
     private Boolean isrecommend;
 }

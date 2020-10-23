@@ -47,8 +47,8 @@ layui.use('core', function(){
                         return d.issuccess == true?'成功':'失败';
                     }
                 }
-                ,{field: 'registrationId', title: '设备标识'}
-                ,{field: 'bieming', title: '别名'}
+                // ,{field: 'registrationId', title: '设备标识'}
+                // ,{field: 'bieming', title: '别名'}
                 ,{field: 'isdel', title: '删除状态',
                     templet: function(d){
                         return d.isdel == false?'正常':'删除';
@@ -59,7 +59,7 @@ layui.use('core', function(){
                         return util.toDateString(d.createtime, "yyyy-MM-dd HH:mm:ss");
                     }
                 }
-                ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:150,unresize: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:200,unresize: true}
             ]]
             ,page: true //开启分页
         });
@@ -96,9 +96,13 @@ layui.use('core', function(){
         } else if(obj.event === 'detail'){
             layer.confirm('真的发送么？', function(index){
                 layer.close(index);
-                //向服务端发送删除指令
-                var resultData = core.ajax('/platform/stationinfo/sendOut',false,'POST','id='+data.id);
+                //loading层
+                var loadindex = layer.load(1, {
+                    shade: [0.8,'#000'] //0.1透明度的白色背景
+                })
+                var resultData = core.ajax('/platform/stationinfo/sendOut',true,'POST','id='+data.id);
                 if(resultData!=false){
+                    layer.close(loadindex);
                     layer.msg('操作成功！',core.showtime);
                     initTable({});
                 }
