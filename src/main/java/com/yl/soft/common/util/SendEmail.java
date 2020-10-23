@@ -1,6 +1,8 @@
 package com.yl.soft.common.util;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.*;
@@ -38,6 +40,54 @@ public class SendEmail {
 	@Value("${custom.yj.dk}")
 	private String dk;
 
+//	public static void main(String[] args) {
+//		MailInfo mailInfo = new MailInfo();
+//		mailInfo.setMailServerHost("smtp.163.com"); // 邮箱服务器
+//		mailInfo.setMailServerPort("25");
+//		mailInfo.setValidate(true);
+//		// 以下是发送方信息
+//		mailInfo.setUserName("gaschina_expo@163.com");
+//		mailInfo.setPassword("PGPZSLZAQZBKCGPH");// 您的邮箱密码
+//		mailInfo.setFromAddress("gaschina_expo@163.com");
+//		// 以下是接收方信息
+//		mailInfo.setToAddress("xingdi1024@163.com");
+//		mailInfo.setSubject("XXX先生您好，您的9月份账单来了!");
+//		mailInfo.setContent("邮件内容");
+//		URL filename;
+//		try {
+//			filename = new URL("http://rqyz.plf.yl-mall.cn/api/showFile?id=313");
+//		
+//		List<URL> attachments=new ArrayList<URL>();
+//		attachments.add(filename);
+//		mailInfo.setAttachments(attachments);
+//		mailInfo.setContentType("text/html");//HTML格式：text/html，纯文本格式：text/plain
+//		// 这个类主要来发送邮件
+//		MailSender.sendMail(mailInfo);//发送邮件
+//		} catch (MalformedURLException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
+	
+	public boolean sendMails(List<URL> attachments,String ToAddress) {
+		MailInfo mailInfo = new MailInfo();
+		mailInfo.setMailServerHost(host); // 邮箱服务器
+		mailInfo.setMailServerPort("25");
+		mailInfo.setValidate(true);
+		// 以下是发送方信息
+		mailInfo.setUserName(username);
+		mailInfo.setPassword(password);// 您的邮箱密码
+		mailInfo.setFromAddress(from);
+		// 以下是接收方信息
+		mailInfo.setToAddress(ToAddress);
+		mailInfo.setSubject("【燃气云展】资料");
+		mailInfo.setContent("【燃气云展】资料详情请查看附件");
+		mailInfo.setAttachments(attachments);
+		mailInfo.setContentType("text/html");//HTML格式：text/html，纯文本格式：text/plain
+		return MailSender.sendMail(mailInfo);
+
+	}
+	
 	/**
      * 发送带附件的邮件
      * 
@@ -101,7 +151,7 @@ public class SendEmail {
 
             // 创建多重消息
             Multipart multipart = new MimeMultipart();
-
+            
             // 设置文本消息部分
             multipart.addBodyPart(messageBodyPart);
 
@@ -158,7 +208,7 @@ public class SendEmail {
 			message.setSubject("【燃气云展】邮箱验证");
 			// 设置邮件的文本内容
 			// message.setText("Welcome to JavaMail World!");
-			message.setContent("【燃气云展】验证码：" + emailMsg + " 用于绑定邮箱5分钟内失效。", "text/html;charset=utf-8");
+			message.setContent("【燃气云展】验证码：" + emailMsg + " 用于绑定邮箱5分钟内失效。此为系统邮件，请勿回复", "text/html;charset=utf-8");
 //			String str="<head> <base target=\"_blank\" /> <style type=\"text/css\">::-webkit-scrollbar{ display: none; }</style> <style id=\"cloudAttachStyle\" type=\"text/css\">#divNeteaseBigAttach, #divNeteaseBigAttach_bak{display:none;}</style> <style id=\"blockquoteStyle\" type=\"text/css\">blockquote{display:none;}</style> <style type=\"text/css\"> body{font-size:14px;font-family:arial,verdana,sans-serif;line-height:1.666;padding:0;margin:0;overflow:auto;white-space:normal;word-wrap:break-word;min-height:100px} td, input, button, select, body{font-family:Helvetica, 'Microsoft Yahei', verdana} pre {white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word;width:95%} th,td{font-family:arial,verdana,sans-serif;line-height:1.666} img{ border:0} header,footer,section,aside,article,nav,hgroup,figure,figcaption{display:block} blockquote{margin-right:0px} </style> </head> <body tabindex=\"0\" role=\"listitem\"> <table width=\"700\" border=\"0\" align=\"center\" cellspacing=\"0\" style=\"width:700px;\"> <tbody> <tr> <td> <div style=\"width:700px;margin:0 auto;border-bottom:1px solid #ccc;margin-bottom:30px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"700\" height=\"39\" style=\"font:12px Tahoma, Arial, 宋体;\"> <tbody><tr><td width=\"210\"></td></tr></tbody> </table> </div> <div style=\"width:680px;padding:0 10px;margin:0 auto;\"> <div style=\"line-height:1.5;font-size:14px;margin-bottom:25px;color:#4d4d4d;\"> <strong style=\"display:block;margin-bottom:15px;\">尊敬的用户：<span style=\"color:#f60;font-size: 16px;\"></span>您好！</strong> <strong style=\"display:block;margin-bottom:15px;\"> 您正在进行<span style=\"color: red\">绑定邮箱</span>操作，请在验证码输入框中输入：<span style=\"color:#f60;font-size: 24px\">"+emailMsg+"</span>，以完成操作。 </strong> </div> <div style=\"margin-bottom:30px;\"> <small style=\"display:block;margin-bottom:20px;font-size:12px;\"> <p style=\"color:#747474;\"> 注意：如非本人操作，请及时登录并修改密码以保证帐户安全 <br>（工作人员不会向你索取此验证码，请勿泄漏！) </p> </small> </div> </div> <div style=\"width:700px;margin:0 auto;\"> <div style=\"padding:10px 10px 0;border-top:1px solid #ccc;color:#747474;margin-bottom:20px;line-height:1.3em;font-size:12px;\"> <p>此为系统邮件，请勿回复<br> 请保管好您的邮箱，避免账号被他人盗用 </p> <p>燃气云展</p> </div> </div> </td> </tr> </tbody> </table> </body>";
 //			message.setContent(str, "text/html;charset=utf-8");
 			// 从session的环境中获取发送邮件的对象

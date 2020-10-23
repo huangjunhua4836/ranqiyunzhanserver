@@ -1,8 +1,10 @@
 package com.yl.soft.controller.api;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -108,18 +110,18 @@ public class SendMsgCodeController extends BaseController {
 		if (mail == null) {
 			return error();
 		}
-		List<Integer> ids = Arrays.asList(id.split(",")).stream().map(Integer::parseInt).collect(Collectors.toList());
-		for (Integer integer : ids) {
-			EhbDataUpload ed=ehbDataUploadService.getById(integer);
-		    String subject ="【燃气云展】资料";
-		    String msg ="【燃气云展】资料详情请查看附件";
-		    try {
-			    URL filename =new URL(ed.getUpadd());
-		    	sendEmail.sendMail(mail, subject, msg, filename,ed.getTitle());
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		}
+		try {
+			List<Integer> ids = Arrays.asList(id.split(",")).stream().map(Integer::parseInt).collect(Collectors.toList());
+			List<URL> attachments=new ArrayList<URL>();
+			for (Integer integer : ids) {
+				EhbDataUpload ed=ehbDataUploadService.getById(integer);
+				URL filename = new URL(ed.getUpadd());
+				attachments.add(filename);
+			}
+			sendEmail.sendMails(attachments, mail);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
 		return ok2();
 	}
 
