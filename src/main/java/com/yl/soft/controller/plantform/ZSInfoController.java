@@ -338,7 +338,7 @@ public class ZSInfoController extends BaseController {
      * @return
      */
     @GetMapping("/isrecommend")
-    public String isrecommend(String id, String type, ModelMap modelMap) {
+    public String isrecommend(String id,ModelMap modelMap) {
         EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(id);
         modelMap.put("ehbExhibitor",ehbExhibitor);
 

@@ -61,13 +61,6 @@
 <!--                        </div>-->
 <!--                    </div>-->
 <!--                </div>-->
-                <div class="layui-form-item">
-                    <label class="layui-form-label">是否推荐</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" th:field="*{isrecommend}" th:checked="${isrecommend==1}?checked"
-                               lay-skin="switch" lay-filter="switchTest" lay-text="推荐|不推荐">
-                    </div>
-                </div>
                 <input th:field="*{id}" type="hidden"/>
                 <input th:field="*{headpicture}" type="hidden" id="im"/>
 <!--                <input th:field="*{picture}" type="hidden" id="ims"/>-->

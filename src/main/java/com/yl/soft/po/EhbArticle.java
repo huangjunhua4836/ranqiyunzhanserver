@@ -1,5 +1,7 @@
 package com.yl.soft.po;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.yl.soft.po.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -58,4 +60,8 @@ public class EhbArticle extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "是否推荐  true-推荐  false-不推荐")
     private Boolean isrecommend;
+
+    @TableField(updateStrategy= FieldStrategy.IGNORED)
+    @ApiModelProperty(value = "排序  越大越靠前")
+    private Integer sort;
 }

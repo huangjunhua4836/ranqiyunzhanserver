@@ -45,8 +45,17 @@ layui.use('core', function () {
                         field: 'releasetime', title: '发布时间', sort: true,
                         templet: function (d) {return util.toDateString(d.releasetime, "yyyy-MM-dd HH:mm:ss");}
                     }
-                ,{field:'isrecommend', title:'是否推荐', width:95, templet: function(d){if(d.isrecommend== 1){return '推荐'}else{return '不推荐'}}, unresize: true}
-                    , {fixed: 'right', title: '操作', toolbar: '#rowToolBar', width: 150, unresize: true}
+                    ,{field: 'sort', title: '排序',sort: true}
+                    ,{field: 'isrecommend', title: '推荐',sort: true,
+                        templet: function(d){
+                            if(d.isrecommend == true){
+                                return '<b style="color: red;">推荐</b>';
+                            }else {
+                                return '';
+                            }
+                        }
+                    }
+                    , {fixed: 'right', title: '操作', toolbar: '#rowToolBar', width: 170, unresize: true}
                 ]]
                 ,
                 page: true //开启分页
@@ -83,24 +92,8 @@ layui.use('core', function () {
             });
         } else if (obj.event === 'edit') {
             core.openIframeDialog('修改热资讯', '/platform/article/input?type=update&id=' + data.id, ['100%', '90%'], false, initTable);
-        } else if (obj.event === 'detail') {
-            core.openDialog('咨询详情', $('#detail').html(), ['100%', '90%']);
-            $('.layui-layer-content').find('input').eq(0).val(data.id);
-            $('.layui-layer-content').find('input').eq(1).val(data.title);
-            $('.layui-layer-content').find('input').eq(2).val(data.content);
-            $('.layui-layer-content').find('img').eq(0).attr('src',data.headpicture);
-            $('.layui-layer-content').find('img').eq(1).attr('src',data.picture);
-            $('.layui-layer-content').find('input').eq(3).val(util.toDateString(data.releasetime, "yyyy-MM-dd HH:mm:ss"));
-            $('.layui-layer-content').find('input').eq(4).val(data.isrecommend==1?'推荐':'不推荐');
-            $('.layui-layer-content').find('input').eq(5).val(data.countcollection);
-            $('.layui-layer-content').find('input').eq(6).val(data.countthumbs);
-            $('.layui-layer-content').find('input').eq(7).val(data.countfollow);
-            $('.layui-layer-content').find('input').eq(8).val(data.countbrowse);
-            $('.layui-layer-content').find('input').eq(9).val(data.countcomment);
-            $('.layui-layer-content').find('input').eq(10).val(data.createuser);
-            $('.layui-layer-content').find('input').eq(11).val(util.toDateString(data.createTime, "yyyy-MM-dd HH:mm:ss"));
-            $('.layui-layer-content').find('input').eq(12).val(data.updateuser);
-            $('.layui-layer-content').find('input').eq(13).val(util.toDateString(data.updateTime, "yyyy-MM-dd HH:mm:ss"));
+        } else if(obj.event === 'isrecommend'){
+            core.openIframeDialog('推荐','/platform/article/isrecommend?id='+data.id,['50%', '40%'],false,initTable);
         }
     });
 

@@ -55,7 +55,7 @@ public class ArticleListController extends BaseController {
         ehbarticleQueryWrapper.like(!StringUtils.isEmpty(ehbarticle.getTitle()), EhbArticle::getTitle, ehbarticle.getTitle());
         ehbarticleQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime), EhbArticle::getCreatetime, startTime, endTime);
         ehbarticleQueryWrapper.eq(EhbArticle::getIsdel, CommonDict.CORRECT_STATE);
-        ehbarticleQueryWrapper.orderByDesc(EhbArticle::getCreatetime);
+        ehbarticleQueryWrapper.orderByDesc(EhbArticle::getSort);
         PageHelper.startPage(Integer.valueOf(page), Integer.valueOf(limit));
         List<EhbArticle> ehbHottitles = ehbArticleService.list(ehbarticleQueryWrapper);
         PageInfo pageInfo = new PageInfo<>(ehbHottitles);
@@ -125,6 +125,31 @@ public class ArticleListController extends BaseController {
                     , BaseApiConstants.ServiceResultCode.ERROR.getValue(), "岗位删除ID为空！");
         }
         ehbArticleService.removeById(id);
+        return setResultSuccess();
+    }
+
+    /**
+     * 推荐和排序
+     * @param id
+     * @return
+     */
+    @GetMapping("/isrecommend")
+    public String isrecommend(String id,ModelMap modelMap) {
+        EhbArticle ehbArticle = ehbArticleService.getById(id);
+        modelMap.put("ehbArticle",ehbArticle);
+
+        return "article/isrecommend";
+    }
+
+    /**
+     * 修改推荐与排序
+     * @param ehbArticle
+     * @return
+     */
+    @PostMapping("/saveRecommend")
+    @ResponseBody
+    public BaseResponse saveRecommend(EhbArticle ehbArticle) {
+        ehbArticleService.updateById(ehbArticle);
         return setResultSuccess();
     }
 }
