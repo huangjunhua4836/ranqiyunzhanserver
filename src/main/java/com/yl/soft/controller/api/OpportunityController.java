@@ -15,8 +15,12 @@ import com.yl.soft.dto.app.OpportunityDto;
 import com.yl.soft.dto.base.SessionState;
 import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbAdvertising;
+import com.yl.soft.po.EhbArticle;
+import com.yl.soft.po.EhbUseraction;
 import com.yl.soft.service.EhbAdvertisingService;
+import com.yl.soft.service.EhbArticleService;
 import com.yl.soft.service.EhbOpportunityService;
+import com.yl.soft.service.EhbUseractionService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +39,10 @@ public class OpportunityController extends BaseController {
     private EhbOpportunityService ehbOpportunityService;
     @Autowired
     private EhbAdvertisingService ehbAdvertisingService;
+    @Autowired
+    private EhbArticleService ehbArticleService;
+    @Autowired
+    private EhbUseractionService ehbUseractionService;
     @Autowired
     private SessionState sessionState;
 
@@ -270,5 +278,32 @@ public class OpportunityController extends BaseController {
         }
         Collections.shuffle(advertisingDtos);
         return setResultSuccess(advertisingDtos);
+    }
+
+    /**
+     * 收藏的资讯列表
+     * @return
+     */
+    @ApiOperation(value = "收藏的资讯列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功")
+            ,@ApiResponse(code = 401, message = "token为空！")
+            ,@ApiResponse(code = 402, message = "token失效！")
+            ,@ApiResponse(code = 403, message = "参数不合法请检查必填项")
+            ,@ApiResponse(code = -1, message = "系统异常")
+    })
+    @PostMapping("/collectionArticle")
+    public BaseResponse<List<EhbArticle>> collectionArticle(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
+        List<Integer> ids = ehbUseractionService.lambdaQuery().eq(EhbUseraction::getUserid,appLoginDTO.getId())
+                .eq(EhbUseraction::getType,3).eq(EhbUseraction::getActivetype,1).list()
+                .stream().map(i->{
+                    return i.getRelateid();
+        }).collect(Collectors.toList());
+        List<EhbArticle> ehbArticles = ehbArticleService.lambdaQuery().in(EhbArticle::getId,ids).list();
+        return setResultSuccess(ehbArticles);
     }
 }
