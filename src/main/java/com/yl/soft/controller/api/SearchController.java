@@ -94,7 +94,7 @@ public class SearchController extends BaseController {
         PageHelper.startPage(1, 5);
         List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
         List<ExhibitorDto> exhibitorDtos = ehbExhibitors.stream().map(e->ExhibitorDto.of(e)).collect(Collectors.toList());
-        Collections.shuffle(exhibitorDtos);
+//        Collections.shuffle(exhibitorDtos);
         //商机列表
         Map conditionMap = new HashMap();
         conditionMap.put("isdel",CommonDict.CORRECT_STATE);
@@ -102,7 +102,7 @@ public class SearchController extends BaseController {
         conditionMap.put("type",1);//商机
         PageHelper.startPage(1, 5);
         List<OpportunityDto> opportunityDtos = ehbOpportunityService.opportunityList(conditionMap);
-        Collections.shuffle(opportunityDtos);
+//        Collections.shuffle(opportunityDtos);
         //资讯列表
         QueryWrapper<EhbArticle> ehbArticleQueryWrapper = new QueryWrapper<>();
         ehbArticleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);

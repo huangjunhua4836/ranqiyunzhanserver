@@ -118,16 +118,18 @@ public class LiveController extends BaseController {
             //直播间弹幕聊天id
             Map<String,Object> dataMap=(Map<String, Object>) JSON.parse(imOperator.createLiveGrop(ehbLiveBroadcast.getId()+""));
             String groupId = dataMap.get("GroupId")+"";
+            if("10036".equals(dataMap.get("ErrorCode")+"")){
+                return setResultError("IM可能欠费！"+dataMap.get("ErrorInfo"));
+            }
+            if (StringUtils.isEmpty(groupId)){
+                return setResultError("group_id为空！");
+            }
             ehbLiveBroadcast.setGropid(groupId);
-            //拉流地址
-            ehbLiveBroadcast.setPullFlowUrl(hwPlayFlowAuthUtil.liveUrl(ehbLiveBroadcast.getFlowName()));
-            //推流地址
-            ehbLiveBroadcast.setPushFlowUrl(hwPlayFlowAuthUtil.tiveUrl(ehbLiveBroadcast.getFlowName()));
-            ehbLiveBroadcast.setCreatetime(LocalDateTime.now());
+
             List<String> userFlowNames = ehbLiveBroadcastService.lambdaQuery().select(EhbLiveBroadcast::getFlowName).eq(EhbLiveBroadcast::getIsdel,1).in(EhbLiveBroadcast::getLiveStatus,0,1)
                     .list().stream().map(i->{
                         return i.getFlowName();
-            }).collect(toList());
+                    }).collect(toList());
             List<String> zongflowList = Arrays.asList(flowNamelist.split(","));
             //去除已用的元素
             zongflowList = zongflowList.stream().filter(i -> !userFlowNames.contains(i)).collect(toList());
@@ -135,6 +137,12 @@ public class LiveController extends BaseController {
                 return setResultError("流名称已用尽！");
             }
             ehbLiveBroadcast.setFlowName(zongflowList.get(0));
+            //拉流地址
+            ehbLiveBroadcast.setPullFlowUrl(hwPlayFlowAuthUtil.liveUrl(ehbLiveBroadcast.getFlowName()));
+            //推流地址
+            ehbLiveBroadcast.setPushFlowUrl(hwPlayFlowAuthUtil.tiveUrl(ehbLiveBroadcast.getFlowName()));
+            ehbLiveBroadcast.setCreatetime(LocalDateTime.now());
+            ehbLiveBroadcast.setLiveStatus(0);//即将开始
         }else{
         }
         if(ehbLiveBroadcastService.saveOrUpdate(ehbLiveBroadcast)){
@@ -156,10 +164,11 @@ public class LiveController extends BaseController {
             return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
                     , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"删除ID为空！");
         }
-        EhbLiveBroadcast ehbLiveBroadcast = ehbLiveBroadcastService.getById(id);
-        ehbLiveBroadcast.setDeltime(LocalDateTime.now());
-        ehbLiveBroadcast.setIsdel(2);
-        ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
+//        EhbLiveBroadcast ehbLiveBroadcast = ehbLiveBroadcastService.getById(id);
+//        ehbLiveBroadcast.setDeltime(LocalDateTime.now());
+//        ehbLiveBroadcast.setIsdel(2);
+//        ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
+        ehbLiveBroadcastService.removeById(id);
         return setResultSuccess();
     }
 }
