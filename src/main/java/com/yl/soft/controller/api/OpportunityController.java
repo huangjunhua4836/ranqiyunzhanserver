@@ -287,6 +287,8 @@ public class OpportunityController extends BaseController {
     @ApiOperation(value = "收藏的资讯列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "pageNum", value = "当前页数",  paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "pageSize", value = "每页显示条数",  paramType = "query",required = true)
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
@@ -297,6 +299,9 @@ public class OpportunityController extends BaseController {
     })
     @PostMapping("/collectionArticle")
     public BaseResponse<List<EhbArticle>> collectionArticle(@ApiParam(hidden = true) @RequestParam Map paramMap) {
+        if(StringUtils.isEmpty(paramMap.get("pageNum"))){
+            return setResultError(403,"","当前页码不能为空！");
+        }
         SessionUser appLoginDTO = sessionState.getCurrentUser(paramMap.get("token").toString());
         List<Integer> ids = ehbUseractionService.lambdaQuery().eq(EhbUseraction::getUserid,appLoginDTO.getId())
                 .eq(EhbUseraction::getType,3).eq(EhbUseraction::getActivetype,1).list()
@@ -305,8 +310,14 @@ public class OpportunityController extends BaseController {
         }).collect(Collectors.toList());
         List<EhbArticle> ehbArticles = new ArrayList<>();
         if(ids!=null && !ids.isEmpty()){
-            ehbArticles = ehbArticleService.lambdaQuery().in(EhbArticle::getId,ids).list();
+            QueryWrapper<EhbArticle> ehbArticleQueryWrapper = new QueryWrapper<>();
+            ehbArticleQueryWrapper.in("id",ids);
+            Integer pageParam[] = pageValidParam(paramMap);
+            PageHelper.startPage(pageParam[0], pageParam[1]);
+            ehbArticles = ehbArticleService.list(ehbArticleQueryWrapper);
+            return setResultSuccess(getBasePage(ehbArticles,ehbArticles));
+        }else{
+            return setResultSuccess(ehbArticles);
         }
-        return setResultSuccess(ehbArticles);
     }
 }
