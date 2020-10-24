@@ -303,7 +303,10 @@ public class OpportunityController extends BaseController {
                 .stream().map(i->{
                     return i.getRelateid();
         }).collect(Collectors.toList());
-        List<EhbArticle> ehbArticles = ehbArticleService.lambdaQuery().in(EhbArticle::getId,ids).list();
+        List<EhbArticle> ehbArticles = new ArrayList<>();
+        if(ids!=null && !ids.isEmpty()){
+            ehbArticles = ehbArticleService.lambdaQuery().in(EhbArticle::getId,ids).list();
+        }
         return setResultSuccess(ehbArticles);
     }
 }
