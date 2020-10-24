@@ -67,7 +67,7 @@ layui.use('core', function () {
             layer.confirm('真的删除咨询么？', function (index) {
                 layer.close(index);
                 //向服务端发送删除指令
-                var resultData = core.ajax('/platform/article/delete', false, 'POST', 'id=' + data.id);
+                var resultData = core.ajax('/platform/opportunity/delete', false, 'POST', 'id=' + data.id);
                 if (resultData != false) {
                     layer.msg('操作成功！', core.showtime);
                     initTable({});
