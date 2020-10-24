@@ -39,7 +39,7 @@ layui.use('core', function(){
                     }
                 }
                 ,{field: 'imgurl', title: '图片地址'}
-                ,{field: 'linkurl', title: '链接地址'}
+                ,{field: 'sort', title: '排序'}
                 // ,{field: 'createUser', title: '创建者'}
                 ,{field: 'createTime', title: '创建时间',sort: true,
                     templet: function(d){

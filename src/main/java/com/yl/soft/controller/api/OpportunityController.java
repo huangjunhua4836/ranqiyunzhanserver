@@ -262,6 +262,7 @@ public class OpportunityController extends BaseController {
     public BaseResponse<List<AdvertisingDto>> advertisingList(@ApiParam(hidden = true) @RequestParam Map paramMap) {
         QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
         ehbAdvertisingQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        ehbAdvertisingQueryWrapper.orderByDesc("sort");
         List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
         List<AdvertisingDto> advertisingDtos = new ArrayList<>();
         for(EhbAdvertising ehbAdvertising : ehbAdvertisings){

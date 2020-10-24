@@ -62,7 +62,7 @@ public class AdvertisingController extends BaseController {
         ehbAdvertisingQueryWrapper.like(!StringUtils.isEmpty(ehbAdvertising.getTitle()),"title",ehbAdvertising.getTitle());
         ehbAdvertisingQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"createtime",startTime,endTime);
         ehbAdvertisingQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
-        ehbAdvertisingQueryWrapper.orderByDesc("createtime");
+        ehbAdvertisingQueryWrapper.orderByDesc("sort");
         PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
         List<EhbAdvertising> ehbAdvertisings = ehbAdvertisingService.list(ehbAdvertisingQueryWrapper);
         PageInfo pageInfo = new PageInfo<>(ehbAdvertisings);

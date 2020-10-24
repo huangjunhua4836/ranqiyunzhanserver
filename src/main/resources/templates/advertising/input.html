@@ -31,7 +31,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">内联/外联</label>
                         <div class="layui-input-block">
-                            <select th:field="*{type}" lay-filter="selectFilter"  lay-verify="required">
+                            <select th:field="*{type}" lay-filter="selectFilter">
                                 <option value="1" th:selected="${ehbAdvertising.type=='1'}">站内</option>
                                 <option value="2" th:selected="${ehbAdvertising.type=='2'}">站外</option>
                             </select>
@@ -113,6 +113,9 @@
                         layer.msg('外联链接未填写！',core.showtime);
                         return false;
                     }
+                }else{
+                    data.field.position = null;
+                    data.field.url = null;
                 }
                 var resultData = core.ajax('/platform/advertising/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){

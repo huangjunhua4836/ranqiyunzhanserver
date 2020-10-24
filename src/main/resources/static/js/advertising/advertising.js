@@ -33,7 +33,7 @@ layui.use('core', function(){
                         return d.type == '1'?'站内':'站外'
                     }
                 }
-                ,{field: 'position', title: '站内跳转位置id'}
+                // ,{field: 'position', title: '站内跳转位置id'}
                 ,{field: 'createTime', title: '创建时间',sort: true,
                     templet: function(d){
                         return util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss");

@@ -64,7 +64,7 @@ public class BannerController extends BaseController {
         ehbBannerQueryWrapper.eq(!StringUtils.isEmpty(ehbBanner.getType()),"type",ehbBanner.getType());
         ehbBannerQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"createtime",startTime,endTime);
         ehbBannerQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
-        ehbBannerQueryWrapper.orderByDesc("createtime");
+        ehbBannerQueryWrapper.orderByDesc("sort");
         PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
         List<EhbBanner> ehbBanners = ehbBannerService.list(ehbBannerQueryWrapper);
         PageInfo pageInfo = new PageInfo<>(ehbBanners);
