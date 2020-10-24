@@ -146,6 +146,7 @@ public class CrmUserController extends BaseResponseUtil {
             crmUser.setCreateuser(1);
             crmUser.setIsdel(false);
             crmUser.setPassword(MD5Util.MD5("123456"));
+            crmUser.setState(1);
         }else{
             crmUser.setUpdatetime(LocalDateTime.now());
             crmUser.setUpdateuser(1);

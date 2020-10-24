@@ -30,7 +30,7 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="menu">
-                <li class="layui-nav-item">
+                <li class="layui-nav-item" id="xtgl">
                     <a class="" href="javascript:;">系统管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" menuid="100" menuurl='<iframe src="/platform/crmUser/userList" width="100%" height="100%;" frameborder="0"></iframe>'>用户管理</a></dd>
@@ -155,6 +155,12 @@
         $('#detail').find("input").eq(1).attr("value",loginUserInfo.loginname);
         $('#detail').find("input").eq(2).attr("value",loginUserInfo.roleName);
 
+        if(loginUserInfo.roleId == '1'){
+            $('#xtgl').show();
+        }else{
+            $('#xtgl').hide();
+        }
+
         //触发事件
         var active = {
             tabAdd: function(title,id,content){
@@ -221,6 +227,7 @@
             },
             security:function(){
                 layer.msg("密码修改，敬请期待！");
+                core.openIframeDialog('修改密码','/platform/restpassInput',['80%', '60%'],false,null);
             },
             logout:function(){
                 layer.confirm('确定退出么？', function(index){

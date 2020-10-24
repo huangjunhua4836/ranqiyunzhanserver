@@ -9,6 +9,7 @@ import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.base.PlatformSessionUser;
 import com.yl.soft.po.CrmMenu;
+import com.yl.soft.po.CrmUser;
 import com.yl.soft.service.CrmRoleService;
 import com.yl.soft.service.CrmUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,6 +115,38 @@ public class LoginController extends BaseController {
         response.addCookie(cookie);
 
         redisService.set(loginCookieKey,JSON.toJSONString(sessionUser),60*60*24);
+        return setResultSuccess();
+    }
+
+    /**
+     * 修改密码页面
+     * @return
+     */
+    @RequestMapping("/restpassInput")
+    public String restpassInput() {
+        return "restpassInput";
+    }
+
+    /**
+     * 修改密码
+     * @param oldpass
+     * @param newpass
+     * @param request
+     * @return
+     */
+    @RequestMapping("/restpass")
+    @ResponseBody
+    public BaseResponse restpass(String oldpass,String newpass,HttpServletRequest request) {
+        String rediskey = CookieUtils.getCookie(request,"loginCookieKey");
+        PlatformSessionUser sessionUser = JSON.parseObject(redisService.get(rediskey),PlatformSessionUser.class);
+        CrmUser crmUser = crmUserService.getById(sessionUser.getId());
+        oldpass  = MD5Util.MD5(oldpass);
+        if(!oldpass.equals(crmUser.getPassword())){
+            return setResultError("老密码不正确！");
+        }
+        newpass  = MD5Util.MD5(newpass);
+        crmUser.setPassword(newpass);
+        crmUserService.updateById(crmUser);
         return setResultSuccess();
     }
 }

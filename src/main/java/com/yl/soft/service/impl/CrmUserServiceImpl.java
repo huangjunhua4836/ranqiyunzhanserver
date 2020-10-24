@@ -53,18 +53,13 @@ public class CrmUserServiceImpl extends ServiceImpl<CrmUserMapper, CrmUser> impl
             i = baseMapper.updateById(crmUser);
         }
         if(i>0){
-            QueryWrapper<CrmUser> crmUserQueryWrapper = new QueryWrapper<>();
-            crmUserQueryWrapper.eq("isdel", CommonDict.CORRECT_STATE);
-            crmUserQueryWrapper.orderByDesc("createTime");
-            crmUserQueryWrapper.last("limit 1");
-            List<CrmUser> crmUsers = baseMapper.selectList(crmUserQueryWrapper);
             //查询用户角色
             QueryWrapper<CrmRoleUser> crmRoleUserQueryWrapper = new QueryWrapper<>();
-            crmRoleUserQueryWrapper.eq("userId",crmUsers.get(0).getId());
+            crmRoleUserQueryWrapper.eq("userId",crmUser.getId());
             crmRoleUserMapper.delete(crmRoleUserQueryWrapper);
 
             CrmRoleUser crmRoleUser = new CrmRoleUser();
-            crmRoleUser.setUserId(crmUsers.get(0).getId());
+            crmRoleUser.setUserId(crmUser.getId());
             crmRoleUser.setRoleId(roleId);
             crmRoleUserMapper.insert(crmRoleUser);
         }else{
