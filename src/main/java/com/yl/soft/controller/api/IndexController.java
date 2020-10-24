@@ -80,7 +80,7 @@ public class IndexController extends BaseController {
         ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbExhibitorQueryWrapper.eq("state",1);
         ehbExhibitorQueryWrapper.eq("isrecommend",true);
-        ehbExhibitorQueryWrapper.orderByDesc("sort");
+        ehbExhibitorQueryWrapper.orderByDesc("sort","id");
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
@@ -184,7 +184,7 @@ public class IndexController extends BaseController {
         QueryWrapper<EhbArticle> ehbArticleQueryWrapper = new QueryWrapper<>();
         ehbArticleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbArticleQueryWrapper.eq("isrecommend",1);
-        ehbArticleQueryWrapper.orderByDesc("releasetime");
+        ehbArticleQueryWrapper.orderByDesc("sort","id");
         List<EhbArticle> ehbArticles = ehbArticleService.list(ehbArticleQueryWrapper);
         List<ArticleDto> articleDtos = new ArrayList<>();
         for(EhbArticle ehbArticle : ehbArticles){
@@ -222,7 +222,7 @@ public class IndexController extends BaseController {
         ehbArticleQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbArticleQueryWrapper.like(!StringUtils.isEmpty(paramMap.get("title")),"title",paramMap.get("title"));
 //        ehbArticleQueryWrapper.orderByDesc("releasetime");
-        ehbArticleQueryWrapper.orderByDesc("id");//防止分页数据重复用永远不重复的数据排序
+        ehbArticleQueryWrapper.orderByDesc("sort","id");//防止分页数据重复用永远不重复的数据排序
 
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
