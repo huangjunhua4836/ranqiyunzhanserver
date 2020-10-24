@@ -41,7 +41,7 @@ layui.use('core', function(){
                         return util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss");
                     }
                 }
-                // ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:150,unresize: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:150,unresize: true}
             ]]
             ,page: true //开启分页
         });
@@ -67,7 +67,7 @@ layui.use('core', function(){
             layer.confirm('真的删除么？', function(index){
                 layer.close(index);
                 //向服务端发送删除指令
-                var resultData = core.ajax('/crmRole/delete',false,'POST','id='+data.id);
+                var resultData = core.ajax('/platform/visitpre/delete',false,'POST','id='+data.id);
                 if(resultData!=false){
                     layer.msg('操作成功！',core.showtime);
                     initTable({});
