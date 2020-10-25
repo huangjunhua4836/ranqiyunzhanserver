@@ -161,6 +161,7 @@
 }
 .g_niches-list ul li a .g_newslist-browse{position: absolute; left: 2.25rem; bottom: 0.1rem;}
 .g_nothing{text-align: center; font-size: 0.28rem; color: #333; padding: 0.3rem;}
+.g_banner-img{width: 375px; height:375px;}
 
 
 /*我的商机详情*/
@@ -173,6 +174,7 @@
 .g_pro-labs{margin-top: 0.2rem; padding:0 0.3rem 0.4rem; border-bottom: 0.12rem solid #f7f7f7;}
 .g_pro-banner{ margin-top: 0.6rem; border: 0 none; padding-bottom: 0;}
 .g_pro-banner .g_banner-small{padding: 0;}
+.g_probanner-img{width: 345px; height: 345px;}
 
 
 

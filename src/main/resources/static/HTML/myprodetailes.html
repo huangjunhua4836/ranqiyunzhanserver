@@ -35,7 +35,9 @@
 		<div class="g_banner g_pro-banner">
 			<div class="swiper-container gallery-top">
 			    <div class="swiper-wrapper">
-			    	<div v-for="img in detailes.picture" class="swiper-slide"  :style="'background-image:url('+img+')'"></div>
+			    	<div v-for="img in detailes.picture" class="swiper-slide">
+		    			<img :src="img" alt="" class="g_probanner-img">
+			    	</div>
 			    	
 			    </div>
 			    <!-- Add Arrows -->
@@ -152,6 +154,7 @@
 					        swiper: galleryThumbs
 					      }
 					    });	
+					    Yeffect.imgGeomeScale(".g_probanner-img")
 					},300)
 				}else if(data.code==401){
 					if(isShare){
@@ -337,6 +340,11 @@
 				//评论
 				sendCommentFn:function(){
 					var _this=this;
+					if(_this.commentTxt.trim()==""){
+		              _this.commentTxt="";
+		              Yeffect.mAlert("不能发布空白评论",1000);
+		              return false;
+		            }
 					var commentObj={};
 					commentObj.token=token;
 					commentObj.id=pid;

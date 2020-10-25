@@ -311,6 +311,12 @@
 				//评论
 				sendCommentFn:function(){
 					var _this=this;
+					console.log(_this.commentTxt.trim())
+					if(_this.commentTxt.trim()==""){
+		              _this.commentTxt="";
+		              Yeffect.mAlert("不能发布空白评论",1000);
+		              return false;
+		            }
 					var commentObj={};
 					commentObj.token=token;
 					commentObj.id=nid;

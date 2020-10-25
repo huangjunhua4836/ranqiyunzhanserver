@@ -1,4 +1,4 @@
-/*event,isPC,mobileBanner,mAlert*/
+/*event,isPC,mobileBanner,mAlert,imgGeomeScale*/
 jQuery.easing.jswing = jQuery.easing.swing;
 jQuery.extend(jQuery.easing, {
 	def: "easeOutQuad",
@@ -664,5 +664,42 @@ var Yeffect = {
 		};
 		setTimeout(removets, time);
 		return removets
+	},
+	imgGeomeScale: function(obj, nocent) {
+		var bder = nocent || false;
+		$(obj).each(function(i) {
+			var img = $(this);
+			if(img.attr("data-set")) {
+				return
+			};
+			img.attr("data-style", "yes");
+			var realWidth;
+			var realHeight;
+			var objwidh = img.width();
+			var objhet = img.height();
+			$("<img/>").attr("src", img.attr("src")).load(function() {
+				realWidth = this.width;
+				realHeight = this.height;
+				if(objwidh / objhet > realWidth / realHeight) {
+					var widthhou = objhet * realWidth / realHeight;
+					img.width(widthhou);
+					if(!bder) {
+						img.css({
+							paddingLeft: (objwidh - widthhou) / 2,
+							paddingRight: (objwidh - widthhou) / 2
+						})
+					}
+				} else {
+					var heithou = objwidh * realHeight / realWidth;
+					img.height(heithou);
+					if(!bder) {
+						img.css({
+							paddingTop: (objhet - heithou) / 2,
+							paddingBottom: (objhet - heithou) / 2
+						})
+					}
+				};
+			})
+		})
 	}
 };

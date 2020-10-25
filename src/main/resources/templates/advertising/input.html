@@ -71,12 +71,15 @@
             $('#nlid').hide();
             $('#linkurl').hide();
 
-            if($("select[name=type]").val() == '1'){
+            if($("select[name=type]").val() == "1"){
                 $('#nlid').show();
                 $('#linkurl').hide();
-            }else if($("select[name=type]").val() == '2'){
+            }else if($("select[name=type]").val() == "2"){
                 $('#nlid').hide();
                 $('#linkurl').show();
+            }else{
+                $('#nlid').hide();
+                $('#linkurl').hide();
             }
 
             //下拉框监听事件
@@ -90,6 +93,8 @@
                 }else{
                     $('#nlid').hide();
                     $('#linkurl').hide();
+                    $('#nlid').val("");
+                    $('#linkurl').val("");
                 }
             });
 
@@ -104,12 +109,12 @@
                     layer.msg('图片未上传！',core.showtime);
                     return false;
                 }
-                if(data.field.nw == '1'){
+                if(data.field.nw == "1"){
                     if(core.isEmpty(data.field.position)){
                         layer.msg('内联ID未填写！',core.showtime);
                         return false;
                     }
-                }if(data.field.nw == '2'){
+                }else if(data.field.nw == "2"){
                     if(core.isEmpty(data.field.url)){
                         layer.msg('外联链接未填写！',core.showtime);
                         return false;

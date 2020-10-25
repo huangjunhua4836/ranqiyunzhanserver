@@ -89,12 +89,15 @@
             $('#nlid').hide();
             $('#linkurl').hide();
 
-            if($("select[name=nw]").val() == '1'){
+            if($("select[name=nw]").val() == "1"){
                 $('#nlid').show();
                 $('#linkurl').hide();
-            }else if($("select[name=nw]").val() == '2'){
+            }else if($("select[name=nw]").val() == "2"){
                 $('#nlid').hide();
                 $('#linkurl').show();
+            }else{
+                $('#nlid').hide();
+                $('#linkurl').hide();
             }
 
             //下拉框监听事件
@@ -108,11 +111,12 @@
                 }else{
                     $('#nlid').hide();
                     $('#linkurl').hide();
+                    $('#nlid').val("");
+                    $('#linkurl').val("");
                 }
             });
 
             form.on('submit(submitFrom)', function(data){
-                console.log(JSON.stringify(data.field));
                 //排序
                 var sort = data.field.sort;
                 if(!/^[0-9]+?$/.test(sort)){
@@ -123,12 +127,12 @@
                     layer.msg('图片未上传！',core.showtime);
                     return false;
                 }
-                if(data.field.nw == '1'){
+                if(data.field.nw == "1"){
                     if(core.isEmpty(data.field.nlid)){
                         layer.msg('内联ID未填写！',core.showtime);
                         return false;
                     }
-                }if(data.field.nw == '2'){
+                }else if(data.field.nw == "2"){
                     if(core.isEmpty(data.field.linkurl)){
                         layer.msg('外联链接未填写！',core.showtime);
                         return false;
@@ -137,6 +141,7 @@
                     data.field.nlid = null;
                     data.field.linkurl = null;
                 }
+                console.log(JSON.stringify(data.field));
                 var resultData = core.ajax('/platform/banner/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){
                     parent.layer.msg('操作成功',core.showtime);
