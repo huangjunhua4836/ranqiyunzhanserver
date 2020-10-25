@@ -93,8 +93,8 @@ pagehelper:
 
 # MinIO对象存储相关配置
 minio:
-  miniourl: http://119.3.222.171:9000 #M预览服务
-  uploadurl: http://192.168.0.7:9000 #上传服务
+  miniourl: http://192.168.80.11:9000 #M预览服务
+  uploadurl: http://192.168.80.11:9000 #上传服务
   bucketName: mall #存储桶名称
   accessKey: minioadmin #访问的key
   secretKey: minioadmin #访问的秘钥

@@ -106,7 +106,9 @@ public class EhbOpportunityDto implements Serializable {
 					.map(j -> {
 						EhbLabelDto ehbLabelDto = new EhbLabelDto();
 						EhbLabel ehbLabel = map.get(j);
-						BeanUtils.copyProperties(ehbLabel, ehbLabelDto);
+						if(ehbLabel != null){
+							BeanUtils.copyProperties(ehbLabel, ehbLabelDto);
+						}
 						return ehbLabelDto;
 					}).collect(Collectors.toList());
 			ehbOpportunityDto.setLabels(ehbLabelDtos);
