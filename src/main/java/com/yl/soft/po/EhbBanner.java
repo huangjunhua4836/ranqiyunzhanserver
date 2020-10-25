@@ -3,6 +3,8 @@ package com.yl.soft.po;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.yl.soft.po.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -41,18 +43,21 @@ public class EhbBanner extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "结束时间")
     private LocalDateTime endtime;
 
-    @ApiModelProperty(value = "链接地址")
-    private String linkurl;
-
     @ApiModelProperty(value = "内容")
     private String content;
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
 
+    @TableField(updateStrategy= FieldStrategy.IGNORED)
     @ApiModelProperty(value = "1：内联    2：外联")
     private Integer nw;
 
+    @TableField(updateStrategy= FieldStrategy.IGNORED)
     @ApiModelProperty(value = "内联下跳转id")
     private Integer nlid;
+
+    @TableField(updateStrategy= FieldStrategy.IGNORED)
+    @ApiModelProperty(value = "链接地址")
+    private String linkurl;
 }

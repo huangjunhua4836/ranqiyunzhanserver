@@ -93,8 +93,6 @@
                 }else{
                     $('#nlid').hide();
                     $('#linkurl').hide();
-                    $('#nlid').val("");
-                    $('#linkurl').val("");
                 }
             });
 
@@ -109,12 +107,12 @@
                     layer.msg('图片未上传！',core.showtime);
                     return false;
                 }
-                if(data.field.nw == "1"){
+                if(data.field.type == "1"){
                     if(core.isEmpty(data.field.position)){
                         layer.msg('内联ID未填写！',core.showtime);
                         return false;
                     }
-                }else if(data.field.nw == "2"){
+                }else if(data.field.type == "2"){
                     if(core.isEmpty(data.field.url)){
                         layer.msg('外联链接未填写！',core.showtime);
                         return false;
@@ -123,6 +121,7 @@
                     data.field.position = null;
                     data.field.url = null;
                 }
+                console.log(JSON.stringify(data.field));
                 var resultData = core.ajax('/platform/advertising/saveOrUpdate',false,'POST',data.field);
                 if(resultData!=false){
                     parent.layer.msg('操作成功',core.showtime);
