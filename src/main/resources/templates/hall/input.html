@@ -9,7 +9,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">展商</label>
                         <div class="layui-input-block">
-                            <select name="exhibitorid" required  lay-verify="required" lay-filter="selectOrgFilter">
+                            <select name="exhibitorid" required  lay-verify="required" lay-filter="selectOrgFilter" lay-search="">
                                 <option value="">请选择</option>
                                 <option th:each="ehbExhibitor,memberStat:${ehbExhibitors}" th:value="${ehbExhibitor.id}" th:text="${ehbExhibitor.enterprisename}" th:selected="${ehbExhibitor.id == ehbHall.exhibitorid}"></option>
                             </select>
