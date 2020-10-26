@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common::headr('综合管理系统')"></head>
-<style>
-    .layui-tab-item{
-        /*height: 800px;*/
-    }
-</style>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
@@ -226,7 +221,6 @@
                 core.openDialog('基本资料',$('#detail').html(),['500px','300px']);
             },
             security:function(){
-                layer.msg("密码修改，敬请期待！");
                 core.openIframeDialog('修改密码','/platform/restpassInput',['80%', '60%'],false,null);
             },
             logout:function(){

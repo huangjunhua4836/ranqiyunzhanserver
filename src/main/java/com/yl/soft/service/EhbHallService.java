@@ -12,5 +12,10 @@ import com.yl.soft.po.EhbHall;
  * @since 2020-09-28
  */
 public interface EhbHallService extends IService<EhbHall> {
-
+    /**
+     * 删除虚拟展厅
+     * @param id
+     * @return
+     */
+    void deleteEhbHall(String id);
 }

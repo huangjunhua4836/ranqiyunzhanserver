@@ -139,9 +139,9 @@ public class HallController extends BaseController {
         System.out.println("ok");
         if(StringUtils.isEmpty(id)){
             return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
-                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"岗位删除ID为空！");
+                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"删除ID为空！");
         }
-        ehbHallService.removeById(id);
+        ehbHallService.deleteEhbHall(id);
         return setResultSuccess();
     }
 }

@@ -82,7 +82,8 @@ public class EhbExhibitor extends BaseEntity implements Serializable {
     
     @ApiModelProperty(value="蜂鸟云地图Fid")
     private String fid;
-    
+
+    @TableField(updateStrategy=FieldStrategy.IGNORED)
     @ApiModelProperty(value="虚拟展厅html地址")
     private String halurl;
     
