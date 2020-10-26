@@ -321,7 +321,7 @@ public class ZSInfoController extends BaseController {
         //test.xls是弹出下载对话框的文件名，不能为中文，中文请自行编码
         ServletOutputStream out = null;
         try {
-            String name = URLEncoder.encode("参展商表", "UTF-8");
+            String name = URLEncoder.encode("参展商信息", "UTF-8");
             response.setHeader("Content-Disposition", "attachment;filename=" + name + ".xls");
             out = response.getOutputStream();
             writer.flush(out, true);
