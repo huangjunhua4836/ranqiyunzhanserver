@@ -42,9 +42,18 @@ layui.use('core', function(){
                     }
                 }
                 ,{field: 'msgContent', title: '消息内容'}
-                ,{field: 'issuccess', title: '发送状态',
-                    templet: function(d){
-                        return d.issuccess == true?'成功':'失败';
+                , {
+                    field: 'issuccess', title: '发送状态',
+                    templet: function (d) {
+                        if (d.issuccess == 0) {
+                            return d.issuccess = '失败';
+                        } else if (d.issuccess == 1) {
+                            return d.issuccess = '成功';
+                        } else if (d.issuccess == 2) {
+                            return d.issuccess = '未发送';
+                        } else {
+                            return d.issuccess = '未知状态';
+                        }
                     }
                 }
                 // ,{field: 'registrationId', title: '设备标识'}

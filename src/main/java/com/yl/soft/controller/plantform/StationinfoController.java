@@ -117,6 +117,7 @@ public class StationinfoController extends BaseController {
         if(StringUtils.isEmpty(stationinfo.getId())){
             stationinfo.setCreatetime(LocalDateTime.now());
             stationinfo.setIsdel(false);
+            stationinfo.setIssuccess(2);
         }else{
         }
         if(stationinfoService.saveOrUpdate(stationinfo)){
@@ -196,10 +197,11 @@ public class StationinfoController extends BaseController {
                     ,stationinfo.getMsgContent(),new HashMap<>());
         }
         if(i > 0){
-            stationinfo.setIssuccess(true);
+            stationinfo.setIssuccess(1);
             stationinfoService.updateById(stationinfo);
             return setResultSuccess();
         }else{
+            stationinfo.setIssuccess(0);
             return setResultError("推送失败！");
         }
     }

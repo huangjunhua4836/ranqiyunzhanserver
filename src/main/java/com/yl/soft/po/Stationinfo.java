@@ -48,8 +48,8 @@ public class Stationinfo implements Serializable {
     @ApiModelProperty(value = "扩展字段")
     private String extrasparam;
 
-    @ApiModelProperty(value = "1-成功  0-失败")
-    private Boolean issuccess;
+    @ApiModelProperty(value = "1-成功  0-失败  2-未发送")
+    private Integer issuccess;
 
     private LocalDateTime createtime;
 
