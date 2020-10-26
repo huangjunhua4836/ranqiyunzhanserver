@@ -267,7 +267,10 @@ public class ZSInfoController extends BaseController {
     @RequestMapping("/export")
     @ResponseBody
     public void export(HttpServletResponse response,String str) {
-        ExhibitorVo exhibitorVo = JSON.parseObject(str,ExhibitorVo.class);
+        ExhibitorVo exhibitorVo = new ExhibitorVo();
+        if(!StringUtils.isEmpty(str)){
+             exhibitorVo = JSON.parseObject(str,ExhibitorVo.class);
+        }
         Map paramMap = new HashMap();
         paramMap.put("registerphone",exhibitorVo.getRegisterphone());//注册手机号
         paramMap.put("name",exhibitorVo.getName());//管理人者姓名
@@ -318,7 +321,7 @@ public class ZSInfoController extends BaseController {
         //test.xls是弹出下载对话框的文件名，不能为中文，中文请自行编码
         ServletOutputStream out = null;
         try {
-            String name = URLEncoder.encode("中文名称", "UTF-8");
+            String name = URLEncoder.encode("参展商表", "UTF-8");
             response.setHeader("Content-Disposition", "attachment;filename=" + name + ".xls");
             out = response.getOutputStream();
             writer.flush(out, true);

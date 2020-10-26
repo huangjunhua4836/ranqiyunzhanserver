@@ -47,11 +47,13 @@ layui.use('core', function(){
         });
     }
 
+    var exportcondit;
     //头工具栏事件
     table.on('toolbar(tableFilter)', function(obj){
         switch(obj.event){
-            case 'add':
-                core.openIframeDialog('添加','/crmRole/input?type=add',['500px', '200px'],false,initTable);
+            case 'export':
+                location.href = "/platform/visitpre/export?str="+encodeURIComponent(JSON.stringify(exportcondit));
+                layer.msg('操作成功！',core.showtime);
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':
@@ -97,6 +99,7 @@ layui.use('core', function(){
 
     //按条件检索机构数据
     form.on('submit(searchFrom)', function(data){
+        exportcondit = data.field;
         initTable(data.field);
         layer.msg('操作成功',core.showtime)
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
