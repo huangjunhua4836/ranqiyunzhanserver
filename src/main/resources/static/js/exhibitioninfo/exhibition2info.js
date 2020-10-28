@@ -118,6 +118,10 @@ layui.use('core', function(){
         } else if(obj.event === 'edit'){
             core.openIframeDialog('修改','/platform/zsInfo/input?type=update&id='+data.id,['100%', '90%'],false,initTable);
         } else if(obj.event === 'isrecommend'){
+            if(data.state != '1'){
+                layer.msg('没通过审核不能推荐！',core.showtime);
+                return;
+            }
             core.openIframeDialog('推荐','/platform/zsInfo/isrecommend?id='+data.id,['50%', '40%'],false,initTable);
         } else if(obj.event === 'detail'){
             core.openDialog('详情',$('#detail').html(),['100%', '90%']);

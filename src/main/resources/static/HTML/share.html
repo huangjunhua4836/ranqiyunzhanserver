@@ -22,9 +22,6 @@
 </head>
 
 <body id="share">
-	<div class="g_share-head">
-		<a href="javascript:void(0)" title="" id="g_btn-download">app下载</a>
-	</div>
 	<div class="g_share-banner" v-if="detailes.bannerList.length>0">
 		<ul>
 			<li v-for="li in detailes.bannerList"><img :src="li" alt=""></li>
@@ -62,9 +59,7 @@
 		</div>
 		<div class="g_hsk-body"><img :src="detailes.floorplan" alt=""></div>
 	</div>
-	<a href="javascript:void(0)" title="" class="g_btn-sc" id="g_btn-shoucang">
-		<img src="images/g_14.png" alt="">
-	</a>
+	<a href="javascript:void(0)" title="" class="g_btn-sc" id="g_btn-shoucang">下载APP</a>
 	<script>
 		
 		var cid="";
@@ -134,15 +129,7 @@
 		$("head").append(scriptUrl);
 		setTimeout(function(){
 			if(equipment){
-				MobLink([
-				    {
-				        el: "#g_btn-download",
-				        path: "rqyz/zsDetails",
-				        params: {
-				            key1: cid,
-				        }
-				    },
-				    {
+				MobLink([{
 				        el: "#g_btn-shoucang",
 				        path: "rqyz/zsDetails",
 				        params: {
@@ -151,15 +138,7 @@
 				    }
 				]);
 			}else{
-				MobLink([
-				    {
-				        el: "#g_btn-download",
-				        path: "rqyz/zsDetails",
-				        params: {
-				            key1: cid,
-				        }
-				    },
-				    {
+				MobLink([{
 				        el: "#g_btn-shoucang",
 				        path: "rqyz/zsDetails",
 				        params: {

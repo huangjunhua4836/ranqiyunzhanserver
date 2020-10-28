@@ -48,6 +48,8 @@
 .g_txt-comment{display: block; width: 100%; height: 0.7rem; border-radius: 0.7rem; box-sizing: border-box; -webkit-box-sizing: border-box; padding: 0 0.29rem; background: #f2f2f2; font-size: 0.28rem; color: #333; border: 0 none;}
 .g_comment-enter a{display: block; width: 0.4rem; height: 0.36rem; position: absolute; right: 0.41rem; top: 0.32rem;}
 .g_comment-enter a img{display: block; width: 0.4rem; height: 0.36rem;}
+.g_btn-backtop{display: block; position: fixed; bottom: 3rem; right: 0.3rem; z-index: 2000; width: 0.92rem; height: 0.92rem;}
+.g_btn-backtop img{display: block; width: 0.92rem; height: 0.92rem;}
 
 
 
@@ -216,7 +218,7 @@
 .g_hsk-head span{display: inline-block; height: 0.74rem; line-height: 0.74rem; border-radius: 0.74rem; padding: 0 0.3rem; background: #f0f0f0; font-size: 0.28rem; color: #000;}
 .g_hsk-body{display: none; font-size: 0.28rem; color: #666; padding-top: 0.3rem;}
 .g_hsk-body:nth-child(2){display: block;}
-.g_btn-sc{display: block; width: 4.15rem; height: 0.92rem; margin: 1rem auto;}
+.g_btn-sc{display: block; width: 4.15rem; height: 0.92rem; margin: 1rem auto; line-height: 0.92rem; border-radius: 0.92rem; text-align: center; background: #47c3f4; font-size: 0.32rem; color: #fff;}
 .g_btn-sc img{display: block; width: 4.15rem; height: 0.92rem;}
 .g_hsk-body iframe{width: 100%; height: 2.3rem; display: block;}
 

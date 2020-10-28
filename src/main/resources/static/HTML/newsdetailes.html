@@ -80,6 +80,7 @@
 			查看更多<img src="images/g_07.png" alt="">
 		</div>
 	</div>
+	<a href="javascript:void(0)" title="" class="g_btn-backtop"><img src="images/g_22.png" alt=""></a>
 	<div class="g_comment-enter">
 		<input type="text" class="g_txt-comment" placeholder="说点什么..." v-model="commentTxt" />
 		<a href="javascript:void(0)" title="" @click="sendCommentFn"><img src="images/g_06.png" alt=""></a>
@@ -218,7 +219,9 @@
 			
 		}
 		
-		
+		$(".g_btn-backtop").click(function(){
+			$("body,html").animate({scrollTop:0},300)
+		})
 		
 		
 		//控制器

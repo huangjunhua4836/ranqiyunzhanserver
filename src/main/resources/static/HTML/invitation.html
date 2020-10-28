@@ -23,7 +23,7 @@
 
 <body>
 	<div class="g_invitation">
-		<img src="images/g_18.png" alt="">
+		<img src="images/g_18.jpg" alt="">
 		<a href="javascript:void(0)" title="" class="g_btn-invitation" id="g_btn-download"><img src="images/g_19.png" alt=""></a>
 	</div>
 	<script>
@@ -42,7 +42,7 @@
 		if(isShare){
 			var scriptUrl="<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">"+"\<\/script>";
 			$("head").append(scriptUrl)
-			$(".g_btn-invitation").html("<img src=\"images/g_20.png\" alt=\"\">");
+			$(".g_btn-invitation").hide();
 		}else{
 			$(".g_btn-invitation").html("<img src=\"images/g_19.png\" alt=\"\">");
 		}
