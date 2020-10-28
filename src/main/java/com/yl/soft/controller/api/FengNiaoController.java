@@ -47,7 +47,7 @@ public class FengNiaoController extends BaseController{
 	})
 	@PostMapping("/registrationDes")
 	public ResultItem<EhbExhibitorDto> registrationDes(String fid) {
-		EhbExhibitor eh = ehbExhibitorService.lambdaQuery().eq(EhbExhibitor::getFid, fid).one();
+		EhbExhibitor eh = ehbExhibitorService.lambdaQuery().eq(EhbExhibitor::getFid, fid).last("LIMIT 1").one();
 		EhbAudience user=EhbAudienceService.lambdaQuery().eq(EhbAudience::getBopie, eh.getId()).last("LIMIT 1").one();
 		return ok(EhbExhibitorDto.of(eh,user));
 	}
