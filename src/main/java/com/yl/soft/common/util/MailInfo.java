@@ -26,6 +26,7 @@ public class MailInfo {
     private String content;
     // 邮件的附件    
     private List<URL> attachments;
+    private List<String> finalname;
     
     /**   
       * 获得邮件会话属性   
@@ -125,5 +126,14 @@ public class MailInfo {
 	public void setAttachments(List<URL> attachments) {
 		this.attachments = attachments;
 	}
+
+	public List<String> getFinalname() {
+		return finalname;
+	}
+
+	public void setFinalname(List<String> finalname) {
+		this.finalname = finalname;
+	}
+	
 
 }

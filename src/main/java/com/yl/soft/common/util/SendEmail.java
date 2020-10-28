@@ -40,36 +40,36 @@ public class SendEmail {
 	@Value("${custom.yj.dk}")
 	private String dk;
 
-//	public static void main(String[] args) {
-//		MailInfo mailInfo = new MailInfo();
-//		mailInfo.setMailServerHost("smtp.163.com"); // 邮箱服务器
-//		mailInfo.setMailServerPort("25");
-//		mailInfo.setValidate(true);
-//		// 以下是发送方信息
-//		mailInfo.setUserName("gaschina_expo@163.com");
-//		mailInfo.setPassword("PGPZSLZAQZBKCGPH");// 您的邮箱密码
-//		mailInfo.setFromAddress("gaschina_expo@163.com");
-//		// 以下是接收方信息
-//		mailInfo.setToAddress("xingdi1024@163.com");
-//		mailInfo.setSubject("XXX先生您好，您的9月份账单来了!");
-//		mailInfo.setContent("邮件内容");
-//		URL filename;
-//		try {
-//			filename = new URL("http://rqyz.plf.yl-mall.cn/api/showFile?id=313");
-//		
-//		List<URL> attachments=new ArrayList<URL>();
-//		attachments.add(filename);
-//		mailInfo.setAttachments(attachments);
-//		mailInfo.setContentType("text/html");//HTML格式：text/html，纯文本格式：text/plain
-//		// 这个类主要来发送邮件
-//		MailSender.sendMail(mailInfo);//发送邮件
-//		} catch (MalformedURLException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
+	public static void main(String[] args) {
+		MailInfo mailInfo = new MailInfo();
+		mailInfo.setMailServerHost("smtp.163.com"); // 邮箱服务器
+		mailInfo.setMailServerPort("25");
+		mailInfo.setValidate(true);
+		// 以下是发送方信息
+		mailInfo.setUserName("gaschina_expo@163.com");
+		mailInfo.setPassword("PGPZSLZAQZBKCGPH");// 您的邮箱密码
+		mailInfo.setFromAddress("gaschina_expo@163.com");
+		// 以下是接收方信息
+		mailInfo.setToAddress("xingdi1024@163.com");
+		mailInfo.setSubject("XXX先生您好，您的9月份账单来了!");
+		mailInfo.setContent("邮件内容");
+		URL filename;
+		try {
+			filename = new URL("http://app.zhiboexpo.com:9000/mall/2020-10-24/1602829147645.doc");
+		
+		List<URL> attachments=new ArrayList<URL>();
+		attachments.add(filename);
+		mailInfo.setAttachments(attachments);
+		mailInfo.setContentType("text/html");//HTML格式：text/html，纯文本格式：text/plain
+		// 这个类主要来发送邮件
+		MailSender.sendMail(mailInfo);//发送邮件
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+	}
 	
-	public boolean sendMails(List<URL> attachments,String ToAddress) {
+	public boolean sendMails(List<URL> attachments,List<String> finalname,String ToAddress) {
 		MailInfo mailInfo = new MailInfo();
 		mailInfo.setMailServerHost(host); // 邮箱服务器
 		mailInfo.setMailServerPort("25");
@@ -83,6 +83,7 @@ public class SendEmail {
 		mailInfo.setSubject("【燃气云展】资料");
 		mailInfo.setContent("【燃气云展】资料详情请查看附件");
 		mailInfo.setAttachments(attachments);
+		mailInfo.setFinalname(finalname);
 		mailInfo.setContentType("text/html");//HTML格式：text/html，纯文本格式：text/plain
 		return MailSender.sendMail(mailInfo);
 

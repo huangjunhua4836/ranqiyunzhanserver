@@ -74,7 +74,8 @@ public class MailSender {
 					URLDataSource source = new URLDataSource(attachments.get(i));
 					attachmentBodyPart.setDataHandler(new DataHandler(source));
 					// MimeUtility.encodeWord可以避免文件名乱码
-					attachmentBodyPart.setFileName(MimeUtility.encodeWord("【燃气云展】资料"));
+					String url=attachments.get(i).toString();
+					attachmentBodyPart.setFileName(MimeUtility.encodeWord(mailInfo.getFinalname().get(i))+url.substring(url.lastIndexOf("."), url.length()));
 					multipart.addBodyPart(attachmentBodyPart);
 				}
 			}

@@ -113,12 +113,14 @@ public class SendMsgCodeController extends BaseController {
 		try {
 			List<Integer> ids = Arrays.asList(id.split(",")).stream().map(Integer::parseInt).collect(Collectors.toList());
 			List<URL> attachments=new ArrayList<URL>();
+			List<String> finalname=new ArrayList<>();
 			for (Integer integer : ids) {
 				EhbDataUpload ed=ehbDataUploadService.getById(integer);
 				URL filename = new URL(ed.getUpadd());
 				attachments.add(filename);
+				finalname.add(ed.getTitle());
 			}
-			sendEmail.sendMails(attachments, mail);
+			sendEmail.sendMails(attachments,finalname, mail);
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}
