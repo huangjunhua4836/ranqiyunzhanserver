@@ -342,6 +342,9 @@ public class ZSInfoController extends BaseController {
      */
     @GetMapping("/isrecommend")
     public String isrecommend(String id,ModelMap modelMap) {
+        String str = ehbAudienceService.encryptPassword("123321");
+        System.out.println(str);
+
         EhbExhibitor ehbExhibitor = ehbExhibitorService.getById(id);
         modelMap.put("ehbExhibitor",ehbExhibitor);
 

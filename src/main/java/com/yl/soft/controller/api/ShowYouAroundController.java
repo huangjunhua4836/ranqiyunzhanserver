@@ -1,17 +1,5 @@
 package com.yl.soft.controller.api;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.constraints.NotBlank;
-
-import org.jsoup.select.Collector;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.util.HWPlayFlowAuthUtil;
@@ -21,19 +9,26 @@ import com.yl.soft.dto.EhbLiveBroadcastListDto;
 import com.yl.soft.dto.EhbWonderfulAtlasDto;
 import com.yl.soft.dto.EhbWonderfulVideoDto;
 import com.yl.soft.dto.base.ResultItem;
-import com.yl.soft.dto.base.SessionState;
-import com.yl.soft.dto.base.SessionUser;
 import com.yl.soft.po.EhbLiveBroadcast;
 import com.yl.soft.po.EhbWonderfulAtlas;
 import com.yl.soft.po.EhbWonderfulVideo;
 import com.yl.soft.service.EhbLiveBroadcastService;
+import com.yl.soft.service.EhbLiveVmwareService;
 import com.yl.soft.service.EhbWonderfulAtlasService;
 import com.yl.soft.service.EhbWonderfulVideoService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.NotBlank;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = { "C端模块-带你逛展" })
 @RestController
@@ -48,7 +43,9 @@ public class ShowYouAroundController extends BaseController {
 	
 	@Autowired
 	private EhbWonderfulAtlasService ehbWonderfulAtlasService;
-	
+	@Autowired
+	private EhbLiveVmwareService ehbLiveVmwareService;
+
 	@Autowired
 	private HWPlayFlowAuthUtil hWPlayFlowAuthUtil;
 
@@ -64,8 +61,22 @@ public class ShowYouAroundController extends BaseController {
 				ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getIsdel, 1).list().stream().map(i->{
 					EhbLiveBroadcastListDto ehbLiveBroadcastListDto=new EhbLiveBroadcastListDto();
 					BeanUtils.copyProperties(i, ehbLiveBroadcastListDto);
+					ehbLiveBroadcastListDto.setLiveType(0);//真实直播
 					return ehbLiveBroadcastListDto;
 				}).collect(Collectors.toList()));
+
+		//如果没有真实的直播则执行虚拟直播
+		if(pageInfo.getList()==null || pageInfo.getList().isEmpty()){
+			PageHelper.startPage(page, size, "sort DESC");
+			pageInfo = new PageInfo<>(
+					ehbLiveVmwareService.lambdaQuery().list().stream().map(i->{
+						EhbLiveBroadcastListDto ehbLiveBroadcastListDto=new EhbLiveBroadcastListDto();
+						BeanUtils.copyProperties(i, ehbLiveBroadcastListDto);
+						ehbLiveBroadcastListDto.setLiveType(1);//虚拟直播
+						ehbLiveBroadcastListDto.setVmwareUrl(i.getPlayback());
+						return ehbLiveBroadcastListDto;
+					}).collect(Collectors.toList()));
+		}
 		return ok(pageInfo.getList(), pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
 	}
 	

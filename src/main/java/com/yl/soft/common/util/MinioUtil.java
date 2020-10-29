@@ -87,6 +87,7 @@ public class MinioUtil {
             return MINIO_URL + "/" + BUCKET_NAME + "/" + objectName;
         } catch (Exception e) {
             log.info("上传发生错误: {}！", e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }

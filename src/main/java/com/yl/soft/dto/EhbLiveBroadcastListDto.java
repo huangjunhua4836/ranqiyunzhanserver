@@ -30,8 +30,13 @@ public class EhbLiveBroadcastListDto implements Serializable{/**
     
     @ApiModelProperty(value="类型名称")
     private String type;
-    
+
     @ApiModelProperty(value="直播回放/播放列表")
     private List<String> payList;
 
+    @ApiModelProperty(value="直播类型  0-真实直播   1-虚拟直播")
+    private Integer liveType;
+
+    @ApiModelProperty(value="虚拟直播url")
+    private String vmwareUrl;
 }

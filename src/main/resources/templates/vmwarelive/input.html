@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="common::headr('添加或修改')"></head>
+<body>
+    <div class="layui-container">
+        <div class="layui-row" style="margin-top: 10px;">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                <form class="layui-form" th:object="${ehbLiveVmware}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">主标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{mainTitle}" required  lay-verify="required" placeholder="请输入主标题" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">副标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{subTitle}" required  lay-verify="required" placeholder="请输入副标题" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">直播封面</label>
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn" id="test2">上传图片</button>
+                            <div class="layui-upload-list">
+                                <img class="layui-upload-img" id="demo1" th:src="*{liveImageUrl}" WIDTH="200">
+                                <p id="demoText"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">回放地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{playback}" required  lay-verify="required" placeholder="请输入主播公告" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">主播公告</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{announcement}" required  lay-verify="required" placeholder="请输入主播公告" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{sort}" required  lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <input th:field="*{id}" type="hidden"/>
+                    <input th:field="*{liveImageUrl}" type="hidden" id="imgurl"/>
+                    <button lay-submit lay-filter="submitFrom" style="display: none;">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        layui.use('core', function(){
+            var form = layui.form,
+            core = layui.core,
+                upload = layui.upload,
+            $ = layui.jquery;
+
+            form.on('submit(submitFrom)', function(data){
+                if(core.isEmpty(data.field.liveImageUrl)){
+                    layer.msg('直播封面为空！',core.showtime);
+                    return false;
+                }
+                //排序
+                if(!/^[0-9]+?$/.test(data.field.sort)){
+                    layer.msg('排序必须为数字，请重填！',core.showtime);
+                    return false;
+                }
+                var resultData = core.ajax('/platform/vmwarelive/saveOrUpdate',false,'POST',data.field);
+                if(resultData!=false){
+                    parent.layer.msg('操作成功',core.showtime);
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                }
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test2'
+                , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
+                , before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    if (res.code != 200) {
+                        return layer.msg('上传失败');
+                    }
+                    if (res.code == 200) {
+                        $('#imgurl').val(res.data[0].url);
+                        return layer.msg('上传成功！');
+                    }
+                    //上传成功
+                }
+            });
+        });
+    </script>
+</body>
+</html>
