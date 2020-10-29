@@ -9,12 +9,10 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.app.*;
 import com.yl.soft.po.EhbArticle;
+import com.yl.soft.po.EhbAudience;
 import com.yl.soft.po.EhbExhibitor;
 import com.yl.soft.po.EhbHottitle;
-import com.yl.soft.service.EhbArticleService;
-import com.yl.soft.service.EhbExhibitorService;
-import com.yl.soft.service.EhbHottitleService;
-import com.yl.soft.service.EhbOpportunityService;
+import com.yl.soft.service.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +35,8 @@ public class SearchController extends BaseController {
     private EhbArticleService ehbArticleService;
     @Autowired
     private EhbHottitleService ehbHottitleService;
+    @Autowired
+    private EhbAudienceService ehbAudienceService;
 
     /**
      * 热门词列表
@@ -93,7 +93,14 @@ public class SearchController extends BaseController {
         }
         PageHelper.startPage(1, 5);
         List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
-        List<ExhibitorDto> exhibitorDtos = ehbExhibitors.stream().map(e->ExhibitorDto.of(e)).collect(Collectors.toList());
+        List<ExhibitorDto> exhibitorDtos = ehbExhibitors.stream().map(i->{
+                    EhbAudience ehbAudience =  ehbAudienceService.lambdaQuery().eq(EhbAudience::getBopie,i.getId())
+                                .last("limit 1").one();
+                    if(ehbAudience!=null){
+                        i.setLogo(ehbAudience.getHeadPortrait());
+                    }
+                    return ExhibitorDto.of(i);
+                }).collect(Collectors.toList());
 //        Collections.shuffle(exhibitorDtos);
         //商机列表
         Map conditionMap = new HashMap();
@@ -151,7 +158,14 @@ public class SearchController extends BaseController {
         Integer pageParam[] = pageValidParam(paramMap);
         PageHelper.startPage(pageParam[0], pageParam[1]);
         List<EhbExhibitor> ehbExhibitors = ehbExhibitorService.list(ehbExhibitorQueryWrapper);
-        List<ExhibitorDto> exhibitorDtos = ehbExhibitors.stream().map(e->ExhibitorDto.of(e)).collect(Collectors.toList());
+        List<ExhibitorDto> exhibitorDtos = ehbExhibitors.stream().map(i->{
+            EhbAudience ehbAudience =  ehbAudienceService.lambdaQuery().eq(EhbAudience::getBopie,i.getId())
+                    .last("limit 1").one();
+            if(ehbAudience!=null){
+                i.setLogo(ehbAudience.getHeadPortrait());
+            }
+            return ExhibitorDto.of(i);
+        }).collect(Collectors.toList());
 //        Collections.shuffle(exhibitorDtos);
         return setResultSuccess(getBasePage(ehbExhibitors,exhibitorDtos));
     }

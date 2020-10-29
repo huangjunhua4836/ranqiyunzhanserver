@@ -59,7 +59,9 @@ public class OpportunityPlantController extends BaseController {
                 .eq(!StringUtils.isEmpty(ehbOpportunity.getExhibitorid()),EhbOpportunity::getExhibitorid,ehbOpportunity.getExhibitorid())
                 .eq(EhbOpportunity::getIsdel,0)
                 .between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),EhbOpportunity::getReleasetime,startTime,endTime)
-                .list().stream().map(i->{
+                .list();
+
+        List<OpportunityVo> opportunityVos = ehbOpportunities.stream().map(i->{
             OpportunityVo opportunityVo = new OpportunityVo();
             BeanUtil.copyProperties(i,opportunityVo);
             opportunityVo.setExhiName(ehbExhibitorService.getById(i.getExhibitorid()).getEnterprisename());
@@ -67,12 +69,11 @@ public class OpportunityPlantController extends BaseController {
         }).collect(Collectors.toList());
 
         PageInfo pageInfo = new PageInfo<>(ehbOpportunities);
-
         TableVo tableVo = new TableVo();
         tableVo.setCode(0);
         tableVo.setMsg("");
         tableVo.setCount((int) pageInfo.getTotal());
-        tableVo.setData(pageInfo.getList());
+        tableVo.setData(opportunityVos);
         return tableVo;
     }
 
