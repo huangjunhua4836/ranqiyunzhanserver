@@ -86,7 +86,6 @@ public class OpportunityController extends BaseController {
             BeanUtil.copyProperties(i,opportunityAndAdvertisingDto2);
             return opportunityAndAdvertisingDto2;
         }).collect(Collectors.toList());
-//        Collections.shuffle(opportunity1AndAdvertisingDto2s);
         if(opportunityAndAdvertisingDto2s!=null && opportunityAndAdvertisingDto2s.size()>=5){
             //广告
             QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
@@ -96,9 +95,8 @@ public class OpportunityController extends BaseController {
             for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
                 advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
             }
-            Collections.shuffle(advertisingDtos);
-
             if(!advertisingDtos.isEmpty()) {
+                Collections.shuffle(advertisingDtos);
                 OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
                 opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
                 opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
@@ -153,7 +151,6 @@ public class OpportunityController extends BaseController {
             BeanUtil.copyProperties(i,opportunityAndAdvertisingDto2);
             return opportunityAndAdvertisingDto2;
         }).collect(Collectors.toList());
-//        Collections.shuffle(opportunityAndAdvertisingDto2s);
         if(opportunityAndAdvertisingDto2s!=null && opportunityAndAdvertisingDto2s.size()>=5){
             //广告
             QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
@@ -163,9 +160,8 @@ public class OpportunityController extends BaseController {
             for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
                 advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
             }
-            Collections.shuffle(advertisingDtos);
-
             if(!advertisingDtos.isEmpty()) {
+                Collections.shuffle(advertisingDtos);
                 OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
                 opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
                 opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
@@ -223,7 +219,6 @@ public class OpportunityController extends BaseController {
             BeanUtil.copyProperties(i,opportunityAndAdvertisingDto2);
             return opportunityAndAdvertisingDto2;
         }).collect(Collectors.toList());
-//        Collections.shuffle(opportunityAndAdvertisingDto2s);
         if(opportunityAndAdvertisingDto2s!=null && opportunityAndAdvertisingDto2s.size()>=5){
             //广告
             QueryWrapper<EhbAdvertising> ehbAdvertisingQueryWrapper = new QueryWrapper<>();
@@ -233,9 +228,8 @@ public class OpportunityController extends BaseController {
             for(EhbAdvertising ehbAdvertising : ehbAdvertisings){
                 advertisingDtos.add(AdvertisingDto.of(ehbAdvertising));
             }
-            Collections.shuffle(advertisingDtos);
-
             if(!advertisingDtos.isEmpty()) {
+                Collections.shuffle(advertisingDtos);
                 OpportunityAndAdvertisingDto2 opportunityAndAdvertisingDto2 = new OpportunityAndAdvertisingDto2();
                 opportunityAndAdvertisingDto2.setAdvertisingid(advertisingDtos.get(0).getId());
                 opportunityAndAdvertisingDto2.setAdvertisingpicture(advertisingDtos.get(0).getPicture());
