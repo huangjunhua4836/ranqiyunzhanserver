@@ -24,4 +24,7 @@ public class OpportunityDetailsDto extends EhbOpportunityDto implements Serializ
 
 	@ApiModelProperty(value = "标签翻译")
 	private List<String> labelStrings;
+
+	@ApiModelProperty(value = "发布作者ID")
+	private Integer userid;
 }

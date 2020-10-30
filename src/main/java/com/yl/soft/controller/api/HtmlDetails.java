@@ -138,7 +138,11 @@ public class HtmlDetails extends BaseController {
 		}
 		OpportunityDetailsDto opportunityDetailsDto = new OpportunityDetailsDto();
 		BeanUtil.copyProperties(ehbOpportunityDto,opportunityDetailsDto);
+		//设置标签
 		opportunityDetailsDto.setLabelStrings(labelList);
+		//设置发布者id
+		EhbAudience ehbAudience = ehbAudienceService.lambdaQuery().eq(EhbAudience::getBopie,ehbExhibitor.getId()).last("limit 1").one();
+		opportunityDetailsDto.setUserid(ehbAudience.getId());
 
 		return ok(opportunityDetailsDto);
 	}

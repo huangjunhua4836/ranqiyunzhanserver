@@ -1,76 +1,92 @@
 <!doctype html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="format-detection" content="telephone=no">
-<meta http-equiv="Expires" content="-1">
-<meta http-equiv="Cache-Control" content="no-cache">
-<meta http-equiv="Pragma" content="no-cache">
-<link rel="stylesheet" type="text/css" href="css/base.css" media="all">
-<link rel="stylesheet" type="text/css" href="css/style.css" media="all">
-<link rel="stylesheet" type="text/css" href="css/Yform.css" media="all">
-<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="js/vue.min.js"></script>
-<script type="text/javascript" src="js/Yeffect.js"></script>
-<script type="text/javascript" src="js/Yform.js"></script>
-<script type="text/javascript" src="js/ind.js"></script>
-<title>邀请好友</title>
-</head>
 
-<body>
-	<div class="g_invitation">
-		<img src="images/g_18.jpg" alt="">
-		<a href="javascript:void(0)" title="" class="g_btn-invitation" id="g_btn-download"><img src="images/g_19.png" alt=""></a>
-	</div>
-	<script>
-		var isShare="";
-		
-		
-		if(getUrlParamURLys("isShare")){
-			isShare=getUrlParamURLys("isShare");
-		}
-		
-		
-		var equipment=IsAndroid();
-		
-		
-		
-		if(isShare){
-			var scriptUrl="<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">"+"\<\/script>";
-			$("head").append(scriptUrl)
-			$(".g_btn-invitation").hide();
-		}else{
-			$(".g_btn-invitation").html("<img src=\"images/g_19.png\" alt=\"\">");
-		}
-		
-		
-		if($(window).height()<812-100){
-			$("body").attr("style","overflow: hidden;");
-			$(".g_invitation").attr("style","transform: translateY(-70px); -webkit-transform: translateY(-70px);")
-		}
-		
-		
-		
-		$(".g_btn-invitation").click(function(){
-			if(isShare){
-				if(equipment){
-					window.location.href="https://www.pgyer.com/OlYC";
-				}else{
-					window.location.href="https://www.pgyer.com/l36o";
-				}
-			}else{
-				if(equipment){
-					window.location.href="invitationFn()";
-				}else{
-					window.webkit.messageHandlers.invitationFn.postMessage("");
-				}
-				
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta http-equiv="Content-Type" content="text/html">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta http-equiv="Expires" content="-1">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Pragma" content="no-cache">
+		<link rel="stylesheet" type="text/css" href="css/base.css" media="all">
+		<link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+		<link rel="stylesheet" type="text/css" href="css/Yform.css" media="all">
+		<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/Yeffect.js"></script>
+		<script type="text/javascript" src="js/Yform.js"></script>
+		<script type="text/javascript" src="js/ind.js"></script>
+		<title>邀请好友</title>
+	</head>
+
+	<body>
+		<div class="g_invitation">
+			<!--引导箭头-->
+			<div class="row-box">
+				<p>点击此处在浏览器中打开</p>
+				<img src="images/row.png"/>
+			</div>
+			
+			<img src="images/g_18.jpg" alt="">
+			<a href="javascript:void(0)" title="" class="g_btn-invitation" id="g_btn-download"><img src="images/g_19.png" alt=""></a>
+		</div>
+		<script>
+			var isShare = "";
+			var isway=0;// 0微信 1是qq
+			if(getUrlParamURLys("isShare")) {
+				isShare = getUrlParamURLys("isShare");
 			}
-		})
-	</script>
-</body>
+//			判断是在微信打开还是在qq打开
+			is_weixn_qq();
+			function is_weixn_qq() {
+				var ua = navigator.userAgent.toLowerCase();
+				if(ua.match(/MicroMessenger/i) == "micromessenger") {
+					isway=0
+				} else if(ua.match(/QQ/i) == "qq") {
+					isway=1
+				}
+			}
+			
+			
+
+			var equipment = IsAndroid();
+
+			if(isShare) {
+				if(isway==1){
+					var scriptUrl = "<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">" + "\<\/script>";
+					$("head").append(scriptUrl);
+					$(".row-box").hide();
+				}
+				$(".g_btn-invitation").hide();
+			} else {
+				$(".g_btn-invitation").html("<img src=\"images/g_19.png\" alt=\"\">");
+			}
+
+			if($(window).height() < 812 - 100) {
+				$("body").attr("style", "overflow: hidden;");
+				$(".g_invitation").attr("style", "transform: translateY(-70px); -webkit-transform: translateY(-70px);")
+			}
+
+			$(".g_btn-invitation").click(function() {
+				if(isShare) {
+					if(equipment) {
+						window.location.href = "https://www.pgyer.com/OlYC";
+					} else {
+						window.location.href = "https://www.pgyer.com/l36o";
+					}
+				} else {
+					if(equipment) {
+						window.location.href = "invitationFn()";
+					} else {
+						window.webkit.messageHandlers.invitationFn.postMessage("");
+					}
+
+				}
+			})
+		</script>
+	</body>
+
 </html>

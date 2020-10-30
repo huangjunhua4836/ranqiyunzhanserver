@@ -171,4 +171,20 @@ public class LiveController extends BaseController {
         ehbLiveBroadcastService.removeById(id);
         return setResultSuccess();
     }
+
+    /**
+     * 结束直播
+     * @return
+     */
+    @PostMapping("/liveStop")
+    @ResponseBody
+    public BaseResponse liveStop(String id) {
+        System.out.println("ok");
+        if(StringUtils.isEmpty(id)){
+            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
+                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"ID为空！");
+        }
+        ehbLiveBroadcastService.lambdaUpdate().set(EhbLiveBroadcast::getLiveStatus,2).eq(EhbLiveBroadcast::getId,id).update();
+        return setResultSuccess();
+    }
 }

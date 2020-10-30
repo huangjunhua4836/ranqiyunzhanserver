@@ -86,10 +86,10 @@
             $ = layui.jquery;
 
             form.on('submit(submitFrom)', function(data){
-                if(core.isEmpty(data.field.liveImageUrl)){
-                    layer.msg('直播封面为空！',core.showtime);
-                    return false;
-                }
+                // if(core.isEmpty(data.field.liveImageUrl)){
+                //     layer.msg('直播封面为空！',core.showtime);
+                //     return false;
+                // }
                 //直播号
                 var roomNum = data.field.roomNum;
                 if(!/^[0-9]+?$/.test(roomNum)){

@@ -25,7 +25,8 @@ layui.use('core', function(){
             ,defaultToolbar: ['filter']
             ,title: '机构数据表'
             ,cols: [[ //表头
-                {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
+                {type: 'radio', fixed: 'left'}
+                ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field: 'mainTitle', title: '主标题'}
                 ,{field: 'subTitle', title: '副标题'}
                 // ,{field: 'announcement', title: '主播公告'}
@@ -64,6 +65,22 @@ layui.use('core', function(){
         switch(obj.event){
             case 'add':
                 core.openIframeDialog('添加','/platform/live/input?type=add',['100%', '90%'],false,initTable);
+                break;
+            case 'stoplive':
+                var checkStatus = table.checkStatus('table'); //table 即为基础参数 id 对应的值
+                if(checkStatus.data.length == 0){
+                    layer.msg('必须选择一个直播！',core.showtime);
+                }else{
+                    layer.confirm('真的要直播结束吗？', function(index){
+                        layer.close(index);
+                        //向服务端发送删除指令
+                        var resultData = core.ajax('/platform/live/liveStop',false,'POST','id='+checkStatus.data[0].id);
+                        if(resultData!=false){
+                            layer.msg('操作成功！',core.showtime);
+                            initTable({});
+                        }
+                    });
+                }
                 break;
             //自定义头工具栏右侧图标 - 提示
             case 'LAYTABLE_TIPS':

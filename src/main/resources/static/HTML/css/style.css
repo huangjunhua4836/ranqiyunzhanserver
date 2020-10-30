@@ -213,7 +213,7 @@
 .g_btn-zk{font-size: 0.28rem; color: #43bdec; padding-right: 0.2rem; background: url(../images/g_15.png) no-repeat right center; background-size: 0.12rem 0.27rem; display: inline-block;}
 .g_btn-sq{background: url(../images/g_16.png) no-repeat right center; background-size: 0.12rem 0.27rem;}
 .g_share-hsk{padding: 0 0.3rem;}
-.g_hsk-head{padding: 0.4rem 0; border-bottom: 1px solid #ebebeb; display: flex; justify-content: space-between; flex-wrap: wrap;}
+.g_hsk-head{padding: 0.4rem 0; border-bottom: 1px solid #ebebeb; display: flex; justify-content: start; flex-wrap: wrap;}
 .g_hsk-head b{display: inline-block; height: 0.74rem; line-height: 0.74rem; font-size: 0.28rem; color: #000;}
 .g_hsk-head span{display: inline-block; height: 0.74rem; line-height: 0.74rem; border-radius: 0.74rem; padding: 0 0.3rem; background: #f0f0f0; font-size: 0.28rem; color: #000;}
 .g_hsk-body{display: none; font-size: 0.28rem; color: #666; padding-top: 0.3rem;}
@@ -271,6 +271,22 @@
   opacity: 1;
 }
 
+/*引导箭头*/
+.row-box{
+	position: absolute;
+	top:0.3rem;
+	right: 0.2rem;
+}
+.row-box p{
+	display: inline-block;
+	font-size: 0.3rem;
+	margin-right: 0.2rem;
+	color: red;
+	vertical-align: middle;
+}
+.row-box img{
+	vertical-align: middle;
+}
 
 @media only all and (max-width:375px){
 	.g_btn-invitation{top: 9.9rem;}	

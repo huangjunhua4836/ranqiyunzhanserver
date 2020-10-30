@@ -32,7 +32,8 @@
 	</div>
 	<div class="g_share-article">
 		<div class="g_article-head">
-			<img :src="detailes.logo" alt="">
+			<img v-show="detailes.logo==null" src="images/g_12.jpg" alt="">
+			<img v-show="detailes.logo!=null" :src="detailes.logo" alt="">
 			<div class="g_article-div">
 				<p>{{detailes.enterprisename}}<img src="images/g_10.png" alt="" v-if="detailes.state==1"></p>
 				<span v-html="detailes.boothno"></span>
