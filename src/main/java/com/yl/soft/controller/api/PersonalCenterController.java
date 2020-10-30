@@ -1,13 +1,18 @@
 package com.yl.soft.controller.api;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yl.soft.common.unified.redis.RedisService;
+import com.yl.soft.common.util.PinyinUtil;
 import com.yl.soft.controller.base.BaseController;
+import com.yl.soft.dict.CommonDict;
 import com.yl.soft.dto.*;
 import com.yl.soft.dto.app.ArticleDto;
+import com.yl.soft.dto.app.ExhibitorDto;
 import com.yl.soft.dto.base.BaseResult;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.dto.base.SessionState;
@@ -70,6 +75,9 @@ public class PersonalCenterController extends BaseController {
 	@Autowired
 	private EhbArticleService ehbArticleService;
 
+    @Autowired
+    public RedisService redisService;
+	
 	@Autowired
 	private SessionState sessionState;
 
@@ -152,6 +160,29 @@ public class PersonalCenterController extends BaseController {
 		} else {
 			return error(-900, "服务器繁忙请稍后再试");
 		}
+		
+		//刷新内存
+		 String keys[] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q"
+                ,"R","S","T","U","V","W","X","Y","Z"};
+	     redisService.del(keys);
+	     QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
+	     ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+	     ehbExhibitorQueryWrapper.eq("state",1);
+	     ehbExhibitorService.list(ehbExhibitorQueryWrapper).stream().forEach(i->{
+	         String firstWord = PinyinUtil.getPinYinHeadChar(i.getEnterprisename()).toUpperCase().charAt(0)+"";
+	         if("B".equals(firstWord)){
+	             System.out.println(firstWord);
+	         }
+	         ExhibitorDto exhibitorDto = new ExhibitorDto();
+	         exhibitorDto.setId(i.getId());
+	         exhibitorDto.setEnterprisename(i.getEnterprisename());
+	         EhbAudience ehbAudience1 = ehbAudienceService.lambdaQuery().select(EhbAudience::getHeadPortrait).eq(EhbAudience::getBopie,i.getId()).last("limit 1").one();
+	         exhibitorDto.setLogo(ehbAudience1!=null?ehbAudience1.getHeadPortrait():null);
+	         exhibitorDto.setBoothno(i.getBoothno());
+	         exhibitorDto.setEnglishname(i.getEnglishname());
+	         redisService.sSet(firstWord, JSONObject.toJSONString(exhibitorDto));
+	     });
+		
 		return ok();
 	}
 

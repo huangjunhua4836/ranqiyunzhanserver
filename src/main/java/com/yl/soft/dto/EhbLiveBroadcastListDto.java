@@ -39,4 +39,7 @@ public class EhbLiveBroadcastListDto implements Serializable{/**
 
     @ApiModelProperty(value="虚拟直播url")
     private String vmwareUrl;
+    
+    @ApiModelProperty(value = "排序")
+    private Integer sort;
 }

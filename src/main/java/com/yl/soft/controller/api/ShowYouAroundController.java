@@ -3,6 +3,7 @@ package com.yl.soft.controller.api;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.util.HWPlayFlowAuthUtil;
+import com.yl.soft.common.util.SortList;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dto.EhbLiveBroadcastDto;
 import com.yl.soft.dto.EhbLiveBroadcastListDto;
@@ -27,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,10 +41,10 @@ public class ShowYouAroundController extends BaseController {
 
 	@Autowired
 	private EhbLiveBroadcastService ehbLiveBroadcastService;
-	
+
 	@Autowired
 	private EhbWonderfulVideoService ehbWonderfulVideoService;
-	
+
 	@Autowired
 	private EhbWonderfulAtlasService ehbWonderfulAtlasService;
 	@Autowired
@@ -54,73 +58,72 @@ public class ShowYouAroundController extends BaseController {
 			@ApiImplicitParam(name = "page", value = "分页当前页", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "size", value = "一页显示条数", required = true, paramType = "query"), })
 	@PostMapping("/live_list")
-	public ResultItem<List<EhbLiveBroadcastListDto>> live_list(@NotBlank(message = "token不能为空") String token, Integer page,
-			Integer size) {
+	public ResultItem<List<EhbLiveBroadcastListDto>> live_list(@NotBlank(message = "token不能为空") String token,
+			Integer page, Integer size) {
+		List<EhbLiveBroadcastListDto> dataList=new ArrayList<>();
 		PageHelper.startPage(page, size, "sort DESC");
 		PageInfo<EhbLiveBroadcastListDto> pageInfo = new PageInfo<>(
-				ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getIsdel, 1).list().stream().map(i->{
-					EhbLiveBroadcastListDto ehbLiveBroadcastListDto=new EhbLiveBroadcastListDto();
+				ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getIsdel, 1).list().stream().map(i -> {
+					EhbLiveBroadcastListDto ehbLiveBroadcastListDto = new EhbLiveBroadcastListDto();
 					BeanUtils.copyProperties(i, ehbLiveBroadcastListDto);
-					ehbLiveBroadcastListDto.setLiveType(0);//真实直播
+					ehbLiveBroadcastListDto.setLiveType(0);// 真实直播
 					return ehbLiveBroadcastListDto;
 				}).collect(Collectors.toList()));
-
-		//如果没有真实的直播则执行虚拟直播
-		if(pageInfo.getList()==null || pageInfo.getList().isEmpty()){
-			PageHelper.startPage(page, size, "sort DESC");
-			pageInfo = new PageInfo<>(
-					ehbLiveVmwareService.lambdaQuery().list().stream().map(i->{
-						EhbLiveBroadcastListDto ehbLiveBroadcastListDto=new EhbLiveBroadcastListDto();
-						BeanUtils.copyProperties(i, ehbLiveBroadcastListDto);
-						ehbLiveBroadcastListDto.setLiveType(1);//虚拟直播
-						ehbLiveBroadcastListDto.setVmwareUrl(i.getPlayback());
-						return ehbLiveBroadcastListDto;
-					}).collect(Collectors.toList()));
-		}
-		return ok(pageInfo.getList(), pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
+		dataList.addAll(pageInfo.getList());
+		PageHelper.startPage(page, size, "sort DESC");
+		PageInfo<EhbLiveBroadcastListDto> pageInfoA = new PageInfo<>(ehbLiveVmwareService.lambdaQuery().list().stream().map(i -> {
+			EhbLiveBroadcastListDto ehbLiveBroadcastListDto = new EhbLiveBroadcastListDto();
+			BeanUtils.copyProperties(i, ehbLiveBroadcastListDto);
+			ehbLiveBroadcastListDto.setLiveType(1);// 虚拟直播
+			ehbLiveBroadcastListDto.setVmwareUrl(i.getPlayback());
+			return ehbLiveBroadcastListDto;
+		}).collect(Collectors.toList()));
+		dataList.addAll(pageInfoA.getList());
+		List<EhbLiveBroadcastListDto> newList = dataList.stream().sorted(Comparator.comparingInt(EhbLiveBroadcastListDto::getSort).reversed())
+                .collect(Collectors.toList());
+		return ok(newList, pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
 	}
-	
+
 	@ApiOperation(value = "进入直播间", notes = "进入直播间")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "id", value = "直播id", required = true, paramType = "query"),})
+			@ApiImplicitParam(name = "id", value = "直播id", required = true, paramType = "query"), })
 	@PostMapping("/live")
 	public ResultItem<EhbLiveBroadcastDto> live(@NotBlank(message = "直播ID不能为空") String id) {
-		EhbLiveBroadcast ehbLiveBroadcast=ehbLiveBroadcastService.getById(id);
+		EhbLiveBroadcast ehbLiveBroadcast = ehbLiveBroadcastService.getById(id);
 		EhbLiveBroadcastDto ehbLiveBroadcastDto = new EhbLiveBroadcastDto();
 		BeanUtils.copyProperties(ehbLiveBroadcast, ehbLiveBroadcastDto);
 //		ehbLiveBroadcastDto.setPullFlowUrl(hWPlayFlowAuthUtil.liveUrl(ehbLiveBroadcast.getFlowName()));
 		return ok(ehbLiveBroadcastDto);
 	}
-	
+
 	@ApiOperation(value = "精彩小视频列表", notes = "精彩小视频列表")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "page", value = "分页当前页", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "size", value = "一页显示条数", required = true, paramType = "query"), })
 	@PostMapping("/wonderful_video")
-	public ResultItem<List<EhbWonderfulVideoDto>> wonderful_video(@NotBlank(message = "token不能为空") String token, Integer page,
-			Integer size) {
+	public ResultItem<List<EhbWonderfulVideoDto>> wonderful_video(@NotBlank(message = "token不能为空") String token,
+			Integer page, Integer size) {
 		PageHelper.startPage(page, size, "sort ASC");
 		PageInfo<EhbWonderfulVideoDto> pageInfo = new PageInfo<>(
-				ehbWonderfulVideoService.lambdaQuery().eq(EhbWonderfulVideo::getIsdel, 1).list().stream().map(i->{
-					EhbWonderfulVideoDto ehbWonderfulVideoDto=new EhbWonderfulVideoDto();
+				ehbWonderfulVideoService.lambdaQuery().eq(EhbWonderfulVideo::getIsdel, 1).list().stream().map(i -> {
+					EhbWonderfulVideoDto ehbWonderfulVideoDto = new EhbWonderfulVideoDto();
 					BeanUtils.copyProperties(i, ehbWonderfulVideoDto);
 					return ehbWonderfulVideoDto;
 				}).collect(Collectors.toList()));
 		return ok(pageInfo.getList(), pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
 	}
-	
-	
+
 	@ApiOperation(value = "精彩图集列表", notes = "精彩图集列表")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "page", value = "分页当前页", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "size", value = "一页显示条数", required = true, paramType = "query"), })
 	@PostMapping("/wonderful_tlas")
-	public ResultItem<List<EhbWonderfulAtlasDto>> wonderful_tlas(@NotBlank(message = "token不能为空") String token, Integer page,
-			Integer size) {
+	public ResultItem<List<EhbWonderfulAtlasDto>> wonderful_tlas(@NotBlank(message = "token不能为空") String token,
+			Integer page, Integer size) {
 		PageHelper.startPage(page, size, "sort ASC");
 		PageInfo<EhbWonderfulAtlasDto> pageInfo = new PageInfo<>(
-				ehbWonderfulAtlasService.lambdaQuery().eq(EhbWonderfulAtlas::getIsdel, 1).list().stream().map(i->{
-					EhbWonderfulAtlasDto ehbWonderfulAtlasDto=new EhbWonderfulAtlasDto();
+				ehbWonderfulAtlasService.lambdaQuery().eq(EhbWonderfulAtlas::getIsdel, 1).list().stream().map(i -> {
+					EhbWonderfulAtlasDto ehbWonderfulAtlasDto = new EhbWonderfulAtlasDto();
 					BeanUtils.copyProperties(i, ehbWonderfulAtlasDto);
 					return ehbWonderfulAtlasDto;
 				}).collect(Collectors.toList()));
