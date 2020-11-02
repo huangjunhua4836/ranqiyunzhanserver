@@ -274,18 +274,28 @@
 /*引导箭头*/
 .row-box{
 	position: absolute;
-	top:0.3rem;
-	right: 0.2rem;
+	top:0rem;
+	height: 1.4rem;
+	right: 0rem;
+	display: none;
+	padding-right: 0.4rem;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: #343434;
+	text-align: right;
+	padding-top: 0.3rem;
 }
 .row-box p{
 	display: inline-block;
-	font-size: 0.3rem;
+	font-size: 0.34rem;
 	margin-right: 0.2rem;
-	color: red;
-	vertical-align: middle;
+	color: #7f7f7f;
+	vertical-align: bottom;
 }
 .row-box img{
 	vertical-align: middle;
+	width: 0.7rem;
+	height: 0.7rem;
 }
 
 @media only all and (max-width:375px){

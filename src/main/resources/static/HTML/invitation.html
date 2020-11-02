@@ -35,7 +35,7 @@
 		</div>
 		<script>
 			var isShare = "";
-			var isway=0;// 0微信 1是qq
+			var isway=0;// 0是qq 1是微信 
 			if(getUrlParamURLys("isShare")) {
 				isShare = getUrlParamURLys("isShare");
 			}
@@ -44,25 +44,28 @@
 			function is_weixn_qq() {
 				var ua = navigator.userAgent.toLowerCase();
 				if(ua.match(/MicroMessenger/i) == "micromessenger") {
-					isway=0
-				} else if(ua.match(/QQ/i) == "qq") {
 					isway=1
+				} else if(ua.match(/QQ/i) == "qq") {
+					isway=0
+				}else{
+					isway=0
 				}
 			}
-			
 			
 
 			var equipment = IsAndroid();
 
 			if(isShare) {
-				if(isway==1){
+				if(isway==0){
 					var scriptUrl = "<script type=\"text/javascript\" src=\"//bjc1.t4m.cn/applink.js\">" + "\<\/script>";
 					$("head").append(scriptUrl);
-					$(".row-box").hide();
+				}else if(isway==1){
+					$(".row-box").show();
 				}
 				$(".g_btn-invitation").hide();
 			} else {
 				$(".g_btn-invitation").html("<img src=\"images/g_19.png\" alt=\"\">");
+				$(".row-box").hide();
 			}
 
 			if($(window).height() < 812 - 100) {

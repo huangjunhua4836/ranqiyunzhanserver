@@ -19,6 +19,12 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">类型名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{type}" required  lay-verify="required" placeholder="类型名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">直播封面</label>
                         <div class="layui-upload">
                             <button type="button" class="layui-btn" id="test2">上传图片</button>
@@ -28,10 +34,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">回放地址</label>
+                    <div class="layui-form-item" th:if="${ehbLiveVmware.id != null}">
+                        <label class="layui-form-label">直播状态</label>
                         <div class="layui-input-block">
-                            <input type="text" th:field="*{playback}" required  lay-verify="required" placeholder="请输入主播公告" autocomplete="off" class="layui-input">
+                            <select name="liveStatus" lay-filter="selectFilter">
+                                <option value="0" th:selected="${ehbLiveVmware.liveStatus == 0}">即将开播</option>
+                                <option value="1" th:selected="${ehbLiveVmware.liveStatus == 1}">直播中</option>
+                                <option value="2" th:selected="${ehbLiveVmware.liveStatus == 2}">直播结束</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">虚拟URL</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:field="*{playback}" required  lay-verify="required" placeholder="虚拟URL" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">

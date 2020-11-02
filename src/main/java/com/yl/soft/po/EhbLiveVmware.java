@@ -42,6 +42,9 @@ public class EhbLiveVmware implements Serializable {
     @TableField("sub_title")
     private String subTitle;
 
+    @ApiModelProperty(value="类型名称")
+    private String type;
+
     @ApiModelProperty(value = "直播封面")//上传封面
     @TableField("live_image_url")
     private String liveImageUrl;
@@ -50,7 +53,7 @@ public class EhbLiveVmware implements Serializable {
     @TableField("live_status")
     private Integer liveStatus;
 
-    @ApiModelProperty(value = "直播回放地址")//服务器加
+    @ApiModelProperty(value = "H5虚拟直播地址")//服务器加
     private String playback;
 
     @ApiModelProperty(value = "排序")

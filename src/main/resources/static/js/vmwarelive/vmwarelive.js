@@ -28,6 +28,7 @@ layui.use('core', function(){
                 {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field: 'mainTitle', title: '主标题'}
                 ,{field: 'subTitle', title: '副标题'}
+                ,{field: 'type', title: '类型名称'}
                 ,{field: 'liveStatus', title: '直播状态',
                     templet: function(d){
                         if(d.liveStatus == '0'){
