@@ -66,7 +66,7 @@ public class ShowYouAroundController extends BaseController {
 					EhbLiveBroadcastListDto ehbLiveBroadcastListDto = new EhbLiveBroadcastListDto();
 					BeanUtils.copyProperties(i, ehbLiveBroadcastListDto);
 					ehbLiveBroadcastListDto.setLiveType(0);// 真实直播
-					ehbLiveBroadcastListDto.setSort(i.getSort()<=0?i.getLiveStatus()==1?-1:i.getLiveStatus()==0?0:i.getLiveStatus()==2?2:100:i.getSort());
+					ehbLiveBroadcastListDto.setSort(i.getSort()<=0?i.getLiveStatus()==1?10000:i.getLiveStatus()==0?0:i.getLiveStatus()==2?-1:100:i.getSort());
 					return ehbLiveBroadcastListDto;
 				}).collect(Collectors.toList()));
 		dataList.addAll(pageInfo.getList());
