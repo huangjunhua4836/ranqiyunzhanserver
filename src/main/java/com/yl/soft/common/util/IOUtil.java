@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -220,5 +221,90 @@ public class IOUtil extends IOUtils {
 				connection.disconnect();
 			}
 		}
+	}
+
+	/**
+	 * 获取图片宽度
+	 *
+	 * @param url 图片文件
+	 * @return 宽度
+	 */
+	public static int getImgWidth(URL url) {
+		InputStream is = null;
+		BufferedImage src = null;
+		int ret = -1;
+		try {
+			is = url.openStream();
+			src = javax.imageio.ImageIO.read(is);
+			ret = src.getWidth(null); // 得到源图宽
+			is.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
+	/**
+	 * 获取图片宽度
+	 *
+	 * @param file 图片文件
+	 * @return 宽度
+	 */
+	public static int getImgWidth(File file) {
+		InputStream is = null;
+		BufferedImage src = null;
+		int ret = -1;
+		try {
+			is = new FileInputStream(file);
+			src = javax.imageio.ImageIO.read(is);
+			ret = src.getWidth(null); // 得到源图宽
+			is.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
+
+	/**
+	 * 获取图片高度
+	 *
+	 * @param url 图片文件
+	 * @return 高度
+	 */
+	public static int getImgHeight(URL url) {
+		InputStream is = null;
+		BufferedImage src = null;
+		int ret = -1;
+		try {
+			is = url.openStream();
+			src = javax.imageio.ImageIO.read(is);
+			ret = src.getHeight(null); // 得到源图高
+			is.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
+	/**
+	 * 获取图片高度
+	 *
+	 * @param file 图片文件
+	 * @return 高度
+	 */
+	public static int getImgHeight(File file) {
+		InputStream is = null;
+		BufferedImage src = null;
+		int ret = -1;
+		try {
+			is = new FileInputStream(file);
+			src = javax.imageio.ImageIO.read(is);
+			ret = src.getHeight(null); // 得到源图高
+			is.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
 	}
 }

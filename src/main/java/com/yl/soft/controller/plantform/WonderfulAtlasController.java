@@ -1,6 +1,7 @@
 package com.yl.soft.controller.plantform;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
@@ -10,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.constants.BaseApiConstants;
 import com.yl.soft.common.unified.entity.BaseResponse;
+import com.yl.soft.common.util.IOUtil;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.po.EhbLiveBroadcast;
@@ -33,10 +35,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -82,7 +87,7 @@ public class WonderfulAtlasController extends BaseController {
         ehbWonderfulAtlasQueryWrapper.eq(!StringUtils.isEmpty(ehbWonderfulAtlas.getLiveId()), "live_id", ehbWonderfulAtlas.getLiveId());
         ehbWonderfulAtlasQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime), "createtime", startTime, endTime);
         ehbWonderfulAtlasQueryWrapper.eq("isdel", 1);
-        ehbWonderfulAtlasQueryWrapper.orderByAsc("sort");
+        ehbWonderfulAtlasQueryWrapper.orderByDesc("sort");
         PageHelper.startPage(Integer.valueOf(page), Integer.valueOf(limit));
         List<EhbWonderfulAtlas> ehbWonderfulAtlases = ehbWonderfulAtlasService.list(ehbWonderfulAtlasQueryWrapper);
         PageInfo pageInfo = new PageInfo<>(ehbWonderfulAtlases);
@@ -131,6 +136,13 @@ public class WonderfulAtlasController extends BaseController {
         if (StringUtils.isEmpty(ehbWonderfulAtlas.getId())) {
             ehbWonderfulAtlas.setCreatetime(LocalDateTime.now());
             ehbWonderfulAtlas.setIsdel(1);
+            EhbWonderfulAtlas sortAtlas = ehbWonderfulAtlasService.lambdaQuery()
+                    .orderByDesc(EhbWonderfulAtlas::getSort).last("limit 1").one();
+            if(sortAtlas!=null && sortAtlas.getSort()!=null){
+                ehbWonderfulAtlas.setSort(sortAtlas.getSort()+1);
+            }else{
+                ehbWonderfulAtlas.setSort(1);
+            }
         } else {
         }
         if (ehbWonderfulAtlasService.saveOrUpdate(ehbWonderfulAtlas)) {
@@ -153,8 +165,69 @@ public class WonderfulAtlasController extends BaseController {
             return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
                     , BaseApiConstants.ServiceResultCode.ERROR.getValue(), "岗位删除ID为空！");
         }
-        ehbWonderfulAtlasService.updateById(ehbWonderfulAtlasService.getById(id).setIsdel(2));
+        ehbWonderfulAtlasService.removeById(id);
         return setResultSuccess();
+    }
+
+    /**
+     * 跳转到单个添加或者修改页面
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/inputMultiple")
+    public String inputMultiple(String id, String type, ModelMap modelMap) {
+        modelMap.put("ehbWonderfulAtlas", new EhbWonderfulAtlas());
+
+        QueryWrapper<EhbLiveBroadcast> ehbLiveBroadcastQueryWrapper = new QueryWrapper<>();
+        ehbLiveBroadcastQueryWrapper.eq("isdel", 1);
+        List<EhbLiveBroadcast> ehbLiveBroadcasts = ehbLiveBroadcastService.list(ehbLiveBroadcastQueryWrapper);
+        modelMap.put("ehbLiveBroadcasts", ehbLiveBroadcasts);
+
+        return "atlas/inputmultiple";
+    }
+
+    /**
+     * 添加或者修改
+     *
+     * @param ehbWonderfulAtlas
+     * @return
+     */
+    @PostMapping("/saveOrUpdateMuilt")
+    @ResponseBody
+    public BaseResponse saveOrUpdateMuilt(EhbWonderfulAtlas ehbWonderfulAtlas) {
+        StringBuffer buffer = new StringBuffer(ehbWonderfulAtlas.getImgUrl());
+        buffer = buffer.deleteCharAt(buffer.lastIndexOf(","));
+        String img[] = buffer.toString().split(",");
+
+        List<EhbWonderfulAtlas> addAtlasList = Arrays.asList(img).stream().map(i->{
+            EhbWonderfulAtlas addAtlas = new EhbWonderfulAtlas();
+            BeanUtil.copyProperties(ehbWonderfulAtlas,addAtlas);
+            try {
+                addAtlas.setWide(IOUtil.getImgWidth(new URL(i)));
+                addAtlas.setHigh(IOUtil.getImgHeight(new URL(i)));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            addAtlas.setImgUrl(i);
+            addAtlas.setCreatetime(LocalDateTime.now());
+            addAtlas.setIsdel(1);
+            EhbWonderfulAtlas sortAtlas = ehbWonderfulAtlasService.lambdaQuery()
+                    .orderByDesc(EhbWonderfulAtlas::getSort).last("limit 1").one();
+            if(sortAtlas!=null && sortAtlas.getSort()!=null){
+                addAtlas.setSort(sortAtlas.getSort()+1);
+            }else{
+                addAtlas.setSort(1);
+            }
+            addAtlas.setWide(addAtlas.getWide()==-1?1000:addAtlas.getWide());
+            addAtlas.setHigh(addAtlas.getHigh()==-1?900:addAtlas.getHigh());
+            return addAtlas;
+        }).collect(Collectors.toList());
+        if (ehbWonderfulAtlasService.saveBatch(addAtlasList)) {
+            return setResultSuccess();
+        } else {
+            return setResultError("操作失败！");
+        }
     }
 
     @RequestMapping("/export")
