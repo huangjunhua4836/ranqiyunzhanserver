@@ -10,9 +10,11 @@ import com.yl.soft.dto.EhbWonderfulAtlasDto;
 import com.yl.soft.dto.EhbWonderfulVideoDto;
 import com.yl.soft.dto.base.ResultItem;
 import com.yl.soft.po.EhbLiveBroadcast;
+import com.yl.soft.po.EhbLiveRecording;
 import com.yl.soft.po.EhbWonderfulAtlas;
 import com.yl.soft.po.EhbWonderfulVideo;
 import com.yl.soft.service.EhbLiveBroadcastService;
+import com.yl.soft.service.EhbLiveRecordingService;
 import com.yl.soft.service.EhbLiveVmwareService;
 import com.yl.soft.service.EhbWonderfulAtlasService;
 import com.yl.soft.service.EhbWonderfulVideoService;
@@ -51,6 +53,9 @@ public class ShowYouAroundController extends BaseController {
 
 	@Autowired
 	private HWPlayFlowAuthUtil hWPlayFlowAuthUtil;
+	
+	@Autowired
+	private EhbLiveRecordingService ehbLiveRecordingService;
 
 	@ApiOperation(value = "直播/回放列表", notes = "直播/回放列表")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "token", value = "登陆标识", required = true, paramType = "query"),
@@ -67,6 +72,10 @@ public class ShowYouAroundController extends BaseController {
 					BeanUtils.copyProperties(i, ehbLiveBroadcastListDto);
 					ehbLiveBroadcastListDto.setLiveType(0);// 真实直播
 					ehbLiveBroadcastListDto.setSort(i.getSort()<=0?i.getLiveStatus()==1?10000:i.getLiveStatus()==0?0:i.getLiveStatus()==2?-1:100:i.getSort());
+					List<String> payList=ehbLiveRecordingService.lambdaQuery().eq(EhbLiveRecording::getLiveid, i.getId()).list().stream().map(j->{
+						return j.getDownloadUrl();
+					}).collect(Collectors.toList());
+					ehbLiveBroadcastListDto.setPayList(payList);
 					return ehbLiveBroadcastListDto;
 				}).collect(Collectors.toList()));
 		dataList.addAll(pageInfo.getList());
@@ -103,7 +112,7 @@ public class ShowYouAroundController extends BaseController {
 	@PostMapping("/wonderful_video")
 	public ResultItem<List<EhbWonderfulVideoDto>> wonderful_video(@NotBlank(message = "token不能为空") String token,
 			Integer page, Integer size) {
-		PageHelper.startPage(page, size, "sort ASC");
+		PageHelper.startPage(page, size, "sort DESC");
 		PageInfo<EhbWonderfulVideoDto> pageInfo = new PageInfo<>(
 				ehbWonderfulVideoService.lambdaQuery().eq(EhbWonderfulVideo::getIsdel, 1).list().stream().map(i -> {
 					EhbWonderfulVideoDto ehbWonderfulVideoDto = new EhbWonderfulVideoDto();
@@ -120,7 +129,7 @@ public class ShowYouAroundController extends BaseController {
 	@PostMapping("/wonderful_tlas")
 	public ResultItem<List<EhbWonderfulAtlasDto>> wonderful_tlas(@NotBlank(message = "token不能为空") String token,
 			Integer page, Integer size) {
-		PageHelper.startPage(page, size, "sort ASC");
+		PageHelper.startPage(page, size, "sort DESC");
 		PageInfo<EhbWonderfulAtlasDto> pageInfo = new PageInfo<>(
 				ehbWonderfulAtlasService.lambdaQuery().eq(EhbWonderfulAtlas::getIsdel, 1).list().stream().map(i -> {
 					EhbWonderfulAtlasDto ehbWonderfulAtlasDto = new EhbWonderfulAtlasDto();

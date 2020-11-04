@@ -112,7 +112,7 @@ public class LiveRController extends BaseController{
 		
 		if(StringUtils.isEmpty(ehbLiveBroadcast.getPlayback())) {
 			ehbLiveBroadcast.setPlayback(ehbLiveRecording.getDownloadUrl());
-			ehbLiveBroadcast.setLiveStatus(2);
+//			ehbLiveBroadcast.setLiveStatus(2);
 			ehbLiveBroadcast.setVideoDownUrl(ehbLiveRecording.getDownloadUrl());
 			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
 			
