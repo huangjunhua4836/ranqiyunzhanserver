@@ -66,6 +66,7 @@
             var uploadInst = upload.render({
                 elem: '#test1'
                 , url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
+                , size: 5*1024
                 , before: function (obj) {
                     //预读本地文件示例，不支持ie8
                     obj.preview(function (index, file, result) {

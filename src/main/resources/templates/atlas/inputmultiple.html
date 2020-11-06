@@ -67,6 +67,8 @@
                 elem: '#test2'
                 ,url: '/api/upLoadByHttp?remarks=' + 3 //改成您自己的上传接口
                 ,multiple: true
+                ,number: 5
+                ,size: 20*1024
                 ,before: function(obj){
                     //预读本地文件示例，不支持ie8
                     obj.preview(function(index, file, result){
