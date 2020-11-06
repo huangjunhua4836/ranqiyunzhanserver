@@ -48,6 +48,7 @@ public class HWPlayFlowAuthUtil {
 
 	/**
 	 * 播流地址生成
+	 * 
 	 * @param streamName 流名称
 	 * @return
 	 */
@@ -65,26 +66,48 @@ public class HWPlayFlowAuthUtil {
 		String msg = aesCbcEncrypt(data, ivBytes, key);
 		try {
 			System.out.println(URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes));
-			return "http://"+live+"/"+appname+"/"+streamName+".flv/auth_info="+URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes);
+			return "http://" + live + "/" + appname + "/" + streamName + ".flv/auth_info="
+					+ URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
+	public String liveUrlRtmp(String streamName) {
+		// data="$"+<Timestamp>+"$"+<LiveID>+"$"+<CheckLevel>，具体请参见“鉴权方式C”
+		String data = appname + "/" + streamName;
+
+		// 随机生成的16位数字和字母组合
+		byte[] ivBytes = getItemID(16).getBytes();
+
+		// 在直播控制台配置的Key值
+		byte[] key = lkey.getBytes();
+
+		String msg = aesCbcEncrypt(data, ivBytes, key);
+		try {
+			System.out.println(URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes));
+			return "rtmp://" + live + "/" + appname + "/" + streamName + "/auth_info="
+					+ URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
 	 * 生成推流地址
+	 * 
 	 * @param streamName 流名称
 	 * @return
 	 */
-	public String tiveUrl(String streamName){
-		return "rtmp://"+tlive+"/"+appname+"/"+streamName;
+	public String tiveUrl(String streamName) {
+		return "rtmp://" + tlive + "/" + appname + "/" + streamName;
 	}
-	
 
 	public static void main(String[] args) {
 		// data="$"+<Timestamp>+"$"+<LiveID>+"$"+<CheckLevel>，具体请参见“鉴权方式C”
-		String data = "1/2";
+		String data = "rqyz/A002";
 
 		// 随机生成的16位数字和字母组合
 		byte[] ivBytes = "yCmE666N3YAq30SN".getBytes();
