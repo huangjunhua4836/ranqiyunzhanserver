@@ -7,6 +7,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yl.soft.common.constants.BaseApiConstants;
 import com.yl.soft.common.im.ImOperator;
+import com.yl.soft.common.live.CreateRecTplResponse;
+import com.yl.soft.common.live.LiveMain;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.HWPlayFlowAuthUtil;
 import com.yl.soft.common.util.StringUtils;
@@ -14,6 +16,9 @@ import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.po.EhbLiveBroadcast;
 import com.yl.soft.service.EhbLiveBroadcastService;
 import com.yl.soft.vo.TableVo;
+
+import cn.hutool.core.lang.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -50,6 +55,9 @@ public class LiveController extends BaseController {
     private ImOperator imOperator;
     @Value("${custom.flowNamelist}")
     private String flowNamelist;
+    
+    @Autowired
+    private LiveMain liveMain;
 
     @GetMapping("/list")
     public String list() {
@@ -126,21 +134,31 @@ public class LiveController extends BaseController {
             }
             ehbLiveBroadcast.setGropid(groupId);
 
-            List<String> userFlowNames = ehbLiveBroadcastService.lambdaQuery().select(EhbLiveBroadcast::getFlowName).eq(EhbLiveBroadcast::getIsdel,1).in(EhbLiveBroadcast::getLiveStatus,0,1)
-                    .list().stream().map(i->{
-                        return i.getFlowName();
-                    }).collect(toList());
-            List<String> zongflowList = Arrays.asList(flowNamelist.split(","));
-            //去除已用的元素
-            zongflowList = zongflowList.stream().filter(i -> !userFlowNames.contains(i)).collect(toList());
-            if(zongflowList.isEmpty()){
-                return setResultError("流名称已用尽！");
+//            List<String> userFlowNames = ehbLiveBroadcastService.lambdaQuery().select(EhbLiveBroadcast::getFlowName).eq(EhbLiveBroadcast::getIsdel,1).in(EhbLiveBroadcast::getLiveStatus,0,1)
+//                    .list().stream().map(i->{
+//                        return i.getFlowName();
+//                    }).collect(toList());
+//            List<String> zongflowList = Arrays.asList(flowNamelist.split(","));
+//            //去除已用的元素
+//            zongflowList = zongflowList.stream().filter(i -> !userFlowNames.contains(i)).collect(toList());
+//            if(zongflowList.isEmpty()){
+//                return setResultError("流名称已用尽！");
+//            }
+           String steam= UUID.randomUUID().toString();
+           CreateRecTplResponse createRecTplResponse=liveMain.crateSta(steam);
+            if(!StringUtils.isEmpty(createRecTplResponse.getError_code())){
+            	return setResultError("操作失败！"+createRecTplResponse.getError_msg());
             }
-            ehbLiveBroadcast.setFlowName(zongflowList.get(0));
+            Map<String,String> map=hwPlayFlowAuthUtil.tiveOrliveAdd(steam);
+				
+
+            ehbLiveBroadcast.setFlowName(steam);
             //拉流地址
-            ehbLiveBroadcast.setPullFlowUrl(hwPlayFlowAuthUtil.liveUrl(ehbLiveBroadcast.getFlowName()));
+//            ehbLiveBroadcast.setPullFlowUrl(hwPlayFlowAuthUtil.liveUrl(ehbLiveBroadcast.getFlowName()));
+            ehbLiveBroadcast.setPullFlowUrl(map.get("live"));
             //推流地址
-            ehbLiveBroadcast.setPushFlowUrl(hwPlayFlowAuthUtil.tiveUrl(ehbLiveBroadcast.getFlowName()));
+//            ehbLiveBroadcast.setPushFlowUrl(hwPlayFlowAuthUtil.tiveUrl(ehbLiveBroadcast.getFlowName()));
+            ehbLiveBroadcast.setPushFlowUrl(map.get("tlive"));
             ehbLiveBroadcast.setCreatetime(LocalDateTime.now());
             ehbLiveBroadcast.setLiveStatus(0);//即将开始
         }else{

@@ -10,6 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.huaweicloud.sdk.core.SdkResponse;
 import com.huaweicloud.sdk.live.v1.model.AppQualityInfo;
 
+import lombok.Data;
+
+@Data
 public class CreateRecTplResponse extends SdkResponse {
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)

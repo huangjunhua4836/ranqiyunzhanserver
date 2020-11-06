@@ -109,10 +109,10 @@ public class HWPlayFlowAuthUtil {
 	 */
 	public Map<String,String> tiveOrliveAdd(String streamName){
 		Map<String, String> map=new HashedMap<>();
-		String str="3deYM0x8o8Fuq2ke" + "C001" + HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
+		String str="3deYM0x8o8Fuq2ke" + streamName + HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
 		String s=HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
 		map.put("tlive", "rtmp://rqyz.tlive.duoka361.com/rqyz/"+streamName+"?txSecret="+DigestUtils.md5DigestAsHex(str.getBytes())+"&txTime="+s);
-		String str1="mR9DFCwaOI0syBoz" + "C001" + s;
+		String str1="mR9DFCwaOI0syBoz" + streamName + s;
 		map.put("live", "http://rqyz.live.duoka361.com/rqyz/"+streamName+".flv?txSecret="+DigestUtils.md5DigestAsHex(str1.getBytes())+"&txTime="+s);
 		return map;
 	}
