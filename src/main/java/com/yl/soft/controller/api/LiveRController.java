@@ -107,17 +107,17 @@ public class LiveRController extends BaseController{
 		ehbLiveRecording.setObsObject(liveDto.getObs_object());
 		ehbLiveRecording.setCreatetime(LocalDateTime.now());
 		
-		
-		EhbLiveBroadcast ehbLiveBroadcast=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
-		
-		if(StringUtils.isEmpty(ehbLiveBroadcast.getPlayback())) {
-			ehbLiveBroadcast.setPlayback(ehbLiveRecording.getDownloadUrl());
-//			ehbLiveBroadcast.setLiveStatus(2);
-			ehbLiveBroadcast.setVideoDownUrl(ehbLiveRecording.getDownloadUrl());
-			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
-			
-		}
-		ehbLiveRecording.setLiveid(ehbLiveBroadcast.getId());
+//		
+//		EhbLiveBroadcast ehbLiveBroadcast=ehbLiveBroadcastService.lambdaQuery().eq(EhbLiveBroadcast::getFlowName, liveDto.getStream()).eq(EhbLiveBroadcast::getLiveStatus, 1).last("LIMIT 1").one();
+//		
+//		if(StringUtils.isEmpty(ehbLiveBroadcast.getPlayback())) {
+//			ehbLiveBroadcast.setPlayback(ehbLiveRecording.getDownloadUrl());
+////			ehbLiveBroadcast.setLiveStatus(2);
+//			ehbLiveBroadcast.setVideoDownUrl(ehbLiveRecording.getDownloadUrl());
+//			ehbLiveBroadcastService.updateById(ehbLiveBroadcast);
+//			
+//		}
+//		ehbLiveRecording.setLiveid(ehbLiveBroadcast.getId());
 		ehbLiveRecordingService.save(ehbLiveRecording);
 		
 	}

@@ -56,7 +56,7 @@ public class LiveMain {
 				put("mp4_config", new HashMap<String, Object>() {
 					{
 						put("record_cycle", 10800);
-						put("record_max_duration_to_merge_file", 60);
+						put("record_max_duration_to_merge_file", 5);
 						put("record_prefix",
 								"Record/{publish_domain}/{app}/{record_type}/{record_format}/{stream}_{file_start_time}/{stream}_{file_start_time}");
 					}

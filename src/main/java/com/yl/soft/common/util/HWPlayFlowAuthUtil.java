@@ -4,11 +4,16 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 import java.util.Random;
 
 @Component
@@ -66,29 +71,11 @@ public class HWPlayFlowAuthUtil {
 		String msg = aesCbcEncrypt(data, ivBytes, key);
 		try {
 			System.out.println(URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes));
-			return "http://" + live + "/" + appname + "/" + streamName + ".flv/auth_info="
-					+ URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public String liveUrlRtmp(String streamName) {
-		// data="$"+<Timestamp>+"$"+<LiveID>+"$"+<CheckLevel>，具体请参见“鉴权方式C”
-		String data = appname + "/" + streamName;
-
-		// 随机生成的16位数字和字母组合
-		byte[] ivBytes = getItemID(16).getBytes();
-
-		// 在直播控制台配置的Key值
-		byte[] key = lkey.getBytes();
-
-		String msg = aesCbcEncrypt(data, ivBytes, key);
-		try {
-			System.out.println(URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes));
-			return "rtmp://" + live + "/" + appname + "/" + streamName + "/auth_info="
-					+ URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes);
+//			return "http://" + live + "/" + appname + "/" + streamName + ".flv/auth_info="
+//					+ URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes);
+			return "http://" + live + "/" + appname + "/" + streamName + ".flv";
+//			String str="mR9DFCwaOI0syBoz" + "C001" + HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
+//			return "http://rqyz.tlive.duoka361.com/rqyz/"+streamName+".flv?txSecret="+str+"&txTime="+HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -102,26 +89,50 @@ public class HWPlayFlowAuthUtil {
 	 * @return
 	 */
 	public String tiveUrl(String streamName) {
-		return "rtmp://" + tlive + "/" + appname + "/" + streamName;
+//		String str="3deYM0x8o8Fuq2ke" + streamName + HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
+//		return "rtmp://rqyz.tlive.duoka361.com/rqyz/"+streamName+"?txSecret="+DigestUtils.md5DigestAsHex(str.getBytes())+"&txTime="+HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
+		return "rtmp://" + live + "/" + appname + "/" + streamName;
 	}
 
 	public static void main(String[] args) {
-		// data="$"+<Timestamp>+"$"+<LiveID>+"$"+<CheckLevel>，具体请参见“鉴权方式C”
-		String data = "rqyz/A002";
-
-		// 随机生成的16位数字和字母组合
-		byte[] ivBytes = "yCmE666N3YAq30SN".getBytes();
-
-		// 在直播控制台配置的Key值
-		byte[] key = "3deYM0x8o8Fuq2ke".getBytes();
-
-		String msg = aesCbcEncrypt(data, ivBytes, key);
-		try {
-			System.out.println(URLEncoder.encode(msg, "UTF-8") + "." + bytesToHexString(ivBytes));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		String str="3deYM0x8o8Fuq2ke" + "C001" + HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
+		String s=HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
+		System.out.println("rtmp://rqyz.tlive.duoka361.com/rqyz/"+"C001"+"?txSecret="+DigestUtils.md5DigestAsHex(str.getBytes())+"&txTime="+s);
+		String str1="mR9DFCwaOI0syBoz" + "C001" + s;
+		System.out.println("http://rqyz.live.duoka361.com/rqyz/C001.flv?txSecret="+DigestUtils.md5DigestAsHex(str1.getBytes())+"&txTime="+s);
 	}
+	
+	/**
+	 * 生成推拉流鉴权地址（鉴权B）
+	 * @param streamName
+	 * @return
+	 */
+	public Map<String,String> tiveOrliveAdd(String streamName){
+		Map<String, String> map=new HashedMap<>();
+		String str="3deYM0x8o8Fuq2ke" + "C001" + HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
+		String s=HWPlayFlowAuthUtil.to16Hex(HWPlayFlowAuthUtil.addOneDay());
+		map.put("tlive", "rtmp://rqyz.tlive.duoka361.com/rqyz/"+streamName+"?txSecret="+DigestUtils.md5DigestAsHex(str.getBytes())+"&txTime="+s);
+		String str1="mR9DFCwaOI0syBoz" + "C001" + s;
+		map.put("live", "http://rqyz.live.duoka361.com/rqyz/"+streamName+".flv?txSecret="+DigestUtils.md5DigestAsHex(str1.getBytes())+"&txTime="+s);
+		return map;
+	}
+	
+	
+	
+    public static String to16Hex(Date date) {
+        Long ab = date.getTime()/1000;
+        String a = Long.toHexString(ab);
+        System.out.println(ab);
+        return a;
+    }
+    
+    public static Date addOneDay() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, 5);
+        Date date = cal.getTime();
+        System.out.println(DateUtils.DateToString(date, "yyyy-MM-dd HH:mm:ss"));
+        return date;
+    }
 
 	private static String aesCbcEncrypt(String data, byte[] ivBytes, byte[] key) {
 		try {

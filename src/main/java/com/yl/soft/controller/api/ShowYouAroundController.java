@@ -72,7 +72,7 @@ public class ShowYouAroundController extends BaseController {
 					BeanUtils.copyProperties(i, ehbLiveBroadcastListDto);
 					ehbLiveBroadcastListDto.setLiveType(0);// 真实直播
 					ehbLiveBroadcastListDto.setSort(i.getSort()<=0?i.getLiveStatus()==1?10000:i.getLiveStatus()==0?0:i.getLiveStatus()==2?-1:100:i.getSort());
-					List<String> payList=ehbLiveRecordingService.lambdaQuery().eq(EhbLiveRecording::getLiveid, i.getId()).list().stream().map(j->{
+					List<String> payList=ehbLiveRecordingService.lambdaQuery().eq(EhbLiveRecording::getStream, i.getFlowName()).list().stream().map(j->{
 						return j.getDownloadUrl();
 					}).collect(Collectors.toList());
 					ehbLiveBroadcastListDto.setPayList(payList);
