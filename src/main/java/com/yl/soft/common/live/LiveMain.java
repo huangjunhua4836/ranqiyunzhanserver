@@ -38,8 +38,7 @@ public class LiveMain {
 		}
 	}
 
-	public CreateRecTplResponse crateSta() {
-		String sta = UUID.randomUUID().toString();
+	public CreateRecTplResponse crateSta(String streamName) {
 		// 使用默认配置
 		HttpConfig config = HttpConfig.getDefaultHttpConfig();
 		BasicCredentials credentials = new BasicCredentials().withAk("XWJ5DWSCZOYSSRDW2PBN")
@@ -49,7 +48,7 @@ public class LiveMain {
 		CreateRecTplRequest c = new CreateRecTplRequest();
 		// c.setDomain("rqyz.live.duoka361.com");
 		c.setApp_name("rqyz");
-		c.setStream(sta);
+		c.setStream(streamName);
 		c.setPush_domain("rqyz.tlive.duoka361.com");
 		c.setRecord_type("CONTINUOUS_RECORD");
 		c.setDefault_record_config(new HashMap() {
