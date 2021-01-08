@@ -180,7 +180,7 @@ public class AboutPlantformController extends BaseController {
                     return jsonObject;
                 }
                 String newName =System.currentTimeMillis()+new Random().nextInt()+"."+suffix;
-                String relativePath = nowDateDir+File.separator+newName;
+                String relativePath = nowDateDir+"/"+newName;
                 //以原来的名称命名,覆盖掉旧的
                 String storagePath = uploadPath + relativePath;
                 buffer.append("上传的文件：" + multipartFile.getName()+";")
