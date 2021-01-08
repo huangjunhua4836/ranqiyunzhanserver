@@ -465,6 +465,16 @@ public class UserLoginController extends BaseController {
 		if (StringUtil.isEmpty(token)) {
 			return error(-501, "token为空！");
 		}
+		SessionUser sessionUser = sessionState.getCurrentUser(token);
+		if(sessionUser == null || com.yl.soft.common.util.StringUtils.isEmpty(sessionUser.getId())){
+			return error(-601, "续命失败！");
+		}
+		//如果用户被禁用则删除token
+		EhbAudience ehbAudience = ehbAudienceService.getById(sessionUser.getId());
+		if(ehbAudience.getIsdel().booleanValue() && ehbAudience.getEnabled().intValue() == 0){
+			sessionState.delSessionUser(token);
+		}
+
 		boolean timeout = sessionState.DelayTokenTimeOut(token);
 		if (timeout) {
 			return ok2("续命成功！");

@@ -70,6 +70,6 @@
         <if test="paramMap.countcomment!= null and paramMap.countcomment!= ''">
             and opp.countcomment &gt;= #{paramMap.countcomment}
         </if>
-        order by opp.releasetime desc
+        order by opp.releasetime desc,opp.id desc
     </select>
 </mapper>

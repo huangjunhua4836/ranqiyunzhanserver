@@ -59,10 +59,8 @@
             ehb_audience a
         on
             e.id = a.bopie
-            and a.isdel = 0
-            and a.enabled = 1
         where
-            1=1
+            a.isdel = 0 and a.enabled = 1
             <if test="paramMap.registerphone!= null and paramMap.registerphone!=''">
                 and a.phone like concat('%',#{paramMap.registerphone},'%')
             </if>
@@ -81,6 +79,6 @@
             <if test="paramMap.startTime!= null and paramMap.startTime!='' and paramMap.endTime!= null and paramMap.endTime!=''">
                 and e.createtime BETWEEN #{paramMap.startTime} AND #{paramMap.endTime}
             </if>
-            order by e.sort desc
+            order by e.sort desc,e.id desc
      </select>
 </mapper>

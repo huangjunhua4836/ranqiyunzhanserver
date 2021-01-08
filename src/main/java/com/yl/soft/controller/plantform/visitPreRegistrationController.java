@@ -158,6 +158,12 @@ public class visitPreRegistrationController extends BaseController {
             if(!StringUtils.isEmpty(i.getAppellation())){
                 visitorRegisExcelVo.setAppellation(i.getAppellation()==0?"男":"女");
             }
+            //面积处理
+            String showarea = i.getShowarea();
+            if(!StringUtils.isEmpty(showarea)){
+                visitorRegisExcelVo.setShowarea(showarea.replace(",","——"));
+            }
+
             return visitorRegisExcelVo;
         }).collect(Collectors.toList());
 
@@ -169,7 +175,7 @@ public class visitPreRegistrationController extends BaseController {
         writer.addHeaderAlias("position", "职位");
         writer.addHeaderAlias("compname", "公司名称");
         writer.addHeaderAlias("phone", "联系方式");
-        writer.addHeaderAlias("showarea", "预展位面积");
+        writer.addHeaderAlias("showarea", "预展位面积(平方米)");
         // 合并单元格后的标题行，使用默认标题样式
         writer.merge(5, "参展商预登记表");
         // 一次性写出内容，使用默认样式，强制输出标题

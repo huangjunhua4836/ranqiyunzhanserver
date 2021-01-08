@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yl.soft.common.constants.BaseApiConstants;
 import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.unified.redis.RedisService;
 import com.yl.soft.common.util.PhoneUtils;
@@ -234,9 +235,11 @@ public class ZSInfoController extends BaseController {
         ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbExhibitorQueryWrapper.eq("state",1);
         ehbExhibitorService.list(ehbExhibitorQueryWrapper).stream().forEach(i->{
-            String firstWord = PinyinUtil.getPinYinHeadChar(i.getEnterprisename()).toUpperCase().charAt(0)+"";
-            if("B".equals(firstWord)){
-                System.out.println(firstWord);
+            String firstWord = null;
+            if(i.getEnterprisename().startsWith("重庆")){
+                firstWord = "C";
+            }else{
+                firstWord = PinyinUtil.getPinYinHeadChar(i.getEnterprisename()).toUpperCase().charAt(0)+"";
             }
             ExhibitorDto exhibitorDto = new ExhibitorDto();
             exhibitorDto.setId(i.getId());
@@ -360,6 +363,24 @@ public class ZSInfoController extends BaseController {
     @ResponseBody
     public BaseResponse saveRecommend(EhbExhibitor ehbExhibitor) {
         ehbExhibitorService.updateById(ehbExhibitor);
+        return setResultSuccess();
+    }
+
+    /**
+     * 删除展商
+     * @return
+     */
+    @PostMapping("/delete")
+    @ResponseBody
+    public BaseResponse delete(String id) {
+        System.out.println("ok");
+        if(StringUtils.isEmpty(id)){
+            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
+                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"删除ID为空！");
+        }
+        ehbAudienceService.lambdaUpdate().set(EhbAudience::getEnabled,0)//设置不可用
+                .set(EhbAudience::getIsdel,1)//设置删除
+                .eq(EhbAudience::getBopie,id).update();
         return setResultSuccess();
     }
 }

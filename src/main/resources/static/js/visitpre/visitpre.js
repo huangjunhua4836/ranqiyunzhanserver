@@ -35,10 +35,15 @@ layui.use('core', function(){
                 }
                 ,{field: 'phone', title: '联系方式'}
                 ,{field: 'position', title: '职位'}
+                ,{field: 'showarea', title: '面积(平米)',
+                    templet: function(d){
+                        return d.showarea.replace(",","——");
+                    }
+                }
                 ,{field: 'remarks', title: '备注'}
                 ,{field: 'createtime', title: '创建时间',sort: true,
                     templet: function(d){
-                        return util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss");
+                        return util.toDateString(d.createtime, "yyyy-MM-dd HH:mm:ss");
                     }
                 }
                 ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:150,unresize: true}

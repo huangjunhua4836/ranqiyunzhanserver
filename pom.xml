@@ -280,6 +280,24 @@
 			<artifactId>minio</artifactId>
 			<version>3.0.10</version>
 		</dependency>
+		<!--华为直播-->
+		<dependency>
+			<groupId>com.huaweicloud.sdk</groupId>
+			<artifactId>huaweicloud-sdk-core</artifactId>
+			<version>[3.0.1-beta, 3.1.0-beta)</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.huawei.apigateway/java-sdk-core -->
+<!--		<dependency>-->
+<!--			<groupId>com.huawei.apigateway</groupId>-->
+<!--			<artifactId>java-sdk-core</artifactId>-->
+<!--			<version>3.0.12</version>-->
+<!--		</dependency>-->
+
+		<dependency>
+			<groupId>com.huaweicloud.sdk</groupId>
+			<artifactId>huaweicloud-sdk-live</artifactId>
+			<version>3.0.13-beta</version>
+		</dependency>
 	</dependencies>
 
 	<build>

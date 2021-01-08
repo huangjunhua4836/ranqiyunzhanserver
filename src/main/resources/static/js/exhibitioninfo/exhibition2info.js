@@ -29,9 +29,9 @@ layui.use('core', function(){
                 ,{field: 'registerphone', title: '注册手机号'}
                 ,{field: 'name', title: '管理者姓名'}
                 ,{field: 'enterprisename', title: '企业'}
-                ,{field: 'mailbox', title: '邮箱'}
+                // ,{field: 'mailbox', title: '邮箱'}
                 ,{field: 'boothno', title: '展位号'}
-                ,{field: 'fid', title: 'fid'}
+                // ,{field: 'fid', title: 'fid'}
                 ,{field: 'sort', title: '排序',sort: true}
                 ,{field: 'isrecommend', title: '推荐',sort: true,
                     templet: function(d){
@@ -73,7 +73,7 @@ layui.use('core', function(){
                         return util.toDateString(d.createtime, "yyyy-MM-dd HH:mm:ss");
                     }
                 }
-                ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:210,unresize: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:280,unresize: true}
             ]]
             ,page: true //开启分页
         });
@@ -107,6 +107,16 @@ layui.use('core', function(){
     table.on('tool(tableFilter)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
+            layer.confirm('确定删除么？删除之后不可恢复！', function(index){
+                layer.close(index);
+                //向服务端发送删除指令
+                var resultData = core.ajax('/platform/zsInfo/delete',false,'POST','id='+data.id);
+                if(resultData!=false){
+                    layer.msg('操作成功！',core.showtime);
+                    initTable({});
+                }
+            });
+        }else if(obj.event === 'shenhe'){
             if(data.state == '1'){
                 layer.msg('已经认证过啦',core.showtime);
                 return;
