@@ -37,7 +37,7 @@ layui.use('core', function(){
                 ,{field: 'position', title: '职位'}
                 ,{field: 'showarea', title: '面积(平米)',
                     templet: function(d){
-                        return d.showarea.replace(",","——");
+                        return d.showarea.replace(",","至");
                     }
                 }
                 ,{field: 'remarks', title: '备注'}

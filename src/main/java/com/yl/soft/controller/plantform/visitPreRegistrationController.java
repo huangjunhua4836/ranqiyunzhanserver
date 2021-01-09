@@ -162,7 +162,7 @@ public class visitPreRegistrationController extends BaseController {
             //面积处理
             String showarea = i.getShowarea();
             if(!StringUtils.isEmpty(showarea)){
-                visitorRegisExcelVo.setShowarea(showarea.replace(",","——"));
+                visitorRegisExcelVo.setShowarea(showarea.replace(",","至"));
             }
 
             return visitorRegisExcelVo;
