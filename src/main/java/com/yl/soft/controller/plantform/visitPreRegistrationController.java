@@ -66,6 +66,7 @@ public class visitPreRegistrationController extends BaseController {
         QueryWrapper<EhbVisitorRegistration> ehbVisitorRegistrationQueryWrapper = new QueryWrapper<>();
         ehbVisitorRegistrationQueryWrapper.like(!StringUtils.isEmpty(ehbVisitorRegistration.getName()),"name",ehbVisitorRegistration.getName());
         ehbVisitorRegistrationQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),"createtime",startTime,endTime);
+        ehbVisitorRegistrationQueryWrapper.orderByDesc("createtime","id");
         PageHelper.startPage(Integer.valueOf(page),Integer.valueOf(limit));
         List<EhbVisitorRegistration> ehbVisitorRegistrations = ehbVisitorRegistrationService.list(ehbVisitorRegistrationQueryWrapper);
         PageInfo pageInfo = new PageInfo<>(ehbVisitorRegistrations);

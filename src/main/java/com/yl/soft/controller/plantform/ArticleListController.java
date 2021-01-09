@@ -55,7 +55,7 @@ public class ArticleListController extends BaseController {
         ehbarticleQueryWrapper.like(!StringUtils.isEmpty(ehbarticle.getTitle()), EhbArticle::getTitle, ehbarticle.getTitle());
         ehbarticleQueryWrapper.between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime), EhbArticle::getCreatetime, startTime, endTime);
         ehbarticleQueryWrapper.eq(EhbArticle::getIsdel, CommonDict.CORRECT_STATE);
-        ehbarticleQueryWrapper.orderByDesc(EhbArticle::getSort);
+        ehbarticleQueryWrapper.orderByDesc(EhbArticle::getSort,EhbArticle::getReleasetime,EhbArticle::getId);
         PageHelper.startPage(Integer.valueOf(page), Integer.valueOf(limit));
         List<EhbArticle> ehbHottitles = ehbArticleService.list(ehbarticleQueryWrapper);
         PageInfo pageInfo = new PageInfo<>(ehbHottitles);
