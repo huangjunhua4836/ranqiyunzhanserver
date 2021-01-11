@@ -177,8 +177,9 @@ public class visitPreRegistrationController extends BaseController {
         writer.addHeaderAlias("compname", "公司名称");
         writer.addHeaderAlias("phone", "联系方式");
         writer.addHeaderAlias("showarea", "预展位面积(平方米)");
+        writer.addHeaderAlias("remarks", "备注");
         // 合并单元格后的标题行，使用默认标题样式
-        writer.merge(5, "参展商预登记表");
+        writer.merge(6, "参展商预登记表");
         // 一次性写出内容，使用默认样式，强制输出标题
         writer.write(visitorRegisExcelVos, true);
         //out为OutputStream，需要写出到的目标流

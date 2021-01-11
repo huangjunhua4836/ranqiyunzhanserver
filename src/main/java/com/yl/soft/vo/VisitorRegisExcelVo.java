@@ -29,4 +29,7 @@ public class VisitorRegisExcelVo {
 
     @ApiModelProperty(value = "预展位面积（两个值中间用英文逗号分隔）")
     private String showarea;
+
+    @ApiModelProperty(value = "备注")
+    private String remarks;
 }
