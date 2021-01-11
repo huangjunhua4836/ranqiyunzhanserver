@@ -48,6 +48,8 @@ public class IndexController extends BaseController {
     @Autowired
     private EhbAudienceService ehbAudienceService;
     @Autowired
+    private EhbUseractionService ehbUseractionService;
+    @Autowired
     private SessionState sessionState;
     @Autowired
     private RedisService redisService;
@@ -60,7 +62,9 @@ public class IndexController extends BaseController {
     @ApiOperation(value = "首页推荐展商后台直接推荐")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "当前页码", required = true, paramType = "query")
-            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)    })
+            ,@ApiImplicitParam(name = "pageSize", value = "每页数量",  paramType = "query",required = true)
+            ,@ApiImplicitParam(name = "token", value = "用户登陆后获取token",paramType = "query")
+    })
     @ApiResponses({
             @ApiResponse(code = 200, message = "成功")
             ,@ApiResponse(code = 401, message = "token为空！")
@@ -93,6 +97,15 @@ public class IndexController extends BaseController {
                 case 0:exhibitorDto.setState_show("未认证");break;
                 case 1:exhibitorDto.setState_show("已认证");break;
                 default:exhibitorDto.setState_show("未知状态");break;
+            }
+            if(!StringUtils.isEmpty(paramMap.get("token"))){
+                SessionUser sessionUser = sessionState.getCurrentUser(paramMap.get("token")+"");
+                Integer count = ehbUseractionService.lambdaQuery().eq(EhbUseraction::getUserid, sessionUser.getId())
+                        .eq(EhbUseraction::getType, 1).eq(EhbUseraction::getRelateid, i.getId())
+                        .eq(EhbUseraction::getActivetype, 1).count();
+                if(count>0){//展商已关注
+                    exhibitorDto.setRelateid(1);
+                }
             }
             return exhibitorDto;
         }).collect(Collectors.toList());
