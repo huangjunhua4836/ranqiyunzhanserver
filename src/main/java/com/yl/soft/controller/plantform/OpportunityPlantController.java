@@ -58,6 +58,7 @@ public class OpportunityPlantController extends BaseController {
         List<EhbOpportunity> ehbOpportunities = ehbOpportunityService.lambdaQuery().like(!StringUtils.isEmpty(ehbOpportunity.getTitle()),EhbOpportunity::getTitle,ehbOpportunity.getTitle())
                 .eq(!StringUtils.isEmpty(ehbOpportunity.getExhibitorid()),EhbOpportunity::getExhibitorid,ehbOpportunity.getExhibitorid())
                 .eq(EhbOpportunity::getIsdel,0)
+                .eq(EhbOpportunity::getType,1)//商机
                 .between(!StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime),EhbOpportunity::getReleasetime,startTime,endTime)
                 .orderByDesc(EhbOpportunity::getReleasetime,EhbOpportunity::getId)
                 .list();
