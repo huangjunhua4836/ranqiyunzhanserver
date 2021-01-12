@@ -31,6 +31,7 @@ import com.yl.soft.vo.ExhibitorVo;
 import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -377,6 +378,7 @@ public class ZSInfoController extends BaseController {
      */
     @PostMapping("/delete")
     @ResponseBody
+    @Transactional
     public BaseResponse delete(String id) {
         System.out.println("ok");
         if(StringUtils.isEmpty(id)){
@@ -386,6 +388,7 @@ public class ZSInfoController extends BaseController {
         ehbAudienceService.lambdaUpdate().set(EhbAudience::getEnabled,0)//设置不可用
                 .set(EhbAudience::getIsdel,1)//设置删除
                 .eq(EhbAudience::getBopie,id).update();
+        ehbExhibitorService.lambdaUpdate().set(EhbExhibitor::getIsdel,1).eq(EhbExhibitor::getId,id).update();
         return setResultSuccess();
     }
 }
