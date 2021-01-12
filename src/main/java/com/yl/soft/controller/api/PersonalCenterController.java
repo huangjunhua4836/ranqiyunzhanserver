@@ -423,6 +423,7 @@ public class PersonalCenterController extends BaseController {
 			if (null != ehbExhibitor) {
 				BeanUtils.copyProperties(ehbExhibitor, md);
 			}
+			md.setImg(ehbExhibitor.getLogo());
 			return md;
 		}).collect(Collectors.toList());
 
