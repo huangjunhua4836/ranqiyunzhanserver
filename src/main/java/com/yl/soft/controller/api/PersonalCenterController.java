@@ -423,7 +423,11 @@ public class PersonalCenterController extends BaseController {
 			if (null != ehbExhibitor) {
 				BeanUtils.copyProperties(ehbExhibitor, md);
 			}
-			md.setImg(ehbExhibitor.getLogo());
+			EhbAudience ehbAudience = ehbAudienceService.lambdaQuery().eq(EhbAudience::getBopie, i.getRelateid())
+					.last("limit 1").one();
+			if(ehbAudience!=null){
+				md.setImg(ehbAudience.getHeadPortrait());
+			}
 			return md;
 		}).collect(Collectors.toList());
 
