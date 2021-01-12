@@ -152,6 +152,7 @@ public class SearchController extends BaseController {
         }
         QueryWrapper<EhbExhibitor> ehbExhibitorQueryWrapper = new QueryWrapper<>();
         ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
+        ehbExhibitorQueryWrapper.eq("state",1);
         if(!StringUtils.isEmpty(paramMap.get("key"))){
             ehbExhibitorQueryWrapper.and(i->i.like("enterprisename",paramMap.get("key"))
                     .or().like("boothno",paramMap.get("key")));
