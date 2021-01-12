@@ -165,7 +165,12 @@ public class ZSInfoController extends BaseController {
     @PostMapping("/saveOrUpdate")
     @ResponseBody
     public BaseResponse saveOrUpdate(ExhibitorVo exhibitorVo) {
-        String firstWord = PinyinUtil.getPinYinHeadChar(exhibitorVo.getEnterprisename()).toUpperCase().charAt(0)+"";
+        String firstWord = null;
+        if(exhibitorVo.getEnterprisename().startsWith("重庆")){
+            firstWord = "C";
+        }else{
+            firstWord = PinyinUtil.getPinYinHeadChar(exhibitorVo.getEnterprisename()).toUpperCase().charAt(0)+"";
+        }
         if(StringUtils.isEmpty(exhibitorVo.getId())){
             QueryWrapper<EhbAudience> zswrapper = new QueryWrapper<>();
             zswrapper.eq("phone",exhibitorVo.getRegisterphone());
