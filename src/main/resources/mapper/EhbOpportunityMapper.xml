@@ -61,13 +61,13 @@
             and opp.title like #{paramMap.title}
         </if>
         )
-        <if test="paramMap.countthumbs!= null and paramMap.countthumbs!= ''">
+        <if test="paramMap.countthumbs!= null">
             and opp.countthumbs &gt;= #{paramMap.countthumbs}
         </if>
-        <if test="paramMap.countbrowse!= null and paramMap.countbrowse!= ''">
+        <if test="paramMap.countbrowse!= null">
             and opp.countbrowse &gt;= #{paramMap.countbrowse}
         </if>
-        <if test="paramMap.countcomment!= null and paramMap.countcomment!= ''">
+        <if test="paramMap.countcomment!= null">
             and opp.countcomment &gt;= #{paramMap.countcomment}
         </if>
         order by opp.releasetime desc,opp.id desc
