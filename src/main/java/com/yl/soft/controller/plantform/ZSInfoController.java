@@ -166,12 +166,7 @@ public class ZSInfoController extends BaseController {
     @PostMapping("/saveOrUpdate")
     @ResponseBody
     public BaseResponse saveOrUpdate(ExhibitorVo exhibitorVo) {
-        String firstWord = null;
-        if(exhibitorVo.getEnterprisename().startsWith("重庆")){
-            firstWord = "C";
-        }else{
-            firstWord = PinyinUtil.getPinYinHeadChar(exhibitorVo.getEnterprisename()).toUpperCase().charAt(0)+"";
-        }
+        String firstWord = PinyinUtil.morePronunciation(exhibitorVo.getEnterprisename());
         if(StringUtils.isEmpty(exhibitorVo.getId())){
             QueryWrapper<EhbAudience> zswrapper = new QueryWrapper<>();
             zswrapper.eq("phone",exhibitorVo.getRegisterphone());
@@ -241,12 +236,8 @@ public class ZSInfoController extends BaseController {
         ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
         ehbExhibitorQueryWrapper.eq("state",1);
         ehbExhibitorService.list(ehbExhibitorQueryWrapper).stream().forEach(i->{
-            String firstWord = null;
-            if(i.getEnterprisename().startsWith("重庆")){
-                firstWord = "C";
-            }else{
-                firstWord = PinyinUtil.getPinYinHeadChar(i.getEnterprisename()).toUpperCase().charAt(0)+"";
-            }
+            String firstWord =PinyinUtil.morePronunciation(i.getEnterprisename());
+
             ExhibitorDto exhibitorDto = new ExhibitorDto();
             exhibitorDto.setId(i.getId());
             exhibitorDto.setEnterprisename(i.getEnterprisename());

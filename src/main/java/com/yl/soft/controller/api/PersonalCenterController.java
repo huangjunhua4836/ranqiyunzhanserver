@@ -169,10 +169,7 @@ public class PersonalCenterController extends BaseController {
 	     ehbExhibitorQueryWrapper.eq("isdel",CommonDict.CORRECT_STATE);
 	     ehbExhibitorQueryWrapper.eq("state",1);
 	     ehbExhibitorService.list(ehbExhibitorQueryWrapper).stream().forEach(i->{
-	         String firstWord = PinyinUtil.getPinYinHeadChar(i.getEnterprisename()).toUpperCase().charAt(0)+"";
-	         if("B".equals(firstWord)){
-	             System.out.println(firstWord);
-	         }
+			 String firstWord = PinyinUtil.morePronunciation(i.getEnterprisename());
 	         ExhibitorDto exhibitorDto = new ExhibitorDto();
 	         exhibitorDto.setId(i.getId());
 	         exhibitorDto.setEnterprisename(i.getEnterprisename());

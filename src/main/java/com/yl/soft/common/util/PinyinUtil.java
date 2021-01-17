@@ -79,12 +79,33 @@ public class PinyinUtil {
         return strBuf.toString();
     }
 
+    /**
+     * 特殊名称多音字处理
+     * @param name
+     * @return
+     */
+    public static String morePronunciation(String name){
+        if(StringUtils.isEmpty(name)){
+            return "";
+        }
+        String firstWord = "";
+        name = name.replace("《","").replace("》","");
+        if(name.startsWith("重庆")){
+            firstWord = "C";
+        }else if(name.startsWith("厦门")) {
+            firstWord = "X";
+        }else{
+            firstWord = PinyinUtil.getPinYinHeadChar(name).toUpperCase().charAt(0)+"";
+        }
+        return firstWord;
+    }
+
     public static void main(String[] args) {
 
-        String cnStr = "黄俊华";
+        String cnStr = "《城市燃气》杂志社有限公司";
+//        String cnStr = "厦门有限公司";
         System.out.println(getPingYin(cnStr));
-        System.out.println(getPinYinHeadChar(cnStr));
-        System.out.println(getPinYinHeadChar(cnStr).toUpperCase().charAt(0));
+        System.out.println(morePronunciation(cnStr));
     }
 
 }
