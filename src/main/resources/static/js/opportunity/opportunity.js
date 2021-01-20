@@ -35,7 +35,8 @@ layui.use('core', function () {
                     , {field: 'countcomment', title: '总评论量'}
                     , {field: 'releasetime', title: '发布时间', sort: true,
                         templet: function (d) {
-                            return util.toDateString(d.releasetime, "yyyy-MM-dd HH:mm:ss");
+                            return d.releasetime;
+                            // return util.toDateString(d.releasetime, "yyyy-MM-dd HH:mm:ss");
                         }
                     }
                     , {fixed: 'right', title: '操作', toolbar: '#rowToolBar', width: 150, unresize: true}

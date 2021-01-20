@@ -43,7 +43,10 @@ layui.use('core', function () {
                     // }
                     , {
                         field: 'releasetime', title: '发布时间', sort: true,
-                        templet: function (d) {return util.toDateString(d.releasetime, "yyyy-MM-dd HH:mm:ss");}
+                        templet: function (d) {
+                            return d.releasetime;
+                            // return util.toDateString(d.releasetime, "yyyy-MM-dd HH:mm:ss");
+                        }
                     }
                     ,{field: 'sort', title: '排序',sort: true}
                     ,{field: 'isrecommend', title: '推荐',sort: true,

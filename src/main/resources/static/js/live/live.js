@@ -51,7 +51,8 @@ layui.use('core', function(){
                 ,{field: 'sort', title: '排序'}
                 ,{field: 'createtime', title: '创建时间',sort: true,
                     templet: function(d){
-                        return util.toDateString(d.createtime, "yyyy-MM-dd HH:mm:ss");
+                        return d.createtime;
+                        // return util.toDateString(d.createtime, "yyyy-MM-dd HH:mm:ss");
                     }
                 }
                 ,{fixed: 'right', title:'操作', toolbar: '#rowToolBar',width:230,unresize: true}

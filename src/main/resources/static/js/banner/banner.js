@@ -43,6 +43,7 @@ layui.use('core', function(){
                 // ,{field: 'createUser', title: '创建者'}
                 ,{field: 'createTime', title: '创建时间',sort: true,
                     templet: function(d){
+                        return d.createtime;
                         return util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss");
                     }
                 }
