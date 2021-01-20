@@ -129,14 +129,14 @@ public class ShowYouAroundController extends BaseController {
 	@PostMapping("/wonderful_tlas")
 	public ResultItem<List<EhbWonderfulAtlasDto>> wonderful_tlas(@NotBlank(message = "token不能为空") String token,
 			Integer page, Integer size) {
-		PageHelper.startPage(page, size, "sort DESC");
-		PageInfo<EhbWonderfulAtlasDto> pageInfo = new PageInfo<>(
-				ehbWonderfulAtlasService.lambdaQuery().eq(EhbWonderfulAtlas::getIsdel, 1).list().stream().map(i -> {
-					EhbWonderfulAtlasDto ehbWonderfulAtlasDto = new EhbWonderfulAtlasDto();
-					BeanUtils.copyProperties(i, ehbWonderfulAtlasDto);
-					return ehbWonderfulAtlasDto;
-				}).collect(Collectors.toList()));
-		return ok(pageInfo.getList(), pageInfo.getPageNum(), pageInfo.getTotal(), pageInfo.getPages(), size);
-	}
+		PageHelper.startPage(page, size, "sort DESC,id desc");
+		List<EhbWonderfulAtlas> ehbWonderfulAtlasList = ehbWonderfulAtlasService.lambdaQuery().eq(EhbWonderfulAtlas::getIsdel, 1).list();
+		List<EhbWonderfulAtlasDto> wonderfulAtlasDtos = ehbWonderfulAtlasList.stream().map(i -> {
+			EhbWonderfulAtlasDto ehbWonderfulAtlasDto = new EhbWonderfulAtlasDto();
+			BeanUtils.copyProperties(i, ehbWonderfulAtlasDto);
+			return ehbWonderfulAtlasDto;
+		}).collect(Collectors.toList());
 
+		return ok2(ehbWonderfulAtlasList,wonderfulAtlasDtos);
+	}
 }

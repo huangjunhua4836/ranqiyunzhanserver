@@ -16,7 +16,6 @@ import com.yl.soft.service.CrmCountyService;
 import com.yl.soft.service.CrmProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,6 +95,19 @@ public class BaseController extends BaseResponseUtil {
 		r.setDesc("成功");
 		return r;
 	}
+
+    public <T> ResultItem ok2(List listPo, List<T> list){
+        Page pageInfo = (Page) listPo;
+        ResultItem r = new ResultItem();
+        r.setCode(200);
+        r.setDesc("成功");
+        r.setData(list);
+        r.setPageIndex(pageInfo.getPageNum());
+        r.setTotal(pageInfo.getTotal());
+        r.setPageTotal(pageInfo.getPages());
+        r.setPageLimit(pageInfo.getPageSize());
+        return r;
+    }
 
 	protected <T> ResultItem<T> ok() {
 		return ok(null);
