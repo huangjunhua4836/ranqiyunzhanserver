@@ -2,8 +2,8 @@
 .g_news-head{padding: 0.4rem 0.3rem; border-bottom: 1px solid #e5e5e5;}
 .g_news-head h1{font-size: 0.32rem; color: #000;}
 .g_news-data{margin-top: 0.4rem; overflow: hidden;}
-.g_news-data time{font-size: 0.24rem; color: #a6a6a6; float: left;}
-.g_browse{float: left; margin-left: 0.8rem; font-size: 0.24rem; color: #a6a6a6;}
+.g_news-data time{font-size: 0.24rem; color: #a6a6a6; display: inline-block;vertical-align: middle;}
+.g_browse{display: inline-block; margin-left: 0.8rem; font-size: 0.24rem; color: #a6a6a6;vertical-align: middle;}
 .g_browse img{width: 0.31rem; height: 0.19rem; margin-right: 0.1rem; position: relative;}
 .g_news-content{padding:0.5rem 0.3rem 0; font-size: 0.28rem; color: #4c4c4c; line-height: 0.48rem;}
 .g_news-content img{display: block; width: 100%; margin: 0.3rem auto;}

@@ -4,6 +4,8 @@ package com.yl.soft.controller.plantform;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yl.soft.common.constants.BaseApiConstants;
+import com.yl.soft.common.unified.entity.BaseResponse;
 import com.yl.soft.common.util.StringUtils;
 import com.yl.soft.controller.base.BaseController;
 import com.yl.soft.dict.CommonDict;
@@ -13,6 +15,7 @@ import com.yl.soft.vo.TableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -66,5 +69,21 @@ public class CZRInfoController extends BaseController {
         tableVo.setCount((int)pageInfo.getTotal());
         tableVo.setData(pageInfo.getList());
         return tableVo;
+    }
+
+    /**
+     * 删除
+     * @return
+     */
+    @PostMapping("/delete")
+    @ResponseBody
+    public BaseResponse delete(String id) {
+        System.out.println("ok");
+        if(StringUtils.isEmpty(id)){
+            return setResultError(BaseApiConstants.ServiceResultCode.ERROR.getCode()
+                    , BaseApiConstants.ServiceResultCode.ERROR.getValue(),"删除ID为空！");
+        }
+        ehbAudienceService.removeById(id);
+        return setResultSuccess();
     }
 }

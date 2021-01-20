@@ -81,7 +81,7 @@ layui.use('core', function () {
     table.on('tool(tableFilter)', function (obj) {
         var data = obj.data;
         if (obj.event === 'del') {
-            layer.confirm('真的删除咨询么？', function (index) {
+            layer.confirm('真的删除资讯么？', function (index) {
                 layer.close(index);
                 //向服务端发送删除指令
                 var resultData = core.ajax('/platform/article/delete', false, 'POST', 'id=' + data.id);
