@@ -47,7 +47,7 @@
         <if test="paramMap.labelid!= null and paramMap.labelid.size() > 0">
             and
             <foreach item="item" collection="paramMap.labelid" separator="or" open="(" close=")" index="">
-                e.labelid like concat('%',#{item,jdbcType=INTEGER},'%')
+                opp.label like concat('%',#{item,jdbcType=INTEGER},'%')
             </foreach>
         </if>
         and (1=1
